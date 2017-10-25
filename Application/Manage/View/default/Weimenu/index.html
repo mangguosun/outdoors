@@ -1,0 +1,77 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>自定义菜单</h2>&nbsp;<span class='common-color-red'>(点击生成微信自定义菜单才会生效，请放心编辑)</span>
+	<div class="cf">
+     <div class="fl">
+     		<a class="w_btn add-btn " href="{:U('Weimenu/add')}">新增</a>
+            <button class="w_btn ajax-post confirm" url="{:U('Weimenu/changeStatus',array('method'=>'delete'))}"
+                    target-form="ids">删 除
+            </button>
+           
+             <button class="w_btn ajax-post" url="{:U('Weimenu/send_to_weixin')}" target-form="ids">生成微信自定义菜单
+            </button>
+
+
+        </div>
+         <div class=" pull-right">
+             当前公众号ID : <span style="color:red;">{$present.id}</span> | 名称 : <span style="color:red;margin-right:100px;">{$present.public_name}</span>
+            
+        </div>
+
+    </div>
+     <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+           		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+      			<th class="">菜单等级</th>
+                <th class="">菜单名</th>                
+                <th class="">类型</th>
+                <th class="">关联关键词</th>
+                <th class="">关联URL</th>
+                <th class="">排序号</th>
+                <th class="">状态</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="list_data">
+                <volist name="list_data" id="vo">
+                    <tr>
+                    	<td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                        <td><if condition="$vo.pid eq 0">一 级<else/>二 级</if></td>
+                       	<td>{$vo.title}</td>
+                       	<td>{$vo.type}</td>
+                       	<td>{$vo.keyword}</td>
+                       	<td>{$vo.url}</td>
+                       	<td>{$vo.sort}</td>
+                       	<td><if condition="$vo.status eq 0">禁用<else/>启用</if></td>
+
+						<td>
+							<a href="{:U('Weimenu/edit',array('id'=>$vo['id']))}" class="mbtn btn-info">编辑</a>
+
+							<if condition="$vo.status eq 0">
+	                            <a href="{:U('Weimenu/changeStatus?method=forbid&id='.$vo['id'])}"
+	                               class="ajax-get mbtn btn-info">启用</a>
+                            <else />
+	                            <a href="{:U('Weimenu/changeStatus?method=resume&id='.$vo['id'])}"
+	                               class="ajax-get mbtn btn-danger">禁用</a>
+                       		 </if>
+
+						</td>
+                      
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+
+    </div>
+    <div><a target="_Blank" class="mbtn btn-info" style="float:right;margin-right:40px;"href="{:U('Weimenu/error_code')}">返回码说明</a></div>
+	 <div class="page">
+        {$page}
+    </div>
+</block>

@@ -1,0 +1,342 @@
+<extend name="Public/base" />
+<block name="body">
+<script type="text/javascript" src="__STATIC__/datajs/js/jsapi.js"></script>
+<script type="text/javascript" src="__STATIC__/datajs/js/corechart.js"></script>		
+<script type="text/javascript" src="__STATIC__/datajs/js/jquery.gvChart-1.0.1.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datajs/js/jquery.ba-resize.min.js"></script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable1').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable2').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable3').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable4').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable5').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable6').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable7').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+	$('#myTable8').gvChart({
+		chartType: 'PieChart',
+		gvSettings: {
+			vAxis: {title: 'No of players'},
+			hAxis: {title: 'Month'},
+			width: 400,
+			height: 250
+		}
+	});
+});
+
+</script>
+<style>
+.data_ul{ clear:both; overflow:hidden}
+.data_li{ float:left; margin-right:20px; width:400px; height:300px}
+</style>
+<div class="main-title">
+    <h2>汇总数据<span class="">(饼图展示)</span></h2>
+</div>
+<div class="cf">
+	<div class="fl" >
+	    <a href="{:U('Data/index')}" class="w_btn" >列表展示</a>
+	            
+	</div>
+</div>
+
+<div class="cf data_ul">
+	<div class="data_li" >
+    	<h4>会员统计</h4>
+        <table id='myTable1'>
+        	<caption>注册会员统计</caption>
+            <thead>
+         
+				<tr>
+					<th></th>
+					<th>今日注册</th>
+					<th>当月注册</th>
+					<th>以前注册</th>
+				</tr>
+
+            
+            </thead>
+            <tbody>
+            <tr>
+					<th>{$allmember}</th>
+					<td>{$daymember}</td>
+					<td>{$monthmember}</td>
+					<td>{$othermember}</td>
+					</tr>
+            </tbody>
+        </table>
+
+	</div>
+    
+    	<!-- 数据列表 -->
+    <div class="data_li">
+    <h4>线路统计</h4>
+        <table id='myTable2'>
+        	<caption>线路统计</caption>
+            <thead>     
+				<tr>
+					<th></th>
+					<th>新增线路</th>
+					<th>当月线路</th>
+					<th>以前线路</th>
+				</tr>
+            </thead>
+            <tbody>
+            	<tr>
+					<th>{$allevent}</th>
+					<td>{$dayevent}</td>
+					<td>{$monthevent}</td>
+					<td>{$otherevent}</td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data_li">
+    <h4>故事统计</h4>
+        <table id='myTable3'>
+        	<caption>故事统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>今日新增</th>
+					<th>当月故事</th>
+					<th>以前故事</th>
+				</tr>           
+            </thead>
+            <tbody>
+            	<tr>
+					<th>{$allstory}</th>
+					<td>{$daystory}</td>
+					<td>{$monthstory}</td>
+					<td>{$otherstory}</td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data_li">
+    <h4>排期统计</h4>
+        <table id='myTable4'>
+        	<caption>排期统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>今日排期</th>
+					<th>当月排期</th>
+					<th>以前排期</th>
+				</tr>
+            </thead>
+            <tbody>
+            <tr>
+				<th>{$allschedule}</th>
+				<td>{$dayschedule}</td>
+				<td>{$monthschedule}</td>
+				<td>{$otherschedule}</td>
+			</tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data_li">
+    	<h4>活动订单</h4>
+        <table id='myTable5'>
+        	<caption>活动订单统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>今日新增</th>
+					<th>当月订单</th>
+					<th>以前订单</th>
+				</tr>
+            </thead>
+            <tbody>
+            <tr>
+				<th>{$allorder}</th>
+				<td>{$dayorder}</td>
+				<td>{$monthorder}</td>
+				<td>{$otherorder}</td>
+			</tr>
+            </tbody>
+        </table>
+    </div>
+     <div class="data_li">
+    	<h4>评论统计</h4>
+        <table id='myTable6'>
+        	<caption>评论统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>今日新增</th>
+					<th>当月评论</th>
+					<th>以前评论</th>
+				</tr>
+            </thead>
+            <tbody>
+            <tr>
+				<th>{$allcomment}</th>
+				<td>{$daycomment}</td>
+				<td>{$monthcomment}</td>
+				<td>{$othercomment}</td>
+			</tr>
+            </tbody>
+        </table>
+    </div>
+     <div class="data_li">
+    	<h4>定制订单</h4>
+        <table id='myTable7'>
+        	<caption>定制订单统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>今日新增</th>
+					<th>当月定制订单</th>
+					<th>以前定制订单</th>
+				</tr>
+            </thead>
+            <tbody>
+            <tr>
+				<th>{$allcustom}</th>
+				<td>{$daycustom}</td>
+				<td>{$monthcustom}</td>
+				<td>{$othercustom}</td>
+			</tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="data_li">
+    	<h4>商品概述</h4>
+        <table id='myTable8'>
+        	<caption>商品统计</caption>
+            <thead>
+				<tr>
+					<th></th>
+					<th>上架商品</th>
+					<th>下架商品</th>
+					<th>禁用商品</th>
+				</tr>
+            </thead>
+            <tbody>
+            <tr>
+				<th>{$allgoods}</th>
+				<td>{$ongoods}</td>
+				<td>{$outgoods}</td>
+				<td>{$offgoods}</td>
+			</tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+
+
+
+
+
+	<!-- 数据列表 -->
+    
+
+    
+	 
+
+
+</block>

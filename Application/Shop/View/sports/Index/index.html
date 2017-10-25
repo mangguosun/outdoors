@@ -1,0 +1,113 @@
+<extend name="sports/common"/>
+ 
+<block name="body">
+<div class="container clearfix">
+{:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))}
+</div>
+
+<div class="runners-index-box">
+	{:W('CommonShop/brand')}
+	{:W('CommonShop/classification')}
+     <div class="runners-index-discount">
+        <div class="index_hot_left"> {:W('CommonShop/limit_bargains',array('limit'=>10))} </div>
+        <div class="index_hot_right">
+        	<div class="runners-index_blog"> {:W('Hot/lists',array('limit'=>9))}</div>    
+    
+          <!--a href="{:U('Tailor/Index/index')}"><img src="__PUBLIC__/Core/images/event_tailor.jpg"></a-->
+        </div>       
+    </div>
+    <div class="h10"></div>
+
+	{:W('CommonShop/module',array('limit'=>5,'action'=>'new_products'))}
+	{:W('CommonShop/module',array('limit'=>5,'action'=>'bargains'))}
+	<div style="width:1140px;margin:0px auto; overflow:hidden;">
+      <div style='float:left;width:800px;'>
+         {:W('CommonShop/module',array('limit'=>8,'action'=>'recommend'))}   
+                
+	  </div> 
+	  <div style='float:right;width:330px'>
+	  {:W('CommonShop/module',array('limit'=>5,'action'=>'fiery'))}
+	  </div> 
+	  
+	</div> 
+
+	<div class="h10"></div>
+   {:W('CommonShop/navigation',array('limit'=>4,'data'=>5))}
+    <div class="runners-index-tutu">{:hook('Advs', 'shop_two')}</div>
+    <div class="runners-index-twobox">   
+        {:W('NewIssue/lists',array('limit'=>2))}
+    </div>  
+
+
+ </div>           
+ 
+</div> 
+</block >
+
+
+ 
+<block name="script"> 
+
+
+<script>
+$(function(){
+	$(".runners-index-event ul li .eventtitle").hide();
+	$(".runners-index-event	 ul li").find(".eventtitle").stop().fadeTo(300,0.4)
+	$(".runners-index-event	 ul li").hover(function(){
+		$(this).find(".eventtitle").stop().fadeTo(300,0)
+	},function(){
+		$(this).find(".eventtitle").stop().fadeTo(300,0.4)
+	});
+});
+</script>
+
+<script>
+$(function () {
+	hdl_lazyload("img.add_loading");
+})
+</script>
+
+
+</block>
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>编辑卡券类型</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Pointcard/pointer_type_edit')}" method="post">
+			<input type="hidden" name="ptypeid" value="{$typelist.ptypeid}">
+			<div class="form-group has-feedback">
+				<label for="qq" class="col-md-2 control-label">卡券类型</label>
+				<div class="col-md-5">
+					{:form_select(cardtype_cipher(),$typelist['cardtype'],'class="form-control form_check" check-type="Text" name="cardtype" id="cardtype"')}
+				</div>
+			</div>
+			<div class="form-group  has-feedback">
+				<label for="name" class="col-md-2 control-label">卡券名称<span class="common-color-red">*</span></label>
+				<div class="col-md-5">
+					<input id="name" name="name" type="text" class="form-control form_check" check-type="Text"  value="{$typelist.name}" placeholder="卡券名称"/>
+				</div>
+			</div>
+			<div class="form-group  has-feedback">
+				<label for="amount" class="col-md-2 control-label">面值<span class="common-color-red">*</span></label>
+				<div class="col-md-5">
+					<input id="amount" name="amount" type="text" class="form-control form_check" check-type="Text"  value="{$typelist.amount}" placeholder="金额需为整数,小数点后舍去"/>
+				</div>
+				<span for="amount" class="col-md-0 control-label">元</span>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary " href="{:U('Websit/Pointcard/pointer_type_edit')}">修改</button>
+				</div>
+			</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

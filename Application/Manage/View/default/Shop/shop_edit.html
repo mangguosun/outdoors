@@ -1,0 +1,557 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>修改商品</h2>
+</div>
+
+<div class="shop_addgoods">
+    <form class="form-horizontal ajax-form" role="form" name="shop_data"  action="{:U('Manage/Shop/shop_edit')}" method="post">
+	
+	<input type="hidden" name="shop_url" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+	<input type='hidden' name='id' value="{$shop_list.id}">
+	<input type="hidden" name="category_id" value="{$shop_list['category_id']}">
+	
+	<!-- 商品基本信息 -->
+	<div class="shop__addgoods_top">
+		<div class="shop_addgoods_information">
+			<span id="shop_addgoods_title">商品基本信息</span>
+		</div>
+		<div class="shop_addgoods_detail">
+			<!-- 商品名称 -->
+			<div class="shop_addgoods_shopname">
+				<span id="shop_addgoods_hint">*</span>
+				<span class="shop_addgoods_name">商品名称：</span>
+				<input id="goods_name" name="goods_name" type="text" class="text input-large" check-type="Text"  placeholder="标题仅限25个字" value="{$shop_list.goods_name}">
+			</div>
+			<!-- 商品描述 -->
+			<div class="shop_addgoods_decoration">
+				<span class="shop_addgoods_name">商品描述：</span>
+				<span><textarea id="goods_introduct" name="goods_introduct"  class="text input-large"  placeholder="仅限55个字哦，快说说商品的卖点吧。"></textarea></span>
+			</div>
+			<!-- 商品货号 -->
+			<div class="shop_addgoods_num">
+				<span class="shop_addgoods_name">商品货号：</span>
+				<input id="goods_sn" name="goods_sn" class="text input-large" check-type="Text" type="text" value="{$shop_list.goods_sn}">
+			</div>
+			<!-- 商品分类 -->
+			<div class="shop_addgoods_separate">
+				<span id="shop_addgoods_hint">*</span>
+				<span class="shop_addgoods_name">商品分类：</span>
+					{:form_select(get_shop_category(),$shop_list['category_id'],'class="select input-large shop_cates_select" check-type="Text" name="category_id" id="category_id"',"--请选择商品分类--")}
+			</div>
+			<!-- 商品品牌 -->
+			<div class="shop_addgoods_brand">
+				<span class="shop_addgoods_name">商品品牌：</span>
+				<label>
+					<input type="radio" class="no_use" name="shop_brand_mode" value="3" <if condition="(!$shop_list['shop_brand']) and (!$shop_list['custom_brand_name'])">checked</if>/>
+					<span style="font-size:14px;color:#333333;">无品牌</span>
+				</label>
+				<label>
+					<input type="radio" class="sel" name="shop_brand_mode" value="1" <if condition="($shop_list['shop_brand']) and (!$shop_list['custom_brand_name'])"> checked</if> >
+					<span style="font-size:14px;color:#333333;">选择品牌</span>
+				</label>
+				<label>
+					<input type="radio" class="edi" name="shop_brand_mode" <if condition="(!$shop_list['shop_brand']) and ($shop_list['custom_brand_name'])">checked</if>  value="2"/>
+					<span style="font-size:14px;color:#333333;">自定义品牌</span>
+				</label>
+				<div class="controls select_brand">	
+					{:form_select(get_shop_brand('','selected'),$shop_list['shop_brand'],'class="select input-large" check-type="Text" name="shop_brand" id="shop_brand"',"--请选择品牌--")}
+				</div>
+				<div class="controls edit_brand">
+					商品名称：<input id="custom_brand_name" name="custom_brand_name" type="text" class="text input-large" check-type="Text"  value="{$shop_list.custom_brand_name}" placeholder="填写商品名称"/><br>
+					英文名称：<input id="custom_brand_enname" name="custom_brand_enname" type="text" class="text input-large" check-type="Text"  value="{$shop_list.custom_brand_name}" placeholder="填写英文名称"/>
+				</div>
+			</div>
+			<!-- 市场价 -->
+			<div class="shop_addgoods_marketprice">
+				<span class="shop_addgoods_name">市场价：</span>
+				<input id="tox_money_need" name="tox_money_need" type="text" class="text input-large" check-type="Text" placeholder="0.00"  value="{$shop_list.tox_money_need}">
+			</div>
+			<span class="shop_addgoods_voice">(注：市场价显示可帮助买家对商品价格进行对比，仅是显示作用，不参加商品运算)</span>
+			<!-- 销售价 -->
+			<div class="shop_addgoods_saleprice the_price">
+				<span id="shop_addgoods_hint">*</span>
+				<span class="shop_addgoods_name">销售价：</span>
+				<input type="text" name="market_price" id="market_price" class="text input-large" check-type="Text" placeholder="0.00" value="{$shop_list.market_price}">
+			</div>
+			<!-- 库存 -->
+			<div class="shop_addgoods_saleprice the_price" >
+				<span id="shop_addgoods_hint">*</span>
+				<span class="shop_addgoods_name">库 存：</span><input name="goods_num" id="goods_num" type="text" class="text input-large" check-type="Text" placeholder="1" value="{$shop_list.goods_num}">
+			</div>
+
+			<!-- 添加规格 -->
+		<?php if(!empty($shop_detail)):?>
+		<div class="form-item shops_attr" style="padding-left:30px">
+		<style>
+			.controls input{ width:130px}
+			#spec_box input{ width:150px}
+		</style>
+		<label class="shop_addgoods_name">商品规格</label>
+		<div class="controls">
+		
+			  <?php foreach($shop_detail as $key=>$val):?>
+				<div class="col-md-12 shop_sku_del">
+				   <?php foreach($val['sku_title'] as $v):?>
+				   <div style="float:left">规格：</div>
+				   <input type="hidden" name="oldgoods[attribute_id][]" value="{$v}">
+				   <input type="text" name="oldgoods[attribute_name][]" value="{:get_shop_sku_types_attribute($v)}" class='col-md-2' placeholder='如：红色40码'>
+				   <?php endforeach;?>
+				   
+				   <div style="float:left"> 价格：</div> 
+				  <input type="text" name="oldgoods[price][]" value="{$val['price']}" class='col-md-2 oldprice' placeholder='价格'>
+				  <div style="float:left"> 库存：</div>
+				  <input type="text" name="oldgoods[stock][]" value="{$val['stock']}"  class='col-md-2 oldgoods_stock' placeholder='请输入库存'>
+				   <div style="float:left"> 排序：</div>
+				  <input type="text" name="oldgoods[sort][]" value="{$val['sort']}"  class='col-md-2 oldgoods_sort' placeholder='100'>
+				  <div style="float:left"> SKU编码：</div> 
+				  <input type="text" name="oldgoods[sku_sn][]" value="{$val['sku_sn']}" class='col-md-2' placeholder='SKU编码'>
+				   <input type="hidden" name="oldgoods[sku_id][]" value="{$val['sku_id']}">
+				   &nbsp;<a data-Sku="{$val['sku_id']}" class="glyphicon glyphicon-remove shop_sku_delete" title="删除" href="javascript:" ></a>
+				</div>
+				
+			  <?php endforeach;?>
+			
+			</div>
+		</div><?php endif;?>
+		</hr>
+		<!--存放商品规格-->
+		  
+		<div class='form-item'>
+			<a style="margin-left:50px;" class="w_btn" onclick="addTags()">＋添加商品规格</a>
+			<label></label>
+			<div class='controls'></div>
+		</div>
+		<div class="form-item tab-pane" id="event_tailor">
+			<div  id='spec_box' style="border:none; padding-left:50px">
+			</div>
+		</div>
+		<script type="text/javascript">
+		 function addTags(){
+			var item_attribute_name =document.getElementsByName("goods[attribute_name][]");
+			var item_price =document.getElementsByName("goods[price][]");
+			var item_stock =document.getElementsByName("goods[stock][]");
+			var item_sort =document.getElementsByName("goods[sort][]");
+			var item_sku_sn =document.getElementsByName("goods[sku_sn][]");
+			var arr = new Array(item_attribute_name.length);
+			var arr2 = new Array(item_price.length);
+			var arr3 = new Array(item_stock.length);
+			var arr4 = new Array(item_sort.length);
+			var arr5 = new Array(item_sku_sn.length);
+			for(var j = 0; j < item_attribute_name.length;j++){
+				arr[j] = item_attribute_name.item(j).value;
+			}
+			for(var k = 0; k < item_price.length;k++){
+				arr2[k] = item_price.item(k).value;
+			}
+			for(var l = 0; l < item_stock.length;l++){
+				arr3[l] = item_stock.item(l).value;
+			}
+			for(var l = 0; l < item_sort.length;l++){
+				arr4[l] = item_sort.item(l).value;
+			}
+			for(var l = 0; l < item_sku_sn.length;l++){
+				arr5[l] = item_sku_sn.item(l).value;
+			}
+			var str ="<div>规格：<input type='text' name='goods[attribute_name][]' placeholder='如：红色40码'/>&nbsp;&nbsp;价格：<input type='text' name='goods[price][]' placeholder='0.00'>&nbsp;&nbsp;库存：<input type='text' name='goods[stock][]'  placeholder='0' placeholder='请输入库存'>&nbsp;&nbsp;排序：<input type='text' name='goods[sort][]' placeholder='100' value='100' />&nbsp;&nbsp;SKU编码：<input type='text' name='goods[sku_sn][]' placeholder='非必填'/><a  class='removeclass'>删除</a></div>";
+			$('#spec_box').append(str);
+			var attribute_name = document.getElementsByName("goods[attribute_name][]");
+			var price = document.getElementsByName("goods[price][]");
+			var stock = document.getElementsByName("goods[stock][]");
+			var sort = document.getElementsByName("goods[sort][]");
+			var sku_sn = document.getElementsByName("goods[sku_sn][]");
+			for(var i=0;i<arr.length;i++)
+			{
+				attribute_name.item(i).value = arr[i];
+				price.item(i).value = arr2[i];
+				stock.item(i).value = arr3[i];
+				sort.item(i).value = arr4[i];
+				sku_sn.item(i).value = arr5[i];
+			}
+
+			$(".the_price").hide();
+			
+			$(".the_stock").hide();
+		}
+		<if condition="$shop_detail">
+			$(".the_price").hide();
+			$(".the_stock").hide();
+		</if>
+
+		$("body").on("click",".removeclass", function(e){ 
+		   $(this).parent('div').remove();
+		   if($(".removeclass").hasClass("removeclass") || $(".shop_sku_delete").hasClass("shop_sku_delete")){
+			
+			$(".the_price").hide();
+			
+			$(".the_stock").hide();;
+			
+			}else{
+				
+				$(".the_price").show();
+				
+				$(".the_stock").show();;
+			}
+		   return false;  
+		})   
+
+		</script>
+		<div class="shop_addgoods_cover">	
+			<!-- 商品图片 -->
+			<div class="shop_addgoods_cover_left">
+				<span id="shop_addgoods_hint">*</span>
+				<span class="shop_addgoods_name">商品封面图：</span>
+				{:hook('UploadImage', array('find_name'=>'goods_ico','value'=>$shop_list['goods_ico'],'buttontext'=>'商品封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'800*800','width'=>800,'height'=>800))}
+			</div>
+			<!-- 封面图 -->
+
+			<!-- 轮播图 -->
+			<div class="shop_addgoods_cover_right">
+				<span class="shop_addgoods_name">商品轮播图：</span>
+				{:hook('UploadImage', array('find_name'=>'goods_pictures_id','value'=>$shop_list['goods_pictures_id'],'buttontext'=>'详情页轮播图','buttonwidth'=>200,'multi'=>true,'ds'=>'800*800','width'=>800,'height'=>800))}
+			</div>
+			<div class="clear"></div>
+			<!-- 轮播图 -->
+		</div>		
+				<!-- 商品运费 -->
+				<div class="shop_addgoods_brand shop_addgoods_carriage">
+					<span class="shop_addgoods_name">商品运费：</span>
+					<label><input type="radio" class="rdchange" value="1" checked="CHECKED" name="rd_freight" <eq name="shop_list.fr_id" value="1"> checked</eq>/>
+					<span style="font-size:14px;color:#333333;">包邮</span></label>
+					<label><input type="radio" class="rdchange" value="0" name="rd_freight" <eq name="shop_list.fr_id" value="0"> checked</eq>/>
+					<span style="font-size:14px;color:#333333;">不包邮</span></label>
+				</div>
+				<!-- 默认运费 -->
+				<div class="shop_addgoods_standardname shop_addgoods_Defaultshipping opshow">
+					<span class="shop_addgoods_name">默认运费：<input name="fr_num" type="text" id="fr_num" value="{$shop_list.fr_num}" size="7" />件内，</span>
+					<span class="shop_addgoods_name">运费：<input name="fr_freight" type="text" id="fr_freight" value="{$shop_list.fr_freight}" size="7" />元，</span>
+					<span class="shop_addgoods_name">每增加： <input name="fr_addnum" type="text" id="fr_addnum" value="{$shop_list.fr_addnum}" size="7" />件，</span>
+					<span class="shop_addgoods_name">增加运费：<input name="fr_money" type="text" id="fr_money" value="{$shop_list.fr_money}" size="7" />元</span>
+				</div>
+				
+				<script>
+					$(document).ready(function(){
+						var val=$('input:radio[name="rd_freight"]:checked').val();
+						if(val==0)
+						{
+							$('.opshow').show();
+						}else{
+							$('.opshow').hide();
+						}
+						})
+					$('.rdchange').click(function(){
+						var val=$('input:radio[name="rd_freight"]:checked').val();
+						if(val==0)
+						{
+							$('.opshow').show();
+						}else{
+							$('.opshow').hide();
+						}
+					
+					})
+
+				</script>	
+				
+				<!-- 是否特价 -->
+				<div class="shop_addgoods_brand shop_addgoods_grounding">
+					<span class="shop_addgoods_name">是否上架：</span>
+					<label><input name="status" type="radio" value="1" <eq name="shop_list.status" value="1"> checked</eq>><span style="font-size:14px;color:#333333;">是</span></label>
+					<label><input name="status" type="radio" value="0" <eq name="shop_list.status" value="0"> checked</eq>><span style="font-size:14px;color:#333333;">否</span></label>
+				</div>
+				<span class="shop_addgoods_voice other_voice">(注：设置当前商品是否上架销售，默认为是，如果 否 该商品将不在前台显示)</span>
+		</div>
+		<div class="h10"></div>
+		<div class="h10"></div>
+		</div>
+		<!-- 商品基本信息结束 -->
+		
+		<!-- 设置 -->
+		<div class="shop_addgoods_main">
+			<div class="shop_addgoods_information">
+				<span id="shop_addgoods_title">设置</span>
+			</div>
+			<div class="shop_addgoods_install">
+				<!-- 商品状态 -->
+				<div class="shop_addgoods_status">
+					<p id="shop_status">商品状态</p>
+					<label><input name="is_new" type="checkbox" value="1" <eq name="shop_list.is_new" value="1"> checked</eq> ><span id="shop_addgoods_new">新品</span></label>
+					<label><input name="is_bargains" type="checkbox" value="1"  <eq name="shop_list.is_bargains" value="1"> checked</eq> ><span id="shop_addgoods_new">特价</span></label>
+					<label><input name="is_recommend" type="checkbox" value="1" <eq name="shop_list.is_recommend" value="1"> checked</eq> ><span id="shop_addgoods_new">推荐</span></label>
+				</div>
+				<!-- 支持购买 -->
+				<div class="shop_addgoods_supportpurchase">
+					<label><input name="purchase_status" type="checkbox" value="1" <eq name="shop_list.purchase_status" value="1"> checked</eq>><span id="shop_addgoods_new">支持购买</label>
+					<span class="shop_addgoods_voice">(如不勾选,商品仅是展示商品,将不支持下单)</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<!-- 商品标签 -->
+			<div class="shop_addgoods_tag">
+				<span id="shop_addgoods_hint">*</span><span id="shop_status">商品标签</span><br>
+				<label>{:form_checkbox(get_event_tag('','selected'),$shop_list[tag],'name="tag[]" id="tag"',0,'100')}</label>
+			</div>
+		</div>
+		<!-- 商品详情 -->
+		<div class="shop_addgoods_bottom">
+		
+			<div class="shop_addgoods_information">
+				<span id="shop_addgoods_hint">*</span><span id="shop_addgoods_title">商品详情</span>
+			</div>
+		
+		
+			<div class="shop_addgoods_text">
+				<div class="controls shop_addgoods_fontsize">
+					{:Hook('Ueditor',array('name'=>'goods_detail','value'=>$shop_list['goods_detail']))}</div>
+			</div>
+		</div>
+		<input class="shop_addgoods_submit" type="submit" href="{:U('Manage/Shop/shop_edit')}" value="发布商品">
+		<input onclick="javascript:history.back(-1);return false;" class="shop_addgoods_botton " type="button" value="返回">
+	</form>
+</div>
+
+<script>
+$(function(){
+		//是否禁用
+	  $('.shop_disable').click(function () {
+		if (confirm('确定要操作么？')) {
+			var  id= $(this).attr('data-ID');
+			var status=$(this).attr('data-Status');
+			$.post(U('Manage/Shop/shop_disable'), {id: id,status: status}, function (res) {
+				if (res.status) {
+					toast.success(res.info);
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				}
+				else {
+					toast.error(res.info);
+				}
+			}, 'json');
+		}
+	  });
+	var olds_num=0;
+	var shop_sku_detail={$shop_sku_detail};
+    $('#goodsBox').append(shop_sku_detail);
+    $('.types_first #goodsBox').children(':not(:first)').remove();
+    //-点击-属性-
+	$('.shop_cates_add').click(function(){
+		temBox=$('#goodsBox').clone(true)
+		$('.types_first').append(temBox);
+		$('#goodsBox .goods_detail_span').each(function(){
+			$(this).click(function(){
+				$(this).parents('#goodsBox').remove();
+			})
+		})
+
+    })
+
+	//是否删除-
+		$('.shop_sku_delete').each(function(){
+		
+		$(this).click(function () {
+				if (confirm('确定要操作么？')) {
+					var sku_id = $(this).attr('data-Sku');
+					 $(this).parents('.shop_sku_del').remove();
+					
+					
+					$.post(U('Manage/Shop/shop_sku_delete'), {sku_id: sku_id}, function (res) {
+						
+						if (res.status) {
+						   
+						if($('.shop_sku_delete').length==0){
+						   $('.shops_attr').hide();
+						
+						}
+						if($(".removeclass").hasClass("removeclass") || $(".shop_sku_delete").hasClass("shop_sku_delete")){
+						
+						$(".the_price").hide();
+						
+						$(".the_stock").hide();;
+						
+						}else{
+							
+							$(".the_price").show();
+							
+							$(".the_stock").show();;
+						}
+									//toast.success(res.info);
+							
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+		   });	
+	 });
+	  //--市场价格--
+	var tox_money_need=$("input[name='tox_money_need']");
+	var market_price=$("input[name='market_price']");
+    tox_money_need.blur(function(){
+	    if(tox_money_need.val()<=0){
+		   toast.error('请输入正确有市场参考价格哦!');
+		   return;
+		}
+		if(tox_money_need.val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+		   toast.error('市场参考价格最多两位小数点哦');
+		   return;
+		}
+	
+		
+	})	
+	//---促销价格---
+	
+	market_price.blur(function(){
+	    if(market_price.val()<=0){
+		   toast.error('请输入正确有销售价格!');
+		   return;
+		}
+		if(market_price.val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+		   toast.error('销售价格最多两位小数点');
+		   return;
+		}
+        if(tox_money_need.val()!=null){
+			if(parseFloat(market_price.val())>parseFloat(tox_money_need.val())){
+			    toast.error('销售价不应高于市场参考价格!');
+			    return;
+			}
+		}		
+	    
+	})
+	
+	$('.oldprice').blur(function (){
+		if($(this).val()<0){
+			toast.error('请输入正确有销售价格!');
+		   return;
+		}
+		if($(this).val()){
+			if($(this).val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+			   toast.error('请按正确的格式填写商品价格');
+			   return;
+			}
+
+			if(parseFloat($(this).val())>parseFloat(tox_money_need.val())){
+				toast.error('销售价不应高于市场参考价格!');
+			   return;
+			}
+		}
+				
+
+	})
+	$("body").on("blur",".newprice", function(e){ 
+		if($(this).val()<0){
+			toast.error('请输入正确有销售价格!');
+		   return;
+		}
+		if($(this).val()){
+			if($(this).val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+			   toast.error('请按正确的格式填写商品价格');
+			   return;
+			}
+
+			if(parseFloat($(this).val())>parseFloat(tox_money_need.val())){
+				toast.error('销售价不应高于市场参考价格!');
+			   return;
+			}
+		}
+	})
+	
+	//----验证库存---
+	$('.oldgoods_stock').blur(function(){
+		if($(this).val()){
+			if($(this).val().match(/^\+?[1-9][0-9]*$/)==null){
+				toast.error('请输入正确的整数库存数量!');
+				return;
+			}
+		}
+	})
+	$("body").on("blur",".new_price", function(e){ 
+		if($(this).val()){
+			if($(this).val().match(/^\+?[1-9][0-9]*$/)==null){
+				toast.error('请输入正确的整数库存数量!');
+				return;
+			}
+		}
+	})
+	 
+   
+})
+
+//弹出隐藏层
+function ShowDiv(show_div,bg_div){
+document.getElementById(show_div).style.display='block';
+document.getElementById(bg_div).style.display='block' ;
+var bgdiv = document.getElementById(bg_div);
+bgdiv.style.width = document.body.scrollWidth;
+// bgdiv.style.height = $(document).height();
+$("#"+bg_div).height($(document).height());
+};
+//关闭弹出层
+function CloseDiv(show_div,bg_div)
+{
+document.getElementById(show_div).style.display='none';
+document.getElementById(bg_div).style.display='none';
+};
+
+//批量修改信息
+
+		$('.all_change').click(function(){
+			goods_number_change 	= $('[name="goods_number_change"]').val();
+			shop_price_change 		= $('.shop_price_change').val();
+			var num_reg = /^[-\+]?\d*$/;
+			var price_reg = /^[-\+]?\d+(\.\d{2})?$/;
+			if(!(num_reg.test(goods_number_change)) || !(price_reg.test(shop_price_change))){
+				alert('请输入正确的数字!');
+				return false;
+			}
+			
+			//库存
+			$('.new_goods_stock').each(function(){
+				num = parseInt($(this).val()) + parseInt(goods_number_change);
+				num = num < 0 ? 0 : num;
+				$(this).val(num);
+			})
+			
+			//销售价
+			$('.new_goods_price').each(function(){
+				num = Number($(this).val()) + Number(shop_price_change);
+				num = num < 0 ? 0 : num;
+				$(this).val(num.toFixed(2));
+			})
+			CloseDiv('MyDiv2','fade')
+			$('.goods_number_change').val('+0');
+			$('.shop_price_change').val('+0.00');
+			
+			
+		})
+		//设置品牌
+		<?php if($shop_list['shop_brand']){ ?>
+		$('.select_brand').show();
+		$('.edit_brand').hide();
+		<?php }elseif(!$shop_list['shop_brand'] && $shop_list['custom_brand_name']){ ?>
+		$('.select_brand').hide();
+		$('.edit_brand').show();
+		<?php }elseif(!$shop_list['shop_brand'] && !$shop_list['custom_brand_name']){ ?>
+		$('.select_brand').hide();
+		$('.edit_brand').hide();
+		<?php } ?>
+		$(".sel").click(function(){
+				$('.select_brand').show();
+				$('.edit_brand').hide();
+			})
+		$(".edi").click(function(){
+				$('.select_brand').hide();
+				$('.edit_brand').show();
+			})
+		$(".no_use").click(function(){
+				$('.select_brand').hide();
+				$('.edit_brand').hide();
+			})
+			
+
+</script>
+</block>
+	
+			
+	

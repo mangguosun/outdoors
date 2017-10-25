@@ -1,0 +1,93 @@
+<extend name="Public/base" />
+<block name="body">
+    <div id="auth_groups">
+	    <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Manage/Websit/index')}" method="post">
+		 <div class="form-item">
+            <label for="webname"  class="item-label">网站名称<span>(必填)</span></label>
+             <div class="controls">
+              <input type="text" class="hdl-form-control input-large" id="webname" placeholder="请输入网站名称" name="webname" value="{$list.webname}">
+            </div>
+          </div>
+          <div class="form-item">
+            <label for="slogan" class="item-label">网站口号<span>(必填)</sapn></label>
+            <div class="controls">
+              <input type="text" class="hdl-form-control input-large" id="slogan" placeholder="请输入网站口号" name="slogan" value="{$list.slogan}">
+            </div>
+          </div>
+          <div class="form-item">
+            <label for="url" class="item-label">域名前缀<span>(必填,修改请发邮件到活动力客服：kefu@huodongli.cn)</sapn></label>
+            <div class="controls">
+            	<input type="text" class="hdl-form-control input-mid" id="url" placeholder="请输入正确的域名前缀" name="url"  value="{$list.url}" <notempty name="list.url">readonly</notempty> ><label>.huodongli.cn</label>
+            </div>
+          </div>
+		  <div class="form-item">
+			<label for="domain" class="item-label">独立域名<span>(必填,修改请发邮件到活动力客服：kefu@huodongli.cn)</sapn></label>
+			<div class="controls">
+			  <input type="text" class="hdl-form-control input-large" id="domain" placeholder="如：www.abc.com" name="domain" value="{$list.domain}" <notempty name="list.domain">readonly</notempty>> 
+			</div>
+		  </div>
+		  
+		<div class="form-item">
+			<label for="icp" class="item-label">ICP备案号<span>(必填,修改请发邮件到活动力客服：kefu@huodongli.cn)</sapn></label>
+			<div class="controls">
+			<input type="text" class="hdl-form-control input-4x" id="icp" placeholder="如：沪ICP备110xxxxxx号" name="icp"  value="{$list.icp}" <notempty name="list.icp">readonly</notempty>>
+				<p></p>
+			</div>
+		</div>
+        <div class="form-item">
+			<label for="cover_id" class="item-label">导航LOGO<span>(必填,上传png格式图片)</span></label>
+			<div class="controls">
+				{:hook('UploadImage', array('find_name'=>'cover_id','value'=>$list['cover_id'],'buttontext'=>'上传导航LOGO','buttonwidth'=>200,'multi'=>false,'ds'=>'180*65','width'=>'auto','height'=>65,'picture_type'=>'*.png'))}
+			</div>
+		</div>
+		    
+		<div class="form-item">
+			<label for="cover_id" class="item-label">网站ICON<span>(上传png格式图片)</span></label>
+			<div class="controls">
+				{:hook('UploadImage', array('find_name'=>'logo_icons','value'=>$list['logo_icons'],'buttontext'=>'上传网站ICON','buttonwidth'=>200,'multi'=>false,'ds'=>'72*72','width'=>72,'height'=>72,'picture_type'=>'*.png'))}
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="email" class="item-label">客服Email<span>(必填)</sapn></label>
+			<div class="controls">
+				<input type="email" class="hdl-form-control input-large" id="email" placeholder="请输入正确的email" name="email" value="{$list.email}">
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="telphone" class="item-label">客服电话<span>(必填)</sapn></label>
+			<div class="controls">
+				<input type="text" class="hdl-form-control input-large" id="telphone" placeholder="请输入正确的400电话" name="telphone" value="{$list.telphone}">
+			</div>
+		</div>
+        <div class="form-item">
+			<label for="micro" class="item-label">微信号二唯码<span>(选填，登录微信公众号获取)</sapn></label>
+            <div class="controls">
+				{:hook('UploadImage', array('find_name'=>'micro','value'=>$list['micro'],'buttontext'=>'上传二唯码','buttonwidth'=>200,'multi'=>false,'ds'=>'72*72','width'=>72,'height'=>72,'picture_type'=>'*.jpg;*.png'))}
+			</div>
+		</div>
+		
+		<div class="form-item">
+			<label for="qq" class="item-label">qq群<span>(选填)</sapn></label>
+			<div class="controls">
+				<input type="text" class="hdl-form-control input-large" id="qq" placeholder="请输入正确的QQ群" name="qq" value="{$list.qq}">
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="weibo" class="item-label">微博号<span>(选填)</sapn></label>
+			<div class="controls">
+				<input type="text" class="hdl-form-control input-large" id="weibo" placeholder="请输入正确的微博号码" name="weibo" value="{$list.weibo}">
+			</div>
+		</div>
+
+		<div class="form-item">
+			<label for="user_agreement" class="item-label">注册协议</label>
+			<div class="controls">
+				{:Hook('Ueditor',array('name'=>'user_agreement','value'=>$list['user_agreement']))}
+			</div>
+		</div><br><br>
+		<div class="form-item">
+		   <button type="submit" class="w_btn submit-btn" href="{:U('Manage/Websit/index')}">确定</button>
+		</div>
+	 </form>
+  </div>
+</block>

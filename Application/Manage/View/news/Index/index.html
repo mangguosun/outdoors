@@ -1,0 +1,168 @@
+﻿<extend name="Public/base1" />
+<block name="style">
+
+</block>
+<block name="body"><!--body-->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <a href="{:U('Manage/Event/add')}">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded">
+                    <div class="databox-left bg-themesecondary">
+                        <div class="databox-piechart">
+                            <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="47" data-trackcolor="rgba(255,255,255,0.1)"><span class="white font-90"></span></div>
+                             <div class="databox-stat  radius-bordered index-icon-middle">
+                                <i class="stat-icon icon-lg fa fa-tasks"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="databox-right">
+                        <span class="databox-number themesecondary index-box-middle">发布活动</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="{:U('Manage/Notices/noticesedit')}">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded">
+                    <div class="databox-left bg-themethirdcolor">
+                        <div class="databox-piechart">
+                            <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="15" data-animate="500" data-linewidth="3" data-size="47" data-trackcolor="rgba(255,255,255,0.2)"><span class="white font-90"></span></div>
+                            <div class="databox-stat  radius-bordered index-icon-middle">
+                                <i class="stat-icon  icon-lg fa fa-envelope-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="databox-right">
+                            <span class="databox-number themethirdcolor index-box-middle">发布公告</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="{:U('Manage/Shop/shop_add')}">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded">
+                    <div class="databox-left bg-themeprimary">
+                        <div class="databox-piechart">
+                            <div id="users-pie" data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="76" data-animate="500" data-linewidth="3" data-size="47" data-trackcolor="rgba(255,255,255,0.1)"><span class="white font-90"></span></div>
+                            <div class="databox-state bg-themeprimary index-icon-middle">
+                                <i class="stat-icon icon-xlg glyphicon glyphicon-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="databox-right">
+                        <span class="databox-number themeprimary index-box-middle" >发布商品</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="{:U('Manage/Pointcard/pointcard_add')}">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded">
+                   <div class="databox-left bg-themefourthcolor">
+                        <div class="databox-piechart">
+                            <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="47" data-trackcolor="rgba(255,255,255,0.1)"><span class="white font-90"></span></div>
+                            <div class="databox-stat index-icon-middle">
+                                <i class="stat-icon icon-xlg glyphicon glyphicon-tag"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="databox-right">
+                         <span class="databox-number themefourthcolor index-box-middle">发布卡券</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div class="widget" style="box-shadow:1px 0px 10px 1px rgba(0, 0, 0, 0.3);"><!--代办事项-->
+            <div class="widget-header bordered-bottom bordered-themefourthcolor">
+                <span class="widget-caption themefourthcolor">代办事项</span>
+            </div>
+            <div class="todo-list" style="background:#FFFFFF;box-shadow:0 0px 0 0 rgba(0, 0, 0, 0.3);">
+                  <li> 
+                    <div class="activity fl">
+                         活动订单：<a href="{:U('Manage/Order/index',array('status'=>1,'ord_status'=>'succ'))}">全额待处理&nbsp;<b>{$event_order_succ}</b></a>
+                    </div>
+                    <div class="activity-right" style="float:right">
+                        <a href="{:U('Manage/Order/index')}">订单总数：<b>{$event_order_total}</b></a>
+                    </div> 
+                  </li>
+                  <li>
+                    <div class="activity fl">活动订单：<a href="{:U('Manage/Order/index',array('status'=>1,'ord_status'=>'halfpay'))}">订金待处理&nbsp;<b>{$event_order_halfpay}</b></a></div><div class="activity-right" style="float:right"><a href="{:U('Manage/Order/index')}">订单总数：<b>{$event_order_total}</b></a></div>
+                  </li>
+                  <li>
+                    <div class="activity fl"> 商城订单：<a href="{:U('Manage/Order/shop',array('status'=>3,'order_status'=>21))}">待处理&nbsp;<b>{$shop_processed}</b></a></div><div class="activity-right" style="float:right"><a href="{:U('Manage/Order/shop')}">订单总数：<b>{$shop_order_all}</b></a></div> 
+                  </li>
+                  <li>
+                    <div class="activity fl"> 定制订单：<a href="{:U('Manage/Order/custom')}">待处理&nbsp;<b>{$event_tailor_order}</b></a></div><div class="activity-right" style="float:right"> <a href="{:U('Manage/Order/custom')}">订单总数：<b>{$event_tailor_order_all}</b></a></div>
+                  </li>
+                  <li>
+                    <div class="activity fl"> 收　　益：<a href="{:U('Manage/Revenue/cashout')}">可提现&nbsp;<b>{$cash_balance}</b></a></div><div class="activity-right" style="float:right"> <a href="{:U('Manage/Revenue/cashout')}">收益总数：<b>{$cash_total}</b></a></div>
+                  </li>
+                  <li>
+                     <div class="activity fl">最新评论：<a href="{:U('Manage/Comment/event')}">待回复&nbsp;<b>{$comment_news}</b></a></div><div class="activity-right" style="float:right"> <a href="#"> 评论总数：<b>{$comment_all}</b></a></div>
+                  </li>
+            </div><!-- todolist -->
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div class="widget" style="box-shadow:1px 0px 10px 1px rgba(0, 0, 0, 0.3);">
+            <div class="widget-header bordered-bottom bordered-themeprimary">
+                <span class="widget-caption themeprimary">汇总数据</span>
+            </div><!--Widget Header-->
+            <div class="widget-body"  style="background:#FFFFFF;box-shadow:0 0px 0 0 rgba(0, 0, 0, 0.3);">
+                <table  class="table table-striped table-bordered table-hover" id="simpledatatable">
+                    <tr class="data-box-tr" style="background-color:#FFFFFF;">
+                        <td class="data-box-td">7天新增活动单数<br />
+                          <span>{$event_yesterday_order_add}</span></td>
+                        <td class="data-box-td">活动交易额<br />
+                          <span>{$event_amount}</span></td>
+                        <td class="data-box-td">参与人次<br />
+                          <span>{$event_amount_people}</span></td>
+                        <td class="data-box-td"><a href="{:U('Manage/Event/index')}" target="_blank">活动总数<br />
+                          <span>{$event_nums}</span></a></td>
+                    </tr>
+                    <tr class="data-box-tr" style="background-color:#FFFFFF;">
+                        <td>7天新增商品单数<br/>
+                          <span>{$shop_yesterday_order_add}</span></td>
+                        <td>商品交易额<br />
+                          <span>{$shop_amount}</span></td>
+                        <td><a href="{:U('Manage/Order/shop')}">商品订单数<br />
+                          <span>{$shop_order_all}</span></a></td>
+                        <td><a href="{:U('Manage/Shop/index')}" target="_blank">商品总数<br />
+                          <span>{$shop_nums}</span></a></td>
+                    </tr>
+                    <tr class="data-box-tr" style="background-color:#FFFFFF;">
+                        <td><a href="{:U('Manage/User/index')}">7天新增会员数<br />
+                          <span>{$member_yesterday_add}</span></a></td>
+                        <td><a href="{:U('Manage/User/index')}">会员总数<br />
+                          <span>{$member_all}</span></a></td>
+                        <td><a href="{:U('Manage/User/team_member')}">{$m_level_name.2}数量<br />
+                          <span>{$member_team}</span></a></td>
+                        <td><a href="{:U('Manage/User/master')}">{$m_level_name.4}数量<br />
+                          <span>{$member_master}</span></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="databox databox-lg databox-inverted databox-shadowed databox-graded databox-vertical index-blog" style="height:263px;background:#FFFFFF;box-shadow:1px 0px 10px 1px rgba(0, 0, 0, 0.3);">
+                <div class="widget-header bordered-bottom bordered-themesecondary">
+                    <span class="widget-caption themesecondary">公告</span>
+                </div><!--Widget Header-->
+                <div class="todo-list" style="background:#FFFFFF;box-shadow:0 0px 0 0 rgba(0, 0, 0, 0.3);">
+                	<volist name="notice_datainfo" id="vo">
+                  <li style="font-size:12px"><a href="{:U('Official/index/detail@www.huodongli.cn',array('id'=>$vo['id']))}" target="_blank">{$vo.title|op_t|getShortSp=30}</a> <span class="pull-right" style="color:#CCC">&nbsp;{$vo.create_time|date="Y-m-d",###}</span></li>
+                 	</volist>
+            </div>
+               
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+</block>

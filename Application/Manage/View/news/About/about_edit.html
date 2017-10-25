@@ -1,0 +1,85 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.page_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('About/about_edit')}" class="form-horizontal form-bordered" method="post" >
+                    	<input type="hidden" name="id" value="{$datainfo.id}" />
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">类别名称</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	<input type="text" class="form-control" placeholder="类别名称" name="title" value="{$datainfo.title}"  />
+    								<span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="类别名称不能为空"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">关于我们详情</label>
+                            <div class="col-lg-10">
+    
+                              <!--  这里写编辑器-->
+                                {:Hook('Ueditor',array('name'=>'content','value'=>$datainfo['content']))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input class="btn btn-default" type="submit" onclick="javascript:history.back(-1);return false;" value="返 回" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+
+
+<script type="text/javascript">
+
+
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '类别名称是必需的，不能是空的'
+                    }
+                }
+            },
+  
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

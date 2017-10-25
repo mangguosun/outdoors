@@ -1,0 +1,233 @@
+<extend name="Public/common_user"/>
+<block name="body">
+    <div class="index-setup">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/set')}" class=""><i class="am-icon-chevron-left"></i></a>基本设置</div>
+  <!--div class="am-header-right am-header-nav"><a href="###" class="am-btn update-pass" id=""><span class="update-pass">修改密码</span></a></div-->
+</header>
+
+<div class="index-contentbox">
+<div class="setup-top">
+  <div class="setup-img-box"> <img src="{$user.avatar128}"  class="setup-userimg"/> <a href="javascript:" class="setup-icon am-badge am-round"><i  class="am-icon-camera"></i>
+      <input type="file" class="camera_file"></a> </div>
+</div>
+<form class="am-form" id="edit-config-form"  method="post">
+  <div class="setup-list-box">
+    <div class="setup-line">
+      <div class="setup-list-title">账号昵称</div>
+      <div class="setup-list-text">
+        <input id="nickname" name="nickname"  type="text"  value="{$user.nickname|op_t}" placeholder="昵称"/>
+      </div>
+    </div>
+    <div class="setup-line">
+      <div class="setup-list-title">手机号码</div>
+      <if condition="$user['mobile'] neq ''">
+      <!--div class="setup-list-last"><a href="javascript:" > 更改号码</a></div-->
+      </if>
+      <div class="setup-list-text-center">
+        <if condition="$user['mobile'] eq ''">
+          <input id="mobile" name="mobile"  type="text"  value="{$user['mobile']|htmlspecialchars}" placeholder="手机账号"/>
+          <else/>
+          <div class="am-form-field ">{$user['mobile']|htmlspecialchars}</div>
+        </if>
+      </div>
+    </div>
+    <div class=" setup-line">
+      <div class="setup-list-title">登录邮箱</div>
+      <if condition="$user['email'] neq ''">
+        <!--div class="setup-list-last"><a href="javascript:" > 更改邮箱</a></div-->
+      </if>
+      <div class="setup-list-text-center">
+        <if condition="$user['email'] eq ''">
+          <input id="email" name="email"   type="text"  value="{$user['email']|op_t}" placeholder="邮箱"/>
+          <else/>
+          <div class="am-form-field ">{$user['email']|op_t}</div></if>
+      </div>
+    </div>
+       <input id="sex" name="sex" type="hidden"  value="{$user['sex']}"/>
+    <div class="setup-line-sex">
+      <div class="setup-list-title-sex">性　　别</div>
+      <div class="setup-list-sex">
+        <span data-sex-id="1" class="sex sex-man <if condition="$user['sex'] eq '1'"> chosen </if>"><i class="am-icon-mars"></i></span>
+        <span data-sex-id="2" class="sex sex-women <if condition="$user['sex'] eq '2'"> chosen </if>"><i class="am-icon-venus"></i></span>
+      </div>
+    </div>
+    
+    
+     <div class="setup-line">
+         <div class="setup-list-title">星　　座</div>
+         <div class="setup-list-text bloodtype-select-box"> 
+            <select  name="constellation" id="constellation" class="constellation-select" data-placeholder="星座" >
+            <volist name=":get_constellation()" id="constellation" key="k">
+              <php>
+              $id = $user['constellation'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_constellation = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+            <option value="{$key}"  {$selected_constellation}>{$constellation}</option>
+            </volist>
+            </select>
+            </div>
+       </div>
+
+    <div class="setup-line">
+      <div class="setup-list-title">所在地区</div>
+      <div class="setup-list-text select-area-box">
+        {:hook('M_China_City', array('find'=>'address','level'=>3,'province'=>$content_address['province'],'city'=>$content_address['city'],'district'=>$content_address['district']))}
+      </div>
+    </div>
+    
+    
+    <div class="setup-line">
+      <div class="setup-list-title">ＱＱ号码</div>
+      <div class="setup-list-text">
+        <input id="qq" name="qq"  type="text" value="{$user.qq}" placeholder="请填写QQ"/>
+      </div>
+    </div>
+    <div class=" setup-line">
+      <div class="setup-list-title">真实姓名</div>
+      <div class="setup-list-text">
+        <input id="real_name" name="real_name" type="text"  value="{$user.real_name|htmlspecialchars}" placeholder="姓名"/>
+      </div>
+    </div>
+    <div class="setup-line ">
+      <div class="setup-list-title">个人签名</div>
+      <div class="setup-list-text">
+        <input id="signature" name="signature"   type="text"  value="{$user.signature|htmlspecialchars}" placeholder="个人签名"/>
+      </div>
+    </div>
+    <div class="setup-line">
+      <div class="setup-list-title">个人简介</div>
+      <div class="setup-list-text">
+        <input id="self_introduction" name="self_introduction" type="text" value="{$user.self_introduction|htmlspecialchars}"  placeholder="自我介绍"/>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="edit-config-btn" class="am-btn am-btn-block am-btn-yellow">保存</button>
+
+</form>
+    </div>
+</div>
+    <div class="camera-edit">
+        <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+            <div class="am-header-left am-header-nav"><a href="javascript:" class="back_setup"><i class="am-icon-chevron-left"></i></a></div>
+            <div class="am-header-right am-header-nav"><a href="javascript:" class="am-btn am-btn-default js-crop">使用</a></div>
+        </header>
+
+        <div class="index-camerabox">
+
+            <div class="component">
+
+                <div class="overlay">
+                    <div class="overlay-inner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+
+$(function () {
+	$('.constellation-select').chosen({width:"100%",disable_search: true});
+	$('.setup-list-sex .sex').on('click', function() {
+		var sexval =  $(this).attr('data-sex-id');							   
+		$('#sex').val(sexval);
+		if(sexval ==1){
+			$('.sex-man').addClass('chosen');
+			$('.sex-women').removeClass('chosen');
+		}else{
+			$('.sex-man').removeClass('chosen');
+			$('.sex-women').addClass('chosen');
+		}
+	});
+	
+	$('#edit-config-btn').on('click', function() {
+		var self = $('#edit-config-form');      
+                    setSpinner.open('处理中');
+		$.post("{:U('Mobile/Config/dosetup')}", self.serialize(), function (data) {
+                        setSpinner.close();
+			if (data['status'] == 1) {
+				toasts.success(data.info,"{:U('Mobile/Config/set')}");
+			} else {
+				toasts.info(data.info)
+			}
+		}, 'json');
+	});
+	
+	$(".camera_file").on('change', function() {
+	
+		// 也可以传入图片路径：lrz('../demo.jpg', ... 
+		filereaders(this.files[0],{
+			before: function() {
+				setSpinner.open("图片正在努力处理");
+			},
+			fail: function(err) {
+				toasts.error(err);
+			},
+			always: function() {
+			   
+			},
+			done: function (results) {
+				 //你需要的数据都在这里，可以以字符串的形式传送base64给服务端转存为图片。
+				//console.log(results);
+				setSpinner.close();
+				setSpinner.open("图片正在上传");
+				$.ajax({ 
+					url:"{:U('Mobile/Public/upload_avatar')}", 
+					data:{img:results.base64}, 
+					type:'post', 
+					dataType:'json',
+					success:function(data){
+						if(data.status == 1){
+								$('.index-setup').hide();
+								$('.camera-edit').show();
+								var $camera = $('<img  src="'+data.data.url+'">');
+								$camera.attr('class', 'resize-image');
+								$camera.appendTo($('.component'));
+								$('.resize-image').load(function () {
+									setSpinner.close();
+									var widthImg = $('.resize-image').width();
+									var heightImg = $('.resize-image').height();
+									$('.cssanimations').css({'background-color':'#000'});
+									resizeablePicture($('.resize-image'),"{:U('Mobile/Config/doUpload')}","{:U('Mobile/Config/setup')}",widthImg,heightImg,data.data.url);
+								})
+						}else{
+							toasts.error(data.info);
+							 setSpinner.close();
+						}
+						
+					   }
+				});
+			}
+		});	
+	});
+	/*$('input:file').localResizeIMG({
+		success: function (result) {
+			var img_data=result.clearBase64;
+			$.post("{:U('Mobile/Public/upload_avatar')}", {img: img_data}, function (a) {
+				img_data = null;
+				$('.index-setup').hide();
+				$('.camera-edit').show();
+				var $camera = $('<img  src="/'+a+'">');
+				$camera.attr('class', 'resize-image');
+				$camera.appendTo($('.component'));
+				$('.resize-image').load(function () {
+					setSpinner.close();
+					var widthImg = $('.resize-image').width();
+					var heightImg = $('.resize-image').height();
+					$('.cssanimations').css({'background-color':'#000'});
+					resizeablePicture($('.resize-image'),"{:U('Mobile/Config/doUpload')}","{:U('Mobile/Config/setup')}",widthImg,heightImg,a);
+				})
+			},'json');
+		}
+	});*/
+	$('.back_setup').on('click',function(){
+		$('.resize-container').remove();
+		$('.camera-edit').hide();
+		$('.index-setup').show();
+		$('input:file').val('');
+	});
+});
+</script>
+</block>

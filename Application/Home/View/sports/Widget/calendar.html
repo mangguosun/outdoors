@@ -1,0 +1,285 @@
+<if condition="$lists neq false">
+  <div class="index_calendar">
+        <div class="s_title">
+            赛事日历<span class="more"><!-- <a href=" ">更多&nbsp;></a> --></span>
+        </div>
+        <div class="h10"></div>
+        <div class="indexbox_content">
+             <ul>
+                <li>
+                    <volist name="calendarEvent" id="vol" offset="0" length='1'>
+                    <span class="calendar_block" data-toggle="modal" data-target=".bs-example-modal-lg"  id="Button1" onClick="ShowDiv('MyDiv','fade')">
+                        <div class="event_calendar_month">{$newtime.newtime_d}</div><div class="event_calendar_day">{$newtime.newtime_ym}</div>
+                    </span>
+                    
+                    <span class="event_calendar_title"><a href="{$vol.url}">{$vol.title}</a></span>
+                    </volist>
+                </li>
+             </ul>               
+        </div>
+    </div>
+    <div class="h15"></div>  
+ 
+<!--弹出层时背景层DIV-->
+<div id="fade" class="black_background"></div>
+
+    <div id="MyDiv" class="white_content">
+        <div class="close_btn">
+            <span style="font-size: 16px;" onClick="CloseDiv('MyDiv','fade')"><i class="glyphicon glyphicon-remove"></i></span>
+        </div>
+		<!--弹出层内容-->
+	    <div class="w_calendar_box">
+            <div class="left_calendar">
+                <div id="main" >
+                	<div id='calendar'></div>
+                
+                	<div  class="tag_box"><b class="sai_tag"></b> <span>赛事</span> <b class="huo_tag"></b> <span>活动</span></div>
+                </div>
+  
+            </div>
+            <div class="right_event">
+            	<div class="top_title">
+                	<a href="javascript:" class="active" id="sai">赛事（{$calendarMatchnum}）</a>
+                    <a href="javascript:" id="guan">官方活动（{$calendarEventnum}）</a>
+                   <!--  <a href="javascript:" id="yue">约跑活动（10）</a> -->
+                </div>
+                
+                
+                <div id="saidiv">
+                    <volist name="calendarMatch" id="vo" offset="0" length='4'>
+                    <div class="w_calendar_event">
+                        <div class=" right_event_img">
+                             <img src="{$vo.cover_id}"  width="120" height="90"/> 
+                        </div> 	
+                        <div class="right_event_con">
+                            <a href="{$vo.url}"><h4>{$vo.title}</h4></a>
+                            <p>{$vo.vice_title}</p>
+                            <p>{$vo.uid} | {$vo.time}</p>
+                        </div>
+                        <div class="h10"></div> 
+                    </div>
+                    </volist>
+                </div> 
+
+                <div id="guandiv">
+                   <volist name="calendarEvent" id="v" offset="0" length='4'>
+                    <div class="w_calendar_event">
+                        <div class=" right_event_img">
+                             <img src="{$v.cover_id}"  width="120" height="90"/> 
+                        </div>  
+                        <div class="right_event_con">
+                            <a href="{$v.url}"><h4>{$v.title}</h4></a>
+                            <p>{$v.vice_title}</p>
+                            <p>{$v.uid} | {$v.time}</p>
+                        </div>
+                        <div class="h10"></div> 
+                    </div>
+                    </volist>
+                </div>  
+
+                <!-- <div id="yuediv">
+                    <div class="w_calendar_event">
+                        <div class=" right_event_img"> 	
+                            <img class="" src="" width="120" height="90"/>
+                        </div>
+                        <div class="right_event_con">
+                            <a href=""><h4>第三届友友领队挑战赛yue</h4></a>
+                            <p>“鸟巢超越”UCS超级马拉松限时系列赛（已延期）</p>
+                            <p>名字名字 | 2015-06-08</p>
+                        </div>
+                        <div class="h10"></div>
+                    </div>
+                </div>   -->           
+            </div>
+       </div>
+	</div>
+
+
+ <!----------------日历-------------------------------------------------------------------------->
+
+<script> 
+	$(document).ready(function() {
+		$("#guandiv").css("display","none");
+		$("#yuediv").css("display","none");	
+
+    	$("#sai").click(function(){
+            $(this).addClass('active');
+            $("#guan").removeClass("active");
+            $("#yue").removeClass("active");
+    		$("#saidiv").show();
+    		$("#guandiv").css("display","none");	
+    		$("#yuediv").css("display","none");
+    	});	
+
+    	$("#guan").click(function(){
+            $(this).addClass('active');
+            $("#sai").removeClass("active");
+            $("#yue").removeClass("active");
+    		$("#guandiv").show();
+    		$("#saidiv").css("display","none");
+    		$("#yuediv").css("display","none");
+     	});
+
+    	// $("#yue").click(function(){
+     //        $(this).addClass('active');
+     //        $("#guan").removeClass("active");
+     //        $("#sai").removeClass("active");
+    	// 	$("#yuediv").show();
+    	// 	$("#saidiv").css("display","none");
+    	// 	$("#guandiv").css("display","none");
+     // 	});	
+	});	
+</script>
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/bootstrap3.2/css/fullcalendar.css">
+<script src="__STATIC__/bootstrap3.2/js/fullcalendar/fullcalendar.js?v={:C('WEB_VERSION')}"></script>
+<script src='__STATIC__/bootstrap3.2/js/fullcalendar/jquery-ui-1.10.2.custom.min.js'></script>
+<script type="text/javascript">
+
+$(function() {
+        //var dd = [{title:"1",colorclass:"match",start:'2015-07-13'},{title:'5',colorclass:"event",start:'2015-07-13'},{title:'7',colorclass:"partner",start:'2015-07-13'}]
+        var calendarList = {$calendarList};
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		$('#calendar').fullCalendar({
+			header: {
+				//left: 'prev,next today',
+				left: 'prev',
+				center: 'title',
+				right: 'next'
+				 //right: 'month,agendaWeek,agendaDay'
+			},
+			isRTL:false,//从右向左显示
+			firstDay:0,//设置一周中显示的第一天是哪天，周日是0，周一是1，类推。
+			weekends:true,//是否显示周末，设为false则不显示周六和周日。
+			editable: true,
+			aspectRatio:1.35,//设置日历单元格宽度与高度的比例。
+			//hiddenDays:[2,5],//隐藏一周中的某一天或某几天，
+			handleWindowResize:false,//是否随浏览器窗口大小变化而自动变化
+			timeFormat: 'H:mm',
+			axisFormat: 'H:mm',
+			events: calendarList,
+			//dayClick: function(date, allDay, jsEvent, view) { 
+				//var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期 
+				
+				//alert(selDate);
+
+			//},
+			eventClick: function(calEvent, jsEvent, view) {
+                var type = calEvent.colorclass;
+                var time = calEvent.id;
+                $.post(U('Home/Index/fullCalendar'),{type:type,time:time},function(json){ 
+
+                    if(json.match_list != undefined ){ 
+                        $("#saidiv").html('');
+                        $("#sai").html('赛事（'+json.match_listnum+'）');
+                        $.each(json.match_list,function(index,array){ 
+                            var match_list = $("#saidiv");
+                            var match_list_tpl = '<div class="w_calendar_event"> <div class = "right_event_img"><img src = "'+array['cover_id']+'"  width = "120" height = "90"　/> </div><div class="right_event_con"><a href = "'+array['url']+'"><h4>'+array['title']+'</h4></a><p>'+array['vice_title']+'</p><p>'+array['uid']+'|'+array['time']+'</p></div><div class="h10"></div></div>';
+
+                        $(match_list).append(match_list_tpl);
+                           
+                        });
+
+                    }
+
+                    if(json.event_list != undefined ){ 
+                        $("#guandiv").html('');
+                        $("#guan").html('官方活动（'+json.event_listnum+'）');
+                        $.each(json.event_list,function(index,array){ 
+                            var event_list = $("#guandiv");
+                            var event_list_tpl = '<div class="w_calendar_event"> <div class = "right_event_img"><img src = "'+array['cover_id']+'"  width = "120" height = "90"　/> </div><div class="right_event_con"><a href = "'+array['url']+'"><h4>'+array['title']+'</h4></a><p>'+array['vice_title']+'</p><p>'+array['uid']+'|'+array['time']+'</p></div><div class="h10"></div></div>';
+
+                            $(event_list).append(event_list_tpl);
+        
+                     });
+
+                    }
+
+                },'json');
+
+
+			}
+		});
+
+		
+	});
+</script>
+ <!-----------------日历--end-------------------------------------------------------------------------->
+
+  <!-------------弹出------------------------------------------------------------------------------>
+<style>
+    .w_calendar_box{ clear:both; overflow:hidden;}
+    .left_calendar{ float:left; width:50%;}
+    .right_event{ float:right;width:50%;overflow:hidden; }
+    .right_event .top_title{ height:35px; line-height:35px; border-bottom:2px solid #009DFE; margin-bottom:10px;}
+    .right_event .top_title a{ padding:8px 20px;}
+    .right_event .top_title a:hover{background:#009DFE; color:#FFF;}
+    .right_event .top_title .active{ background:#009DFE; color:#FFF;}
+    .w_calendar_event{ clear:both; overflow:hidden;}
+    .right_event_img{ float:left; margin-right:10px;}
+    .right_event_con{ float:left; width: 350px;}
+    .right_event_con p{font-size:12px; color:#999;}
+    .close_btn{ height:40px; line-height:40px; padding-right:20px;text-align: right; cursor: default;} 
+    .tag_box{ height:30px; line-height:30px;}
+    .tag_box b{display:inline-block;width:15px; height:15px; margin-top:3px;}
+    .sai_tag{  background:#FF9108; }
+    .huo_tag{  background:#FF5452; }
+
+
+    .black_background{
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.5;
+    opacity:.50;
+    filter: alpha(opacity=50);
+    }
+
+    .white_content {
+    display: none;
+    position: absolute;
+    top:470px;
+    left: 10%;
+    width: 80%;
+    height:auto;
+    border: 1px solid #fff;
+    background-color: white;
+    z-index:1002;
+    overflow: hidden /*auto*/;
+    }
+     
+</style>
+<script type="text/javascript">
+    //弹出隐藏层
+    function ShowDiv(show_div,bg_div){
+    document.getElementById(show_div).style.display='block';
+    document.getElementById(bg_div).style.display='block' ;
+    var bgdiv = document.getElementById(bg_div);
+    bgdiv.style.width = document.body.scrollWidth;
+    // bgdiv.style.height = $(document).height();
+    $("#"+bg_div).height($(document).height());
+    $('.fc-button-prev').click();
+    $('.fc-button-next').click();
+
+    };
+    //关闭弹出层
+    function CloseDiv(show_div,bg_div)
+    {
+    document.getElementById(show_div).style.display='none';
+    document.getElementById(bg_div).style.display='none';
+    };
+</script>
+ <!-------------弹出end------------------------------------------------------------------------------>
+ 
+</if>
+
+ 
+  

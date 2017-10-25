@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="runners/head"/>
+<link href="__CSS__/default_center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<include file="common/header"/>
+<block name="body">
+  <div class="container" >
+
+      <div class="detail_box">
+        <if condition="$factory_info['pay_id'] eq 1">
+        <div class="usercenter-do-pay">
+        <img src="__PUBLIC__/Core/images/loading.gif" align="正在跳转中，请稍等....." /><br />
+		<span class="common-color-red">页面正在跳转中，请稍等...</span>
+        <br />
+        {$code}
+         </div>
+        <else/>
+        <div class="usercenter-do-pay-accout">
+        <h4>支付信息</h4>
+		<div class="col-md-12">
+          <if condition="$factory_info['pay_id'] eq 2">
+            <notempty name="financial_bank">
+              <div class="row data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>收款人</th>
+                      <th>开户行</th>
+                      <th>卡号</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <volist name="financial_bank" id="vo">
+                      <tr>
+                        <td>{$vo.payee}</td>
+                        <td>{$vo.open_bank}</td>
+                        <td>{$vo.card}</td>
+                      </tr>
+                    </volist>
+                  </tbody>
+                </table>
+              </div>
+              <else/>
+              aOh! 暂无银行汇款信息，请选择其它支付方式或联系领队、管理员! </notempty>
+          </if>
+        </div>
+         </div>
+        </if>
+      </div>
+
+  </div>
+<if condition="$factory_info['pay_id'] eq 1">
+<script>
+/*$(function(){
+	setTimeout(function(){
+		$("form").submit();
+	},2000) 
+});*/
+</script>
+</if>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

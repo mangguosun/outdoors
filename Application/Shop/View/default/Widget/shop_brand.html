@@ -1,0 +1,57 @@
+<if condition="$brand_info neq false">
+<div class="runners-index-smallkv">
+  <div class="index-smallkv-scroll"> <span class="prev"><i class="fa fa-angle-left"></i></span> <span class="next"><i class="fa fa-angle-right"></i></span>
+    <div class="index-smallkv-list">
+      <ul>
+        <volist name="brand_info" id="v">
+          <li>
+             <if condition="$v['address']">
+            <a href="{$v.address}">
+              <img style="width:200px;height:100px;" src="{$v.brand_logo|getThumbImageById=600,600}"> 
+            </a>
+            <else />
+            <a href="{:U('Shop/Index/goods',array('shop_brand'=>$v['brand_id']))}">
+              <img style="width:200px;height:100px;" src="{$v.brand_logo|getThumbImageById=600,600}"> 
+            </a>
+            </if>
+          </li>
+        </volist>
+      </ul>
+    </div>
+    <script type="text/javascript"> 
+ function DY_scroll(wraper,prev,next,img,speed,or) 
+ { 
+  var wraper = $(wraper); 
+  var prev = $(prev); 
+  var next = $(next); 
+  var img = $(img).find('ul');
+  var w = img.find('li').outerWidth(true); 
+  var s = speed; 
+  next.click(function() 
+	   {
+		img.animate({'margin-left':-w},function() 
+				  { 
+				   img.find('li').eq(0).appendTo(img); 
+				   img.css({'margin-left':0}); 
+				   }); 
+		});
+ 
+  prev.click(function() 
+	   { 
+		img.find('li:last').prependTo(img); 
+		img.css({'margin-left':-w});
+		img.animate({'margin-left':0}); 
+		}); 
+  if (or == true)
+  {
+   ad = setInterval(function() { next.click();},s*1000);
+   wraper.hover(function(){clearInterval(ad);},function(){ad = setInterval(function() { next.click();},s*1000);});
+  } 
+ } 
+ DY_scroll('.img-scroll','.prev','.next','.index-smallkv-list',3,false);
+ //true为自动播放，不加此参数或false就默认不自动
+</script>
+  </div>
+</div>
+<div class="h10"></div>
+</if>

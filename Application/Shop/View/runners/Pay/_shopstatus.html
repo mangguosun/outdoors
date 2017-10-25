@@ -1,0 +1,244 @@
+<php>
+$paytype = $sign['paytype'];
+$status  = $sign['status'];
+$pay_status  = $sign['pay_status'];
+</php>
+<div class="row usercenter-event-order">
+  <h4 class="col-md-12 event_detail_title">订单详情：{:op_t(get_shop_order_status($status))}</h4>
+	 <div class="form-inline pull-right config-form-status">
+	 <if condition="ACTION_NAME eq 'myevent_detail'">
+	    {:get_event_detail_btn($event_attend)}
+	 <else />
+		<?php if(checked_admin(is_login())): ?>
+			{:admin_get_event_detail_btn($event_attend,1)}
+		<?php else:?>
+			{:admin_get_event_detail_btn($event_attend)}
+		<?php endif;?>
+	 </if>
+	 </div>
+</div>    
+
+<if condition="$status eq 1">
+	<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+           <li>
+              <div class="step-name">下单</div>
+              <div class="step-no">2</div>
+            </li>
+            <li>
+              <div class="step-name">订单支付</div>
+              <div class="step-no">3</div>
+            </li>
+            <li>
+              <div class="step-name">商家发货</div>
+              <div class="step-no">4</div>
+            </li>
+			<li class="step-last">
+              <div class="step-name">确认收货</div>
+              <div class="step-no">5</div>
+            </li>
+            <!--<li>
+              <div class="step-name">确认出行</div>
+              <div class="step-no">6</div>
+            </li>
+            <li>
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li>-->
+          </ol>
+        </div>
+</if>
+<if condition="$status eq 20">
+	<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">下单</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-name">订单支付</div>
+              <div class="step-no">3</div>
+            </li>
+            <li>
+              <div class="step-name">商家发货</div>
+              <div class="step-no">4</div>
+            </li>
+			<li class="step-last">
+              <div class="step-name">确认收货</div>
+              <div class="step-no">5</div>
+            </li>
+           <!-- <li>
+              <div class="step-name">出行签到</div>
+              <div class="step-no">6</div>
+            </li>
+            <li>
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li>-->
+           
+          </ol>
+        </div>
+</if>
+<if condition="$status eq 21">
+	<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">下单</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">订单支付</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-name">商家发货</div>
+              <div class="step-no">4</div>
+            </li>
+			<li class="step-last">
+              <div class="step-name">确认收货</div>
+              <div class="step-no">5</div>
+            </li>
+           <!-- <li>
+              <div class="step-name">出行签到</div>
+              <div class="step-no">6</div>
+            </li>
+            <li>
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li>-->
+           
+          </ol>
+        </div>
+</if>
+<if condition="$status eq 22">
+	<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">下单</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+            <div class="step-done">
+              <div class="step-name">订单支付</div>
+              <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+            <div class="step-done">
+              <div class="step-name">商家发货</div>
+              <div class="step-no"></div>
+              </div>
+            </li>
+			<li class="step-last">
+              <div class="step-name">确认收货</div>
+              <div class="step-no">5</div>
+            </li>
+           <!-- <li>
+              <div class="step-name">出行签到</div>
+              <div class="step-no">6</div>
+            </li>
+            <li>
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li>-->
+           
+          </ol>
+        </div>
+</if>
+<if condition="$status eq 33">
+	<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">下单</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+            <div class="step-done">
+              <div class="step-name">订单支付</div>
+              <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+            <div class="step-done">
+              <div class="step-name">商家发货</div>
+              <div class="step-no"></div>
+              </div>
+            </li>
+            <li class="step-last">
+            <div class="step-done">
+              <div class="step-name">确认收货</div>
+              <div class="step-no"></div>
+              </div>
+            </li>
+            <!--<li>
+            <div class="step-done">
+              <div class="step-name">出行签到</div>
+              <div class="step-no"></div>
+             </div>
+            </li>
+            <li>
+            <div class="step-done">
+              <div class="step-name">点评</div>
+              <div class="step-no"></div>
+              </div>
+            </li>-->
+         
+          </ol>
+	</div>
+</if>
+  
+<div class="event-sign-status">
+  <div class="event_detail">
+    <div class="col-md-4">
+      <div class="form-inline">订单号：{$sign.order_sn}</div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-inline">状态：{:op_t(get_shop_order_status($sign['status']))}</div>
+    </div>
+    <div class="col-md-4">
+
+
+    </div>
+
+  </div>
+    </div>

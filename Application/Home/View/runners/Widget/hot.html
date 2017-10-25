@@ -1,0 +1,12 @@
+ <div class="runners_index_right">
+    <div class="runners_index_title">
+    	<span class="pull-right"><a href="{:U('Blog/Index/index')}"><i class="glyphicon glyphicon-plus"></i></a></span> 最新公告
+    </div>          
+    <ul class="list_block_ul">
+        <if condition="$lists neq false">
+            <volist name="lists" id="data">
+            <li><a style="margin-left:20px;" title="{$data.title|op_t}" href="{:U('Blog/Article/detail?id='.$data['id'])}" title="{$data.title}">{$data.title|op_t|getShortSp=18}</a> </li>
+            </volist>
+        </if>
+    </ul>
+ </div>

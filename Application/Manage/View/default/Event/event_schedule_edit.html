@@ -1,0 +1,201 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>编辑排期</h2>
+</div>
+<div class="common-margin-bten"></div>
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Event/event_schedule_edit')}" method="post">
+        <input type="hidden" name="id" id="id" value="{$content.id}"/>
+        <input type="hidden" name="eventid" id="eventid" value="{$event_content.id}"/>
+		<input type="hidden" name="event_url" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+		<div class="leftside">
+            <div class="form-item clearfix">
+              <label for="team_name" class="item-label">队名<span>&nbsp;(限三个字)</span></label>
+              <div class="controls">
+                <input id="team_name" name="team_name" class="text input-large" check-type="Num"  value="{$content.team_name}" placeholder="队名" >
+              </div>
+            </div>
+          
+            <div class="form-item clearfix">
+              <label for="starttime" class="item-label">出发时间&nbsp;<span>*</span></label>
+              <div class="controls">
+                <input id="starttime" name="starttime" class="text input-large time" check-type="Text" value="{$content.starttime}" placeholder="" required />
+              </div>
+            </div> 
+            <div class="form-item clearfix">
+              <label for="days" class="item-label ">活动天数&nbsp;<span>*</span></label>
+              <div class="controls">
+                <input id="days" name="days" class="text input-large judgeNan" check-type="Num"  value="{$content.days}" placeholder="活动天数" required />
+              </div>
+            </div>     
+            <div class="form-item clearfix">
+              <label for="minpeople" class="item-label ">最低人数</label>
+              <div class="controls">
+                <input id="minpeople" name="minpeople" class="text input-large judgeNan" check-type="Num"  value="{$content.minpeople}" placeholder="最低人数" required />
+              </div>
+            </div>       
+             <div class="form-item clearfix">
+              <label for="paytype" class="item-label">支付方式&nbsp;<span>*</span></label>
+              <div class="controls">
+              {:form_select(get_event_pay_type(),$content['paytype'],'class="select input-large select_deposit" check-type="Text" name="paytype" id="paytype"','请选择')}
+              </div>
+            </div>       
+            <div class="form-item clearfix">
+              <label for="price" class="item-label">活动价格&nbsp;<span>*</span></label>
+              <div class="controls">
+                <input id="price" name="price" class="text input-large" check-type="Text" value="{$content.price}" placeholder="" required />
+              </div>
+            </div>
+            <div class="form-item deposit_show clearfix" <?php if($content['paytype'] != 1){ echo "style='display:none' "; }  ?> >
+              <label for="deposit" class="item-label">定金价格</label>
+              <div class="controls">
+                <input id="deposit" name="deposit" class="text input-large" check-type="Text" value="{$content.deposit}" placeholder="" required />
+              </div>
+            </div>
+            <div class="form-item clearfix">
+                <label for="card_use" class="item-label">能否使用优惠</label>
+                <div class="controls">
+                    <input type='radio' name='card_use' <if condition="$content['card_use'] eq 1">checked</if> value='1'>&nbsp;&nbsp;能&nbsp;&nbsp;<input type='radio' <if condition="$content['card_use'] eq 0">checked</if> name='card_use' value='0'>&nbsp;&nbsp;不能
+                </div>
+            </div>
+            <br />           
+      </div>
+       
+  	 <div class="rightside">    
+  		<div class="form-item clearfix">
+          <label for="status" class="item-label">修改状态</label>
+          <div class="controls">
+            <select name="status" id="get_status" class="select input-large">
+              <option value="">自动识别</option>
+              <foreach name="status" item="vo"> <option 
+                <if condition="$content.status eq $vo[id]">selected</if>
+                 value="{$vo['id']}">{$vo['name']}
+                </option>
+              </foreach>
+            </select>
+          </div>
+		</div>      
+		<div class="form-item clearfix">
+          <label for="endtime" class="item-label">截止报名时间&nbsp;<span>*</span></label>
+          <div class="controls">
+            <input id="endtime" name="endtime" class="text input-large time_d" check-type="Text" value="{$content.endtime}" placeholder="" required />
+          </div>
+        </div> 
+        <br /><br /><p></p>   
+		<div class="form-item clearfix">
+          <label for="maxpeople" class="item-label ">队员上限&nbsp;<span>*</span></label>
+          <div class="controls">
+            <input id="maxpeople" name="maxpeople" class="text input-large judgeNan"  check-type="Num"  value="{$content.maxpeople}" placeholder="人员上限" >
+          </div>
+        </div> 
+		<div class="form-item clearfix">
+          <label for="days_left" class="item-label">剩余名额</label>
+          <div class="controls">
+            <input name="days_left" class="text input-large judgeNan" type="text" value="{$content.days_left}">
+          </div>
+        </div>          
+    </div>
+    <div class="clearfix "></div>     
+       
+	<div class="bottomside">         
+	    <div class="form-item clearfix">
+            <label for="begincity" class="item-label">集合城市<span class="common-color-red">*</span></label>
+            <div class="controls position">
+             {:hook('J_China_City', array('find'=>'begincity','level'=>3,'province'=>$content['begincity']['province'],'city'=>$content['begincity']['city'],'district'=>$content['begincity']['district']))}			  
+            </div>
+       </div>	
+       
+ 	   <div class="form-item clearfix">
+        <label for="detailadd" class="item-label">具体地址</label>
+        <div class="controls">
+           <input id="detailadd" name="detailadd" class="text input-large" check-type="Text"  value="{$content['detailadd']}" placeholder="具体地址"/>		  
+        </div>
+      </div>
+ 	    <div class="form-item clearfix">
+          <label for="leader" class="item-label">{:get_upgrading(2)}</label>
+          <div class="controls"> {:form_checkbox($get_leader,$content['leader'],'name="leader[]" id="leader"',0,'200')} </div>
+        </div>
+        <div class="form-item  ">
+          <label for="vehicle" class="item-label">交通工具 </label>
+          <div class="controls"> {:form_checkbox(get_vehicle(),$content['vehicle'],'name="vehicle[]" id="vehicle"',0,'100')} </div>
+        </div>        
+        
+        <div class="form-item clearfix">
+          <label for="accommodation" class="item-label">住宿条件 </label>
+          <div class="controls"> {:form_checkbox(get_accommodation(),$content['accommodation'],'name="accommodation[]" id="accommodation"',0,'100')} </div>
+        </div>
+	</div>   
+    <div class="form-button">
+       <button type="submit" class="w_btn submit-btn ajax-post" target-form="form-horizontal" target-ls="a">确定</button>
+       <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+    </div>
+   </form>
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript" src="__STATIC__/jquery.form.min.js"></script>
+<script>
+
+    $(".judgeNan").blur( function(){ 
+        var ss = $(this).val();
+        if(isNaN(ss) || (ss < 0)){ 
+          alert('只能输入>=0的数字')
+        }
+    })
+
+    $('.select_deposit').click(function(){ 
+      var val = $(this).val();
+      if(val == 1){ 
+        $('.deposit_show').show();
+      }else{ 
+        $('.deposit_show').hide();
+      }
+      
+    })
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+	 $('.time_d').datetimepicker({
+			language:'zh-CN',
+			weekStart:1,
+			todayBtn:1,
+			autoclose:1,
+			todayHighlight:1,
+			startView:2,
+			minView:2,
+			forceParse:1,
+			format: 'yyyy-mm-dd hh:ii'
+		});
+
+    Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份 
+			"d+": this.getDate(), //日 
+			"h+": this.getHours(), //小时 
+			"m+": this.getMinutes(), //分 
+			"s+": this.getSeconds(), //秒 
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S": this.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+	$('#starttime').change(function(){	
+		var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+		var time1 = time - 24*60*60;
+		//var date1 = new Date(parseInt(time1) * 1000).toLocaleString().replace(/上午/g, "").replace(/\//g, "-");
+		var date1 = new Date(parseInt(time1) * 1000).Format("yyyy-MM-dd")+' 23:59';
+		$('#endtime').val(date1).attr('value',date1);		
+	})
+</script>
+</block>

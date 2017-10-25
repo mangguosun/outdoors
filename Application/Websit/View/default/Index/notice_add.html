@@ -1,0 +1,41 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+</style>
+<div id="center" class="">
+	  <div class="common_block_title ">
+		<div class="pull-right"><a class="mbtn  btn-info common-color-white" href="<?php echo $_SERVER ["HTTP_REFERER"];?>">返回上级</a></div>公告</div>
+	 	<div class="row " >
+		  <div class="col-md-12">
+			<form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Index/notice_doAdd')}" method="post">
+			  <div class="form-group">
+				<label for="title" class="col-md-2 control-label">标题</label>
+				<div class="col-md-4">
+				  <input type="text" class="form-control" id="title" placeholder="请输入标题" name="title" value="">
+				</div>
+				<label for="category_id" class="col-md-2 control-label">选择分类</label>
+				<php>$cates=D('category')->where("siteid=".SITEID." and status=1")->field('id,title')->select();</php>
+				<div class="col-md-3">
+				   <select name="category_id" class="form-control">
+					  <volist name="cates" id="vo">
+						<option value="{$vo['id']}">{$vo.title}</option>
+					  </volist>
+				   </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="content" class="col-md-2 control-label"></label>
+				<div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'content','value'=>$list['content']))}
+				  </div>
+			  </div>
+			  <div class="form-group">
+				<div class="col-md-offset-2 col-md-1">
+				  <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/notice_doAdd')}">确定</button>
+				</div>
+			  </div>
+			</form>
+		  </div>
+		</div>
+ </div>
+
+</block>

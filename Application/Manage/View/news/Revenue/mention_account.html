@@ -1,0 +1,127 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget">
+                	<div class="widget-header bordered-bottom bordered-sky">
+		                <i class="widget-icon fa fa-tasks themeprimary"></i>
+		                <span class="widget-caption">social帐号列表&nbsp;&nbsp;(最多添加5条数据哦)</span>
+		                <div class="widget-buttons">
+		                    <a href="#" data-toggle="maximize">
+		                        <i class="fa fa-expand"></i>
+		                    </a>
+		                </div>
+		            </div>
+		           <div class="widget-body">
+
+                    <form id="defaultForm" action="{:U('Manage/Revenue/mention_account')}" class="form-horizontal form-bordered" method="post" >  
+                         <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">开户名</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                <input type="text" class="form-control" name="name" value="{$datainfo.name}" />
+                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="开户名"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="form-group">
+                            <label class="col-lg-2 control-label">开户银行</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                <input type="text" class="form-control" name="open_bank" value="{$datainfo.open_bank}" />
+                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="开户银行"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">银行卡号</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                <input type="text" class="form-control" name="card" value="{$datainfo.card}" />
+                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="银行卡号"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button type="submit" class="btn btn-default">确定</button>
+                                <input class="btn btn-default" type="submit" onclick="javascript:history.back(-1);return false;" value="返  回" />
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        
+        /*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+                    
+                validator.defaultSubmit();
+                    
+                }
+            })
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: '开户名是必需的，不能是空的'
+                    }
+                }
+            },
+            open_bank: {
+                validators: {
+                    notEmpty: {
+                        message: '开户银行是必需的，不能是空的'
+                    }
+                }
+            },
+            card: {
+                validators: {
+                    notEmpty: {
+                        message: '银行卡号是必需的，不能是空的'
+                    },
+                    regexp:{
+                        regexp:/^([0-9]+)$/,
+                        message:'银行卡号必须是数字'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+
+</block>

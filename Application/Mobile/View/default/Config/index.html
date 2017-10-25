@@ -1,0 +1,39 @@
+<extend name="Public/common"/>
+<block name="body">
+  <section>
+     <div class="top_bar_mobile"><span class="mobile_crumbs"><a onClick="history.go(-1);" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> 
+        <span class="mobile_detail_text">
+          <div class="text-right">
+             <div class="mobile_detail_text_btn">用户中心</div>
+          </div>
+        </span>
+     </div>
+    <div class="h40"></div>
+    <div class="mobile_user_center_body">
+      <div class="user_info_index">
+        <div class=""><img src="{$user.avatar128}" class=""/>{$user.nickname}</div>
+      </div>
+      <h3 class="mobile_user_h3">个人信息</h3>
+      <dl class="mobile_user_nav">
+        <dd><a href="{:U('Mobile/Config/myevent')}"><span class="pull-right glyphicon glyphicon-chevron-right"></span>我报名的活动</a></dd>
+        <dd><a href="{:U('Mobile/Config/collection_event')}"><span class="pull-right glyphicon glyphicon-chevron-right"></span>我收藏的活动</a></dd>
+        <dd><a href="{:U('Mobile/Config/contacts')}"><span class="pull-right glyphicon glyphicon-chevron-right"></span>常用参加者</a> </dd>
+        <dd><a href="{:U('Mobile/Tailor/index')}"><span class="pull-right glyphicon glyphicon-chevron-right"></span>私家定制</a> </dd>
+        <dd><a href="{:U('Mobile/Config/setup')}"><span class="pull-right glyphicon glyphicon-chevron-right"></span>账号设置</a> </dd>
+      </dl>
+      <button class="btn mobile_logout_btn">退出当前帐号</button>
+    </div>
+    <script>
+	$('.mobile_logout_btn').click(function(){
+		$.post(U('Mobile/User/logout'),function(data){
+			if(data.status == 1){
+				toast.success('退出成功!')
+				 setTimeout(function () {
+                        window.location.href = data.url;
+                    }, 1000);
+			}
+		},'json')
+	})
+</script>
+  </section>
+</block>

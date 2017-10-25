@@ -1,0 +1,39 @@
+<extend name="Public/base" />
+<block name="style">
+<link href="__STATIC__/datetimepickerV3/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+</block>
+<block name="body">
+<div class="main-title">
+<h2>编辑科目</h2>
+</div>
+<div id="auth_groups">
+    <form class="form-horizontal" role="form" action="{:U('Manage/Course/updatesubject')}" method="post">
+            <input type="hidden" name="event_price_text" id="event_price_text" value="{$content.price_text}"/>
+			<input type="hidden" name="id" id="id" value="{$data.id}"/>
+		 
+          <div class="form-item">
+			<label for="title" class="item-label">科目编号</label>
+			<div class="controls">
+				<input id="title" name="subsn" maxlength="24" class="text input-large" check-type="Text" value="{$data.subsn}"/>
+			</div>
+		</div>
+			<br><br>
+			  <div class="form-item">
+			<label for="title" class="item-label">科目名称</label>
+			<div class="controls">
+				<input id="title" name="name" maxlength="24" class="text input-large" check-type="Text" value="{$data.name}"/>
+			</div>
+		</div>
+			<br><br>
+          <div class="form-item">
+			<button type="submit" class="w_btn submit-btn" target-form="form-horizontal">确定</button>
+			<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+		  </div>
+     </form>
+   
+</div>
+
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+</block>

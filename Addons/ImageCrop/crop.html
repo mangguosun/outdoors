@@ -1,0 +1,380 @@
+<link rel="stylesheet" type="text/css" href="__ADDONROOT__/style/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css" media="all" >
+
+<link rel="stylesheet" href="__ADDONROOT__/style/UploadImage.css">
+
+<link rel="stylesheet" type="text/css" href="__ADDONROOT__/style/uploadify/uploadify.css" media="all" >
+<script type="text/javascript" src="__ADDONROOT__/script/jquery.imgareaselect-0.9.10/jquery.imgareaselect.min.js"></script>
+<script type="text/javascript" src="__ADDONROOT__/script/uploadify/jquery.uploadify.js"></script>
+<style type="text/css">
+#image-uploaded,#image-cuted{position:relative;max-width:100%;}
+#cut-preview-wrap{position:relative;display:block;padding:0; margin:0;border:0;width:100%;overflow:hidden;}
+#cut-preview{ position:absolute; padding:0;margin:0;border:0;top:0;left:0;}
+.cut_wrap{ border:2px #000 solid; background:#CCC; position:fixed; z-index:9999; top:0; left:0; display:none; width: 1000px; height: 500px; overflow: hidden;}
+.cut_wrap_box .cut_box{ clear:both; overflow:hidden}
+.cut_wrap_box .cut_box .cut_img_upload{ float:left; width:400px; height:400px; overflow:hidden}
+.cut_wrap_box .cut_box .cut_img_upload img{ width:100%}
+.cut_wrap_box .cut_box .cut_img_preview{ float:right; width:400px; height:400px; overflow:hidden}
+.cut_wrap_box .cut_btnbox{ clear:both; overflow:hidden; position:absolute; left:0; bottom:0; height:40px;}
+.cut_wrap_box .cut_btnbox .cut_btn_div{ float:left;}
+</style>
+
+ <div class="upload-img-box-home-xp">
+        <notempty name="valArr">
+             <volist name="valArr" id="v">
+                <div class="upload-pre-item-home">
+                    <img src="{$v|get_cover='path'}" data-id="{$v}" />
+                    <span class='btn-close close-pop' title='删除图片'></span>
+                </div>
+             </volist>
+        </notempty>
+</div>
+
+<a id="init" class="btn btn-sm btn-primary"  href="#">{$info['title']}</a>
+<div class="cut_wrap" id="upload-wrap">
+    <div class="cut_wrap_box">
+    
+        <div class="cut_box">
+            <div class="cut_img_upload" id="uploaded-wrap" style="display:none;">
+            </div>
+            <div class="cut_img_preview">
+              <div class="col-xs-4" id="preview-wrap" style="display:none; position:relative;">
+            <label for="">裁剪图片预览</label>
+            <div id="cut-preview-wrap">
+                <img id="cut-preview" src="" alt="">
+            </div>
+            <p>
+                <small id="log"></small>
+            </p>
+          </div>
+        </div>
+        </div>
+        <span id="cut-help" class="help-block">输入宽高比进行裁剪初始化。例如1.33</span>
+        <div class="cut_btnbox">
+            <div class="cut_btn_div">
+              <input type="file"  id="file" name="file" /></div>
+            <div class="cut_btn_div"><a id="re_upload" class="btn btn-sm btn-success" style="display:none;" href="#">重新选图</a></div>
+            <div class="cut_btn_div"><a id="upload" class="btn btn-sm btn-success" style="display:none;" href="#">上传</a></div>
+            <div class="cut_btn_div" id="ratio-wrap" style="display:none">
+             <input type="hidden" id="ratio" placeholder="Ratio" value="{$info['ratio']}">
+            <input type="hidden" id="cut_width" value="{$info['width']}">
+            <input type="hidden" id="cut_height" value="{$info['height']}">
+            <a id="cutInit" class="btn btn-info" href="#"></a>
+            <a id="cut" style="display:none;" class="btn btn-warning" href="#">确定裁剪区</a>
+            </div>
+         </div>
+    </div>
+</div>
+        <script type="text/javascript">
+            function showDiv(obj){
+             $(obj).show();
+             center(obj);
+             $(window).scroll(function(){
+              center(obj);
+             });
+             $(window).resize(function(){
+              //center(obj);
+             }); 
+            }
+        function center(obj){
+         var windowWidth = $(window).width();   
+         var windowHeight = $(window).height();   
+         var popupHeight = $(obj).outerHeight();   
+         var popupWidth = $(obj).outerWidth();
+        var top = (windowHeight-popupHeight)/2;
+        var left = (windowWidth-popupWidth)/2;
+         $(obj).css({   
+          "position": "fixed",   
+          "top": top,   
+          "left": left  
+         });
+        }
+$(function(){
+    var $field = $("input[type='file']");
+    var ssd = '__PUBLIC__/static'; 
+    //Uploadify上传插件初始化
+    $("#init").click(function(e){
+        e.preventDefault();
+        // $(this).remove();
+        $("#upload-wrap").show();
+        showDiv($("#upload-wrap"));
+        test();
+    });
+  function test(){
+            $field.uploadify({
+            "buttonText"      : "{$info['buttontext']}"
+            ,"buttonClass"     : "btn btn-primary"
+            ,'swf': ssd + '/uploadify/uploadify.swf?v=' + ( parseInt(Math.random()*1000) )
+            ,'uploader'  : "{:addons_url('ImageCrop://ImageCrop/imagetest')}"
+            ,'auto'      : true    
+            ,'multi'   : {$info['multi']}
+            ,'method'    : 'post'
+            ,'fileObjName' : 'upload'
+            ,'queueSizeLimit' : 1
+            ,'fileSizeLimit' : '1000KB'
+            ,'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg'
+            ,'fileTypeDesc': '只允许.gif .jpg .png .jpeg 图片！' 
+            ,'onSelect': function(file) {   //选择文件后的触发事件
+                $("#upload").show();
+            }
+            ,'onUploadSuccess' : function(file, data, response){  //上传成功后的触发事件
+                $field.uploadify('disable', true);
+                $("#upload").remove();
+
+                //console.log(data);
+                var rst =JSON.parse(data);
+
+                if( rst.status == 0 ){
+                    alert('上传失败:'+rst.info);
+                }else{
+                    var imageData = rst.data;
+                    var $image = $("<img src='"+imageData.path+"' id='image-uploaded' data-width='"+imageData.width+"' data-height='"+imageData.height+"' data-name='"+imageData.name+"' />");
+                    $("#uploaded-wrap").append( $image ).show();
+                    $uploaded = $("#image-uploaded");
+                    realWidth = $uploaded.data('width');
+                    realHeight = $uploaded.data('height');
+                   if(realWidth< $("#cut_width").val()||realHeight< $("#cut_height").val())
+                    {
+                    alert('对比起，您的图片不符合此处裁剪的要求，请重新上传哦');
+                    $('#image-uploaded').attr('src','');
+                    $("#image-uploaded").remove();
+                    test();
+                  }else
+                  {
+                    $("#ratio-wrap").show();
+                    $("#cutInit").triggerHandler("click");
+                  }
+                }
+            }
+            ,'onUploadError' : function(file, errorCode, errorMsg, errorString){
+                alert(errorString);
+            }
+        });
+
+     
+        $(document).on('click', '.btn-close-{$info['find_name']}', function(event) {
+            event.preventDefault();
+            $(this).parent().remove();
+            picsbox = $(".upload-img-box-home-xp");
+            picArr = [];
+            for (var i = 0; i < picsbox.children().length ; i++) {
+                picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+            };
+            picStr = picArr.join(',');
+            $('.icon.{$info['find_name']}').val(picStr);
+        });
+    }
+   
+    $("#upload").click(function(e){
+        e.preventDefault();
+        $field.uploadify('upload','*');
+    });
+       $("#cutInit").click(function(e){
+        e.preventDefault();
+        //确定裁剪宽高比
+        var ratio = parseFloat($("#ratio").val());
+        // var ratio=$('#cut_width').val()/$('#cut_height').val();
+        if( isNaN(ratio) ){
+            alert("请输入正确的宽高比，必须为数字，例如0.6或1.3");
+            return ;
+        }
+        var $uploaded = $("#image-uploaded"),
+            $previewWrap = $("#cut-preview-wrap"),
+            $preview = $("#cut-preview");
+            realWidth = $uploaded.data('width'),
+            realHeight = $uploaded.data('height'),
+            console.log($("#cut_height").val());
+            uploadedWidth = $uploaded.outerWidth(), 
+            uploadedHeight = $uploaded.outerHeight(),
+            uploadedRate = (uploadedWidth/realWidth > 1) ? 1 : uploadedWidth/realWidth; //缩放比例
+            console.log(uploadedWidth);
+
+        $(this).hide();
+        $("#ratio-input").hide();
+        $("#cut-help").text('图片宽:'+realWidth+' 高:'+realHeight+' 裁剪比例:'+ratio+' 在图片上进行拖拽确定裁剪区域！');
+        $("#preview-wrap").show();
+        var previewWrapWidth = $previewWrap.outerWidth();
+            previewWrapHeight = Math.round(previewWrapWidth/ratio);
+   
+        $previewWrap.css( {
+            width:previewWrapWidth+'px',
+            height:previewWrapHeight+'px'
+        } );
+
+        $preview.prop( 'src',$uploaded.attr('src') );
+     
+        function imgAreaUpdate(img,selection){
+            // console.log(selection);
+                $("#image-uploaded").data("width")/$("#image-uploaded").width();
+                ;
+                selection.width/200;
+
+                var rate = previewWrapWidth/selection.width;//预览区相对于选择区的倍数
+                $preview.css({
+                    width: Math.round(uploadedWidth*rate)+'px',
+                    //height: Math.round(uploadedHeight*rate)+'px',
+                    "left": Math.round(selection.x1*rate*-1),
+                    "top": Math.round(selection.y1*rate*-1) 
+                });
+
+                var realSize = {
+                    width:     Math.round(selection.width/uploadedRate),
+                    height:    Math.round(selection.height/uploadedRate),
+                    offsetLeft:Math.round(selection.x1/uploadedRate),
+                    offsetTop: Math.round(selection.y1/uploadedRate)
+                }
+
+                $("#log").text('实际裁剪参数 - 宽:'+realSize.width+
+                                ' 高:'+realSize.height+
+                                ' 左偏移:'+realSize.offsetLeft+
+                                ' 上偏移:'+realSize.offsetTop + '-------' + rate
+                            );
+                $preview.data( realSize );
+        }
+
+        var imgArea = $uploaded.imgAreaSelect({
+            // minHeight :200,
+            // minWidth  :200,
+            instance: true, 
+            resizable:false,
+            handles: true,   
+            fadeSpeed: 300,
+            aspectRatio:'1:'+(1/ratio),
+
+             x1:0, y1:0, x2:(parseFloat($("#cut_width").val())*uploadedRate),
+              y2:(parseFloat($("#cut_width").val())*uploadedRate)/ratio,
+            onInit: imgAreaUpdate,
+            onSelectChange: imgAreaUpdate
+        });
+
+        $("#cut").show().click(function(e){
+            e.preventDefault();
+            var $this = $(this);
+            var data = $preview.data();
+            if( typeof data['width'] === 'undefined' ||
+                data['width'] == ''||
+                data['width'] == 0 ||
+                data['height'] == '' ||
+                data['height'] == 0 ){
+                    alert('请先选择裁剪区域！');
+                    return ;
+            }
+
+            $this.addClass('active').text('裁剪中...');
+            data['name'] = $uploaded.data('name');
+            console.log(data);
+            $.ajax({
+                url:"{:addons_url('ImageCrop://ImageCrop/cutImage')}",
+                type:'POST',
+                data:data,
+                success: function(data){
+                    //console.log(data);
+                    var rst = JSON.parse(data);
+                    if( rst.status == 0 ){
+                        alert('失败!'+rst.info);
+                    }else{
+                        $this.hide();
+                        $("#download").show().prop('href',rst.url).prop('target','_blank');
+                        $("#cuted-wrap").show();
+                        $("#image-cuted").prop('src',rst.path);
+                        imgArea.setOptions({'disable':true,'hide':true});//去掉选区功能
+                        alert('图片已成功裁剪！');
+
+                        showpic{$info['find_name']}(data);
+                    }
+                }
+            });
+        });
+
+    });
+});
+</script>
+
+
+<script>
+ function showpic{$infos['find_name']}(data){
+
+      // console.log(file);
+       // console.log(data);
+
+        var data = $.parseJSON(data);
+        var src = '';
+        if(data.status){
+            src ='__ROOT__' + data.path;
+            upload_img = "<div class='upload-pre-item-home'><img src=" + src +" title='点击显示大图' data-id="+data.id+"> <span class='btn-close btn-close-{$infos['find_name']}' title='删除图片'></span></div>";
+            picsbox = $(".upload-img-box-home-xp");
+              
+           console.log(upload_img);
+
+            if({$infos['multi']} == true){
+                picsbox.append(upload_img)
+            var div = document.getElementById("upload-wrap"); 
+               div.style.display = "none"; //隐藏而不删除
+            }else{
+                picsbox.html(upload_img)
+               var div = document.getElementById("upload-wrap"); 
+               div.style.display = "none"; //隐藏而不删除
+            }
+            picArr = [];
+            for (var i = 0; i < picsbox.children().length ; i++) {
+                picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+            };
+            picStr = picArr.join(',');
+            $('.icon.{$infos['find_name']}').val(picStr);
+        } else {
+            updateAlert(data.info);
+            setTimeout(function(){
+                $('#top-alert').find('button').click();
+                $(that).removeClass('disabled').prop('disabled',false);
+            },1500);
+        }
+    }
+    
+if (typeof isloaded == 'undefined') {
+    $(function(){
+        $(window).resize(function(){
+            var winW = $(window).width();
+            var winH = $(window).height();
+            $(document).delegate('.upload-pre-item-home img', 'click', function() {
+                //如果没有图片则不显示
+                if($(this).attr('src') === undefined){
+                    return false;
+                }
+                // 创建弹出框以及获取弹出图片
+                var imgPopup = "<div class=\"uploadback\"><div id=\"uploadPop\" class=\"upload-img-popup\"></div></div>"
+                var imgItem = $(this).parent().html();
+
+                //如果弹出层存在，则不能再弹出
+                var popupLen = $(".uploadback").length;
+                if( popupLen < 1 ) {
+                    $(imgPopup).appendTo("body");
+                    $(".upload-img-popup").append($(this).parent().clone());
+                    var $_a = $("<a class=\"close-pop\" href=\"javascript:;\" title=\"关闭\"></a>");
+                    $(".upload-img-popup").append($_a);
+                }
+
+                // 弹出层定位
+                var uploadImg = $("#uploadPop").find("img");
+                var popW = uploadImg.width();
+                var popH = uploadImg.height();
+                $(".upload-img-popup").css({
+                    // "max-width" : winW * 0.9,
+                    "left": '50%',
+                    "top": '50%',
+                    "margin-left": -popW/2-10,
+                    "margin-top": -popH/2-10,
+                });
+            });
+
+            // 关闭弹出层
+            $("body").on("click", "#uploadPop .upload-pre-item-home  , .uploadback", function(){
+                $(".uploadback").remove();
+            });
+        }).resize();
+    })
+};
+var isloaded = true;
+
+
+
+</script>
+

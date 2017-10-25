@@ -1,0 +1,159 @@
+<?php
+if(!defined('UPLOADIFY_INIT_PC')){
+?>
+<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js??v={:C('WEB_VERSION')}"></script>
+<link rel="stylesheet" href="__ADDONROOT__/style/UploadImage.css">
+<?php
+define('UPLOADIFY_INIT_PC', 1);
+}
+?>
+<div class="uploadify_pc">
+	<div class="upload-img-box-home" id="upload_{$infos['find_name']}">
+        <notempty name="thumb_picture">
+             <volist name="thumb_picture" id="v">
+                <div class="upload-pre-item-home">
+                    <img src="{$v.url_thumb}" data-id="{$v.id}" data-rel="{$v.url_rel}"/>
+                    <span class='btn-close btn-close-{$infos['find_name']}' title='删除图片'></span>
+                </div>
+             </volist>
+        </notempty>
+    </div>
+    <input type="file" class="uploadfile_input" id="upload_picture_{$infos['find_name']}">
+    <input type="hidden" name="{$infos['find_name']}" value="{$infos['value']}" class="icon {$infos['find_name']}" />
+    
+    <div class="uploadify_ds">{$infos['ds']}</div>
+</div>  
+    
+<script type="text/javascript">
+    //上传图片
+    $(function(){
+        /* 初始化上传插件*/
+        $("#upload_picture_{$infos['find_name']}").uploadify({
+            "height"          : 80,
+            "swf"             : "__STATIC__/uploadify/uploadify.swf",
+            "fileObjName"     : "download",
+            "buttonText"      : "<i class='fa fa-plus'></i>",
+			"buttonClass"	  : "upload-img-btn",
+            "uploader"        : "{:U('Home/File/uploadPicture',array('session_id'=>session_id()))}",
+            "width"           : 80,
+            'removeTimeout'   : 1,
+			'multi'   : {$infos['multi']},
+            //'fileTypeExts'    : '*.jpg; *.png; *.gif; *.ico;',
+			'fileTypeExts'    : '{$infos["picture_type"]};',
+            //"onUploadSuccess" : uploadPicture{$infos['find_name']},
+			"onUploadSuccess" : function(file, data) {
+				var data = $.parseJSON(data);
+				var src = '';
+		
+				if(data.status){	
+					var param ={};
+					
+					param['id'] = data.id;
+					param['width'] = "{$infos['width']}";
+					param['height'] = "{$infos['height']}";
+					param['thumb_width'] = "{$infos['thumb_width']}";
+					param['thumb_height'] = "{$infos['thumb_height']}";
+					$.getJSON("{:U('Home/index/get_uploadthumb_pc')}",param,  function (res) {
+						upload_img = "<div class='upload-pre-item-home'><img src=" + res.url_thumb +" title='点击显示大图' data-id="+data.id+" data-rel="+res.url_rel+"> <span class='btn-close btn-close-{$infos['find_name']}' title='删除图片'></span></div>";
+						picsbox = $("#upload_picture_{$infos['find_name']}").siblings('.upload-img-box-home');
+						
+						if({$infos['multi']} == true){
+							picsbox.append(upload_img)
+						}else{
+							picsbox.html(upload_img)
+						}
+						picArr = [];
+						for (var i = 0; i < picsbox.children().length ; i++) {
+							picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+						};
+						picStr = picArr.join(',');
+						$('.icon.{$infos['find_name']}').val(picStr);
+				
+					});
+					
+				} else {
+					updateAlert(data.info);
+					setTimeout(function(){
+						$('#top-alert').find('button').click();
+						$(that).removeClass('disabled').prop('disabled',false);
+					},1500);
+				}
+			},
+            'onFallback' : function() {
+                alert('未检测到兼容版本的Flash.');
+            }
+        });
+        $(document).on('click', '.btn-close-{$infos['find_name']}', function(event) {
+            event.preventDefault();
+            $(this).parent().remove();
+            picsbox = $("#upload_picture_{$infos['find_name']}").siblings('.upload-img-box-home');
+            picArr = [];
+            for (var i = 0; i < picsbox.children().length ; i++) {
+                picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+            };
+            picStr = picArr.join(',');
+            $('.icon.{$infos['find_name']}').val(picStr);
+        });
+    })
+	
+if (typeof isloaded == 'undefined') {
+	$(function(){
+	    $(window).resize(function(){
+	        var winW = $(window).width();
+	        var winH = $(window).height();
+	        $(document).delegate('.upload-pre-item-home img', 'click', function() {
+																				
+	            //如果没有图片则不显示
+	            if($(this).attr('data-rel') === undefined){
+	                return false;
+	            }
+				
+				
+	            // 创建弹出框以及获取弹出图片
+	            var imgPopup = "<div class=\"uploadback\"><div id=\"uploadPop\" class=\"upload-img-popup\"></div></div>"
+	            var imgItem = $(this).parent().html();
+
+	            //如果弹出层存在，则不能再弹出
+	            var popupLen = $(".uploadback").length;
+				
+				
+	            if( popupLen < 1 ) {
+	                $(imgPopup).appendTo("body");
+	                $(".upload-img-popup").append("<img src=" + $(this).attr('data-rel') +" title='点击显示大图'>");
+	                var $_a = $("<a class=\"close-pop\" href=\"javascript:;\" title=\"关闭\"></a>");
+	                $(".upload-img-popup").append($_a);
+	            }
+
+	            // 弹出层定位
+	            var uploadImg = $("#uploadPop").find("img");
+				var  w_f=  '{$infos['width']}';
+				var  w_h=  '{$infos['height']}';
+				
+				if(w_f > 0 && w_f > 0){
+					uploadImg.width(w_f);
+					uploadImg.height(w_h);		
+				}else{
+					uploadImg.width();
+					uploadImg.height();
+				}
+				
+	            var popW = uploadImg.width();
+	            var popH = uploadImg.height();
+	            $(".upload-img-popup").css({
+	                // "max-width" : winW * 0.9,
+	                "left": '50%',
+	                "top": '50%',
+	                "margin-left": -popW/2-10,
+	                "margin-top": -popH/2-10,
+	            });
+	        });
+
+	        // 关闭弹出层
+	        $("body").on("click", "#uploadPop .upload-pre-item-home, .uploadback", function(){
+	            $(".uploadback").remove();
+	        });
+	    }).resize();
+	})
+};
+var isloaded = true;
+</script>

@@ -1,0 +1,24 @@
+<extend name="Public/common_user"/>
+<block name="body">
+    <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+        <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/set')}" class=""><i class="am-icon-chevron-left"></i></a>常用收货地址</div>
+    </header>
+    <div class="address-all">
+        <ul class="am-list am-list-border am-list-news-bd">
+            <volist name="address_list" id="vo">
+               <a href="{:U('Mobile/Config/address_edit',array('id'=>$vo[id]))}">
+                    <li class="address-lists">
+                    <div class="address-list-box">
+                        <div><span class="address_name">{$vo.name}</span><span class="address_phone">{$vo.phone}</span></div>
+                        <div><if condition="$vo['isdefault'] eq 1"><span class="address_default">[默认]</span></if>{$vo.province}{$vo.city}{$vo.district}{$vo.detailed}</div>
+                    </div>
+                    <i class="address-icon am-icon-angle-right am-icon-fw"></i>
+                </li></a>
+            </volist>
+        </ul>
+    </div>
+<div data-am-widget="navbar" class="am-navbar am-navbar-default address_btn">
+   <a href="{:U('Mobile/Config/address_edit')}" class="am-btn am-btn-block am-btn-through">新增收货地址</a>
+</div>
+
+</block>

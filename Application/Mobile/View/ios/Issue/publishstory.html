@@ -1,0 +1,75 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Config/myissue')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 发布故事
+  </div>
+
+<div class="am-header-right am-header-nav"><a href="javascript:" id="editstory_btn" class="am-btn am-btn-default am-btn-xl">发布</a></div>
+
+</header>
+<body>
+<form  method="post" class="am-form" id="mark-index-diss">
+<div class=" am-panel-default tailor_lists" style="padding:0 10px;">
+
+	<!-- 输入活动主题文本框 -->
+	<input type="hidden" name="type" value="1"/>
+	<div class="hdl-panel-hd" style="height:40px;line-height:40px">
+			<h3 class="hdl-nav-title" >故事标题</h3>
+		</div>
+	<div>
+		<span class="am-list-date contacts-right"><i class="am-icon-edit set-icon"></i></span>
+		<input type="text" name="title"placeholder="输入故事标题" />
+	</div>
+	<div class="hdl-panel-hd" style="height:40px;line-height:40px">
+			<h3 class="hdl-nav-title">分类</h3>
+		</div>
+	<ul data-am-widget="gallery" class="am-gallery am-avg-sm-3
+	  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }">
+	  <volist name="tree" id="top" key="k"> 
+		  <li>
+		    <div class="am-gallery-item">
+		        <label class="am-radio" style="float:left">
+				 	<input type="radio" name="issue" value="{$top.id}" data-am-ucheck <if condition="$k eq 1">checked</if>/>&nbsp;{$top.title}&nbsp; 
+			  	</label>
+		    </div>
+		  </li>
+	  </volist>
+	</ul>
+	<div class="am-form-group">
+        <div class="hdl-panel-hd" style="height:40px;line-height:40px">
+			<h3 class="hdl-nav-title">故事详情</h3>
+		</div>
+        <textarea id="reference"  name="content" maxlength="100" placeholder="故事详情说明(30-2000字)" rows="5"></textarea>
+    </div>
+    <!-- 上传图片 -->
+    <div class="issue-upload" >
+		<div class="hdl-panel-hd"style="height:40px;line-height:40px">
+			<h5 class="hdl-nav-title">上传图片</h5>
+		</div>
+        {:hook('UploadImageMobile', array('find_name'=>'imgids','value'=>'','multi'=>true,'thumb_width'=>200,'thumb_height'=>200,'width'=>500,'height'=>375))}
+	</div>
+</div>
+</form>		
+		
+
+<script type="text/javascript">
+	$(function (){ 
+		$('#editstory_btn').click(function(){ 
+			var mark_index_diss=$('#mark-index-diss');
+			$.post("{:U('Mobile/Issue/dopublishstory')}", mark_index_diss.serialize(), function (data) {
+				if (data['status'] == 1) {
+					//toasts.success(data.info,"{:U('Mobile/Config/myissue')}");
+					toasts.success(data.info,"{:U('Mobile/Issue/index')}");
+				} else {
+					toasts.info(data.info)
+				}
+			}, 'json');
+
+		})
+	})
+</script>
+</body>
+</block>

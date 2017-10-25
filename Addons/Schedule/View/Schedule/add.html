@@ -1,0 +1,105 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<div class="main-title cf">
+		<h2>新增计划</h2>
+	</div>
+
+	<!-- 标签页导航 -->
+	<div class="tab-wrap">
+		<div class="tab-content">
+			<!-- 表单 -->
+			<form id="form" action="{:addons_url('Schedule://Schedule/add')}" method="post" class="form-horizontal doc-modal-form">
+				<!-- 基础 -->
+				<div id="tab1" class="tab-pane in tab1">
+					<div class="form-item cf">
+						<label class="item-label">执行函数<span class="check-tips">（计划任务执行的函数，格式为：app/Model/method）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="task_to_run" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">任务类型<span class="check-tips">（ONCE、MINUTE、HOURLY、DAILY、WEEKLY、MONTHLY 之一）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="schedule_type" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">执行频率<span class="check-tips">（类型为MONTHLY时必须；ONCE时无效；其他时为可选，默认为1）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="modifier" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">dirlist<span class="check-tips">（指定周或月的一天或多天。只与WEEKLY和MONTHLY共同使用时有效，其他时忽略。）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="dirlist" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">month<span class="check-tips">（指定一年中的一个月或多个月.只在schedule_type=MONTHLY时有效，其他时忽略。当modifier=LASTDAY时必须，其他时可选。有效值：Jan - Dec，默认为*(每个月)）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="month" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">开始时间<span class="check-tips">（任务启动时间，使用“Y-m-d H:i:s”格式）</span></label>
+						<div class="controls">
+							<input type="text" id="start_datetime" class="text input-large" name="start_datetime" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">结束时间<span class="check-tips">（失效时间，使用“Y-m-d H:i:s”格式）</span></label>
+						<div class="controls">
+							<input type="text" id="end_datetime" class="text input-large" name="end_datetime" value="">
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">简介<span class="check-tips">（对计划任务的简要描述）</span></label>
+						<div class="controls">
+							<input type="text" class="text input-large" name="info" value="">
+						</div>
+					</div>																														
+
+				</div>
+
+				<!-- 按钮 -->
+				<div class="form-item cf">
+					<label class="item-label"></label>
+					<div class="controls edit_sort_btn">
+						<button class="btn submit-btn ajax-post no-refresh" type="submit" target-form="form-horizontal">确 定</button>
+						<a class="btn btn-return" href="{:U('addons/adminlist',array('name'=>Schedule))}">返 回</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</block>
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+$(function(){
+	$('#start_datetime').datetimepicker({
+	    format: 'yyyy-mm-dd HH:mm:ss',
+	    language:"zh-CN",
+	    minView:2,
+	    autoclose:true,
+	});
+
+	$('#end_datetime').datetimepicker({
+	   format: 'yyyy-mm-dd HH:mm:ss',
+	    language:"zh-CN",
+	    minView:2,
+	    autoclose:true,
+	    pickerPosition:'bottom-left'
+	})	
+})
+
+</script>
+</block>
+

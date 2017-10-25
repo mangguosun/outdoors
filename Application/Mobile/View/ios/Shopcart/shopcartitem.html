@@ -1,0 +1,223 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Shop/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>购物车
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="javascript:" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<include file="Public/navbar"/> 
+
+
+ <form action="{:U('Mobile/Shoporder/getorderinfo')}"  role="form"  method="post">
+<input type="hidden" name="random_code" value="<?php echo md5($_SESSION['pay']);?>">   
+ <div class="goodscart">
+ <if condition="$cart">
+ 	<ul>
+    <volist name="cart" id="vo">
+    	<li class="vo_{$vo.goods_id}_{$vo.sku_id}">
+            <div class="images">
+            	<span class="images-box">
+            	<img src="{$vo.goods_ico|getThumbImageById=100,100}" width="90" height="90" />
+                </span>
+            </div>
+            <div class="goodsname">
+            	<div class="goodsname-title">{$vo.goods_name}</div>	
+            	<div class="goodsname-shuxing">{:get_shop_types_attribute_names($vo['sku_id'])}</div>	
+                <div class="goodsname-number">
+                    <button class="operation"  id="min-{$vo.goods_id}-{$vo.sku_id}" data-ID="{$vo.goods_id}"  data-skuid="{$vo.sku_id}"  type="button">-</button>
+                <input type="text" name="num" id="text_box-{$vo.goods_id}-{$vo.sku_id}" class="goodsnum" value="{$vo.num}" data-ID="{$vo.goods_id}" data-skuid="{$vo.sku_id}" style=" width:30px; text-align:center; border:1px solid #ccc;">
+                <button class="operation" id="add-{$vo.goods_id}-{$vo.sku_id}" data-ID="{$vo.goods_id}"  data-skuid="{$vo.sku_id}"  type="button">+</button>
+                </div>            
+            </div>
+            <div class="goodsprice">
+            	<label class="am-checkbox am-warning">
+                <input type="checkbox" name="ids[]" class="cart_selected" id="newslist-{$vo.goods_id}-{$vo.sku_id}" data-am-ucheck checked value="{$vo.goods_id}|{$vo.sku_id}">
+                <input type="hidden" name="price" class='prices' value="{$vo.price}">
+                </label>
+            	<div class="goodsprice-price">￥<span id="total-{$vo.goods_id}-{$vo.sku_id}"></span></div>
+                <div class="goodsprice-action"><a class="cart_delitem" href="javascript:" data-ID="{$vo.goods_id}" data-skuid="{$vo.sku_id}" ><i class="am-icon-trash"></i></a></div>
+            </div>
+    
+	   	<!---商品加减算总数---->   
+        
+        <script type="text/javascript">
+		$(function () {
+			setTotal()
+			//输入数量改变
+			$('#text_box-{$vo.goods_id}-{$vo.sku_id}').blur(function () {
+					var num = $(this).val();
+					var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					$.post(U('Mobile/Shopcart/changeNum'), {'goods_id': goods_id,'sku_id':skuid,'goods_num':num}, function (res) {
+						if (res.status) {
+						 setTotal();
+						 get_total();
+						}
+						else {
+							toasts.error(res.info);
+						}
+					}, 'json');
+			});
+			//+添加+1
+			$('#add-{$vo.goods_id}-{$vo.sku_id}').click(function () {
+			        var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					var t = $(this).prev();
+					var  num = t.val();
+					$.post(U('Mobile/Shopcart/changeNum'), {'goods_id': goods_id,'sku_id':skuid,'goods_num':++num}, function (res) {
+						if (res.status) {
+							t.val(num);
+							setTotal();
+						    get_total();
+						}
+						else {
+							toasts.error(res.info);
+						}
+					}, 'json');
+					
+					
+			});
+			//-1
+			$('#min-{$vo.goods_id}-{$vo.sku_id}').click(function () {
+					var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					var t = $(this).next();
+					var  num = t.val();
+
+					$.post(U('Mobile/Shopcart/changeNum'),{'goods_id': goods_id,'sku_id':skuid,'goods_num':--num}, function (res) {
+						if (res.status) {
+							t.val(num);
+							setTotal();
+							get_total();
+						}
+						else {
+							toasts.error(res.info);
+						}
+					}, 'json');
+					
+			});
+			//计算价格
+			function setTotal() {
+				var nnn = $("#text_box-{$vo.goods_id}-{$vo.sku_id}");
+				$("#total-{$vo.goods_id}-{$vo.sku_id}").html((parseInt(nnn.val()) * {$vo.price}).toFixed(2));
+			}
+
+		})
+		</script>
+        </li>   
+</volist>      
+    </ul>   
+      <div class="allprice">
+        <div class="allprice-box">
+        	<div class=" ">
+                <span class="allprice-box-zi">商品总计：</span>
+                <span class="allprice-box-value">￥<span class="shop_total_price">{$alltotalprice}</span></span> 
+            </div>   
+       		<!--div class="freight">运费:<span class="freight-value">不含运费</span></div-->
+            <div class="freight">不含运费</div>
+            <div class="settlement">
+             <button type="submit" name="tocreateorder" class="am-btn am-btn-danger am-btn-xs">结算（<span class="shop_total_nums">{$totalnum}</span>）</button>
+            </div>
+        </div>         
+      </div>
+<else/>
+	<div class="smile">
+		<p><i class="am-icon-smile-o"  style="color:#ccc; font-size:180px;"></i></P>
+		<p>您的购物车是空的，不如去先去购物</P>
+		<p><a href="{:U('Mobile/Shop/goods')}" class="am-btn am-btn-danger">去选购</a></P>
+	 </div>
+</if>
+  </div> 
+</form>
+
+
+<script>
+function get_total(){
+	var shop_check_price=0;
+	var shop_check_num=0;
+	$(":checkbox:checked").each(function(){
+		shop_check_price += parseFloat($(this).siblings('input').val()*$(this).parents().parents().siblings('div').find('input').val());
+		shop_check_num +=parseInt($(this).parents().parents().siblings('div').find('input').val())
+	})
+	$(".shop_total_nums").text(shop_check_num);  
+	$(".shop_total_price").text(shop_check_price.toFixed(2));  		
+}
+
+$(function () {	
+	//get_total();
+			
+	//--全选/全不选
+	$('.cart_selected').click(function(){
+		var shop_check_price=0;
+		var shop_check_num=0;
+		if(this.checked){
+		
+			$(":checkbox:checked").each(function(){
+				shop_check_price += parseFloat($(this).siblings('input').val()*$(this).parents().parents().siblings('div').find('input').val());
+				shop_check_num +=parseInt($(this).parents().parents().siblings('div').find('input').val())
+			})
+			$(".shop_total_nums").text(shop_check_num);  
+			$(".shop_total_price").text(shop_check_price.toFixed(2));  
+		
+		}else{
+				shop_check_price = parseFloat($(this).siblings('input').val()*$(this).parents().parents().siblings('div').find('input').val());
+				shop_check_num =parseInt($(this).parents().parents().siblings('div').find('input').val())
+
+			$(".shop_total_nums").text(parseInt($(".shop_total_nums").text()) - shop_check_num);
+			$(".shop_total_price").text( (parseFloat($(".shop_total_price").text()) - shop_check_price).toFixed(2));
+		
+		}
+	})
+	
+	//提交按钮
+	$("form").submit(function(){
+		$(".goods_id").each(function(){
+   			if($(this).attr("checked") == 'checked'){
+   				onOff = true;
+   			}
+   		});
+		if(onOff){
+			return true;
+		}else{
+			alert('请先选择');
+			return false;
+		}
+	});
+
+
+	//移除商品
+	$('.cart_delitem').click(function () {
+		if (confirm('你确定要移除该商品吗？')) {
+			var  goods_id= $(this).attr('data-ID');
+			var  skuid= $(this).attr('data-skuid');
+			$.post(U('Mobile/Shopcart/delItem'), {'goods_id': goods_id,'sku_id':skuid}, function (res) {
+				if (res.status) {
+					$('.vo_'+goods_id+'_'+skuid).remove();
+					toasts.success(res.info);
+					get_total();
+					if($(".shop_total_nums").html()==0){
+						var str	=	"<div class='smile'><p><i class='am-icon-smile-o'  style='color:#ccc; font-size:180px;'></i></P><p>您的购物车是空的，不如去先去购物</P><p><a href=\"{:U('Mobile/Shop/goods')}\" class='am-btn am-btn-danger'>去选购</a></P></div>"
+						$('.goodscart').html(str);
+					}
+				}
+				else {
+					toasts.error(res.info);
+				}
+			}, 'json');
+		}
+	});
+		
+})
+</script>
+</block>
+<block name="script">
+
+</block>

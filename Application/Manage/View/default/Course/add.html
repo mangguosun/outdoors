@@ -1,0 +1,29 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>创建科目</h2>
+</div>
+<div id="auth_groups">
+    <form class="form-horizontal" action="{Manage/Course/doPost)}" method="post">
+    <table>
+		<tr><td>名称<input type="text" name="name"></td></tr>
+		<tr>
+			<td>分类
+				<select name="pid">
+					<option value="0">顶级分类</option>
+					<volist name="subject" id="subject">
+					<option value="{$subject.id}">{$subject.name}</option>
+					</volist>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" name=""></td>
+		</tr>
+	</table>	
+	
+ </form>
+</div>
+</block>

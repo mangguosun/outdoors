@@ -1,0 +1,75 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>赠送代金券<span style="color:red;font-size:13px;">【券码：{$cardid}】</span></h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Usercenter/Pointcard/do_donate')}" method="post">	
+			<input type='hidden' name='cardid' value="{$cardid}">
+			<div class="form-group  has-feedback">
+				<label for="reviever_tel" class="col-md-3 control-label">请输入获赠方手机号码</label>
+				<div class="col-md-4">
+					<input id="reviever_tel" name="reviever_tel" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="请输入有效的手机号码"/>
+				</div>
+				<!----------------------------->
+				<div class="user_arr col-md-4" style="display:none">
+					<select class='col-md-4 form-control form_check user_arr_select' name="user_select">
+						<option  value=''>请选择用户</option>
+					</select>				
+				</div>
+				<!----------------------------->
+			</div>
+         <div class="form-group">
+            <div class="col-md-offset-3 col-md-10" style=''>
+              <button type="submit" class="btn btn-primary">确认赠送</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$('form').submit(function(){
+		$.ajaxSetup({
+			async: false
+		});
+		var mobile = $("input[name='reviever_tel']").val();	
+		if(mobile == ''){
+			toast.error('手机号码不能为空');
+			$(".user_arr_select").val('');
+			$(".user_arr").hide();
+			return false;
+		}
+		var bool = false;
+		$.post(U('Usercenter/Pointcard/check_user'),{mobile:mobile},function(res){
+			if(res['status']){
+				var user_total = res['user_arr'].length;
+				if(user_total == 1||res['user_out']==1){
+					bool = true;
+				}else{
+					var user_select = $(".user_arr_select").val();
+					if(user_select != ''){
+						bool = true;
+					}else{
+						bool = false;
+						toast.error('该手机号码对应多个账号，请选择您要操作的账号再赠送');
+						$(".user_arr").show();
+						$(".user_arr_select").empty();
+						$(".user_arr_select").append("<option value=''>请选择用户</option>")
+						$.each(res['user_arr'],function(i,v){			
+							$(".user_arr_select").append("<option value="+v['id']+">"+v['nickname']+"</option>")
+						})
+					}					
+				}			
+			}else{
+				toast.error(res['msg']);
+				$(".user_arr").hide();
+				$(".user_arr_select").val('');
+			}			
+		},'json')
+		return bool;
+	})
+</script>
+

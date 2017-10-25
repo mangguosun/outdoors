@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*顶部*/ 
+.top_bar {background: #fff;color:#666; } 
+
+/*导航*/
+.nav_bar_tong{background:#30b6f3;}
+.nav_bar .navbar-collapse {background:#30b6f3;color: fff;}
+#nav_bar_main .navbar-nav > li.all_product{ color:#FFF; background:#1390e2;}
+#nav_bar_main .navbar-nav > li.all_product a:hover,
+#nav_bar_main .navbar-nav > li.all_product a:focus{ background:#1390e2;} 
+
+/*搜索框*/
+.header-form .input{ border:1px solid #2278c1;}
+.header-form .icon{ background:#2278c1; color:#FFF; border-color: #2278c1;}
+.header-form .icon:hover{ background:#2589de; color:#FFF; border-color:#2589de;} 
+
+/*购物车*/
+.nav_shopcard > li{ width:180px;background:#30b6f3; }
+
+/*推荐线路鼠标划过颜色*/
+#nav_bar_main .navbar-nav > li.all_product a:hover,
+#nav_bar_main .navbar-nav > li.all_product a:focus{ background:#1390e2;} 
+
+/*导航鼠标划过样式*/
+.nav_bar .nav > li.active > a,
+.nav_bar .nav > li > a:hover,
+.nav_bar .nav > li > a:focus {color: #FFF; background:#49c6ff;}
+ 
+/*发布故事*/
+.btnhelf ul li .btn-primary{ background:#30B6F3; border-color:#30b6f3;}
+.btnhelf ul li .btn-primary:hover{ background:#4BBFF2; border-color:#4BBFF2;}
+
+/*活动页面 ‘全部’按钮*/
+.event_screen dd .btn-primary{ background:#30b6f3; border-color:#30b6f3;}
+.event_screen dd .btn-primary:hover,
+.event_screen dd .btn-primary:focus,
+.event_screen dd .btn-primary:active,
+.event_screen dd .btn-primary.active,
+.event_screen dd .open > .dropdown-toggle.btn-primary { color: #fff;  background-color: #30b6f3;border-color: #30b6f3;}
+ 
+/*活动图片 钱数背景色*/
+.index_tag_lists dl dd .price{ color:#fff; background:#ff3600;}
+ 
+/*立即抢购*/ 
+.chakan{ color:#fff; background:#fe761e;}
+
+/*活动图片 天数*/
+.event_state { color: #fff;background: #30b6f3; } 
+ 

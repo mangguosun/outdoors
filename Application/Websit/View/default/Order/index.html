@@ -1,0 +1,18 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title ">订单管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Websit/Order/index',array('status'=>1))}">活动订单</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Websit/Order/index',array('status'=>2))}">定制订单</a></li>
+  <if condition="app_isopen('Shop')">
+  <li <if condition="$status eq 3"> class="hover" </if> ><a href="{:U('Websit/Order/index',array('status'=>3))}">商城订单</a></li>
+  </if>  
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 1"><li class="" ><include file="event_order"/></li></if>
+  <if condition="$status eq 2"><li class="" ><include file="tailor_order"/></li></if>
+  <if condition="app_isopen('Shop')">
+  <if condition="$status eq 3"><li class="" ><include file="shop_order"/></li></if>
+  </if>
+</ul>
+</block>

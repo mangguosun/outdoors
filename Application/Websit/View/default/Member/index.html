@@ -1,0 +1,17 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title ">会员管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Websit/Member/index',array('status'=>0))}">会员管理</a></li>
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Websit/Member/index',array('status'=>1))}">领队管理</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Websit/Member/index',array('status'=>2))}">达人管理</a></li>
+  <li <if condition="$status eq 3"> class="hover" </if> ><a href="{:U('Websit/Member/index',array('status'=>3))}">角色申核</a></li>
+ 
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li class=""><include file="ord_member"/></li></if>
+  <if condition="$status eq 1"><li class=""><include file="team_member"/></li></if>
+  <if condition="$status eq 2"><li class=""><include file="master_member"/></li></if>
+  <if condition="$status eq 3"><li class=""><include file="role_member"/></li></if>
+</ul>
+</block>

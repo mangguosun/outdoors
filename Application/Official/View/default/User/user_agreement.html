@@ -1,0 +1,20 @@
+<extend name="Public/base"/>
+<block name="body">
+
+<style>
+.register_container_agreement{ padding:0 15px}
+.register_container_agreement h2{ font-size:20px; margin-bottom:30px}
+</style>
+
+
+ <div class="container"> 
+    <div class="row">
+        <div class="register_container_agreement">
+      			<h2 class="text-center">{:get_webinfo('webname')}服务协议</h2>           
+		 		{:get_webinfo('user_agreement')}
+        </div>
+      </div>
+  </div> 
+</block>
+<block name="script">
+</block>

@@ -1,0 +1,111 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改订单参加者<span class="common-color-red">（带*号为必填）</span></h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Config/do_detail_member_edit')}" method="post">
+          <input type="hidden" name='id' value="{$data.id}">
+          <input type="hidden" name='trade_sn' value="{$data.trade_sn}">
+          <input type="hidden" name='realname' value="{$data['member'].realname}">
+          <input type="hidden" name='card' value="{$data['member'].card}">
+          <div class="form-group has-feedback">
+            <label for="realname" class="col-md-2 control-label">真实姓名<span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="realname" name="realname"  type="" class="form-control form_check" check-type="Text" disabled value="{$data['member'].realname}" placeholder="请填写真实姓名"/>
+            </div>
+             <label for="telephone" class="col-md-2 control-label">联系电话<span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="telephone" name="telephone" type="" class="form-control form_check" check-type="Phone"  value="{$data['member'].telephone}" placeholder="请填写联系电话"/>
+            </div>
+
+
+         
+          </div>
+          <div class="form-group has-feedback">
+            <label for="sex" class="col-md-2 control-label">性别<span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <label class="radio-inline"> <input name="sex" type="radio" value="1"
+                                    
+                <if condition="$data['member'][sex] eq 1"> checked </if>
+                >
+                男 </label>
+              <label class="radio-inline"> <input name="sex" type="radio" value="2" 
+                <if condition="$data['member'][sex] eq 2"> checked </if>
+                >
+                女 </label>
+            </div>
+  
+
+              <label for="card" class="col-md-2 control-label">身份证或者<br>护照号<span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="card" name="card" type="" class="form-control form_check" check-type="Text" disabled value="{$data['member'].card}" placeholder="请填写身份证"/>
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="emergencycontact" class="col-md-2 control-label">紧急联系人<span class="common-color-red"></span></label>
+            <div class="col-md-4">
+              <input id="emergencycontact" name="emergencycontact" type="" class="form-control form_check" check-type="Text"  value="{$data['member'].emergencycontact}" placeholder=""/>
+            </div>
+            <label for="emergencyphone" class="col-md-2 control-label">紧急联系电话<span class="common-color-red"></span></label>
+            <div class="col-md-4">
+              <input id="emergencyphone" name="emergencyphone" type="" class="form-control form_check" check-type="Text"  value="{$data['member'].emergencyphone}" placeholder=""/>
+            </div>
+          </div>
+		   <div class="form-group  has-feedback">
+  			 <label for="qq" class="col-md-2 control-label">QQ</label>
+              <div class="col-md-4">
+                <input id="qq" name="qq" type="" class="form-control form_check" check-type="Text"  value="{$data['member'].qq}" placeholder="请填写QQ"/>
+              </div>
+  			 <label for="bloodtype" class="col-md-2 control-label">血型</label>
+              <div class="col-md-4"> {:form_select(get_bloodtype(),$data['member']['bloodtype'],'class="form-control form_check" check-type="Text" name="bloodtype" id="bloodtype"','请先择')} </div>
+		   </div>
+          <div class="form-group has-feedback">
+    		      <label for="nickname" class="col-md-2 control-label">活动昵称</label>
+                <div class="col-md-4">
+                  <input id="nickname" name="nickname" type="" class="form-control form_check" check-type="Text"  value="{$data['member'].nickname}" placeholder="请填写活动昵称"/>
+                </div>
+               <label for="email" class="col-md-2 control-label">邮箱<span class="common-color-red"></span></label>
+            <div class="col-md-4">
+              <input id="email" name="email" type="" class="form-control form_check" check-type="Email"  value="{$data['member'].email}" placeholder="请填写Email"/>
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="accpre" class="col-md-2 control-label">住宿偏好<span class="common-color-red"></span></label>
+            <div class="col-md-8"> {:form_checkbox(get_accommodation(),$data['member']['accpre'],'name="accpre[]" id="accpre"',0,'100')} </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="allergies" class="col-md-2 control-label">过敏史</label>
+            <div class="col-md-4">
+              <input id="allergies" name="allergies" type="" class="form-control"  value="{$data['member'].allergies}"/>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="role" class="col-md-2 control-label">社会角色</label>
+            <div class="col-md-4">{:form_select(get_role(),$data['member']['role'],'class="form-control" check-type="Text" name="role" id="role"','请选择')} </div>
+            <label for="role_description" class="col-md-2 control-label">角色说明</label>
+            <div class="col-md-4">
+              <input id="role_description" name="role_description" type="" class="form-control form_check" check-type="Text"  value="{$data['member'].role_description}" placeholder=""/>
+            </div>
+          </div>
+		  <div class="form-group has-feedback">
+            <label for="role" class="col-md-2 control-label">保险</label>
+            <div class="col-md-10">
+			<if condition="$data['insurance_info']">
+			<input type="text" disabled class='form-control form_check' value="{$data['insurance_info']['name']}({$data['insurance_info']['sum_insured']}){$data['insurance_info']['price']}元/人">			
+			<else />
+			<input type='text' disabled class='form-control form_check' value='无'>
+			</if>
+			</div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/do_detail_member_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

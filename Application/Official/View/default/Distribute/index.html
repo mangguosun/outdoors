@@ -1,0 +1,22 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+ <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li class="active">集市入驻申请</li>
+    </ol>
+ </div>
+ <div class="row"> <ul id="mytab" class="nav nav-tabs">
+		  <li <if condition="$tab eq 2"> class="hover active" </if> ><a href="{:U('Official/Distribute/index',array('tab'=>2))}">已入驻商家</a></li>
+		  <li <if condition="$tab eq 1"> class="hover active" </if> ><a href="{:U('Official/Distribute/index',array('tab'=>1))}">待审批的申请</a></li>
+		  <li <if condition="$tab eq 3"> class="hover active" </if> ><a href="{:U('Official/Distribute/index',array('tab'=>3))}">已驳回的申请</a></li>
+		  <li <if condition="$tab eq 4"> class="hover active" </if> ><a href="{:U('Official/Distribute/index',array('tab'=>4))}">已通过的申请</a></li>
+		</ul>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:25px;">
+		  <if condition="$tab eq 2"><include file="apply_list_tab2"/></if>
+		  <if condition="$tab eq 3"><include file="apply_list_tab3"/></if>
+		  <if condition="$tab eq 1"><include file="apply_list_tab3"/></if>
+		  <if condition="$tab eq 4"><include file="apply_list_tab3"/></if>
+		</div>
+</div>
+</block>

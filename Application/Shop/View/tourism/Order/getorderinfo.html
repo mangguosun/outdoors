@@ -1,0 +1,403 @@
+<extend name="tourism/common"/>
+<block name="body">
+<div class="container clearfix shoppay">
+<h4 >提交并核对订单信息</h4>
+		<div class="flowstep">
+          <ol class="flowstep-4">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">选择</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+           <li>
+              <div class="step-name">下单</div>
+              <div class="step-no">2</div>
+            </li>
+            <li>
+              <div class="step-name">订单支付</div>
+              <div class="step-no">3</div>
+            </li>
+            <li>
+              <div class="step-name">商家发货</div>
+              <div class="step-no">4</div>
+            </li>
+			<li class="step-last">
+              <div class="step-name">确认收货</div>
+              <div class="step-no">5</div>
+            </li>
+            <!--<li>
+              <div class="step-name">确认出行</div>
+              <div class="step-no">6</div>
+            </li>
+            <li>
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li>-->
+          </ol>
+        </div>
+
+    
+	
+	<label>选择收货地址</label>
+	<div class="address_info">
+	<notempty name="shop_address">
+	 <volist name="shop_address" id="vo" key="k">
+	 
+	
+	  <div class="addr" <if condition="$k gt 4"> style="display:none;"</if> >
+	  
+        <div class="inner prov{$k} <if condition='$vo.isdefault eq 1'>hover</if>" data-sid="{$vo.id}">
+		   <div class="addr-hd" title="{$vo.name} 收">
+			   <span class="name">({$vo.name} 收)</span>
+		   </div>
+		   <div class="addr-bd">
+		       <span class="prov">{$vo['province']}</span>
+			   <span class="city">{$vo['city']}</span>
+			   <span class="">{$vo['district']}</span>
+			   <span class="address">{$vo['address']}</span>
+			   <span>{$vo.detailed}</span>
+			   <span class='phone'>{$vo.phone}</span>
+			   <span class="last">&nbsp;</span>
+		   </div>
+		   <div class="addr-toolbar"></div>
+		</div>
+	  </div>	  
+      </volist>	
+   </notempty>	  
+    </div>
+  
+        <script>
+		  $(function(){
+		    var address_info = $('.address_info .addr .inner');
+			address_info.each(function(){
+			        $(this).click(function(){
+					  $('.address_info .inner').removeClass('hover');
+					  $(this).addClass('hover');
+					  var res_id_val=$(this).attr('data-sid');
+					  $('.reds_id').val(res_id_val);
+					})
+			  })
+		   
+		   var address_infos=$('.address_info .addr');
+		    if(address_infos.length<=4){
+				 $('.display_all').hide();
+				}
+		    address_infos.each(function(i){
+				if(i>3){
+				  //--显示全部--
+				  $('.display_all').click(function(){
+					$(this).hide();
+					$('.display_all_up').show();
+					address_infos.show();
+				  });
+				  //--展起--
+				  $('.display_all_up').click(function(){
+					$(this).hide();
+					$('.display_all').show();
+					if(i<=3){
+						$(address_infos[i]).show();
+					}else{
+						$(address_infos[i]).hide();
+					}
+				  
+				  })
+				}
+				
+			});
+	    })
+		</script>
+	
+		<div id="box" style="display:none">
+			<form class="form-horizontal ajax-form" name="address_add" id="form1">
+				<div class="form-group has-feedback">
+					<label for="name" class="col-md-2 control-label">姓名<span class="common-color-red">*</span></label>
+					<div class="col-md-4">
+						<input id="name" name="name" type="text" class="form-control form_check" check-type="Text"  placeholder="请填写真实姓名"/>
+					</div>
+				</div>
+				  
+				<div class="form-group position">
+					<label for="campus" class="col-md-2 control-label">区域 <span class="common-color-red">*</span></label>
+					<div class="col-md-9" style="float:left;"> 
+						{:hook('J_China_City',array('find'=>'address','level'=>4))} 
+					</div>
+				</div>
+				  
+				<div class="form-group has-feedback">
+					<label for="detailed" class="col-md-2 control-label">详细地址 <span class="common-color-red">*</span></label>
+					<div class="col-md-4">
+						<input id="detailed" name="detailed" type="text" class="form-control form_check" check-type="Text"   placeholder="请填写详细地址"/>
+					</div>
+				</div>
+				  
+				<div class="form-group has-feedback">
+					<label for="zipcode" class="col-md-2 control-label">邮编 <span>&nbsp;</span></label>
+					<div class="col-md-4">
+						<input id="zipcode" name="zipcode" type="text" class="form-control form_check" check-type="Phone" />
+					</div>
+				</div>
+				  
+				<div class="form-group has-feedback">
+					<label for="phone" class="col-md-2 control-label">联系电话 <span class="common-color-red">*</span></label>
+					<div class="col-md-4">
+						<input id="phone" name="phone" type="text" class="form-control form_check" check-type="Phone"  placeholder="请填写联系电话"/>
+					</div>
+				</div>
+				
+				<div class="form-group has-feedback">
+					<label for="email" class="col-md-2 control-label">邮箱 <span class="common-color-red">*</span></label>
+					<div class="col-md-4">
+						<input id="email" name="email" type="text" class="form-control form_check" check-type="email"   placeholder="请填写联系邮箱"/>
+					</div>
+				</div>
+				 
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<input type='submit' value='提交' class="btn btn-primary shop_address_add">
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div class="left">
+		   <a class="display_all glyphicon glyphicon-chevron-down">显示全部</a>	&nbsp;&nbsp;
+		   <a class="display_all_up glyphicon glyphicon-chevron-up" style="display:none;">收起</a>	&nbsp;&nbsp;
+		   <a id="btn" class="glyphicon glyphicon-plus"  onclick="btn()" title="新增收获地址">新增收获地址</a>			
+		</div>
+		<script type="text/javascript">
+		var btn_s=document.getElementById('btn');
+		var box_s=document.getElementById('box');
+		function btn(){ if(btn_s.value=="取消"){box_s.style.display='none';btn_s.value="点击添加新地址";
+			}else{box_s.style.display='';btn_s.value="取消";
+		}
+		}
+		</script>
+	
+		<form action="{:U('Shop/Order/dosign')}" name='lastForm' method="post" id="lastForm" class="ajax-form">
+			<?php if(isset($_POST['tocreateorder'])){ ?>
+			<input type="hidden" name="dosign" value="dosign">
+			<?php }else{ ?>
+									
+			<input type="hidden" name="fastbuydosign" value="fastbuydosign">
+			<?php } ?>
+			 <div class="">
+			 <volist name="siteids" id="siteids">
+				<table style="font-size:14px">
+					<tr>
+					 <th><div class="title">订单信息确认</div></th>
+					 <th colspan='4'></th>
+					</tr>
+					<tr>
+						<td>商品</td>
+						<td>单价（元）</td>
+						<td>数量</td>
+						<td>运费</td>
+						<td>小计（元）</td>
+						
+					</tr>
+					<volist name="siteids['item']" id="vo2">
+					<tr>
+						<td>{$vo2.goods_name}{:get_shop_types_attribute_names($vo2['sku_id'])}</td>
+						<td>{$vo2.price}</td>
+						<td>X{$vo2.num}</td>
+						
+						<td style="color:red">{$vo2.a1}</td>
+
+						<td>{$vo2['totle_price']}</td>
+						<input type="hidden" name="ids[]" checked value="{$vo2.id}|{$vo2.sku_id}|{$vo2.num}" class="goods_id">
+					</tr>
+					</volist>
+					<input type="hidden" id="allfreight" name="allfreight" checked value="{$money_fr}" class="allfreight">
+					
+				
+					
+						<input type="hidden" id="alltotalprice" name="alltotalprice" checked value="{$total_money=$alltotalprice+ $money_fr}" class="alltotalprice">
+						<input type="hidden" name="totalNum" checked value="{$totalnum}" class="totalNum">
+						<!--<input type="hidden" name="alltotalprice" checked value="{$alltotalprice}" class="totalNum">-->
+						<input type='hidden'  name="reds_id"  value="{$shop_address_default.id}" class="reds_id">
+				
+				<!------------------------优惠劵----------------------------->
+				<if condition="$siteids.siteid eq SITEID">
+					<tr>
+						<td colspan='5'>	
+							<div class="form-group has-feedback coupon_text">  
+								<label for="cardid" class="col-md-2 control-label">
+									可用优惠券抵现
+								</label>
+								<div class="col-md-5">							
+									<select id="cardid" name="cardid" class="form-control col-md-7 form_check">
+									<if condition="$ajax_card_select">
+									<option value=''>不使用任何优惠</option>
+									<volist name="ajax_card_select" id="ajax_card_select">
+									<option value="{$ajax_card_select['cardid']}">{$ajax_card_select['typename']} ( {$ajax_card_select['amount']} 元)【券码：{$ajax_card_select['cardid']} 】</option>
+									</volist>
+									<else/>
+									<option value=''>暂无可用优惠券</option>
+									</if>
+									</select>				
+								</div>
+								<div class="col-md-5">
+									<span style="margin-left:30px;color:green" class="card_select_endtime_info"></span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</if>
+				</table>
+			</volist>
+				
+				
+				<!------------------------优惠劵结束----------------------------->
+				<table  style="font-size:14px">
+					<tr>
+						<td  colspan="3">
+							补充说明：<br><textarea name='postscript' style="width:500px" onclick="this.innerHTML='';">限45个字</textarea>
+						</td>
+						<td  colspan="1">
+							<table style="font-size:14px">
+								<tr>
+									<td><span td class="keep_right">应付商品金额：</span></td><td><span td class="keep_left">¥{$alltotalprice }</span></td>
+								</tr>
+								<tr>
+									<td><span td class="keep_right" style="color:red">商品运费：</span></td><td><span td class="keep_left"><span style="color:red">￥{$money_fr}元</span></span></td>
+								</tr>
+								
+								
+								<tr   class="card_o_total">
+									<td> <span td class="keep_right">优惠券抵扣：</span></td><td><span td class="keep_left">￥<span class="card_o_amount"></span><span style="color:green">(代金券省 <b><span style="color:red">¥</span><span class="card_o_amount" style="color:red"></span></b>)</span></td>
+								</tr>
+								<tr>
+									<td><span td class="keep_right">应付总额：</td><td> <div id="totalprice" class="totalprice"><b><span style="color:red">¥</span><span style="color:red" class="total">{$total_money=$alltotalprice+ $money_fr}</span></b></div></td>
+								<tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+							<input type="hidden" name="random_code" value="<?php echo md5($_SESSION['pay']);?>">
+						<td  colspan="4" style="border-bottom:none">
+
+							<a href="{:U('Shop/Index/index')}" class="btn btn-primary paybtn keep_left">返回继续购物</a>
+
+							 <div class="cart-bottom-jiesuan  keep_right"><button type="submit" class="btn btn-primary paybtn " >提交订单</button></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		 </form>
+  
+</div>
+<script>
+   
+   $('form[name="address_add"]').submit(function(){
+		    var datas = $('#form1').serialize();
+			    $.post(U('Shop/Order/address_doadd'), datas, function (res) {
+				    if (res.status==1) {
+						$('.address_info .inner').removeClass('hover');
+					    var address_info = $("<div class='addr'>"
+											  +"<div class='inner hover' data-sid="+res['datainfo']['id']+">"
+												  +"<div class='addr-hd' title="+res['datainfo']['name']+">"
+												  +"<span class='name'>("+res['datainfo']['name']+"收)<span></div>"
+												 
+											  +"<div class='addr-bd'><span>"
+											      +"<span class='prov'>"+res['datainfo']['province']+"</span>"
+												  +"<span class='city'>"+res['datainfo']['city']+"</span>"
+												  +"<span class='district'>"+res['datainfo']['district']+"</span>"
+												  +"<span class='address'>"+res['datainfo']['address']+"</span>"
+											      +res['datainfo']['detailed']+"</span>"
+												  +"<span>"+res['datainfo']['phone']+"</span>"
+												  +"<span  class='last'>&nbsp;</span></div>"
+												  +"<div class='addr-toolbar'></div></div></div>");
+												  
+					   $('.address_info').prepend(address_info);
+					   $('.reds_id').val(res['datainfo']['id']); 
+					   $('#box').hide();
+			
+					}
+					else {
+						toast.error(res.info);
+					}
+				},'json');
+				return false;
+	});
+	
+	function Show_Hidden(trid){
+		if(trid.style.display=="block"){
+			trid.style.display='none';
+		}else{
+			trid.style.display='block';
+		}
+	}
+	
+	
+	/*代金券*/
+		/*选择是否使用代金券*/
+		$(function(){		
+		$('.card_o_total').hide();
+		$('#total').val('');
+		$('.no_use').prop('checked',true);
+		$('.coupon_hand').hide();
+		$("#cardid").val('');
+		$("#cardid1").val('');
+		
+		/*选择代金券*/
+		$("#cardid").change(function(){
+			var paytype = $('#paytype').val();		
+
+			var total = $('#alltotalprice').val();
+			var _this = $(this).val();
+			$.post(U('Usercenter/Config/ajax_check_card'),{card:_this},function(res){
+				var name = res['name'];
+				var card = res['amount'];
+				var enditme_info = res['endtime'];
+				var str = '';
+				if(enditme_info != '' || enditme_info != 0){
+					card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>有效期至 <span style='color:red'><b>"+enditme_info+"</b></span>";
+				}else{
+					card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>长期有效";
+				}				
+					if( _this == ''){
+						$('.total').html(total);
+						$('.card_o_total').hide();
+						$('#card_amount').val('')
+						$('.card_select_endtime_info').hide();
+						$('.card_select_endtime_info').html('');
+						getleftpay();
+					}else{
+						if(parseInt(card) > parseInt(total)){
+								str = '当前【'+name+'】金额大于订单总额，【'+name+'】使用后余额将不退还，是否继续？';
+								if(confirm(str)){
+									$('#totalprice').show();
+									$('.total').html('{$money_fr}');
+									$('.card_o_total').show();
+									$('.card_o_amount').html(total);
+									$('#card_amount').val(card);
+									$('.card_select_endtime_info').show();
+									$('.card_select_endtime_info').html(card_endtime_str)
+								}else{
+									$('#cardid').val('')
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									$('#card_amount').val('');
+								}
+							}else{
+								$('#totalprice').show();
+								var tcprice = (total - card);
+								tcprice = tcprice.toFixed(2);//小数运算后取小数点后两位
+								$('.total').html(tcprice);
+								$('.card_o_total').show();
+								$('#card_amount').val(card);
+								$('.card_o_amount').html(card)
+								$('.card_select_endtime_info').show();
+								$('.card_select_endtime_info').html(card_endtime_str)
+							}
+					}		
+			},'json')
+		})
+
+	})
+</script>
+
+
+
+</block>

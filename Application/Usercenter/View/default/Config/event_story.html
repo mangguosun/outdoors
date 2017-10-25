@@ -1,0 +1,72 @@
+<extend name="Config/base"/>
+<block name="body">
+
+  <div id="center">
+    <div class="common_block_title ">
+      <div class="pull-right">
+        <if condition="is_login() eq 0">
+          <button class="mbtn btn-primary btn-large event_btn" onclick="toast.error('请登录后再发布。','温馨提示')">发布故事</button>
+          <else/>
+          <a class="mbtn btn-info event_sign" href="{:U('Issue/Index/add_story')}">发布故事</a> </if>
+      </div>
+      我发布的故事</div>
+    <div class="row data-table usercenter-common-table-story">
+      <table class="">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th width="60">故事ID</th>
+            <th width="150">标题</th>
+            <th width="70">分类</th>
+            <th width="100">发布时间</th>
+            <th width="100">更新时间</th>
+            <th width="100">关联活动URL</th>
+            <th width="50">状态</th>
+            <th width="100">操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="list">         
+          <volist name="list" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><a title="{$vo.title}" href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.title}</a></td>
+              <td>{$vo.it}</td>
+              <td>{$vo.create_time|date="Y-m-d",###}</td>
+              <td>{$vo.update_time|date="Y-m-d",###}</td>             
+              <td><if condition="$vo.url neq ''"><a href="{$vo.url}" title="{$vo.url}" target="_blank">{$vo.url}</a><else />无</if></td>             
+              <td>
+				  <?php if($vo['status'] == -1) echo '已删除'?>
+				  <?php	if($vo['status'] == 0) echo '未审核'?>
+				  <?php if($vo['status'] == 1) echo '正常'?>
+			  </td> 
+				  <?php if($vo['status'] == -1):?>
+					<td></td>
+				  <?php elseif($vo['status'] == 0):?>
+			  <td>
+					<a class="mbtn btn-default" href="{:U('Issue/Index/edit_story',array('id'=>$vo[id]))}">编辑</a>
+					<a class="mbtn btn-default delEvent" onclick="return del()" href="{:U('Issue/Index/issue_del',array('id'=>$vo[id]))}">删除</a>
+			  </td>  
+				  <?php elseif($vo['status'] == 1):?>
+				<td>
+					<a class="mbtn btn-default" href="{:U('Issue/Index/edit_story',array('id'=>$vo[id]))}">编辑</a>
+					<a class="mbtn btn-default delEvent" onclick="return del()" href="{:U('Issue/Index/issue_del',array('id'=>$vo[id],'page'=>I('page')))}">删除</a>
+				</td>
+				  <?php endif;?>
+            </tr>
+          </volist>
+		   <tr><td colspan="8">{$page}</td></tr>
+          <else/>
+        <td colspan="8" class="text-center"> aOh! 您还没有发布任何故事哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+	function del(){
+		return confirm("您确定删除该活动吗？")
+	}
+</script>
+</block>

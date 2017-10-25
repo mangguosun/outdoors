@@ -1,0 +1,61 @@
+
+
+<div class="index_tag_box">
+    <if condition="websit_trave()">
+        <div class="index_tag_titles">
+            <div class="index_tag_title"><a href="#">马上出发</a></div>
+            <div class="index_tag_nav">
+                <?php if(!empty($return_websit_tags[0]['id'])):?>
+                  <volist name="return_websit_tags" id="tag">
+                    <a title="" href="{:U('Event/Index/index',array('tag'=>$tag['id']))}" class="btn btn-grey">{$tag['name']}</a>
+                  </volist>
+
+                <?php endif;?>
+              </div>
+            <div class="index_tag_more"><a href="{:U('Event/Index/index')}">更多></a></div>
+        </div>
+    </if>
+    <if condition="$contents neq false">
+
+        <div class="index_tag_box">
+              <div class="index_tag_lists">
+                    <volist name="contents" id="vo" key="k" offset="0" length='7'>
+                          <if condition="$k eq 1">
+                            <dl class="bigpic">
+                          <else/>
+                            <dl class="">
+                          </if>
+                                  <dt> <a title="{$vo.title|strip_tags}" class="" href="{:U('Event/Index/detail',array('id'=>$vo['id']))}"> <img class="event-maxheight add_loading add_loading_recommendevent" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=265,200}"/></a>
+                                         <if condition="$vo.lasted_time neq ''  AND $vo.lasted_time neq 0 ">
+                                              <div class=""><span>{$vo.lasted_time}出发 X {$vo.traveldays}天</span></div>
+                                          <else />
+                                              <div class=""><span>{$vo.traveldays}天</span></div>
+                                            </if>
+                                    
+                                  </dt>
+                                  <dd><span class="price"><i><if condition="$vo.price_text neq ''">{$vo.price_text}<else /><if condition="$vo.price eq 0">免费活动<else />￥{$vo.price}元/人</if></if></i></span>
+                                    <p class="title"><a title="{$vo.title|strip_tags}" href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" class="text-more hundred">
+                                      <if condition="$k eq 1"> {$vo.title}
+                                        <else/>
+                                        {$vo.title|op_t}</if>
+                                      </a></p>
+                                      
+                                     <if condition="$k eq 1"> 
+                                    <p class="description">
+                                       {$vo.description|op_t|getShortSp=70}
+                                    </p>
+                                    </if>
+                                  </dd>
+                          </dl>
+                    </volist>
+              </div>
+        <!--end-->
+        </div>
+        <script>
+        $(function () {
+        hdl_lazyload("img.add_loading_recommendevent");
+         })
+        </script>
+    </if>
+           
+</div>

@@ -1,0 +1,47 @@
+<extend name="default/common"/>
+<block name="body">
+ <div class="container clearfix"> 
+
+	 <div class="app_head">
+	  <div class="app_title"><i class="app_ico_i glyphicon glyphicon-th-large"></i>{$video.video_name}</div>
+	  
+	  <!--
+	  <div>
+	    <div class="aline"></div>
+	  </div>
+	  	  <div class="sub_nav">
+	    <ul id="top_nav" class="nav_list clearfix">
+	       <volist name="menu_list.left" id="menu">
+	       <php>$class=($current==$menu['tab']?'cur':'');</php>
+	          <li><a class="{$class}" href="{$menu.href}"> <neq name="menu.icon" value=""><i class="glyphicon glyphicon-{$menu.icon}"></i></neq>{$menu.title}</a></li>
+	      </volist>
+	      <li class="pull-right btn-submit">
+	       
+	      </li>
+	    </ul>
+	  </div>
+	  -->
+	</div> 
+
+
+</div>
+<div class="container common_block_border ">
+	<div class="clearfix">
+        <h2 class="title_content"><center>{$video.video_name}</center></h2><hr>
+        
+           <div class=" widget-video-detail video_contents_detail" style="margin:0 auto;" >
+			   
+			    <div class="widget-video-md">
+			      <p>
+			        <embed  align="none" class="edui-faked-video-list" pluginspage="http://www.macromedia.com/go/getflashplayer" src="{$video[video_real_url]}" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="never" menu="false" loop="false" play="true" wmode="transparent" />
+			      </p>
+			    </div>
+			</div>
+    </div>
+</div>
+
+
+</block>
+<block name="script">
+
+</block>

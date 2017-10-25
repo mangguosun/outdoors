@@ -1,0 +1,18 @@
+<div class="search_shop">
+  <div class="notice">
+    <volist name="documentlist" id="vo">
+      <table>
+        <tr>
+          <td class="title"><a href="{:U('Blog/Article/detail',array('id'=>$vo['id']))}" target="_blank">{$vo.title}</a></td>
+        </tr>
+        <tr>
+          <td class="nickname">{$vo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="create_time">{$vo.create_time|date="Y-m-d H:i:s",###}</span></td>
+        </tr>
+      </table>
+    </volist>
+    <div> {:getPagination($totalCount,10)}</div>
+    <if condition="!$documentlist">
+      <div class="shop-box-prompt">该分类下现在还没有公告哦。O(∩_∩)O~ </div>
+    </if>
+  </div>
+</div>

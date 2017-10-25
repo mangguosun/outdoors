@@ -1,0 +1,71 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 详细资料
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+	<!-- 报名活动用户 -->
+	<div class="par-mubdet-con">
+		<div class="am-u-sm-4 par-mubdet-conleft">
+			<a href="">
+	 			 <img class="am-circle am-img-thumbnail par-mubdet-pic" src="{$user.avatar128}" />
+	 		</a>
+		</div>
+		<div class="am-u-sm-8 par-mubdet-conright">
+			<div class="par-mubdet-name">
+				{$user.nickname}
+			</div>
+		<if condition="$user['sex'] eq 1">
+			<div class="am-icon-mars par-mubdet-sex">
+				<label>男</label>
+			</div>
+		<elseif condition="$user['sex'] eq 2"/>
+			<div class="am-icon-neuter par-mubdet-sex">
+				<label>女</label>
+			</div>
+		<else />
+			<div class="par-mubdet-sex">
+				<label>性别 : 未填写</label>
+			</div>
+		</if>
+			<div class="par-mubdet-det">
+				星座 : {$user.constellation}
+			</div>
+			<div class="par-mubdet-det">
+				所在地：<if condition="$user['address'] neq ''">{$user.address}<else />未填写</if>
+			</div>
+			<div class="par-mubdet-det">
+				个性签名：<if condition="$user['signature'] neq ''">{$user.signature}<else />未填写</if>
+			</div>
+		</div>
+	</div>
+	<if condition="$parevent_uid eq is_login()">
+	<!-- 报名信息 -->
+	<div class="par-create-font parsign-conb"><span class="mark-type-i">l</span>&nbsp;&nbsp;报名信息</div>
+	<volist name="partner_user" id="partner_user">
+	<div class="par-mubdet-sign">
+		<div class="par-mubdet-signaa">
+			姓名<span>：{$partner_user.name}</span>
+		</div>
+		<div class="par-mubdet-signaa">
+			性别<span>：<if condition="$partner_user['sex'] eq 1">男<else />女</if></span>
+		</div>
+		<div class="par-mubdet-signaa">
+			电话<span>：{$partner_user.phone}</span>
+		</div>
+	</div>
+	</volist>
+	<else />
+	</if>
+</body>
+</block>

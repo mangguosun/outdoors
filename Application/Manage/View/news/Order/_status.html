@@ -1,0 +1,288 @@
+<php>
+$paytype = $event_attend['paytype'];
+$status  = $event_attend['status'];
+$pay_status  = $event_attend['pay_status'];
+</php>
+<div class="row usercenter-event-order">
+	&nbsp;&nbsp;&nbsp;<h6 class="row-title before-orange">订单详情： {:op_t(get_event_order_status_detail_title($status))}  </h6>  
+ 
+    
+  <div class="form-inline btn btn-defatlt pull-right">	
+		<?php if(checked_admin(is_login())): ?>
+			{:admin_get_event_detail_btn($event_attend,1)}
+		<?php else:?>
+			{:admin_get_event_detail_btn($event_attend)}
+		<?php endif;?>
+	 </div>
+  
+  <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12">
+          <div id="WiredWizard" class="wizard wizard-wired" data-target="#WiredWizardsteps">
+              <!--定金支付-->
+              <if condition="$paytype eq 1">
+                  <if condition="$status eq 1">
+                     <ul class="steps">
+                        <li data-target="#wiredstep1" class="active"><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" ><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3"><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5"><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+
+                  </if>
+                  <if condition="$status eq 10">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active"><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3"><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5"><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if> 
+                  <if condition="$status eq 11">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active"><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active"><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5"><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if> 
+                  <if condition="$status eq 12">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active"><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" ><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5"><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul> 
+                  </if> 
+                 
+                  
+                  <if condition="$status eq 30">
+                     <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5" class="active" ><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if> 
+                  <if condition="$status eq 31">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5" class="active" ><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if> 
+                  <if condition="$status eq 32">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5" class="active" ><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if> 
+                  <if condition="$status eq 33">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">定金支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep5" class="active" ><span class="step">5</span><span class="title">余款支付</span> <span class="chevron"></span></li>
+                    </ul>
+                  </if>
+              </if>
+
+              <!--全额支付-->  
+              <if  condition="$paytype eq 0">
+                  <if condition="$status eq 1">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"  ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+                  <if condition="$status eq 20">
+                       <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3"  ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"  ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                     
+                  </if>
+                  <if condition="$status eq 21">
+                        <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4"  ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+                
+                  <if condition="$status eq 30">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+                  <if condition="$status eq 31">
+                       <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+                  <if condition="$status eq 32">
+                      <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+                  <if condition="$status eq 33">
+                        <ul class="steps">
+                        <li data-target="#wiredstep1" class="active" ><span class="step">1</span><span class="title">预约</span><span class="chevron"></span></li>
+                        <li data-target="#wiredstep2" class="active"><span class="step">2</span><span class="title">下单</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep3" class="active" ><span class="step">3</span><span class="title">订单支付</span> <span class="chevron"></span></li>
+                        <li data-target="#wiredstep4" class="active" ><span class="step">4</span><span class="title">确认出行</span> <span class="chevron"></span></li>
+                        
+                    </ul>
+                  </if>
+              </if>
+
+            
+          </div>
+         <!--  <div class="actions actions-footer" id="WiredWizard-actions">
+              <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm btn-prev"> <i class="fa fa-angle-left"></i>Prev</button>
+                  <button type="button" class="btn btn-default btn-sm btn-next" data-last="Finish">Next<i class="fa fa-angle-right"></i></button>
+              </div>
+          </div> -->
+      </div>
+  </div>
+ 
+     <!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/fuelux/wizard/wizard-custom.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/toastr/toastr.js"></script>
+
+   <script type="text/javascript">
+        jQuery(function ($) {
+            $('#simplewizardinwidget').wizard();
+            $('#simplewizard').wizard();
+            $('#tabbedwizard').wizard().on('finished', function (e) {
+                Notify('Thank You! All of your information saved successfully.', 'bottom-right', '5000', 'blue', 'fa-check', true);
+            });
+            $('#WiredWizard').wizard();
+        });
+    </script>
+    <!--Google Analytics::Demo Only-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'http://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-52103994-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+     
+   
+     
+</div>
+     
+    
+
+
+
+
+            
+<table class="table table-striped table-bordered table-hover" >
+  <foreach name="member" item="vo"> 
+  <thead> 
+    <tr>
+      <th>订单号</th>
+      <th>状态</th>
+      <th>
+           <if condition="$event_attend['paytype'] eq 1">
+          <if condition="$event_attend['pay_status'] eq 0">
+             所需支付定金 
+            <elseif  condition="$event_attend['pay_status'] eq 1"/>
+             所需支付余额
+            <elseif  condition="$event_attend['pay_status'] eq 2"/>
+            已全部支付：
+          </if>
+        <elseif  condition="$event_attend['paytype'] eq 0"/>
+        
+        <if condition="$event_attend['pay_status'] eq 0">
+            <div class="form-inline">所需支付金额</div>
+            <elseif  condition="$event_attend['pay_status'] eq 2"/>
+            <div class="form-inline">已全部支付</div>
+          </if>
+        </if>
+      
+      
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{$event_attend.trade_sn}</td>
+      <td>{:op_t(get_event_order_status($event_attend['status']))}</td>
+
+      <td>
+           <if condition="$event_attend['paytype'] eq 1">
+          <if condition="$event_attend['pay_status'] eq 0">
+            <b>¥{$event_attend.payprice}</b>
+            <elseif  condition="$event_attend['pay_status'] eq 1"/>
+            <b>¥{:($event_attend['totalprice'] - $event_attend['payprice'])}</b><span> ，已支付¥{$event_attend['payprice']}</span>
+            <elseif  condition="$event_attend['pay_status'] eq 2"/>
+            <b>¥{$event_attend['totalprice']}</b>
+          </if>
+        <elseif  condition="$event_attend['paytype'] eq 0"/>
+        <if condition="$event_attend['pay_status'] eq 0">
+            <b>¥{$event_attend.payprice}</b>
+            <elseif  condition="$event_attend['pay_status'] eq 2"/>
+            <b>¥{$event_attend['totalprice']}</b>
+          </if>
+        </if>
+
+      </td>
+  
+    </tr>
+    </tbody>
+  </foreach>
+  </table>
+ 
+	<!--if condition="$event_attend['cardid'] != ''">
+	   <div class="col-md-10">
+		<div class="form-inline">优惠信息：成功使用<b>【{$card_info[name]}】</b>x1,其中:<b>【{$card_info[name]}】</b>卡号 {$card_info[cardid]}，面值<b> ¥{$card_info[amount]}</b></div>
+	  </div>
+	</if>
+    <div class="col-md-12">
+      <div class="form-inline pull-right">
+        {:get_event_detail_btn($event_attend)}
+      </div>
+    </div-->
+
+ 

@@ -1,0 +1,68 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Index/index')}" class=""> <i class="am-icon-chevron-left"></i></a>我的</div>
+    <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Config/set')}" class="" >
+  <i class="am-header-icon am-icon-cog"></i>
+  </a>
+  </div>
+  </header>
+  <include file="Public/topnavbar"/>
+  <include file="Public/navbar"/>
+  <!--登录状态-->
+  <div class="allbackground" >  
+  <div class="userconter-topbox">
+  	  <div class="userconter-topbox-content">
+        <div class="userimg-box" data-am-widget="gallery" data-am-gallery="{ pureview: true }"><img src="{$user.avatar128}" class="userconter-userimg"/></div>
+        <div class="loginname">
+        	<div class="loginname-name">{$user.nickname} &nbsp;<span class="am-text-warning">{$user.title}</span></div>
+        	<div class="loginname-address">{:get_upgrading($user['is_use'])}，{$user.addresss.province} {$user.addresss.city}</div>
+            <div class="loginname-word">{$user.signature}</div>
+        </div>               	              	 
+      </div>
+      <ul class="userconter-follow-fans">
+      	<li class="userconter-follow"><a href="{:U('Mobile/People/peoplefollow',array('uid'=> $user['uid']))}"><strong>{$user.following}</strong><div>关注</div></a></li>
+        <li class="userconter-fans"><a href="{:U('Mobile/People/peoplefan',array('uid'=> $user['uid']))}"><strong>{$user.fans}</strong><div>粉丝</div></a></li>
+      </ul>
+  </div> 
+  
+  <div class="ordertype-list">
+      <a href="{:U('Mobile/Config/myevent')}" class="ordertype-list-event"><i class="am-icon-flag"></i> 活动订单 <if condition="$my_event neq 0"><span class="am-badge am-badge-secondary am-round">{$my_event}</span></if></a>
+      <a href="{:U('Mobile/Shoporder/index')}" class="ordertype-list-shop"><i class="am-icon-file-text"></i> 商品订单 </a>
+  </div>
+  <div class="userconter-lists-box">
+    <ul class="am-list am-list-border am-list-news-bd count_num">
+      <li><a href="{:U('Mobile/Config/wallet')}"><i class="am-icon-credit-card"></i> 钱包 <!--small class="wallet-small">积分，优惠券，余额，红包一网打尽</small--><span class="am-list-date"><i class="am-icon-angle-right set-icon"></i></span></a></li>
+      <li><a href="{:U('Mobile/Config/myissue')}"><i class="am-icon-book"></i> 我的故事<span class="am-list-date"><i class="am-icon-angle-right set-icon"></i></span></a></li>
+      <li><a href="{:U('Mobile/Config/collection_issue')}"><i class="am-icon-heart"></i> 收藏<span class="am-list-date"><i class="am-icon-angle-right set-icon"></i></span></a></li>
+      <li><a href="javascript:" class="session_panel_btn"><i class="am-icon-volume-up"></i> 消息中心<span class="am-list-date"><span class="friend_has_new am-badge am-badge-secondary am-round"
+      <php>
+            $map_mid=is_login();
+            $has_talk_push=D('talk_push')->where("(uid = ".$map_mid." and status = 1) or (uid = ".$map_mid." and status = 0)")->count();
+            $has_message_push=D('talk_message_push')->group('talk_id')->where("uid= ".$map_mid." and (status=1 or status=0)")->select();
+            //if($has_talk_push || $has_message_push){
+            if( $has_message_push){
+        </php>
+        style="display: inline-block"
+        <php>}</php>
+        >{:count($has_message_push)}</span> <i class="am-icon-angle-right set-icon"></i></span></a></li>
+      <!--li><span class=" am-list-date"><i class="am-icon-angle-right set-icon"></i></span><a href="javascript:toasts.error('暂未开放')"><i class="am-icon-share-square"></i> 推荐有奖</a></li-->
+    </ul>
+  </div>
+   <button type="button" id="user_logout" class="am-btn am-btn-block am-btn-danger overbutton"> 退出当前帐号</button>
+  </div>
+    
+ <!--class="allbackground"-->
+	
+ 
+  <script>
+$('#user_logout').click(function(){
+    $.post("{:U('Mobile/User/logout')}",function(data){
+        if(data.status == 1){
+			toasts.info('成功退出',data.url);
+        }
+    },'json')
+})
+</script>
+</block>

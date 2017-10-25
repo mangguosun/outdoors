@@ -1,0 +1,185 @@
+<extend name="Usercenter/base"/>
+
+<block name="body">
+
+<div class="row">
+<ol class="breadcrumb">
+  <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+  <li class="active">网站管理</li>
+</ol>
+</div>
+<div class="row">
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">网站管理</span>
+            <div class="widget-buttons">
+                
+            </div>
+        </div>
+        <div class="widget-body search-form">
+             <form action="{:U('Official/Usercenter/check_website')}" method="post" class="">
+            <div class="form-inline ">
+                <div class="input-group ">
+                    <span class="input-group-addon">网站名称</span>
+                    <input type="text" name="webname" class="form-control search-input" value="{:I('webname')}" placeholder="请输入网站名称">
+                </div>                         
+                <div class="input-group ">
+                    <a class="btn btn-default" href="javascript:;" id="search" url="{:U('Official/Usercenter/check_website')}">搜索</a>
+                </div> 
+            </div>
+            </form>
+        </div>
+        <div class="widget-body">
+        <table class="table table-striped table-bordered table-hover">
+  <!-- 表头 -->
+  <thead>
+    <tr>
+      <th>站点ID</th>
+      <th>网站名称</th>
+      <th>域名</th>
+      <th>客服电话</th>
+      <th>VIP/上线</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <volist name="contacts_arr" id="vo">
+      <tr>
+        <td>{$vo.siteid}</td>
+        <td>网站名称：{$vo.webname}<br />
+		申请人：{$vo.nickname}<br />
+		申请时间：{$vo.createtime|date="Y-m-d",###}</td>
+        <td>站内：{$vo.url}<br />站外：
+            <?php if(!empty($vo['domain'])):?>
+              <?php foreach(($vo['domain']) as $v):?>
+                  {$v.domain}<br>
+              <?php endforeach;?>
+            <?php else:?>
+             {$vo.domain}
+            <?php endif;?>				
+        </td>
+        <td>客服电话：{$vo.telphone}<br />
+负&nbsp;责&nbsp;人：{$vo.club_name}<br />
+负责手机：{$vo.club_mobile}</td>
+        <td><if condition="$vo['is_vip'] eq 1">
+              是
+              <else/>
+              否
+              </if>
+              /
+              <if condition="$vo['is_online'] eq 1">
+              是
+              <else/>
+              否
+              </if>
+              </td>
+        <td><?php if($vo['status'] == 1):?>
+              已审
+              <?php elseif($vo['status'] == 0):?>
+              未审
+              <?php elseif($vo['status'] == -1):?>
+              禁用
+              <?php elseif($vo['status'] == -2):?>
+              删除
+              <?php endif;?></td>
+        <td>
+         
+        <div class="btn-group">        
+          <div class="btn-group">
+                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    操作 <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  
+                      <?php if($vo['status'] == -1):?>
+                            <li><a class="updatawebstatus" data-siteid="{$vo.siteid}" data-status="1" href="javascript:">开启</a></li>
+                      <?php elseif($vo['status'] == 0):?>
+                            <li><a class="updatawebstatus" data-siteid="{$vo.siteid}" data-status="10" href="javascript:">审核</a></li>
+                          <if condition="$vo['siteid'] neq 1">
+                            <li><a class="updatawebstatus" data-siteid="{$vo.siteid}" data-status="-2" href="javascript:">删除</a></li>
+                          </if>
+                     
+                      <?php elseif($vo['status'] == 1):?>
+                          <li><a href="{:U('websit_add',array('siteid'=>$vo['siteid']))}">增加站外域名</a></li>
+                          <if condition="$vo['siteid'] neq 1">
+                              <li><a class="updatawebstatus" data-siteid="{$vo.siteid}" data-status="-1" href="javascript:">禁用</a></li>
+                          </if>
+                      
+                      <?php elseif($vo['status'] == -2):?>
+                      <li><a class="updatawebstatus" data-siteid="{$vo.siteid}" data-status="1" href="javascript:">恢复</a></li>
+                      <?php endif;?>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{:U('websit_edit',array('id'=>$vo['siteid']))}">编辑</a>
+                    </li>
+                </ul>
+            </div>  
+        </div>
+       </td>
+      </tr>
+    </volist>
+    </tbody>
+</table>
+        
+        
+       <div style="clear:both;overflow:hidden;padding:0 5px 0 0"><div style="float:right;margin-top:15px;">{$page}</div></div> 
+            
+        </div>
+    </div>
+  
+</div>
+</block>
+<block name="script">
+<script>
+	$(function () {
+		
+		$('.updatawebstatus').click(function () {
+			if (confirm('确定要操作么？')) {
+				var siteid = $(this).attr('data-siteid');
+				var status = $(this).attr('data-status');
+				$.post(U('Official/Usercenter/do_check_website'), {siteid: siteid,status: status}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});
+		
+	})
+</script>
+
+
+<script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+</block>

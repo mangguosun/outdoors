@@ -1,0 +1,11 @@
+<if condition="$lists neq false">
+  <div class="common_block_border blog_position">
+    <div class="common_block_title">推荐领队</div>
+    <volist name="lists" id="vo">
+      <dl style="clear:both;zoom:1; overflow:hidden">
+        <dt class="col-md-3"><a target="_blank" href="{$vo.user.space_url}"><img src="{$vo.user.avatar64}" class="avatar-img" ucard="{$vo.uid}"></a></dt>
+        <dd class="col-md-9"><a title="{$vo.user.nickname}" href="{$vo.user.space_url}">{$vo.user.nickname}</a> </dd>
+      </dl>
+    </volist>
+  </div>
+</if>

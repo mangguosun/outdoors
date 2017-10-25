@@ -1,0 +1,113 @@
+<extend name="sports/common"/>
+<block name="body">
+<div class="container clearfix">
+      <div class="shoppay">
+	   <div class="detail_box myevent_detail">
+	  <include file="_shopstatus"/> 
+	  </div>
+		<a href="{:U('Shop/Index/Index')}" class="btn "><<返回继续购物</a>
+		
+        <table >
+          <tr>
+            <th colspan="5"> <div class="title">购物清单</div> </th>
+          </tr>
+          <tr>
+		    <td class="td_left"> 商品 </td>
+            <td> 单价 </td>
+			<td> 数量 </td>
+			<td> 运费 </td>
+			<td> 小计 </td>
+          <volist name="list" id="vo">
+            <tr>
+              <td> <img src="{$vo.goods_ico|getThumbImageById=55,55}" width="55" height="55" />{$vo.goods_name} {$vo.goods_desc} </td>
+              <td>￥{$vo.goods_price}</td>
+			  <td>×{$vo.goods_num}</td>
+			  <td><!--{$vo.freight}--><if condition="($vo.freight eq 0)"> 包邮产品 <else />×{$vo.freight}</if></td>
+			  <td>￥{$vo['goods_num']*$vo['goods_price']}</td>
+            </tr>
+          </volist>
+		  <tr>
+			<td>
+				买家留言：{$sign.postscript}
+			</td>
+			<td colspan=4>
+				<table>
+					<tr>
+						<td><span td class="keep_right">应付商品金额：</span></td><td><span td class="keep_left">￥{$sign.totalcostprice}元</span></td>
+					</tr>
+					<tr>
+						<td><span td class="keep_right">商品数量：</span></td><td><span td class="keep_left">{$sign.totalnum}</span></td>
+					</tr>
+					
+					<!--<if condition="($listMoney.f_isrd eq 1)">
+					<if condition="$listMoney.f_num gt $sign.totalnum">
+					<tr>
+						<td><span td class="keep_right">商品运费：</span></td><td><span td class="keep_left">￥{$listMoney.f_money}元</span></td>
+					</tr>
+					<else />
+					<tr>
+						<td><span td class="keep_right">商品运费：</span></td><td><span td class="keep_left"><span style="display:none;">{$numCount=$sign['totalnum'] - $listMoney['f_num']}
+						{$money=$numCount * $listMoney.f_freight}</span>
+						<span style="color:red">￥{$money_fr=$money + $listMoney.f_money}元</span>
+						</span></td>
+									
+					</tr>
+					
+					</if>
+					</if>-->
+					
+					<tr>
+						<td><span td class="keep_right">商品运费：</span></td><td><span td class="keep_left">￥{$money_fr=$sign.allfreight}元</span></td>
+					</tr>
+									
+					<if condition="$sign['cardid']">
+					<tr   class="card_o_total">
+						<td> <span td class="keep_right">优惠券抵扣：<span style="color:green">【{$sign.cardname}{$sign.cardid}】</span></span></td><td><span td class="keep_left"><b><span style="color:red">省￥{$sign.amount}元</span></b></td>
+					</tr>
+					</if>
+					<tr>
+						<td><span td class="keep_right">实付商品总额：</td><td> <div id="totalprice" class="totalprice"><b><span style="color:red"></span><span style="color:red" class="total">￥{$total_money=$sign['alltotalprice']}元</span></b></div></td>
+					<tr>
+					<tr>
+						<td><span td class="keep_right">实付订单金额：</td><td> <div id="totalprice" class="totalprice"><b><span style="color:red"></span><span style="color:red" class="total">￥{$total_money=$sign['alltotalprice']+$money_fr}元</span></b></div></td>
+					<tr>
+				</table>
+			</td>
+		  </tr>
+        </table>
+        <hr>
+        <table>
+          <tr>
+            <th> <div class="title">收货信息</div> </th>
+          </tr>
+          <tr>
+            <td> 姓名：{$sign.consignee_name}&nbsp;&nbsp;联系电话：{$sign['phone']}&nbsp;&nbsp; </td>
+          </tr>
+          <tr>
+            <td> 收货地址：[{:get_city($sign['province'])} {:get_city($sign['city'])} {:get_city($sign['district'])} {:get_city($sign['consignee_address'])} &nbsp;&nbsp;&nbsp;{$sign['consignee_address_detailed']} &nbsp;&nbsp;邮编：{$sign['zipcode']} &nbsp;&nbsp;邮编：{$sign['email']}]</td>
+          </tr>
+        </table>
+		<if condition="$sign['status'] eq 20">
+        <form class="form-horizontal " role="form" action="{:U('Shop/Pay/do_pay')}" method="post" target="_blank" style=" margin-top:20px">
+          <input type="hidden" name="order_id" id="trade_sn" value="{$sign.order_sn}"/>
+          <input type="hidden" name="alltotalprice" id="alltotalprice" value="{$sign['alltotalprice']}">
+          <input type="hidden" name="allfreight" id="allfreight" value="{$money_fr}">
+		 
+		  <div class="form-group">
+            <div class="col-md-12">
+              <if condition="$pay_types"> {:mk_pay_btn($pay_types,'1','',0)}
+                <else/>
+                本站暂未开启在线支付功能，如需帮助请联系管理员。 </if>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="data-table-order-con">
+              <button type="submit" class="btn btn-primary btn-pay">确认并支付</button>
+              <a  class="pay_popup" href="{:U('Usercenter/Pay/pay_popup',array('id'=>$event_attend['id']))}"></a> </div>
+          </div>
+        </form>
+		</if>
+      </div>
+</div>
+
+</block>

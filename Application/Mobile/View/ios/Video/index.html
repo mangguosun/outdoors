@@ -1,0 +1,71 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Index/index')}" class=""> <i class="am-icon-chevron-left"></i></a>{$model_info['name']}</div>
+    <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+  </header>
+  <include file="Public/topnavbar"/>
+  <div class="am-list-news am-list-news-default">
+    <div class="video-list-tpl">
+      <li class="am-g am-list-item-dated"><a href="" data-href class="am-list-item-hd">标题</a><span class="am-list-date" data-recommend><i class="am-icon-chevron-right"></i></span></li>
+    </div>
+    <div class="am-list-news-bd video-lists">
+      <ul class="am-list">
+      </ul>
+      <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon style=" display:none"></i> <span loading-text>加载更多</span></div>
+    </div>
+  </div>
+  <script>
+$(function () {
+	var loading_i = 0;				
+	var get_url = {};
+	var gget_url = {$get_url};
+	if(!$.isEmptyObject(gget_url)){
+		get_url = gget_url;
+	}
+	function get_video(is_del){
+		if(is_del ==true){
+			$(".video-lists ul li").remove();
+		}
+		var loading_more = $(".loading-more");
+		var loading_text = loading_more.find('[loading-text]');
+		var loading_icon = loading_more.find('[loading-icon]');
+		loading_text.html('奋力加载中');
+		loading_icon.show();
+		get_url['page'] = loading_i;
+		$.getJSON("{:U('Mobile/Video/get_video_index')}",get_url,function(json){
+			if(json){
+				$.each(json,function(index,array){
+					var video_list_tpl = $('.video-list-tpl li');
+					var video_list_li = video_list_tpl.clone();
+					var video_list_href = video_list_li.find('[data-href]');//url
+					var video_list_title = video_list_li.find('[data-title]');//标题
+					//var video_list_recommend = video_list_li.find('[data-recommend]');//目的地			 
+					video_list_href.attr("href",array['url']);
+					video_list_href.html(array['video_name']);
+					//video_list_recommend.html(array['video_recommend']);
+					$(".video-lists ul").append(video_list_li);
+				});
+				$(".video-lists").trigger("scroll");
+				loading_text.html('加载更多');
+				loading_icon.hide();
+				loading_i++;
+			}else{
+				//$('.loading-more').unbind('click');
+				loading_text.html('已经没有了');
+				loading_icon.hide();
+			} 
+		});
+	
+	}		
+	get_video();
+	$('.loading-more').click(function () {
+		get_video();
+	});
+});	
+</script>
+</block>

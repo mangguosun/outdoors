@@ -1,0 +1,35 @@
+<div data-am-widget="navbar" class="am-navbar  am-cf foot-icon-size"  id="" style="z-index:99999">
+  <ul class="am-navbar-nav am-cf am-avg-sm-6">
+    <li >
+      <a href="{:U('Mobile/Index/index')}" <if condition="get_nav_active_mobile('home') eq 1"> class="am-actions"</if> >
+         <i class="am-icon-home" ></i>
+        <span class="am-navbar-label">首页</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="{:U('Mobile/Event/index')}" <if condition="get_nav_active_mobile('event') eq 1"> class="am-actions"</if> >
+        <i class="am-icon-flag"></i>
+        <span class="am-navbar-label">活动</span>
+      </a>
+    </li>
+    <li class="index-plus punch_open">
+      <a href="javascript:" class="butt-plus">
+        <span class="am-navbar-label"  style="height:13px;"></span>  
+        <i class="am-icon-plus"></i>  
+        <span class="am-navbar-label"  style="height:14px;"></span>      
+      </a>
+    </li>
+    <li class="">
+      <a href="{:U('Mobile/Shop/index')}" <if condition="get_nav_active_mobile('shop') eq 1"> class="am-actions"</if> >
+        <i class="am-icon-cart-plus"></i>
+        <span class="am-navbar-label">宝贝</span>
+      </a>
+    </li>
+    <li>
+      <a href="{:U('Mobile/Issue/index')}" <if condition="get_nav_active_mobile('issue') eq 1"> class="am-actions"</if> >
+        <i class="am-icon-comments"></i>
+        <span class="am-navbar-label">交流</span>
+      </a>
+    </li>
+  </ul>
+</div>

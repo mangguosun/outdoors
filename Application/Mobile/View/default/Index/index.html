@@ -1,0 +1,101 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="top_bar_mobile">
+    <php>$logo_pic = get_webinfo('cover_id')</php>
+    <if condition="$logo_pic neq ''"> <span class="mobile_logo"><a href="{:U('Mobile/Index/index')}" title="{:get_webinfo('webname')}"><img src="{$logo_pic|getThumbImageById='auto',65}" alt="{:get_webinfo('webname')}" ></a></span> </if>
+    <span class="mobile_search" style="display:none">
+    <div class="text-right">
+      <div>
+        <div id="toggle-words" class="search_btn"><span class="glyphicon glyphicon-search"></span></div>
+      </div>
+    </div>
+    </span> </div>
+  <div class="search_menu_div">
+    <form class="" role="search" id="forum_search" method="post">
+      <input type="hidden" name="search_words" />
+    </form>
+    <div class="div_input">
+      <input type="text" class="form-control" value="" name="k_words" id="k_words">
+    </div>
+    <ul class="search_type_list">
+      <li><a class="submit_search" url="{:U('Mobile/Event/index')}">搜&nbsp;&nbsp;"<span class="search_words"></span>"&nbsp;&nbsp;相关活动 »</a></li>
+    </ul>
+  </div>
+  <script>
+$(function () {
+
+$('.search_btn').click(function () {
+	var search_menu_div = $(".search_menu_div");
+	if(search_menu_div.is(":hidden")){
+		
+		var k_words = $('#k_words').val();
+		$('.search_words').html('');
+		if(k_words != ''){
+			$('.search_words').html(k_words);
+		}
+		search_menu_div.slideDown(200);
+	}else{
+		search_menu_div.slideUp(200);
+	}	
+});		
+		
+$('.submit_search').click(function () {
+	$('#forum_search').attr('action', $(this).attr('url'));
+	$('#forum_search').submit();
+});
+$('#k_words').keyup(function(){
+							 
+	$('.search_type_list').show();					 					 
+	var k_words = $('#k_words').val();		
+	if(k_words != ''){
+		$('.search_words').html(k_words);
+	}
+	if(k_words == ''){
+		$('.search_words').html('');
+	}
+})
+})
+</script>
+  <div class="h40"></div>
+  <!--导航-->
+  {:hook('Advsmobile', 'home_ad')}
+  <div class="mobile_module">
+    <div class="mobile_module_title">
+      <div class="pull-left"><i class="app_ico_i glyphicon glyphicon-th-large"> </i> 全部线路</div>
+      <div class="btn-group btn-group-sm pull-right" style="margin-bottom:5px;"> <a href="{:U('Mobile/index/index',array('norh'=>'new'))}" class="btn btn-default <if condition="$norh eq 'new'">active
+        </if>
+        ">最新</a> <a href="{:U('Mobile/index/index',array('norh'=>'hot'))}" class="btn btn-default <if condition="$norh eq 'hot'">active
+        </if>
+        ">最热</a> </div>
+    </div>
+<div class="mobile_event_list">
+      <ul>
+        <volist name="contents" id="vo">
+          <li><a class="mobile_event_a" title="{$vo.title|strip_tags}" href="{:U('Mobile/Event/detail',array('id'=>$vo['id']))}"><img class="" src="{$vo.cover_id|getThumbImageById=200,180}" />
+          <div class="m_e_l_box">
+            <div class="m_e_l_t">{$vo.title}</div>
+            <div class="m_e_l_c">
+              <php> $begincity = get_citys($vo['begincity']);
+                $finalcity = get_citys($vo['finalcity']); </php>
+              <div class="mobile_event_list_icon"><span class="fa fa-tag"></span><volist name="vo.tags" id="tag" key="k"><if condition="$k elt 3">{$tag.name}&nbsp;</if>
+                </volist>
+              </div>
+              <div class="mobile_event_list_icon"><span class="fa fa-map-marker"></span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])} ({$vo.traveldays}天)</div>
+              <div class="mobile_event_list_icon "><span class="fa fa-clock-o"></span>开始时间：{$vo.lasted_time}</div>
+              <div class="mobile_event_list_icon "><span class="fa fa-jpy"></span><if condition="$vo.price_text neq ''"><span style="color:#FD9B00">{$vo.price_text}</span><else /><if condition="$vo.price eq 0"><span style="color:#FD9B00">免费活动</span><else /><span style="color:#FD9B00">{$vo.price}</span>元/人</if></if></div>
+              
+            </div>
+            </div>
+            <div class="m_l_more"><i class="glyphicon glyphicon-chevron-right"></i></div></a></li>
+        </volist>
+      </ul>
+      <div>
+        <if condition="count($contents) eq 0">
+          <div style="font-size:3em;padding:2em 0;color: #ccc;text-align: center">此分类下暂无内容哦。O(∩_∩)O~</div>
+        </if>
+      </div>
+      <div class="mobile_more_event"><a href="{:U('Mobile/Event/index')}">+更多活动</a></div>
+    </div>
+  </div>
+</block>
+<block name="script"></block>

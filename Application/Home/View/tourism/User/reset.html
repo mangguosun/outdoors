@@ -1,0 +1,97 @@
+<extend name="tourism/common"/>
+<block name="body">
+  <section>
+  <div class="container">
+  	<div class="common_block_border">
+    <div class="login-form-inbox ">
+      <div class="login-text"><strong>
+        <h1>{:C('WEB_SITE')}密码重置</h1>
+        </strong></div>
+      <form class="login-form" id="J_findpwd_form" action="{:U('Home/User/doReset')}" method="post">
+        <input type="hidden" id="inputname" class="form-control" placeholder="UID"
+                       errormsg="UID" nullmsg="UID" datatype="*1-5" name="uid" value="{$_REQUEST.uid|intval}">
+        <div class="control-group login-input">
+          <div class="controls">
+            <input type="password" id="inputPassword" class="form-control" placeholder="请输入新密码"
+                               errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+          </div>
+        </div>
+        <div class="control-group login-input">
+          <div class="controls">
+            <input type="password" id="inputPassword" class="form-control" placeholder="请再次输入密码"
+                               errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="repassword">
+          </div>
+        </div>
+        <if condition="C(VERIFY_OPEN) eq 5">
+          <div class="control-group login-input">
+            <div class="controls">
+              <input type="text" id="inputPassword" class="form-control" placeholder="请输入验证码"
+                                   errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls"> <img class="verifyimg reloadverify cursor" alt="点击切换" src="{:U('Home/User/verify')}"> </div>
+            <div class="controls Validform_checktip text-warning"></div>
+          </div>
+        </if>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary user-mi">重 置</button>
+            </div>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+  
+    
+  </section>
+</block>
+<block name="side"></block>
+<block name="script">
+  <script type="text/javascript">
+
+        $(document)
+                .ajaxStart(function () {
+                    $("button:submit").addClass("log-in").attr("disabled", true);
+                })
+                .ajaxStop(function () {
+                    $("button:submit").removeClass("log-in").attr("disabled", false);
+                });
+
+
+        $(function () {
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+
+                function success(data) {
+                    if (data.status) {
+                        toast.success('密码重新设置成功，1.5秒后跳转到登录页面。', '温馨提示');
+                        setTimeout(function () {
+                            window.location.href = data.url
+                        }, 1500);
+                    } else {
+                        toast.error(data.info, '温馨提示');
+                        //self.find(".Validform_checktip").text(data.info);
+                        //刷新验证码
+                        $(".reloadverify").click();
+                    }
+                }
+            });
+
+
+            var verifyimg = $(".verifyimg").attr("src");
+            $(".reloadverify").click(function () {
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+        });
+    </script>
+</block>

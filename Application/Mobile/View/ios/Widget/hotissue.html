@@ -1,0 +1,38 @@
+<if condition="!empty($rs_issue)">
+<style>.issue_title{ clear:both; overflow:hidden; clear:both; padding-top:10px;}</style>
+<link rel="stylesheet" href="__STATIC__/responsiveslides/responsiveslides.css">
+<script type="text/javascript" src="__STATIC__/responsiveslides/responsiveslides.js"></script>
+<script>
+    $(function () {
+      $("#recommend_issue").responsiveSlides({
+        auto: true,
+        pager: false,
+        nav: false,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+          $('.events').append("<li>before event fired.</li>");
+        },
+        after: function () {
+          $('.events').append("<li>after event fired.</li>");
+        }
+      });
+
+    });
+  </script>
+
+<div class="common_block_border" style="clear:both; overflow:hidden">
+  <div class="common_block_title_right">推荐故事</div>
+  <div style="padding:0 10px">
+  <div class="callbacks_container" >
+  <ul class="rslides" id="recommend_issue" style="clear:both; margin-bottom:10px;">
+    <volist name="rs_issue" id="vo">
+      <li><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" title="{$vo.title}" target="_blank"><img src="{$vo.cover_id|getThumbImageById=345,233}" style="min-height:240px" alt="{$vo.title}"></a>
+      <div class="issue_title"><span>{$vo.title}</span><span class="pull-right"><i class="glyphicon glyphicon-stats"></i> {$vo.view_count}</span></div>
+      </li>
+     </volist>
+  </ul>
+</div>
+  </div>
+</div>
+</if>

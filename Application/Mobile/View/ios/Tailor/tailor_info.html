@@ -1,0 +1,38 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Tailor/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}
+  </div>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+
+        <div class="am-panel am-panel-default">
+          <div class="am-panel-hd">订单信息</div>
+          <div class="am-panel-bd">                          
+           <ul class="am-list am-list-static am-list-border">
+              <li>
+              	<div class="tailor_info-li-h">您的定制需求单号为：</div>
+                <div class="tailor_info-li-h">【<strong class="title-color-red">{$tailor_info.trade_sn}</strong>】</div>
+              </li>
+              
+              <li > 如果您希望了解相关信息，请通过以下方式联系我们</li>
+              <li> 电话：<strong class="title-color-red">{$webinfo.telphone}</strong> </li>
+              <li>  Email：<strong class="title-color-red">{$webinfo.email}</strong> </li>
+              <li> 掌柜将为您提供萌萌达的咨询。 </li>
+            </ul>  
+          </div>
+        </div>
+ 
+	
+
+</block>
+
+

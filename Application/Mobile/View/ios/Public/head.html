@@ -1,0 +1,71 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $icp=C('WEB_SITE_ICP');
+    $count_code=C('COUNT_CODE');
+</php>
+<meta charset="utf-8">
+<meta property="qc:admins" content="16102376606211456375" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<include file="Public/seo" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="renderer" content="webkit">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="活动力">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="/Public/static/amaze/css/amazeui.min.css?v={:C('WEB_VERSION')}">
+<link rel="stylesheet" href="/Public/static/amaze/css/amazeui.chosen.css?v={:C('WEB_VERSION')}">
+<link rel="stylesheet" href="__PUBLIC__/Core/js/ext/toastr/toast_mobile.css?v={:C('WEB_VERSION')}">
+<link rel="stylesheet" href="__PUBLIC__/Core/js/ext/component/component.css?v={:C('WEB_VERSION')}">
+<link rel="stylesheet" href="__STATIC__/amaze/css/app.css?v={:C('WEB_VERSION')}">
+<php>$logo_icons = get_webinfo('logo_icons');$logo_pic = get_webinfo('cover_id')</php>
+<!--link rel="shortcut icon" href="{$logo_icons|get_cover='path'}"/-->
+<link rel="icon" type="image/png" href="{$logo_icons|get_cover='path'}">
+<link rel="apple-touch-icon-precomposed" href="{$logo_icons|get_cover='path'}">
+<block name="style"></block>
+<!--合并前的js-->
+<!--[if lt IE 9]>
+<script src="__STATIC__/jquery/jquery.min.1.11.1.js"></script>
+<script src="__STATIC__/modernizr.js"></script>
+<script src="__STATIC__/amaze/js/polyfill/rem.min.js"></script>
+<script src="__STATIC__/amaze/js/polyfill/respond.min.js"></script>
+<script src="__STATIC__/amaze/js/amazeui.legacy.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="__STATIC__/amaze/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/amaze/js/amazeui.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/amaze/js/amazeui.chosen.js?v={:C('WEB_VERSION')}"></script>
+<!--<![endif]-->
+<script src="__STATIC__/amaze/js/handlebars.min.js"></script>
+<script src="__STATIC__/jquery.lazyload.js"></script>
+<script type="text/javascript">
+    var ThinkPHP = window.Think = {
+        "ROOT": "__ROOT__", //当前网站地址
+        "APP": "__APP__", //当前项目地址
+        "PUBLIC": "__PUBLIC__", //项目公共目录地址
+        "DEEP": "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+        "MODEL": ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+        "VAR": ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+        'URL_MODEL': "{:C('URL_MODEL')}",
+        'WEIBO_ID': "{:C('SHARE_WEIBO_ID')}"
+    }
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var initNum = "{:C('WEIBO_WORDS_COUNT')}";
+
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?33b6334dfd4c2f1b87d4249095da60b3";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+<audio id="myaudio">
+    <source src="/Public/Core/js/ext/toastr/tip.mp3">
+    <source src="/Public/Core/js/ext/toastr/momo.ogg">
+</audio>
+<div class="" id="play_message"></div>

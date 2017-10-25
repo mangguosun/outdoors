@@ -1,0 +1,25 @@
+<extend name="sports/common"/>
+<block name="header">
+  <div id="main-container" class="container"> {:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))}
+    <div class="container blog-container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="common_block_border">
+            <div class="common_block_title">全部公告</div>
+            <div class="data-table-detail">
+              <section id="contents">
+                <volist name="list" id="data"> <include file="Public/_default_list"/> </volist>
+              </section>
+              <div class="text-right">
+                {$page}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"> {:W('Position/lists',array('position'=>4))}
+          {:W('Hot/lists')} </div>
+      </div>
+    </div>
+  </div>
+</block>
+<block name="body"> </block>

@@ -1,0 +1,80 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+<div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li><a href="{:U('Official/Shop/index')}">商城管理</a></li>
+      <li class="active">添加分类</li>
+    </ol>
+</div>
+<div class="row">
+      <div class="widget radius-bordered">
+        <div class="widget-header  bordered-bottom bordered-sky"> <i class="widget-icon fa fa-tasks themeprimary"></i> <span class="widget-caption">添加分类</span> </div>
+        <div class="widget-body">
+          <form id="defaultForm" class="form-horizontal" role="form" action="{:U('Official/Shop/add')}" method="post">
+			<div class="form-group">
+				<label for="cardnum" class="col-md-2 control-label">标题</label>
+				<div class="col-md-5">
+					<input id="title" name="title" type="text" class="form-control" check-type="Text"  value="" placeholder="请填写分类名称"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="cardnum" class="col-md-2 control-label">排序</label>
+				<div class="col-md-5">
+					<input id="sort" name="sort" type="text" class="form-control" check-type="Text"  value="0" placeholder="排序/数字"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary">添加</button>
+				</div>
+			</div>
+        </form>
+        </div>
+      </div>
+  </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '标题不能为空'
+                    }
+                }
+            },
+			sort: {
+                validators: {
+                    notEmpty: {
+                        message: '排序是必需的，不能是空的'
+                    },
+					digits: {
+                        message: '排序只能为数字'
+                    },
+                }
+            },
+	
+		}
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

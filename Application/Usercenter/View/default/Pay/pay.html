@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<include file="common/header"/>
+<block name="body">
+<div class="container" >
+
+    <div class="detail_box myevent_detail">
+      <div class="row usercenter-event-order">
+        <h4 class="col-md-12 event_detail_title">订单支付</h4><a class="btn btn-primary pull-right " style="margin-right:25px;" href="#pay_submit">立即支付</a>
+      </div>
+      <if condition="$event_attend['paytype'] eq 1">
+        <if condition="$event_attend['pay_status'] eq 0">
+          <div class="flowstep">
+            <ol class="flowstep-4">
+              <li class="step-first">
+                <div class="step-done">
+                  <div class="step-name">预约</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li>
+                <div class="step-done">
+                  <div class="step-name">下单</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li>
+                <div class="step-cur">
+                  <div class="step-name">定金支付</div>
+                  <div class="step-no">3</div>
+                </div>
+              </li>
+              <li>
+                <div class="step-name">确认出行</div>
+                <div class="step-no">4</div>
+              </li>
+              <li class="step-last">
+                <div class="step-name">余额支付</div>
+                <div class="step-no">5</div>
+              </li>
+              <!--<li>
+                <div class="step-name">出行签到</div>
+                <div class="step-no">6</div>
+              </li>
+              <li class="step-last">
+                <div class="step-name">点评</div>
+                <div class="step-no">7</div>
+              </li>-->
+            </ol>
+          </div>
+          <elseif  condition="$event_attend['pay_status'] eq 1"/>
+          <div class="flowstep">
+            <ol class="flowstep-4">
+              <li class="step-first">
+                <div class="step-done">
+                  <div class="step-name">预约</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li>
+                <div class="step-done">
+                  <div class="step-name">下单</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li>
+                <div class="step-done">
+                  <div class="step-name">定金支付</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li>
+                <div class="step-done">
+                  <div class="step-name">确认出行</div>
+                  <div class="step-no"></div>
+                </div>
+              </li>
+              <li class="step-last">
+                <div class="step-cur">
+                  <div class="step-name">余额支付</div>
+                  <div class="step-no">5</div>
+                </div>
+              </li>
+             <!-- <li>
+                <div class="step-name">出行签到</div>
+                <div class="step-no">6</div>
+              </li>
+              <li class="step-last">
+                <div class="step-name">点评</div>
+                <div class="step-no">7</div>
+              </li>-->            
+            </ol>
+          </div>
+        </if>
+      </if>  
+        
+      <if  condition="$event_attend['paytype'] eq 0">
+        <div class="flowstep">
+          <ol class="flowstep-all">
+            <li class="step-first">
+              <div class="step-done">
+                <div class="step-name">预约</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+              <div class="step-done">
+                <div class="step-name">下单</div>
+                <div class="step-no"></div>
+              </div>
+            </li>
+            <li>
+            <div class="step-cur">
+              <div class="step-name">订单支付</div>
+              <div class="step-no">3</div>
+              </div>
+            </li>
+            <li class="step-last">
+              <div class="step-name">确认出行</div>
+              <div class="step-no">4</div>
+            </li>
+           <!-- <li>
+              <div class="step-name">出行签到</div>
+              <div class="step-no">5</div>
+            </li>
+            <li class="step-last">
+              <div class="step-name">点评</div>
+              <div class="step-no">6</div>
+            </li>-->
+           
+          </ol>
+        </div>
+      </if>
+      
+      <div class="row data-table usercenter-pay-detail">
+     <div class="event_info">
+     	<h4>订单信息：</h4>
+     	   <div class="event_detail">
+
+              <div class="col-md-4">
+                <div class="form-inline">订单号：{$event_attend.trade_sn}</div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-inline">状态：{:op_t(get_event_order_status($event_attend['status']))}</div>
+              </div>
+              <div class="col-md-4">
+             <if condition="$event_attend['paytype'] eq 1">  
+               <if condition="$event_attend['pay_status'] eq 0">
+               <div class="form-inline">所需支付定金：<b>¥{$event_attend.payprice}</b></div>
+               <elseif  condition="$event_attend['pay_status'] eq 1"/> 
+               <div class="form-inline">所需支付余额：<b>¥{:($event_attend['totalprice'] - $event_attend['payprice'])}</b><span> ，已支付¥{$event_attend['payprice']}</span></div>
+               </if>
+              <elseif  condition="$event_attend['paytype'] eq 0"/> 
+               <div class="form-inline">所需支付金额：<b>¥{$event_attend.payprice}</b></div>
+              </if>  
+              </div>
+			  
+			  </if>
+          </div>
+      
+     <h4><strong>线路信息：</strong></h4>
+     <table>
+          <thead>
+			<tr>
+              <th>活动名称</th>
+              <th>出发/返程</th>
+              <th>集合地/目的地</th>
+              <th>交通/住宿</th>
+              <th>截止报名时间</th>
+              <th>活动单价</th>
+              <th>活动定金</th>
+              <th>支付方式</th>
+            </tr>
+		  </thead>
+			<tbody>
+            <tr>
+              <td class="usercenter-pay-maxwidth"><img src="{$event_content.cover_id|getThumbImageById=40,40,1}" class="pay-defaitl-img"  >{$event_content.title} </td>
+              <td>出发时间：{$calendar_content.starttime}<br />
+                结束时间：{$calendar_content.overtime}</td>
+              <php> $begincity = get_citys($event_content['begincity']);
+                $finalcity = get_citys($event_content['finalcity']); </php>
+              <td>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}<br />
+                目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</td>
+              <td>交通：{:get_box($calendar_content['vehicle'],"checkbox",get_vehicle())}<br />
+                住宿：{:get_box($calendar_content['accommodation'],"checkbox",get_accommodation())}</td>
+			  <td>{$calendar_content.endtime}</td>
+              <td>{$event_attend.price}元/人</td>
+              <td>{$event_attend.deposit}元/人</td>
+              <td><span class="data-table-td-span">
+               <?php switch($event_attend['paytype']){case 0;echo '全款支付';break;case 1;echo '定金支付';break;case 2;echo '免费活动';break;}?>
+                </span></td>
+            </tr>
+          </tbody>
+        </table>
+        <h4><strong>活动参加者：</strong></h4>
+        <table>
+        <thead>
+            <tr>
+              <th>姓名</th>
+              <th>身份证</th>
+              <th>手机</th>
+              <th>邮箱</th>
+              <th>保险</th>
+            </tr>
+          </thead>
+          <tbody>
+          <volist name="contacts_info" id="vo">
+            <tr>
+              <td class="usercenter-pay-maxwidth">{$vo.realname} </td>
+              <td>{$vo.card}</td>
+              <td>{$vo.telephone}</td>
+              <td>{$vo.email}</td>
+              <td>
+                <if condition="$vo['insurance_name'] neq ''">
+                
+                ¥{$vo.insurance_price}元/{$vo.insurance_name}
+                  <else/>
+                  未购买</if>
+                </td>
+            </tr>
+             </volist>
+          </tbody>
+        </table>
+         <h4><strong>联系人信息：</strong></h4>
+         <table>
+          <tbody>
+
+            <tr>
+              <td class="usercenter-pay-maxwidth">姓名：{$event_attend.contact_name} </td>
+              <td>手机：{$event_attend.contact_telephone}</td>
+              <td>邮箱：{$event_attend.contact_email}</td>
+            </tr>
+             </volist>
+          </tbody>
+        </table>
+		<h4>订单备注：</h4>
+            <div class="sign_text ">
+			<if condition="$event_attend.remarks neq ''">
+              {$event_attend.remarks}
+			<else />
+			  暂无备注</textarea>
+			</if>
+            </div>
+			<h4>优惠信息：</h4>	
+			<div class="form-inline">
+			<if condition="$event_attend['cardinfo'] != ''">
+
+			<volist name="event_attend['cardinfo']" id="vo">
+				<li>优惠信息：成功使用<span style="color:red"><b>【{$vo.typename}】</b></span>x1,其中:<span style="color:red"><b>【{$vo.typename}】</span></b>卡号 <span style="color:red">{$vo.cardid}</span>，面值<span style="color:red"><b> ¥{$vo.amount}</b></span></li>
+			</volist>
+		
+			<else />
+			您目前未使用任何优惠
+			</if>
+			</div>	
+		<h4>汇总信息：</h4>
+			<!-------------------------------------------------------------------------------------------------------->
+			<if condition="$event_attend[paytype] eq 1">	
+			<!---------------------余额支付-------------------------->
+			<div id="totalprice" class="totalprice"></span>总计 <b><span style="color:red">¥{$event_attend.totalprice}</span><span style="color:red" class="total"></span></b> =	
+			定金支付 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="fropay"></span></b> + 
+			余额支付 <b><span style="color:red">¥{$event_attend.leftprice}</span><span style="color:red" class="leftpay"></span></b>
+				<if condition="($event_attend[card_amount] neq '') AND ($event_attend[card_amount] neq 0)">
+				<php>				
+					$diff_price = ($event_attend['price'] - $event_attend['deposit']) * $total_num;
+					if($event_attend[card_amount]  > $diff_price){			
+						$event_attend[card_amount] = $diff_price;
+					}
+				</php>
+				<span class="card_o_total" style="color:green"> (代金券省 <b><span class="card_o_amount" style="color:red">¥{$event_attend[card_amount]}</span></b>)</span>	
+				<else />
+				</if>
+			</div>
+			<!------------------------------------------------------------>
+			<else />
+			<!------------------------全款支付---------------------------->
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="total"></span></b> =	
+			人数[<span style="color:red" class="contact_count">{$total_num}</span>] x <b><span style="color:red">¥{$event_attend.price}</span></b>
+				<if condition="($event_attend[card_amount] neq '') AND ($event_attend[card_amount] neq 0)">
+				<php>
+					
+					$total_price = $event_attend['price'] * $total_num;
+					if($total_price  < $event_attend[card_amount]){
+						$event_attend[card_amount] = $event_attend['totalprice'];
+					}
+				</php>
+				<span class="card_o_total"> - 优惠信息 <span style="color:green">(代金券省 <b><span class="card_o_amount" style="color:red">¥{$event_attend[card_amount]}</span></b>)</span></span>
+				<else />
+				</if>
+			</div>
+			<!------------------------------------------------------------>
+			</if>
+			<!-------------------------------------------------------------------------------------------------->
+        <h4><strong>支付方式：</strong></h4>
+      </div>
+      
+      <form class="form-horizontal " role="form" action="{:U('Usercenter/Pay/do_pay')}" method="post" target="_blank" style=" margin-top:20px">
+        <input type="hidden" name="order_id" id="trade_sn" value="{$event_attend.trade_sn}"/>
+     
+        <div class="form-group">
+          <div class="col-md-12">
+            <if condition="$pay_types">
+                {:mk_pay_btn($pay_types,'1','',0)} 
+              <else/>
+              本站暂未开启在线支付功能，如需帮助请联系管理员。 </if>
+          </div>
+        </div>
+		<a name="pay_submit"></a>
+        <div class="form-group">
+          <div class="data-table-order-con">
+            <button type="submit" class="btn btn-primary btn-pay">确认并支付</button> <a  class="pay_popup" href="{:U('Usercenter/Pay/pay_popup',array('id'=>$event_attend['id']))}"></a> 
+          </div>
+        </div>
+      </form>      
+      </div>
+    </div>
+
+</div>
+
+
+<script>
+
+$(function(){
+	$("form").submit(function(e){				  
+	setTimeout(function(){
+		$(".pay_popup").trigger("click")
+	},2000)  						
+	});		
+	$('.pay_popup').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+  
+});
+</script>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

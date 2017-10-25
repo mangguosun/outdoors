@@ -1,0 +1,30 @@
+<extend name="tourism/common"/>
+<block name="body">
+<div class="container">
+	 <div class="clearfix">
+        <h2 class="title_content">{$title}</h2>
+        <volist name="video" id="vo">
+
+         <div class="common_block_border widget-video-list video_contents_list" style="" >
+			    <div class="common_block_title_right">{$vo.video_name}</div>
+			    <div class="widget-video-md">
+			    	<a href="{:U('Video/Index/detail',array('id'=>$vo['id']))}" target="_blank"><img style="width:340px;height:200px;" src="{$vo.path}"></a>
+			   <!--
+			      <p style="display:none">
+			        <embed  align="none" class="edui-faked-video-list" pluginspage="http://www.macromedia.com/go/getflashplayer" src="{$vo[video_real_url]}" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="never" menu="false" loop="false" play="true" wmode="transparent" />
+			      </p>
+				-->
+			    </div>
+			</div>
+        </volist>
+        <if condition="$video_num eq 0">
+            <div class="shop-box-prompt">现在还没有视频哦。O(∩_∩)O~</div>
+        </if>
+    </div>
+    <div>{$show}</div>
+</div>
+
+
+</block>
+<block name="script">
+</block>

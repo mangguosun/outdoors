@@ -1,0 +1,120 @@
+<div id="center">
+  <div class="row data-table">
+  <div class="pull-right" >
+            <form action="{:U('Websit/Member/index',array('status'=>0))}" method="post" class="navbar-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn text-left">
+                    <input type="text" name="mobile" value="{$mobile}" class="form-control" placeholder="输入手机号码搜索">
+                    <button type="submit" value="" class="btn btn-default glyphicon glyphicon-search"></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+        </div>
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>用户(UID)</th>
+          <th>会员昵称</th>
+          <th>登录邮箱</th>
+          <th>手机号码</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="member">
+        
+        <volist name="member" id="vo">
+          <if condition="checked_admin($vo['id'])">
+            <else/>
+            <tr>
+              <td>{$vo.uid}</td>
+              <td>{$vo.nickname}</td>
+              <td>{$vo.email}</td>
+              <td>{$vo.mobile}</td>
+              <td><if condition="$vo.status eq 0">禁用
+                  <elseif condition="$vo.status eq 1"/>
+                  启用 </if></td>
+		      <td>
+					<if condition="$vo.status eq 0">
+						<a href="javascript:" data-ID="{$vo.uid}" data-Status="1" class="mbtn btn-info adv_status" title="启用">启用</a>
+					<elseif condition="$vo.status eq 1"/>
+						<a href="javascript:" data-ID="{$vo.uid}" data-Status="0" class="mbtn btn-danger adv_status" title="禁用">禁用</a>
+					<else/>
+					</if>
+					<a href="{:U('Websit/Member/pwd_reset',array('id'=>$vo['uid']))}" class="mbtn pwd_reset btn-info" title="启用">密码重置</a>
+				</td>
+
+            </tr>
+          </if>
+        </volist>
+         <tr><td colspan="6">{$page}</td></tr>
+        <else/>
+        <td colspan="6" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+			$('.event_sign').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			$('.pwd_reset').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			
+				//更新
+			$('.event_sign1').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			
+			//是否禁用
+		      $('.adv_status').click(function () {
+				if (confirm('确定要操作么？')) {
+					var  id= $(this).attr('data-ID');
+				    var status=$(this).attr('data-Status');
+					$.post(U('Websit/Member/member_manage_status'), {id: id,status: status}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+			  });
+
+	   })
+    </script>
+</div>
+

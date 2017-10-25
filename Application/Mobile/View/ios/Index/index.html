@@ -1,0 +1,163 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+<php>$logo_pic = get_webinfo('cover_id')</php>
+<if condition="$logo_pic neq ''">
+<div class="am-header-left">
+  <img src="{$logo_pic|getThumbImageById='auto',65}" class="mobile_logo" alt="{:get_webinfo('webname')}" >
+  </div>
+</if>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<include file="Public/navbar"/>
+{:W('HomeAdvs/lists',array('advtype'=>'home_ad'))} 
+<div class="index-contentbox">
+
+<php>$event_modelinfo = get_appinfo('Event');</php>
+<if condition="!empty($event_modelinfo)">
+<php>$mobile_fast_nav = get_mobile_fast_nav('fast_nav');</php>
+
+<div class="index-icon-box">
+    <if condition="$mobile_fast_nav[1]">
+    <div>
+      <a href="{:U('Mobile/Shop/goods',array('mod'=>'new'))}" class="am-icon-btn am-newdanpin am-icon-gift"></a>
+        <div class="index-icon-text">最新单品</div>      
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[2]">
+    <div>
+      <a href="{:U('Mobile/Shop/goods',array('mod'=>'discount'))}" class="am-icon-btn am-tejia am-icon-tag"></a>
+        <div class="index-icon-text">特价商品</div>      
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[3]">
+    <div>
+      <a href="{:U('Mobile/Shop/goods',array('mod'=>'fire'))}" class="am-icon-btn am-hotdanpin am-icon-fire"></a>
+        <div class="index-icon-text">热卖单品</div>      
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[4]">
+    <div>
+      <a href="{:U('Mobile/Config/index')}" class="am-icon-btn am-dingdan am-icon-search"></a>
+        <div class="index-icon-text">订单查询</div>      
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[5]">    
+    <div>
+        <a href="{:U('Mobile/Event/typeEvent',array('type' => 'vacation') )}"  class="am-icon-btn am-changjia am-icon-area-chart" ></a>
+        <div>长假活动</div>
+    </div> 
+    </if>
+    <if condition="$mobile_fast_nav[6]">
+    <div>
+        <a href="{:U('Mobile/Event/typeEvent',array('type' => 'nearby') )}" class="am-icon-btn am-event am-icon-map-marker" ></a>
+        <div class="index-icon-text">附近活动</div>
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[7]">
+    <div>
+      <a href="{:U('Mobile/Event/calendar')}" class="am-icon-btn am-rili am-icon-calendar"></a>
+        <div class="index-icon-text">活动日历</div>      
+    </div>
+    </if>
+    <if condition="$mobile_fast_nav[8]">
+    <div>
+        <a href="{:U('Mobile/Event/typeEvent',array('type' => 'new') )}"  class="am-icon-btn am-fabu am-icon-star" ></a>
+        <div class="index-icon-text">最新发布</div>
+    </div>
+    </if>
+</div>
+</if>
+<php>$shop_modelinfo = get_appinfo('Shop');</php>
+<php>$mobile_module = get_mobile_module('mobile_module');</php>
+
+<if condition="!empty($shop_modelinfo)">
+  <if condition="$mobile_module[1]">
+    <div class="new-event-space">
+    {:W('Iclub/bargain',array('where'=>'bargain','limit'=>'2'))}
+    </div>
+  </if>
+  <if condition="$mobile_module[2]">
+    <div class="new-event-space">
+    {:W('Iclub/recommend',array('where'=>'recommend','limit'=>'4'))}
+    </div>
+  </if>
+</if>
+<if condition="!empty($event_modelinfo)">
+<!--最新活动--> 
+<div class="new-event-space">
+  <if condition="$mobile_module[3]">
+    <div class="hdl-nav-menu">
+        <a href="{:U('Mobile/Event/index')}"><h3 class="hdl-nav-title">马上出发</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+        </div>
+         {:W('Iclub/event',array('where'=>'new','limit'=>'3'))}
+    </div>
+  </if>
+  <if condition="$mobile_module[4]">
+    <div class="index-button">
+      <a class="leftdiv" href="{:U('Mobile/Event/index',array('days'=>1))}">1~2天</a>
+      <a class="rightdiv" href="{:U('Mobile/Event/index',array('days'=>2))}">3~7天</a>
+    </div> 
+  </if>
+</if>
+
+<!--index-event-box-->   
+<php>$tailor_modelinfo = get_appinfo('Tailor')</php>
+<if condition="!empty($tailor_modelinfo)">
+  <if condition="$mobile_module[5]">
+    <a href="{:U('Mobile/Tailor/index')}">
+      <div class="index-tailor-box">
+         <img src="/Public/Core/images/tourism_tailor/tourism_blue.jpg" alt="{$tailor_modelinfo['name']}" class="event-lists-thumb" >
+      </div>
+    </a>
+  </if>
+</if>   
+
+
+<php>$issue_modelinfo = get_appinfo('Issue');</php>
+<if condition="!empty($issue_modelinfo)">
+  <if condition="$mobile_module[6]">
+  <!--最新活动-->    
+    <div class="index-recommendissue-box"><!--推荐故事-->
+  	  <div class="hdl-nav-menu">
+      	<a href="{:U('Mobile/Issue/index')}"><h3 class="hdl-nav-title">最新故事</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+      </div>
+        	<!--div class="index-issue-type"><a>龙虎山</a><a>龙虎山</a><a>龙虎山</a><a>龙虎山</a><a>龙虎山</a><a>龙虎山</a><a>西江苗寨</a><a>稻城亚丁</a><a>稻城亚丁</a></div-->
+          {:W('Iclub/issue',array('where'=>'new','limit'=>'3'))}
+    </div>
+  </if>
+</if>  
+<php>$partner_modelinfo = get_appinfo('Partner');</php>
+<if condition="!empty($partner_modelinfo)">
+  <if condition="$mobile_module[7]">
+  <!--约伴活动--> 
+    <div class="index-recommendissue-box">
+      <div class="hdl-nav-menu">
+          <a href="{:U('Mobile/Partner/index')}"><h3 class="hdl-nav-title">约伴活动</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+        </div>
+            {:W('Partner/index',array('limit'=>'3'))}
+    </div>
+  </if>
+</if>
+
+<php>$blog_modelinfo = get_appinfo('Blog');</php>
+<if condition="!empty($blog_modelinfo)">
+  <if condition="$mobile_module[8]">
+    <div class="index-blog-box">
+    <div class="hdl-nav-menu">
+        <a href="{:U('Mobile/Blog/index')}"><h3 class="hdl-nav-title">最新公告</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+    </div>
+    <!--最新公告--> 	    
+    {:W('Iclub/blog',array('where'=>'new','limit'=>'3'))}
+    </div>
+  </if>
+</if>  
+<div class="bottom-chupinnew">{:get_webinfo('webname')} x 活动力 联合出品 - <a href="http://www.mikecrm.com/f.php?t=gixKUh" target="_blank">免费申请</a></div>
+</div><!--整体-->
+</block>
+<block name="script"></block>

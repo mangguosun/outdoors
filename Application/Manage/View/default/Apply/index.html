@@ -1,0 +1,108 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>我的应用</h2>
+</div>
+
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">序号</th>
+				<th class="">名称</th>
+                <th class="">标识</th>
+				<th class="">描述</th>
+                <th class="">状态</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="apply">
+                <volist name="apply" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.app_name}</td>
+						<td>{$vo.app_model}</td>			  
+						<td>{$vo.describe}</td>			
+						<td>{:get_common_app_status($vo['id'])}</td>
+
+						<?php 
+							$data = get_all_app_btn($vo['id']);
+						?>
+						<if condition="$data['str'] eq 1">
+						<td><a class='mbtn  btn-info config_app' href="{:U('Manage/Apply/apply_ifconfig',array('id'=>$vo['id']))}">配置</a></td>
+						<else />
+							<td>{:$data['str']}
+							<if condition="$data['ifconfig'] eq 1">
+							<a class='mbtn  btn-info config_app' href="{:U('Manage/Apply/apply_ifconfig',array('id'=>$vo['id']))}">配置</a>
+							</if>
+
+							</td>
+						</if>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="7" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+ <script>
+
+//锁定全屏
+$(function () {	
+	$('.config_app').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+})
+
+
+$(function(){
+	$('.install_app').click(function(){
+		if(confirm('确定启用吗？')){
+			var id = $(this).attr('data-ID')
+			$.post(U('Manage/Apply/install_app'),{id:id,type:1},function(res){
+				if(res['status'] == 1){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+	$('.unstall_app').click(function(){
+		if(confirm('确定禁用？')){
+			var id = $(this).attr('data-ID');			
+			$.post(U('Manage/Apply/unstall_app'),{id:id,type:1},function(res){
+				if(res['status'] == 1){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+
+	
+})	
+</script>
+</block>

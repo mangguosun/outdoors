@@ -1,0 +1,151 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+<style>
+.distribute_table{font-size:14px; }
+.distribute_table h4{font-family:'宋体'}
+.distribute_table table{width:100%; }
+.distribute_table td{width:50%; height:50px;padding-left:80px;padding-right:80px}
+</style>
+
+<div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li><a href="{:U('Official/Distribute/index')}">集市入驻申请</a></li>
+      
+      <li class="active">查看详情</li>
+    </ol>
+ </div>
+
+<div class="row">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-sky">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">活动力分销集市供应商商品入驻申请单</span> 
+        </div>
+        <div class="widget-body">
+            	<table class="table table-bordered">
+		<tr>
+			<td><b>类别：</b>商品集市入驻</td><td><b>申请日期：</b>{$apply_detail.apply_time|date="Y-m-d",###}</td>
+		</tr>
+		<tr>
+			<td><b>申请单状态：</b><if condition="$apply_detail.distribute_status eq 2">已入驻<elseif condition="$apply_detail.distribute_status eq 0"/>已驳回<else/>审核中</if></td><td><b>申请单号：</b>{$apply_detail.distribute_apply_sn}</td>
+		</tr>
+	</table>
+            </div>
+        </div>
+</div>
+
+<div class="row">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-sky">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">商家信息</span> 
+        </div>
+        <div class="widget-body">
+            	<table class="table table-bordered">
+		<tr>
+			<td><b>商家名称：</b>{$webinfo.webname}</td><td><strong>商家标志</strong></td>
+		</tr>
+		<tr>
+			<td><b>ICP许可：</b>{$webinfo.icp}</td><td rowspan="6"><img src="{$apply_detail['license_photo']|getThumbImageById=400,300}" width="300" ></td>
+		</tr>
+		<tr>
+			<td><b>服务特色：</b>{$webinfo.slogan}</td>
+		</tr>
+		<tr>
+			<td><b>网　　址：</b>{$webinfo.domain}</td>
+		</tr>
+		<tr>
+			<td><b>开 户 行：</b>{$bank.open_bank}</td>、
+		</tr>
+		<tr>
+			<td><b>账户名称：</b>{$bank.name}</td>
+		</tr>
+		<tr>
+			<td><b>银行账号：</b>{$bank.card}</td>
+		</tr>
+	</table>
+    
+            </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-sky">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">负责人信息</span> 
+        </div>
+        <div class="widget-body">
+            	<table class="table table-bordered">
+		<tr>
+			<td><b>联系人姓名：</b>{$apply_detail.name}</td><td><strong>证件照</strong></td>
+		</tr>
+		<tr>
+			<td><b>证件类型：</b>身份证</td><td rowspan="4"><img src="{$apply_detail['idcard_photo']|getThumbImageById=400,300}" width="200"></td>
+		</tr>
+		<tr>
+			<td><b>证件号码：</b>{$apply_detail.idcardnumber}</td>
+		</tr>
+
+		<tr>
+			<td><b>QQ号码：</b>{$apply_detail.qq}</td>
+		</tr>
+		<tr>
+			<td><b>联系电话：</b>{$apply_detail.phone}</td>
+		</tr>
+		<tr>
+			<td colspan="2">{$supplier_agreement}</td>
+		</tr>
+		<tr>
+			<td colspan="2"> <span style="color:red">备注：活动力网站抽取佣金比例为2% </span> 已同意协议</td>
+		</tr>
+	</table>
+    
+            </div>
+  </div>
+</div>
+<div class="row">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-sky">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">审批</span> 
+        </div>
+        <div class="widget-body">
+    <form action="{:U('Official/Distribute/distribute_site_examine')}" class="ajax-form" method="post">
+	<table class="table table-bordered">
+		<if condition="$apply_detail.distribute_status eq 1">
+		<tr>
+			<td><b>审批结果：</b> <input name="distribute_status" type="radio" value="2" checked="checked">同意此申请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="distribute_status" value="0">不同意此申请 </td>
+		</tr>
+		<tr>
+			<td><b>活动力网站佣金比例：</b> 2%<input type='hidden' name="commission" value="2"></td>
+		</tr>
+		<tr>
+			<td><b>审批意见：</b><br><textarea name="reply" style="height:200px;width:100%;background:#fff;"></textarea>
+				<input type="hidden" name="id" value="{$apply_detail.id}">
+			</td>
+		</tr>
+		<tr>
+			<td><button type="submit" class="btn btn-primary" href="{:U('Official/Distribute/distribute_site_examine')}" >提交</button>　<button onclick="javascript:history.back(-1);return false;" class="btn btn-info">返回</button>
+			</td>
+		</tr>
+		<else/>
+		<tr>
+			<td><b>审批结果：</b> <if condition="$apply_detail.distribute_status eq 2">同意此申请<else/>不同意此申请</if> </td>
+		<tr>
+			<td><b>审批意见：</b>  {$apply_detail.reply} 
+			</td>
+		</tr>
+		</if>
+	</table>
+	</form>
+    
+   </div>
+  </div>
+</div>
+<div class="distribute_table">
+
+
+</div>
+</block>

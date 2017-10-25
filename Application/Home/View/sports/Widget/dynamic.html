@@ -1,0 +1,25 @@
+<if condition="$lists neq false">
+  <div class="index_dynamic">
+        <div class="s_title">
+            最新动态
+        </div>
+        <div class="h10"></div>
+        <div class="indexbox_content">
+            <ul>
+                <volist name="lists" id="vo"> 
+                 
+                    <li>
+                        <div><a   href="{:U('Usercenter/Index/index',array('uid'=>$vo['from_uid']))}">{$vo.nickname}</a>{$vo.dis_action} <a class="doing_color" href="{:U($vo['url'] , array('id'=>$vo['app_id']))}">{$vo.content}</a>{$vo.webname}</div>
+                        <div class="dynamic_time">{$vo.dis_createtime}</div>
+                    </li>
+
+                 </volist>   
+             </ul>        
+        </div>
+    </div>
+    <div class="h15"></div>
+</if>
+
+
+
+             

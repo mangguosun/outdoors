@@ -1,0 +1,43 @@
+<extend name="Public/base"/>
+<block name="body">
+	<script>
+		function show_img(){
+			$("#img_area").show();
+		}
+		function hide_img(){
+			$("#img_area").hide();
+		}
+	</script>
+	<div class="main-title cf">
+		<h2><if condition="$_GET['_action'] eq 'add'">新增<else/>编辑</if>更新日志</h2>
+	</div>
+	<!-- 表单 -->
+	<form id="form" action="{:addons_url('Bboard://Bboard/update')}" method="post" class="form-horizontal">
+		<!-- 基础文档模型 -->
+		<div id="tab1" class="tab-pane in tab1">
+			<div class="form-item cf">
+				<label class="item-label">更新编号<span class="check-tips">（例如：20140730）</span></label>
+				<div class="controls">
+					<input type="text" class="text input-large" readonly="readonly" name="title" value="{$info.title}" />
+				</div>
+			</div>
+			<div class="form-item cf">
+				<label class="item-label">更新内容<span class="check-tips">（请将内容输入到编辑器）</span></label>
+				<div class="controls">
+					<label class="textarea">
+                    <textarea name="content">{$info.content}</textarea>
+                    {:hook('adminArticleEdit', array('name'=>'content','value'=>$info['content']))}
+                    </label>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="id" value="{$info.id}"/>
+		<div class="form-item cf">
+			<button class="btn submit-btn ajax-post hidden" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+			<input class="btn btn-return" type="reset" value="重置" />
+		</div>
+	</form>
+</block>
+<block name="script">
+
+</block>

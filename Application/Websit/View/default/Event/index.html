@@ -1,0 +1,164 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+  <div id="center">
+    <div class="common_block_title ">
+      <div class="pull-right">
+        <if condition="is_login() eq 0">
+          <button class="mbtn btn-primary btn-large event_btn" onclick="toast.error('请登录后再发布。','温馨提示')">发布新线路</button>
+          <else/>
+		  <a class="mbtn btn-info" href="{:U('Websit/Event/line_type')}">线路类型</a>
+          <a class="mbtn btn-info sign_notice" href="{:U('Websit/Event/edit_sign_notice')}">编辑报名须知</a> <a class="mbtn btn-info event_sign" href="{:U('Websit/Event/add')}">发布新线路</a> </if>
+      </div>
+      线路管理</div>
+    <div class="row data-table usercenter-common-table">
+      <table class="info">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+		    <th>ID</th>
+            <th>活动标题</th>
+            <th>状态</th>
+            <th>报名人数</th>
+            <th>排期</th>
+            <th class="event-schedu-thmax">操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="event_all">
+          
+          <volist name="event_all" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><a href="{:U('Event/index/detail',array('id'=>$vo['id']))}" target="_blank">{$vo.title}</a></td>
+              <td><?php if($vo['status'] == -1):?>
+                已删除
+                <?php elseif($vo['status'] == 0):?>
+                已禁用
+                <?php elseif($vo['status'] == 1):?>
+                正常
+                <?php endif;?></td>
+				<td><?php
+					$map = "siteid = ".SITEID." and event_id = ".$vo['id']." and order_status >= 10 and status = 1";
+					$tnum = D('event_signer')->where($map)->count();
+					echo $tnum;
+				?></td>
+				<php>
+					$eventid = $vo[id];
+					/*查看当前有无排期*/
+					$where = "siteid = ".SITEID." and status >= 1 and eventid = $eventid"; 
+					$rs = D('event_calendar_time')->where($where)->select();
+					//dump($rs);
+				</php>
+				<?php if($vo['status'] != -1):?>
+				<?php if(!empty($rs)):?>
+                <td><a href="{:U('Websit/Event/event_schedule',array('id'=>$vo['id']))}"  class="mbtn btn-default event-schedu-detail">查看排期</a></td>
+				<?php else:?>
+				<td><a href="{:U('Websit/Event/event_schedule',array('id'=>$vo['id']))}" class="mbtn btn-default event-schedu-no">暂无排期</a></td>
+				<?php endif;?>
+				<?php else:?>
+				<td></td>
+				<?php endif;?>
+              <td><?php if($vo['status'] != -1):?>
+                <a href="{:U('Websit/Event/edit',array('id'=>$vo['id']))}" class="mbtn btn-default">编辑</a>
+                <a class="mbtn btn-default" href="{:U('Websit/Event/add',array('event_id'=>$vo['id']))}">复制</a>
+				<?php if($vo['is_recommend']==0):?>
+				<a href="javascript:" data-ID="{$vo.id}" data-Status="1" class="mbtn btn-info event_recommend" >活动推荐</a>
+				<?php elseif($vo['is_recommend']==1):?>
+				<a href="javascript:" data-ID="{$vo.id}" data-Status="0" class="mbtn btn-danger event_recommend" >取消推荐</a>
+				<?php endif;?>
+				<?php else:?>
+				<?php endif;?>
+				<?php if($vo['status'] == 1):?>
+                <a class="mbtn btn-danger event_use" data-ID="{$vo.id}" data-Status="0" href="javascript:">禁用</a>
+                <?php elseif($vo['status'] == 0):?>
+                <a class="mbtn btn-info event_use" data-ID="{$vo.id}" data-Status="1" href="javascript:">启用</a>
+                <?php endif;?>
+				
+				</td>
+            </tr>
+          </volist>
+		  <tr><td colspan="2" >总共{$count}条记录/每页显示10条</td><td colspan="4">{$page}</td></tr>
+          <else/>
+        <td colspan="6" class="text-center"> aOh! 还没有任何活动哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+	$(function () {			
+		$('.event_open').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+		$('.sign_notice').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+		
+		
+	})
+	
+	
+	//是否推荐
+			$('.event_recommend').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var is_recommend=$(this).attr('data-Status');
+				$.post(U('Websit/Event/event_recommend'), {id: id,is_recommend:is_recommend}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+		//是否禁用
+			$('.event_use').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var status=$(this).attr('data-Status');
+				$.post(U('Websit/Event/up_event'), {id: id,status:status}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+		
+	function del(){
+		return confirm("您确定删除该活动吗？")
+	}
+	function del_event(){
+		return confirm("您确定禁用该活动吗？")
+	}
+	function up_event(){
+		return confirm("您确定启用该活动吗？")
+	}
+</script>
+</block>
+

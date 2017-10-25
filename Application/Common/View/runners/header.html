@@ -1,0 +1,299 @@
+<php> D('Home/Member')->need_login();</php>
+<div id="top_bar" class="top_bar">
+  <div class="container runners-container">
+    <div class="" style="clear:both;">
+      <!--<div class=" pull-left" style="padding:0; margin:0">
+      <php>$recommend_notice=D('document')->where("status = 1 and is_recommend = 1 and siteid=".SITEID)->order("view desc")->select();</php>
+      <notempty name="recommend_notice">
+      <div class="recommend_notice">
+      <i class="glyphicon glyphicon-volume-up"></i>
+        <ul>
+            <volist name="recommend_notice" id="vo">
+              <li><a href="{:U('Blog/Article/detail',array('id'=>$vo['id']))}" target="_blank">{$vo.title}</a></li>
+            </volist>
+        </ul>
+      <script>
+		setInterval(function(){
+			$('.recommend_notice ul li:last').css({'height':'0px','opacity': '0'}).insertBefore('.recommend_notice ul li:first').animate({'height':'30px','opacity': '1'}, 'slow', function() {
+			  $(this).removeAttr('style');
+			});
+		},3000);			
+	 </script>
+    </div>
+      </notempty>
+       </div>-->
+      <div class="text-right pull-right"> 
+        <php> $unreadMessage=D('Common/Message')->getHaventReadMeassageAndToasted(is_login()); </php>
+        <ul class="nav navbar-nav navbar-right">
+          <!--登录面板-->
+          <if condition="is_login()">
+            <li class="dropdown op_nav_ico">
+              <a id="nav_info" class="dropdown-toggle text-left" data-toggle="dropdown"> <span class="glyphicon glyphicon-bell"></span> <span id="nav_bandage_count" 
+              <if condition="count($unreadMessage) eq 0"> style="display: none"</if>
+              class="badge pull-right">{:count($unreadMessage)}</span> &nbsp; </a>
+              <ul class="dropdown-menu extended notification">
+                <li style="padding-left: 15px;padding-right: 15px;">
+                  <div class="row nav_info_center">
+                    <div class="col-md-9 nav_align_left"><span id="nav_hint_count">{:count($unreadMessage)}</span> 条未读 </div>
+                    <div class="col-md-3"><i onclick="setAllReaded()" class="set_read glyphicon glyphicon-ok" title="全部标为已读"></i></div>
+                  </div>
+                </li>
+                <li>
+                  <div style="position: relative;width: auto;overflow: hidden;max-height: 250px ">
+                    <ul id="nav_message" class="dropdown-menu-list scroller "
+                                            style=" width: auto;">
+                      <if condition="count($unreadMessage) eq 0">
+                        <div style="font-size: 18px;color: #ccc;font-weight: normal;text-align: center;line-height: 150px"> 暂无任何消息! </div>
+                        <else/>
+                        <volist name="unreadMessage" id="message">
+                          <li> <a data-url="{$message.url}" onclick="readMessage(this,{$message.id})"> <i class="glyphicon glyphicon-bell"></i> {$message.title} <span class="time"> {$message.ctime} </span> </a> </li>
+                        </volist>
+                      </if>
+                    </ul>
+                  </div>
+                </li>
+                <li class="external"> <a href="{:U('Usercenter/Message/message')}"> 消息中心 <i class="glyphicon glyphicon-circle-arrow-right"></i> </a> </li>
+              </ul>
+            </li>
+            <php> $common_header_user = query_user(array('nickname','avatar32')); </php>
+            <li class="top_spliter hidden-xs"></li>
+            <li> <a style="margin-left: 5px;" title="账号设置" href="{:U('Usercenter/Config/index')}"><i class=""><img src="{$common_header_user.avatar32}" style="width:20px; height:20px;"/></i></a> </li>
+            <li class="dropdown "><a role="button" class="dropdown-toggle dropdown-toggle-avatar" data-toggle="dropdown">{$common_header_user.nickname}&nbsp;<i style="font-size: 12px;margin-right:28px;" class="glyphicon glyphicon-chevron-down"></i> </a>
+              <ul class="dropdown-menu text-left" role="menu">
+				<li><a href="{:U('Usercenter/Index/index',array('uid'=>is_login()))}"><span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;我的主页</a> </li>
+                <li><a href="{:U('Usercenter/Eventorder/index')}"><span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;我的订单</a> </li>
+				<li><a href="{:U('Usercenter/Pointcard/index')}"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;我的优惠</a> </li>
+				<li><a href="{:U('Issue/Index/add_story')}"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;写写故事</a> </li>
+                <li><a href="{:U('Usercenter/Message/message')}"><span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;消息中心</a> </li>
+                <li><a href="{:U('Usercenter/Config/index')}"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;账号设置</a> </li>				 
+                <!--<li><a href="{:U('Usercenter/Index/index')}"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;个人主页</a></li>-->
+                <if condition="checked_vip(is_login()) || checked_admin(is_login())">
+                </if>
+                <if condition="checked_admin(is_login())">
+				  <li><a href="{:U('Manage/Index/index')}"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;网站管理</a></li> 
+			   </if>
+                <li><a event-node="logout"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a> </li>
+              </ul>
+            </li>
+            <li class="top_spliter hidden-xs"></li>
+            <else/>
+            <li class="top_spliter hidden-xs"></li>
+            <li>
+              <php>$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; </php>
+              <a style="float:left" href="{:U('Home/User/login')}" >登录<span style="width:45px;height:20px;margin-left:12px;" >|</span></a> <a style="float:left" href="{:U('Home/User/register')}">注册<span style="width:45px;height:20px;margin-left:12px;" >|</span></a></li>
+		</if>
+			<li>        
+			<span class="email_tel pull-left"><!--<span class="glyphicon glyphicon-envelope"></span>{:get_webinfo('email')} <span class="glyphicon glyphicon-phone-alt"></span>{:get_webinfo('telphone')}--><a href="javascript:" onclick="window.external.addFavorite(this.href,this.title);return false;" title="{:get_webinfo('slogan')}" rel="sidebar"><span class="glyphicon glyphicon-star"></span>收藏本站</a></span> 
+			</li>
+		</ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="nav_bar" class="nav_bar">
+
+
+<div class="all_product_box">
+<div class="container c_logo_search">
+	<div class="logo_pic"><a href="{:U('Home/Index/index')}" title="{:get_webinfo('webname')}">
+      <php>$logo_pic = get_webinfo('cover_id')</php>
+      <img src="{$logo_pic|getThumbImageById='auto',65}" alt="{:get_webinfo('webname')}" style="cursor:pointer;" ></a>
+	</div>
+	 
+  <div class="header-form"> 
+	   <form action="{:U('Home/Search/seek')}" method="post" role="search" id="forum_search">
+		   <input type="text" name="name" placeholder="搜商品/活动/故事/会员/公告" class="input" id="k_words">
+		   
+		   <div class="input-group-btn text-left">
+                <ul class="dropdown-menu pull-right appear" role="menu" style="margin-top:36px;margin-right:-41px;float:right">
+				<li><a style="font-size:12px;" class="submit_search" url="{:U('Home/Search/seek',array('status'=>0))}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关商品 »</a></li>
+                  <li><a style="font-size:12px;" class="submit_search" url="{:U('Home/Search/seek',array('status'=>1))}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关活动 »</a></li>
+                  <li><a style="font-size:12px;" class="submit_search" url="{:U('Home/Search/seek',array('status'=>2))}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关故事 »</a></li>
+                  <li><a style="font-size:12px;" class="submit_search" url="{:U('Home/Search/seek',array('status'=>3))}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关会员 »</a></li>
+				  <li><a style="font-size:12px;" class="submit_search" url="{:U('Home/Search/seek',array('status'=>4))}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关公告 »</a></li>
+                </ul>
+              </div>
+              <script>
+					$(function () {
+						$('#forum_search').attr('action', $('.weibo_search').attr('url'));
+						$('.submit_search').click(function () {
+							var reg = /^\s*$/g;
+							var k_words	=	$('#k_words').val();
+							// 如果是空，或者""
+							if(k_words=="" || reg.test(k_words)){
+								toast.error('请填写查询内容!');
+								return false;
+							}
+							$('#forum_search').attr('action', $(this).attr('url'));
+							$('#forum_search').submit();
+						});
+					})
+				</script>
+		   
+		   <button class="icon submit_search" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+	   </form>
+  </div>
+	
+		
+		
+<!--div class="nav_search">
+        <<form class="navbar-form" role="search" id="forum_search" action="{:U('Home/Search/index')}" method="post">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" id="k_words" class="form-control" name="keywords" placeholder=" ">
+              <div class="input-group-btn text-left">
+                <button type="button" id="toggle-words" class="btn btn-default dropdown-toggle"  data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span></button>
+                <ul class="dropdown-menu pull-right appear" role="menu">
+                  <!--li><a class="submit_search weibo_search" url="{:U('Weibo/Index/search')}">微博</a></li-->
+                  <!--li><a class="submit_search" url="{:U('Forum/Index/search')}">贴吧</a></li-->
+                  <!--<li><a style="font-size:12px;" class="submit_search" url="{:U('Event/Index/index')}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关活动 »</a></li>
+                  <li><a style="font-size:12px;" class="submit_search" url="{:U('Issue/Index/index')}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关故事 »</a></li>
+                  <li><a style="font-size:12px;" class="submit_search" url="{:U('People/Index/find')}">搜&nbsp;&nbsp;"<span style="color:red;" class="search_words"></span>"&nbsp;&nbsp;相关会员 »</a></li>
+                </ul>
+              </div>
+              <script>
+					$(function () {
+						$('#forum_search').attr('action', $('.weibo_search').attr('url'));
+						$('.submit_search').click(function () {
+							$('#forum_search').attr('action', $(this).attr('url'));
+							$('#forum_search').submit();
+						});
+					})
+				</script>
+            </div>
+          </div>-->
+          
+        <!--</form>>
+        
+</div-->
+<div class="nav_shopcard">	
+<li class=" ">
+    <a href="{:U('Shop/Shopcart/shopcartitem')}" >
+
+    <div class="pull-right" ><i class="glyphicon glyphicon-chevron-down"></i></div><i class="fa fa-shopping-cart"></i> 购物车<span id='shopping-cart-num'>({:cart()})</span></a>
+</li>
+</div>
+
+</div>
+<div class="nav_bar_tong">
+  <div class="container" >
+    <div class="collapse navbar-collapse" id="nav_bar_main">
+      <ul class="nav navbar-nav">
+        <li class="all_product"><a href="{:U('shop/index/goods')}" target=""><div class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></div>所有商品分类</a></li>
+        <li class="<eq name='Home/Index/index|get_nav_active' value='1'>active<else/></eq>"> <a href="{:U('Home/Index/index')}" target="">首页</a></li>
+        
+        <if condition="get_webinfo('nav_config') eq 0">
+        
+        <php> $eventsitnav=get_websit_event_nav()</php>
+        <volist name="eventsitnav" id="nav">
+          <eq name="nav.pid" value="0">
+            <li class="<eq name='nav.url|get_nav_active' value='1'>active<else/></eq>"> <a href="{$nav.url|get_nav_url}" target="<eq name='nav.target' value='1'>_blank<else/>_self</eq>">{$nav.title}</a></li>
+          </eq>
+        </volist>
+        <php> $websitnav=get_websit_nav()</php>
+        <volist name="websitnav" id="nav">
+            <li class="<eq name='nav.url|get_nav_active' value='1'>active<else/></eq>"> <a href="{$nav.url|get_nav_url}" target="<eq name='nav.target' value='1'>_blank<else/>_self</eq>">{$nav.title}</a></li>
+        </volist>
+
+        <else/> 
+         <php> $websitnavcustom=get_websit_nav_custom()</php>
+        <volist name="websitnavcustom" id="navcustom">
+            <li class="<eq name='navcustom.url|get_nav_active' value='1'>active<else/></eq>"> <a href="{$navcustom.url|get_nav_url}" target="<eq name='navcustom.target' value='1'>_blank<else/>_self</eq>">{$navcustom.title}</a></li>
+        </volist>
+        
+        </if>
+        
+        
+        
+      </ul>
+    </div>
+  <script>
+		$(function () {
+			$('.all_product_lists').hide();		
+			$('.all_product').hover(function () {												  
+				if($(".all_product_lists").is(":hidden")) 
+				{ 
+					$('.all_product_lists').show();
+				}else{
+					$('.all_product_lists').hide();
+				}		
+			});
+			$('.all_product_lists').hover(function () {												  
+				if($(".all_product_lists").is(":hidden")) 
+				{ 
+					$('.all_product_lists').show();
+				}else{
+					$('.all_product_lists').hide();
+				}		
+			});
+		})
+	</script>
+     <php> $navigation=navigation()</php>
+    
+    <div class="all_product_lists" style="display:none;">
+        <notempty name="navigation">	 
+    
+     
+    <ul class="runners-googs-class">
+    <volist name="navigation" id="vo">
+    		<li><a href="{:U('shop/index/goods',array('category_id'=>$vo['id']))}">{$vo.title}<span class="runners-googs-class-right"><i class="fa fa-angle-right"></i></span></a> 
+      <if condition="$vo['category_2nd'] neq ''">   
+			<div class="runners-class-one">
+      <volist name="vo['category_2nd']" id="category_2nd">     
+				<div class="runners-classname">            
+					 <h3><a href="{:U('shop/index/goods',array('category_id'=>$category_2nd['id']))}">{$category_2nd.title}</a></h3>                       				            
+				</div>
+      </volist> 
+			</div> 
+      <else />
+      </if> 
+		</li> 
+    </volist>
+		<div class="clear"></div>	
+	</ul>
+       </notempty>
+    
+    </div>
+    
+ </div>
+ </div>
+ </div>
+</div>
+<script>
+	
+
+</script>
+
+<a id="goTopBtn"></a>
+<script>
+	$(function(){
+		$('#k_words').val('');
+	})
+	$(document).bind("click",function(e){
+		$('.appear').css('display','none');
+	})
+	$('#toggle-words').click(function(){
+		var k_words = $('#k_words').val();
+		if(k_words != ''){
+			$('.appear').css('display','block');
+			$('.search_words').html('');
+			if(k_words != ''){
+				$('.search_words').html(k_words);
+			}
+		}else{
+			$('.appear').css('display','none');
+		}
+	})
+	
+	$('#k_words').keyup(function(){
+		$('.appear').css('display','block');
+		var k_words = $('#k_words').val();		
+		if(k_words != ''){
+			$('.search_words').html(k_words);
+		}
+		if(k_words == ''){
+			$('.search_words').html('');
+		}
+	})
+	
+</script>

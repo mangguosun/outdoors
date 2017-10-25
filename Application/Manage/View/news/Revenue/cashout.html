@@ -1,0 +1,154 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">申请提现</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Revenue/cashout')}" class="form-horizontal form-bordered" method="post" >  
+                        <div class="form-title">
+                            资金信息
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">累积收入</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	
+                                    <input type="text" class="form-control" placeholder="累积收入" name="nickname" value="￥{$balance.total}元" readonly /> 
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">可用余额</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	
+                                    <input type="text" class="form-control" placeholder="可用余额" name="nickname" value="￥{$balance.balance}元" readonly /> 
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">交易锁定余额</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	
+                                    <input type="text" class="form-control" placeholder="交易锁定余额" name="nickname" value="￥{$balance.distribute_frozen}元" readonly /> 
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">冻结资金</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	
+                                    <input type="text" class="form-control" placeholder="冻结资金" name="nickname" value="￥{$balance.frozen}元" readonly /> 
+                                  
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-title">
+                           账号信息 必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><b>选择银行</b></label>
+                            <div class="col-lg-10">
+                            	
+                                <div class="radio">
+                                <notempty name="list">
+                                    <volist name="list" id="vo">
+                                        <label><input type="radio" value="{$vo.id}" name="card_id" checked><span class="text">{$vo.open_bank}</span>&nbsp;&nbsp;<span class="text">{$vo.card}</span></label>  
+                                    </volist> 
+                                    <else/>
+									 <input type="hidden" name='card_id' value="-1">
+									   请去填写银行卡信息  
+								</notempty> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><b>提现金额（元）</b></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                  <input  type="text" class="form-control"  name="cash" value="" />
+                                   <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="提现金额最多可两位小数点 例：0.10"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input class="btn btn-default" type="submit" onclick="javascript:history.back(-1);return false;" value="返  回" />
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+		
+		/*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+					
+				validator.defaultSubmit();
+					
+				}
+			})
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	 card_id: {
+                validators: {
+                    notEmpty: {
+                        message: '卡券类型是必需的，不能是空的'
+                    },
+                }
+            },
+            cash: {
+                validators: {
+                    notEmpty: {
+                        message: '提现金额不能为空'
+                    },
+                    regexp:{
+                        regexp:/^[0-9]+(.[0-9]{2})?$/,
+                        message:'提现金额最多可两位小数点'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+
+</script>
+</block>

@@ -1,0 +1,67 @@
+<div id="frm-post-popup" class="white-popup" style="max-width: 745px">
+  <button title="Close (Esc)" type="button" class="mfp-close" style="color: #333;">×</button>
+  <h2>修改地址</h2>
+  <div class="aline" style="margin-bottom: 10px"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Usercenter/Config/address_edit')}" method="post">
+          <div class="form-group has-feedback">
+            <label for="name" class="col-md-2 control-label">姓名</label>
+            <div class="col-md-4">
+              <input id="name" name="name" type="" class="form-control form_check" check-type="Text"  value="{$data.name}" placeholder="请填写真实姓名"/>
+            </div>
+            
+          </div>
+          
+       
+		  <div class="form-group position">
+            <label for="campus" class="col-md-2 control-label">区域</label>
+            
+            <div class="col-md-9" style="float:left;"> 
+            {:hook('J_China_City',array('find'=>'address','province'=>$content_address['province'],'city'=>$content_address['city'],'district'=>$content_address['district'],'community'=>$content_address['community'],'level'=>4))} 
+			</div>
+          </div>
+          
+          <div class="form-group has-feedback">
+            
+            <label for="detailed" class="col-md-2 control-label">详细地址</label>
+            <div class="col-md-4">
+              <input id="detailed" name="detailed" type="" class="form-control form_check" check-type="Text"  value="{$data.detailed}" placeholder="请填写详细地址"/>
+            </div>
+          </div>
+          
+           <div class="form-group has-feedback">
+            
+            <label for="zipcode" class="col-md-2 control-label">邮编</label>
+            <div class="col-md-4">
+              <input id="zipcode" name="zipcode" type="" class="form-control form_check" check-type="Phone"  value="{$data.zipcode}"/>
+            </div>
+          </div>
+          
+          <div class="form-group has-feedback">
+            
+            <label for="phone" class="col-md-2 control-label">联系电话</label>
+            <div class="col-md-4">
+              <input id="phone" name="phone" type="" class="form-control form_check" check-type="Phone"  value="{$data.phone}" placeholder="请填写联系电话"/>
+            </div>
+          </div>
+		   <div class="form-group has-feedback">
+            
+            <label for="email" class="col-md-2 control-label">邮箱</label>
+            <div class="col-md-4">
+              <input id="email" name="email" type="" class="form-control form_check" check-type="email"  value="{$data.email}" placeholder="请填写联系邮箱"/>
+            </div>
+          </div>
+         
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+             <input type="hidden" name="id" value={$id}>
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/address_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

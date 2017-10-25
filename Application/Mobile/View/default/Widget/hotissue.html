@@ -1,0 +1,28 @@
+<if condition="!empty($rs_issue)">
+<!-- 本例主要代码 Start ================================ -->
+<div id="event_hotissue" class="event_hotissue">
+    <div class="hd">
+        <h3>相关推荐</h3>
+    </div>
+    <div class="bd">
+    <volist name="rs_issue" id="vo" key="i" mod="2">
+        <eq name="mod" value="0"><ul></eq>
+        <li><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}"><img src="{$vo.cover_id|getThumbImageById=140,100}" /><div class="bt">{$vo.title}</div></a></li>
+        <if condition="$i eq count($rs_issue)"></ul>
+        <else />
+        <eq name="mod" value="1"></ul></eq>
+        </if>
+ 	</volist>
+    </div>
+</div>
+<script type="text/javascript">
+ $(function() {	
+	 $("#event_hotissue img").lazyload();
+});  
+</script>
+
+ <!-- 本例主要代码 End ================================ --> 
+
+
+
+</if>

@@ -1,0 +1,147 @@
+<extend name="Public/common_user"/>
+<block name="body">
+    <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+        <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/index')}" class=""><i
+                class="am-icon-chevron-left"></i></a>商品订单
+        </div>
+    </header>
+    <include file="Public/topnavbar"/>
+    <include file="Public/navbar"/>
+    <div class="hdl-menu hdl-menu-justify-xl">
+        <nav class="am-menu am-menu-one">
+            <a href="javascript: void(0)" class="am-menu-toggle">
+                <i class="am-menu-toggle-icon am-icon-bars"></i>
+            </a>
+            <ul class="am-menu-nav am-avg-sm-1">
+                <volist name="status_menu" id="top">
+                    <li
+                    <eq name="status_menuid" value="$top['id']"> class="am-active"</eq>
+                    >
+                    <a href="{:U('Mobile/Shoporder/index',array('status_menuid'=>$top['id']))}" data="{$top.id}"
+                       class="">{$top.title}</a>
+                    </li>
+                </volist>
+            </ul>
+        </nav>
+    </div>
+
+
+    <div class="am-panel-default">
+    
+    
+    	<div class="mygoods-shoping-tpl">
+            <div class="mygoods-shoping-team">
+                <div class="mygoods-shoping-thumb"><img src="__PUBLIC__/Core/images/blank.png" data-original="" class="mygoods-shoping-img" data-thumb/></div>
+                <div class="mygoods-shoping-title" data-goodsname>标题</div>
+                <div class="mygoods-shoping-other">
+                    <div class="mygoods-shoping-price"><i class="am-icon-rmb am-icon-fw "></i><span data-price>100.00</span></div>
+                    <div class="mygoods-shoping-num"><i class="am-icon-close am-icon-fw "></i><span data-num>1</span></div>
+                </div>
+            </div>    
+        </div>
+    
+    
+        <div class="mygoods-list-tpl">
+            <li>
+            	<div class="mygoods-shoping"><h3 class="mygoods-shoping-name" data-shoping-name>商铺名称</h3><span class="mygoods-shoping-status" data-status>状态</span></div>
+                <div class="mygoods-shoping-infos">
+                
+                    <a href="" data-href>
+                    	<div class="mygoods-shoping-info-box">
+                        	<div></div>
+                        </div>
+                    	<div class="mygoods-shoping-total">
+                        	<div>共<span class="mygoods-shoping-total-num" data-total-num>2</span>件商品 实付<i class="am-icon-rmb am-icon-fw"></i><span class="mygoods-shoping-total-price" data-pay-price>100.00</span></div>
+                        </div>
+                    </a>
+                    
+                </div>
+
+            </li>
+        </div>
+        <div class="mygoods-list-box">
+            <ul></ul>
+            <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon style="display:none"></i> <span loading-text>加载更多</span></div>
+        </div>
+    </div>
+
+
+    <script>
+        $(function () {
+
+
+            var loading_i = 0;
+            var get_url = {};
+            var gget_url = {$get_url};
+            if (!$.isEmptyObject(gget_url)) {
+                get_url = gget_url;
+            }
+            function get_mygoods(is_del) {
+                if (is_del == true) {
+                    $(".mygoods-list-box ul li").remove();
+                }
+                var loading_more = $(".loading-more");
+                var loading_text = loading_more.find('[loading-text]');
+                var loading_icon = loading_more.find('[loading-icon]');
+                loading_text.html('奋力加载中');
+                loading_icon.show();
+
+                get_url['page'] = loading_i;
+                $.getJSON("{:U('Mobile/Shoporder/get_orderinfo')}", get_url, function (json) {
+                    if (json) {
+                        $.each(json, function (index, array) {
+                            var mygoods_list_tpl = $('.mygoods-list-tpl li');
+                            var mygoods_list_li = mygoods_list_tpl.clone();
+                            var mygoods_list_href = mygoods_list_li.find('[data-href]');//url
+							var mygoods_list_shopingname = mygoods_list_li.find('[data-shoping-name]');//url
+                            var mygoods_list_status = mygoods_list_li.find('[data-status]');
+							var mygoods_list_all_goods_num = mygoods_list_li.find('[data-total-num]');
+							var mygoods_list_pay_price = mygoods_list_li.find('[data-pay-price]');
+							var mygoods_list_shoping_info_box = mygoods_list_li.find('.mygoods-shoping-info-box div');
+							mygoods_list_shopingname.html(array['order_sn']);
+							mygoods_list_status.html(array['status_text']);
+							mygoods_list_all_goods_num.html(array['all_goods_num']);
+							mygoods_list_pay_price.html(array['pay_price']);
+							mygoods_list_href.attr("href", array['url']);
+							$.each(array['order_info'], function (order_info_index, order_info) {								  
+								var mygoods_orderinfo_tpl = $('.mygoods-shoping-tpl > div');
+								var mygoods_orderinfo_div = mygoods_orderinfo_tpl.clone();
+								var mygoods_orderinfo_thumb = mygoods_orderinfo_div.find('[data-thumb]');//thumb
+								var mygoods_orderinfo_goods_name = mygoods_orderinfo_div.find('[data-goodsname]');//goodname
+								var mygoods_orderinfo_goods_price = mygoods_orderinfo_div.find('[data-price]');//price
+								var mygoods_orderinfo_goods_num = mygoods_orderinfo_div.find('[data-num]');//num
+								mygoods_orderinfo_thumb.attr("data-original", order_info['thumb']);
+								mygoods_orderinfo_thumb.lazyload({effect: "fadeIn", threshold: 100});
+								mygoods_orderinfo_goods_name.html(order_info['goods_name']);
+								mygoods_orderinfo_goods_price.html(order_info['total_price']);
+								mygoods_orderinfo_goods_num.html(order_info['goods_num']);
+								mygoods_list_shoping_info_box.append(mygoods_orderinfo_div);			   
+							 });
+                            $(".mygoods-list-box ul").append(mygoods_list_li);
+                        });
+                        $(".mygoods-list-box").trigger("scroll");
+                        loading_text.html('加载更多');
+                        loading_icon.hide();
+                        loading_i++;
+                    } else {
+                        loading_text.html('已经没有了');
+                        loading_icon.hide();
+                    }
+                });
+
+            }
+
+            get_mygoods();
+
+            $('.loading-more').scrollspy({});
+            $('.loading-more').on('inview.scrollspy.amui', function () {
+                timeout = setTimeout(function () {
+                    get_mygoods();
+                }, 1000);
+            }).on('outview.scrollspy.amui', function () {
+                clearTimeout(timeout)
+            });
+
+        })
+    </script>
+</block>

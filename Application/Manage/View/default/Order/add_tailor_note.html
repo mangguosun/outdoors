@@ -1,0 +1,36 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+        <h2>添加备注</h2> &nbsp;&nbsp;<span class="check-tips"style="color:rgb(170,170,170)">(备注内容不为空)</span>
+</div>
+    <form action="{:U('Manage/Order/add_tailor_note')}" method="post" class="form-horizontal">
+    	<input type="hidden" name="tailor_id" value="{$Think.get.id}">
+       
+        <br>
+       <textarea cols="45" rows="8" onkeyup="tailor()" id="tailor_note" maxlength="100" name="content" placeholder="此处填写备注" require/></textarea>
+			您还可以输入<span style="color:red" id="content_left">100</span>个字<br>
+		<br>	
+		
+		<br>	
+		<br>	
+		<div class="form-item">
+            <button class="w_btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">提交</button>
+            <a class="w_btn btn-return" href="{:U('Order/custom')}">返回</a>
+        </div>
+
+
+
+
+
+	</form>
+<script>	
+	function tailor(){
+		var tailor_note = document.getElementById('tailor_note').value;
+		var tailor_length = tailor_note.length;
+		var content_left = document.getElementById('content_left');
+		content_left.innerHTML = 100 - tailor_length;
+	}
+</script>
+
+	
+</block>

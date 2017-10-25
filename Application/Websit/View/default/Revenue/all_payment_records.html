@@ -1,0 +1,43 @@
+
+<div id="center">
+
+      <div class="row data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>支付流水号</th>
+              <th>订单号</th>
+              <th>时间</th>
+              <th>支付类型</th>
+              <th>支付方式</th>
+              <th>支付金额</th>
+              <th>可用余额</th>
+              <th>支付状态</th>
+           </tr>
+          </thead>
+          <tbody>
+          <notempty name="pay_account">
+          <volist name="pay_account" id="vo">
+          <tr>
+            <td>{$vo.trade_sn}</td>
+            <td><a href="{:U('Websit/Index/event_detail',array('trade_sn'=>$vo['order_id']))}" target="_blank">{$vo.order_id}</a></td>
+            <td>{:date('Y-m-d H:i:s',$vo[addtime])}</td>
+            <td>{$vo.pay_text}</td>
+            <td>{$vo.payment}</td>
+            <td>{$vo.money}</td>
+            <if condition="$vo['addtime'] gt 1425916799">
+            <td>{$vo.useprice}</td>
+            <else />
+            <td>--</td>
+            </if>
+            <td>{:get_pay_status($vo['status'])} </td>
+          </tr>
+          </volist>
+           </notempty>
+		     <tr><td colspan="6">{$page}</td></tr>
+            </tbody>
+        </table>
+      </div>
+     
+</div>
+

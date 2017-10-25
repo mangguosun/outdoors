@@ -1,0 +1,414 @@
+<extend name="runners/common"/>
+<block name="body">
+<script src="__PUBLIC__/Shop/js/nicescroll.js"></script>
+<script src="__PUBLIC__/Shop/js/jqnav.js"></script>
+<script src="__PUBLIC__/Shop/js/info-img.js"></script>
+<script src="__PUBLIC__/Shop/js/jqfnTimeCountDown.js"></script>
+
+<div class="shop-mall-goods-detail">
+	<div class="item_info">  
+	   <div class="shop-box">
+		<h2 class="title_content"><a href="{:U('goods')}">所有分类</a> 
+		<if condition="$content['up_category_id'] neq ''" >
+		&nbsp;->&nbsp;<a href="{:U('goods',array('category_id'=>$content['up_category_id']))}">{$content.up_category_title}</a>
+		</if>
+		&nbsp;->&nbsp;<a href="{:U('goods',array('category_id'=>$content['category_id']))}">{$content.category_title}</a>
+		&nbsp;->&nbsp;{$content.goods_name}
+		</h2>
+	  </div>
+	  <div id="preview" class="spec-preview">
+		<span class="jqzoom"><img jqimg="{$content.goods_ico|getThumbImageById=600,600}" src="{$content.goods_ico|getThumbImageById=400,400}" /></span>
+		<!--缩图开始-->
+		<div class="items">
+		  <ul>
+		  <li><img alt="{$content.goods_name}" bimg="{$content.goods_ico|getThumbImageById=600,600}" src="{$content.goods_ico|getThumbImageById=400,400}" onMouseMove="preview(this);"></li>
+		<foreach name="pictures" item="images" key="k">
+			<li><img alt="{$content.goods_name}" bimg="{$images.id|getThumbImageById=600,600}" src="{$images.id|getThumbImageById=400,400}" onMouseMove="preview(this);"></li>
+		</foreach>
+		  </ul>
+		</div>
+		<!--缩图结束-->
+	  </div>
+	  <div class="item_txt">
+		<div class="item_txt_top">
+		  <div class="item_top_bt">{$content.goods_name}</div>
+		  <div class="item_top_tips">{$content.goods_introduct}</div>
+		  
+		  <if condition="$content['bargain_price']">
+		  <div class="item_top_lei">￥<span>{$content.bargain_price}</span>
+			<span id="timejs" style="font-size: 12px" >
+              <span>还剩:</span>
+              <span id="day" class="day time_td">00</span>天
+              <span id="hour" class="hour time_td">00</span>时
+              <span id="mini" class="time_td mini ml5">00</span>分
+              <span id="sec" class="sec time_td">00</span>秒
+              <span id="hm" class="hm time_td" style="display:none">0</span>
+            </span>
+		  </div>
+		  <div class="item_top_tg">销售价<span><del>￥{$content.market_price}<del></span></div>
+		  <else/>
+		  <div class="item_top_lei">￥<span id="get-tm-price">{$content.market_price}</span></div>
+		  <div class="item_top_tg">市场价<span><del>￥{$content.tox_money_need}<del></span></div>
+		  </if>
+		  
+		  
+		  <div class="item_top_ps">运 费<span><if condition="(!$content['fr_id']) and ($content['fr_freight'])">
+          ￥{$content.fr_freight}<else/>包邮 </if> </span></div>
+		  <div class="item_top_tg">品 牌<a title="{$shop_brand.name}" href="{:U('Shop/Index/goods',array('shop_brand'=>urlsafe_b64encode($shop_brand['name'])))}" class="">{$shop_brand.name}<if condition="$shop_brand['englist_name']">({$shop_brand.englist_name})</if></a></div>
+		  <div class="item_top_tg">标 签<volist name="tags" id="tag"><a title="{$tag.name}" href="{:U('Shop/Index/goods',array('tag'=>$tag['id']))}" class="">{$tag.name}</a></volist></div>
+		  <div class="clear"></div>
+		</div>
+		<div class="item_txt_bot">
+		<form action="{:U('Shop/Order/getorderinfo')}" method="post" >
+		  <div class="item_class">
+			<div class="item_class_l">数量：</div>
+			<div class="item_class_r_num">
+				<div class="goods-pay-set-num">
+					<span class="goods-num-reduce" id="goods_num_minus">-</span>
+					<input type="text" class="goods-number" id="goods_num" name='goods_num' value="1" />
+					<span class="goods-num-add" id="goods_num_plus">+</span>&nbsp;&nbsp;&nbsp;&nbsp;库存<span id="get-tm-stock">{$content.goods_num}</span>件
+					<input id="goods_id" name="goods_id" type="hidden" value="{$content.id}" class="" />
+					<input id="goods_sku" name="goods_sku" type="hidden" value="" class="" />
+					<input id="is_sku" name="is_sku" type="hidden" value="{$is_sku}" class="" />
+				</div>
+			</div>
+			<div class="tb-sku tb-skin sku_box">
+			<volist name="sku_type_detailed" id="val">
+			  <div class="item_class_l" >
+				{$val['type_name']}：</div>
+			   <div class="item_class_r tb-prop" id="sku_type_{$val['type_id']}" data-type-id="{$val['type_id']}">
+				  <ul>
+					<volist name="val.data" id="v">
+					  <li class="" data-aid="{$v['attribute_id']}"  data-key="{$val['type_id']}" data-goodsid="{$content.id}">{$v['attribute_name']}<span></span></li>
+					</volist>
+				  </ul>
+				</div> 
+			</volist>
+            </div> 
+		  </div>
+		  <if condition="$content['purchase_status'] eq 1">
+			<div class="item_class_l"></div>
+				<a href="javascript:" class="item_top_go addcart">加入购物车</a>
+				<button type="submit" class="item_top_go fastbuy" name="fastbuy" >立即购买</button>
+				<div class="clear"></div>
+				<br>
+				<div id="testDiv" style="width:300px; border:1px #ddd solid; display:none ">
+					<div style="background:#ddd; padding:5px"><a class='continue_shopping keep_right' >×</a>
+					<b>成功加入购物车</b></div>
+					<div style=" margin:10px auto; font-size:12px; text-align:center;">目前选购商品共 <font color='red'><b id="item_num"> </b></font> 种 <font color='red'><b id="cart_num"> </b></font>  件&nbsp;&nbsp;合计: <font color='red'><b id='cart_price'> </b></font> </div>
+					<div style="padding:0px 26px 10px 51px"><a href="{:U('Shop/Shopcart/shopcartitem')}" class="btn btn-primary" >进入购物车</a>&nbsp;<a href="{:U('Shop/Index/index')}" class='continue_shopping btn btn-primary' >返回商城</a></div>
+				</div>
+				<div class="msg_text"></div>
+			  <else/>
+			<div class="item_class_r">
+			  <div class="tb-action">
+				<div style="font-size: 16px; font-weight:900; padding:2em 0;color: red;"> 该商品暂不支持在线购买，请联系客服了解详情O(∩_∩)O~  </div>
+			  </div>
+			</div>
+		  </if>
+		  </form>
+		</div>
+	  </div>
+	  <div class="clear"></div>
+	</div>
+
+	<!-- item_info end -->
+
+	<!-- conter -->
+
+	<div class="item_conter">
+	  <div class="item_conter_l">
+		<div class="item_his">
+		  <div class="item_his_bts">同类商品</div>
+		  <ul>
+		  <volist name="contents_same_category" id="vo">
+			<li>
+			  <a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}">
+				<img class="add_loading" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.goods_ico|getThumbImageById=135,135}">
+			  </a>
+			  <div class="item_his_bt"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}">{$vo.goods_name}</a></div>
+			  <span style="float:left;margin-left:10px;color:#ea4848;">￥{$vo.tox_money_need}</span><span style="float:right;margin-right:15px;"></span>
+			</li>
+		  </volist>
+          <if condition="count($contents_same_category) eq 0">
+            <div style="font-size: 16px;padding:2em 0;color: #ccc;text-align: center"> 该商品没有同类商品哦。O(∩_∩)O~ </div>
+          </if>
+		  </ul>
+		  <div class="clear"></div>
+		</div>
+	  </div>
+	  <div class="item_conter_r">
+		<div class="item_con_r1">
+		  <ul class="item_con_r1_ul">
+			<li class="item_con_li item_li_1">商品详情</li>
+			<li class="item_li_2">商品评价</li>
+		  </ul>
+		  <div class="item_con_i1">
+			<ul>
+			  <li>商品名称：{$content.goods_name}</li>
+			  <li>商品编号：{$content.goods_sn}</li>
+			  <li>品牌名称：{$shop_brand.name}<if condition="$shop_brand['englist_name']">({$shop_brand.englist_name})</if></li>
+			</ul>
+			<div class="item_con_info">
+			  {$content.goods_detail}
+			</div>
+			<div class="clear"></div>
+		  </div>
+		  <div class="item_con_i2">
+
+			<div class="item_eva_b">
+	
+			  <div class="item_eva_pl" style="display:block;">
+			  
+				<ul>
+				  <li>
+					{:hook('localComment', array('path'=>"Shop/index/$content[id]", 'uid'=>$content['uid']))}
+				  </li>
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		  <div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	  </div>
+	  <div class="clear"></div>
+	</div>
+	
+	
+</div>
+<script>
+	  $(function(){
+		//加入购物车		 
+		$(".addcart").click(function(){
+			var is_sku = $("#is_sku").val();
+			var goods_id = $("#goods_id").val();
+			var goods_num = $("#goods_num").val();
+			if(is_sku){
+				var goods_sku = $("#goods_sku");
+				var goods_sku_id = 		goods_sku.val();		
+				if(!goods_sku_id){
+					$(".tb-skin").addClass("msg_border");	
+					$(".msg_text").html('请选择相关配置').show();
+					return false;
+				}
+			}else{
+				var goods_sku_id = '';
+			}
+			
+			$.post(U('Shop/Shopcart/additem'),{goods_id:goods_id,goods_num:goods_num,sku_id:goods_sku_id},function(res){
+				if(res['status'] == false){
+					toast.error(res['info']);
+				}else{
+					//toast.success('成功加入购物车');
+					$("#testDiv").show();
+					$('#cart').html("我的购物车("+res['datainfo']['allnum']+")");
+
+					$('#item_num').html(res['datainfo']['item_num']);
+					$('#cart_num').html(res['datainfo']['allnum']);
+					$('#cart_price').html("￥"+res['datainfo']['cart_price']);
+					$('#shopping-cart-num').html(res['datainfo']['allnum']); 					
+				}
+			},'json')
+		});
+		$(".continue_shopping").click(function(){
+			$("#testDiv").hide();
+		});
+		
+		$(".fastbuy").click(function(){
+			var is_sku = $("#is_sku").val();
+			var goods_id = $("#goods_id").val();
+			var goods_num = $("#goods_num").val();
+			if(is_sku){
+				var goods_sku = $("#goods_sku");
+				var goods_sku_id = 		goods_sku.val();			
+				if(!goods_sku_id){
+					$(".tb-skin").addClass("msg_border");	
+					$(".msg_text").html('请选择相关配置').show();
+					return false;
+				}
+			}else{
+				var goods_sku_id = '';
+			}
+		});
+		
+		var sys_item={$sku_info};
+		var maxstock	=	{$content.goods_num};
+		var t = $("#goods_num");
+	    //商品规格选择
+		$(".tb-sku").find("ul li").click(function(){
+
+			if($(this).hasClass("tb-selected")) {
+				return false;
+			}
+
+			if($(this).hasClass("tb-out-of-stock")) {
+				return false;
+			}
+			
+			$(".tb-skin").removeClass("msg_border");
+			$(".msg_text").html('').hide();
+
+			detail_aid = $(this).attr("data-aid");
+			detail_type = $(this).attr("data-key");
+
+			$("#sku_type_"+detail_type+" ul li").removeClass("tb-selected");
+			$(this).addClass("tb-selected");
+			$("#sku_type_"+detail_type).attr("selected-data-aid",$(this).attr("data-aid"));
+			
+			if(detail_aid){
+				get_goods_start();
+			}
+	
+			if(detail_aid){
+				var shop_detail_infos={$shop_detail_infos}; //all
+				
+				var shop_detail_infos_detail = shop_detail_infos[detail_aid];
+				if(shop_detail_infos_detail){
+					$.each(shop_detail_infos_detail,function(i,vo){
+						if(vo){
+							get_type_data(i,vo);
+						}
+					 })
+				}
+			}
+		   getattrprice(); //输出价格
+		});
+		//})
+		
+	   
+		//获取对应属性的价格
+		function getattrprice(){
+	
+			var defaultstats=true;
+			var _val='';
+			var _resp={price:"#get-tm-price",stock:"#get-tm-stock"}  //输出对应的class
+			$(".tb-prop").each(function(i){
+												  
+	           var v=$(this).attr("selected-data-aid");
+			    if(!v){
+					defaultstats=false;
+				}else{
+					_val+=_val!=""?",":"";
+					_val+=v;
+				}
+			})
+
+			if(!!defaultstats){ //--都点击--
+			   if(sys_item[_val]){   //--存在--	
+					_price=sys_item[_val]['price'];
+					_stock=sys_item[_val]['stock'];
+				}
+				$("#goods_sku").val(sys_item[_val]['sku_id']);
+				$(".msg_text").html('').hide();
+				
+			}else{ //-点击单个--
+				_stock=sys_item['stock'];
+				_price=sys_item['price'];
+				$("#goods_sku").val('');
+				$(".msg_text").html('请选择商品相关其它配置').show();
+			}
+			//输出价格-和-库存
+			
+			$(_resp.price).text(_price);
+			if(_stock==0){
+			  $(_resp.stock).html("<u style='color:red;'>缺货中</u>");
+			}else{
+			  $(_resp.stock).text(_stock);
+			}
+			maxstock	=	_stock;
+			if(parseInt(t.val())>maxstock){
+				t.val(maxstock)
+			}
+
+		}
+		
+		function get_type_data(types_id,types_data){
+			var var2  = [];
+			$.each(types_data,function(i,vo){    
+				var2[i]=i;
+
+			 })	
+			getattrname(types_id,var2);
+		}		
+		
+		
+		
+		//---比较---
+		function getattrname(typeid,vo){
+			$("#sku_type_"+typeid+" ul li").each(function(){		
+				var get_id = $(this).attr("data-aid");		
+				if($.inArray(get_id, vo)==-1){
+						var selected_type_aid = $("#sku_type_"+typeid).attr("selected-data-aid");
+						if(selected_type_aid && selected_type_aid == get_id){
+							$("#sku_type_"+typeid).removeAttr("selected-data-aid");
+							$(this).removeClass("tb-selected");
+						}
+					$(this).addClass('tb-out-of-stock');
+				}
+		   })
+	    }
+		///---初始化----
+		function get_goods_start(){
+				var tb_stock = $('.tb-sku .tb-out-of-stock');
+				if(tb_stock){
+					tb_stock.removeClass('tb-out-of-stock');
+				}
+		}
+	    
+		//--数量-加减法--
+		
+		$("#goods_num_plus").click(function () {
+			
+			if(parseInt(t.val())+1>=maxstock){
+				t.val(maxstock)
+			}else{
+				t.val(parseInt(t.val()) + 1)
+			}
+			
+		})
+		
+		//--失去焦点--
+		t.blur(function(){
+			if(parseInt(t.val())<=0 || isNaN(t.val())){
+			  t.val(1);
+			}else if(parseInt(t.val())>=maxstock){
+				t.val(maxstock)
+			}
+		})
+		$("#goods_num_minus").click(function () {
+		    if(parseInt(t.val() - 1)<=0){
+				t.val(1)
+			}else{
+				t.val(parseInt(t.val()) - 1)
+			}
+		})               
+  })
+</script>
+<if condition="$content['bargain_price']">
+<script type="text/javascript">
+var zxx = {
+  obj: function(){
+    return {
+      hm: $("#hm"),
+      sec: $("#sec"),
+      mini: $("#mini"),
+      hour: $("#hour"),
+      day: $("#day"),
+      month: $("#month"),
+      year: $("#year")
+    }
+  }
+};
+fnTimeCountDown('{$content.overtime}', zxx.obj());
+</script>
+</if>
+
+</block>
+<block name="script">
+<script> 
+	$(function () {
+		hdl_lazyload("img.add_loading");
+	 })
+</script>
+</block>

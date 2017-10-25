@@ -1,0 +1,18 @@
+<div id="frm-post-popup" class="white-popup sms_notice">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>添加备注</h2>
+		<form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Index/do_add_tailor_note')}" method="post">
+			<input type="hidden" name="tailor_id" value="{$Think.get.id}">
+			<textarea cols="40" rows="5" onkeyup="tailor()" id="tailor_note" maxlength="100" name="content" placeholder="此处填写备注" require/></textarea>
+			您还可以输入<span style="color:red" id="content_left">100</span>个字<br>
+			<input class="btn-primary mbtn" type="submit" value="提交">
+		</form>
+</div>
+<script>	
+	function tailor(){
+		var tailor_note = document.getElementById('tailor_note').value;
+		var tailor_length = tailor_note.length;
+		var content_left = document.getElementById('content_left');
+		content_left.innerHTML = 100 - tailor_length;
+	}
+</script>

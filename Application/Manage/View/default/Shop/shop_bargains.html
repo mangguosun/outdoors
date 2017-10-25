@@ -1,0 +1,198 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>特价-选择商品</h2><span class='common-color-red'></span>
+</div>
+	<div class="fl">
+	        <a class="w_btn" href="{:U('Shop/shop_bargains_list')}">特价商品列表</a>
+     </div>
+  <div class="data-table table-striped auth_groups" >
+    <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>序号</th>
+		  <th>商品名称</th>
+		  <th>商品分类</th>
+		  <th>商品余量</th>
+		  <th>销售价格</th>
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="shop_list">
+        <volist name="shop_list" id="vo">
+          <tr>
+		    <td>{$vo.id}</td>
+			<td><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+			<td>{:get_shop_categrory_title($vo['category_id'])}</td>
+			<td>{$vo.goods_num}</td>
+			<td>{$vo.market_price}元</td>
+			<td>
+				<if condition="$vo['is_bargain']">
+				<span class="w_btn add-btn" >已设置</span>
+				<else/>
+				<a class="w_btn addTags" id="addtobargains-{$vo.id}" goods-id="{$vo.id}" goods-name="{$vo.goods_name}" categrory-title="{:get_shop_categrory_title($vo['category_id'])}" goods-num="{$vo.goods_num}" market-price="{$vo.market_price}" >加入特价</a>
+				</if>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="6">{$page}</td>
+        <else/>
+			<td colspan="6" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+
+
+<form action="{:U('Manage/Shop/add_shop_bargains')}" class="form-horizontal ajax-form" method="post"> 
+    <table class="add_shop_bargains">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>序号</th>
+		  <th>商品名称</th>
+		  <th>分类</th>
+		  <th>余量</th>
+		  <th>售价</th>
+		  <th>开始时间</th>
+		  <th>结束时间</th>
+		  <th>特价</th>
+		  <!--th>特价数量</th-->
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody id="spec_box">
+
+      </tbody>
+   </table>
+  
+   <button class="btn submit-btn add_shop_bargains" id="submit" type="submit" >提交</button>
+
+</form>
+  </div>
+  
+  
+  
+  
+  
+
+  
+  
+  
+ <script type="text/javascript">
+	$(function(){
+		$(".add_shop_bargains").hide();	
+	});
+	$("body").on("click",".addTags", function(e){
+		var  goods_id	= $(this).attr('goods-id');
+		var  goods_name	= $(this).attr('goods-name');
+		var  categrory_title	= $(this).attr('categrory-title');
+		var  goods_num	= $(this).attr('goods-num');
+		var  market_price	= $(this).attr('market-price');
+		var str = "<tr><td>"+goods_id+"<input name='goods[goods_id][]' type='hidden'  value='"+goods_id+"' /></td><td>"+goods_name+"</td><td>"+categrory_title+"</td><td>"+goods_num+"</td><td>"+market_price+"</td><td><input name='goods[starttime][]' type='text' class='time starttime' check-type='Text'  value='' /></td><td><input name='goods[endtime][]' type='text' class='time endtime' check-type='Text'  value='' /></td><td><input type='text' name='goods[bargain_price][]' placeholder='0.00' /></td><td><a  class='removeclass' goods-id='"+goods_id+"' >取消</a></td></tr>";
+		document.getElementById("spec_box").innerHTML += str;
+		$(this).removeClass("addTags"); 
+		 $(this).addClass("add-btn"); 
+		 $(this).html("已选中");
+		if($(".removeclass").hasClass("removeclass")){
+				$("#add_shop_bargains").attr("disabled",false);
+				$(".add_shop_bargains").show();
+				
+			}else{
+				$("#add_shop_bargains").attr("disabled",true);
+				$(".add_shop_bargains").hide();	
+			}
+		 
+	})
+
+	$("body").on("click",".removeclass", function(e){ 
+	   $(this).parent().parent('tr').remove();
+	   var  goods_id	= $(this).attr('goods-id');
+		$('#addtobargains-'+goods_id).addClass("addTags"); 
+		$('#addtobargains-'+goods_id).removeClass("add-btn"); 
+		$('#addtobargains-'+goods_id).html("加入特价");
+		if($(".removeclass").hasClass("removeclass")){
+				$("#add_shop_bargains").attr("disabled",false);
+				$(".add_shop_bargains").show();
+				
+			}else{
+				$("#add_shop_bargains").attr("disabled",true);
+				$(".add_shop_bargains").hide();	
+			}
+	   return false;  
+	})   
+
+</script>
+
+
+
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+
+$("body").on("click","*", function(e){ 
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+});
+
+ Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份 
+			"d+": this.getDate(), //日 
+			"h+": this.getHours(), //小时 
+			"m+": this.getMinutes(), //分 
+			"s+": this.getSeconds(), //秒 
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S": this.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+	$("body").on("change",".starttime", function(e){ 
+    
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 00:00';  
+	   
+		setTimeout(function () {
+			 $(this).val(date1);
+		}, 10);
+	})
+	$("body").on("change",".endtime", function(e){ 
+    
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 00:00';  
+	   
+		setTimeout(function () {
+			 $(this).val(date1);
+		}, 10);
+	})
+	
+</script>
+
+
+
+			   
+  
+</block>
+

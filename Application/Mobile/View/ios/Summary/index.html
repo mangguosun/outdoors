@@ -1,0 +1,330 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 排行榜<!--填写返回打卡-->
+  </div>
+  <div class="am-header-right am-header-nav">
+  
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+  <script type="text/javascript" src="__PUBLIC__/Core/js/echarts-2.1.10/build/dist/echarts.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Core/js/echarts-2.1.10/build/dist/chart/bar.js"></script>
+</header>
+<body>
+    <include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+    <include file="Public/navbar"/>    <!-- 底部导航 -->
+    
+    <div class="hdl-menu hdl-menu-justify-xl">
+    <nav class="am-menu am-menu-one" >
+        <a href="javascript: void(0)" class="am-menu-toggle" >
+            <i class="am-menu-toggle-icon am-icon-bars"></i>
+        </a>
+          <ul class="am-menu-nav am-avg-sm-1 mark-cha-li" >
+            <li><a href="{:U('Mobile/Issue/index')}" class="">故事</a></li>
+            <li><a href="{:U('Mobile/People/index')}" class="">会员</a></li>
+            <li class="am-active"><a href="{:U('Mobile/Summary/index')}" class="">排行</a></li>
+        </ul>
+    </nav>
+    </div>
+    <!-- 排行榜图 -->
+    <div class="mark-cha-tu">
+        <div class="mark-cha-tua">
+            <p class="mark-cha-ptitle"><i class="am-icon-trophy"></i> 排行榜</p>
+            <div class="mark-cha-day" style="z-index:222;position:relative;">
+                <a href="javascript:" class="mark-cha-time timeday" time="{$dailydistance}">日 &nbsp;&nbsp; <label>|</label></a>
+                <a href="javascript:" class="mark-cha-time timeweek mark-cha-color" time="{$weeklydistance}"> &nbsp;&nbsp;周 &nbsp;&nbsp;<label>|</label></a>
+                <a href="javascript:" class="mark-cha-time timemonth" time="{$monthlydistance}"> &nbsp;&nbsp;月</a>
+            </div>
+        </div>
+        <div class="mark-cha-tub" id="mark-cha-bar">
+        </div>
+    </div>
+    <!-- 运动量图 -->
+    <if condition="IS_LOGIN()">
+    <div class="mark-cha-tu mark-cha-tu2">
+        <div class="mark-cha-tua">
+            <p class="mark-cha-ptitle"><i class="am-icon-bar-chart"></i> 7日运动量</p>
+            
+        </div>
+        <div class="mark-cha-tub" id="mark-cha-bar2">
+            
+        </div>
+    </div>
+    <else />
+    </if>
+    <div class="mark-mfd-con">
+        <div class="mark-mfd-math mark-mfd-math1">
+            <i class="am-icon-file-text mark-mfd-tubiao"></i>
+            <p class="mark-mfd-tup mark_count">{$mark_count}</p>
+            <label class="mark-mfd-tulabel">总次数</label>
+        </div>
+        <div class="mark-mfd-math mark-mfd-math2">
+            <i class="am-icon-tachometer mark-mfd-tubiao"></i>
+            <p class="mark-mfd-tup mark_distance">{$mark_ttldistance}</p>
+            <label class="mark-mfd-tulabel">总里程</label>
+        </div>
+    </div>
+    <div class="mark-cha-cona">
+        <div class="mark-cha-conleft">
+            <div class="am-dropdown am-dropdown-up" data-am-dropdown>
+              <button class="am-btn am-dropdown-toggle mark-cha-h2" data-am-dropdown-toggle>全部分类 <span class="am-icon-angle-up mark-cha-down"></span></button>
+              <ul class="am-dropdown-content am-dropdown-toggle">
+                <li class="typecode" typecode="0"><a href="javascript:">全部</a></li>
+                <li class="typecode" typecode="1"><a href="javascript:">跑步</a></li>
+                <li class="typecode" typecode="2"><a href="javascript:">徒步</a></li>
+                <li class="typecode" typecode="3"><a href="javascript:">骑行</a></li>
+                <li class="typecode" typecode="4"><a href="javascript:">游泳</a></li>
+              </ul>
+            </div>
+        </div>
+        <div class="mark-cha-conright">
+            <a href="{:U('Mobile/Mark/mymark')}"><button class="mark-cha-but">我的打卡</button></a>
+        </div>
+    </div>
+<!-- 异步加载 -->
+    <div class="chart-list-tpl">
+        <div class="mark-sum-cona">
+            <div class="mark-inner">
+                <div class="mark-sum-conaleft">
+                <a href="" data-href>
+                     <img class="am-circle mark-sum-ph" src="__PUBLIC__/Core/images/blank.png" data-original="" data-thumb/></a>
+                </div>
+                <div class="mark-sum-conaright">
+                    <a href="" data-record>
+                    <p class="mark-sum-title" data-yuebanname>标题</p>
+                    </a>
+                    <div class="mark-sum-cona1">
+                        <label class="mark-sum-label mark-sum-labela" data-name>用户名</label>
+                        <label class="mark-sum-label mark-sum-labelb" data-create-time>打卡时间</label>
+                    </div>
+                    <div class="mark-sum-cona1 mark-sum-cona2">
+                        <label class="mark-sum-label mark-sum-labela"><span data-type>类型</span>&nbsp;<b data-distance>距离</b>&nbsp;KM</label>
+                        <label class="mark-sum-label" data-time>时间</label>
+                        <label class="mark-sum-label mark-sum-labelb" data-speed>速度</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="chart-list-box">
+            <div class="chart-lists-ul"></div>
+            <div style="clear:both;"></div>
+            <div class="loading-more">
+                 <i class="am-icon-circle-o-notch am-icon-spin" loading-icon style=" display:none"></i>
+                 <span loading-text>加载更多</span>
+            </div>
+</div>
+</body>
+</block>    
+
+<block name="script">
+    <script>
+     var myChart;
+     var options;
+    require.config({
+            paths: {
+                echarts: '__PUBLIC__/Core/js/echarts-2.1.10/build/dist/'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                myChart = ec.init(document.getElementById('mark-cha-bar')); 
+                options = {
+                    xAxis : [
+                        {
+                            type : 'value',
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'category',
+                            data : [{$weeklydistance_user}]
+                        }
+                    ],
+                    series : [                    
+                        {
+                            type:'bar',
+                            itemStyle: {normal: {
+                                label : {show: true}
+                            }},
+                            data:[{$weeklydistance}]
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据   
+                myChart.setOption(options);   
+            }  
+        );
+         $('.mark-cha-time').on('click',function(){
+            $('.mark-cha-time').removeClass('mark-cha-color');
+            $(this).addClass('mark-cha-color'); 
+        })
+        $('.timeday').on('click',function(){
+            options.series[0].data = [{$dailydistance}];
+            options.yAxis[0].data = [{$dailydistance_user}];
+            myChart.setOption(options);
+        });
+        $('.timeweek').on('click',function(){
+            options.series[0].data = [{$weeklydistance}];
+            options.yAxis[0].data = [{$weeklydistance_user}];
+            myChart.setOption(options);
+        });
+        $('.timemonth').on('click',function(){
+            options.series[0].data = [{$monthlydistance}];
+             options.yAxis[0].data = [{$monthlydistance_user}];
+            myChart.setOption(options);
+        });
+    require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart2 = ec.init(document.getElementById('mark-cha-bar2'));
+                option = {
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+
+                    xAxis : [
+                        {
+                            type : 'category',  
+                            data : [{$seven_date}]
+                            
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'运动量',
+                            type:'bar',
+                            data:[{$seven_ttldistance}],   
+                        }
+                    ]
+                };
+                // 为echarts对象加载数据   
+                myChart2.setOption(option);
+            }  
+        );
+</script>
+    <!-- 异步加载 -->
+    <script>
+    $(function () {
+     var type_c = 0;
+    var loading_i = 0;
+    var get_url = {};
+    var gget_url = {$get_url};
+    if (!$.isEmptyObject(gget_url)) {
+        get_url = gget_url;
+    }
+    function get_chart(is_del,loading_page,type_code) {
+        if (is_del == 'true') {
+            $(".chart-list-box .chart-lists-ul .mark-sum-cona").remove();
+        }
+        var loading_more = $(".loading-more");
+        var loading_text = loading_more.find('[loading-text]');
+        var loading_icon = loading_more.find('[loading-icon]');
+        loading_text.html('奋力加载中');
+        loading_icon.show();
+            get_url['page'] = loading_i;
+            get_url['typecode'] = type_c;
+            if(type_code){
+             get_url['page'] = loading_page;
+             get_url['typecode'] = type_code;
+             }
+                $.getJSON("{:U('Mobile/Summary/get_chart')}", get_url, function (json) {
+                        // console.log(json);
+                      if (json) {
+                        $.each(json, function (index, array){
+                         
+                            var chart_list_tpl = $('.chart-list-tpl .mark-sum-cona');
+                            var chart_list_li = chart_list_tpl.clone(); 
+                            var chart_list_href = chart_list_li.find('[data-href]');
+                            var chart_list_thumb = chart_list_li.find('[data-thumb]');
+                            var chart_list_record = chart_list_li.find('[data-record]');
+                            var chart_list_yuebanname = chart_list_li.find('[data-yuebanname]');
+                            var chart_list_name = chart_list_li.find('[data-name]');
+                            var chart_list_create = chart_list_li.find('[data-create-time]');
+                            var chart_list_type = chart_list_li.find('[data-type]');
+                            var chart_list_distance = chart_list_li.find('[data-distance]');
+                            var chart_list_time = chart_list_li.find('[data-time]');
+                            var chart_list_speed = chart_list_li.find('[data-speed]');
+                            chart_list_href.attr("href", array['url']);
+                            chart_list_thumb.attr("data-original", array['avatar128']);
+                            chart_list_record.attr("href",array['record']);
+                            chart_list_yuebanname.html(array['yuebanname']);
+                            chart_list_name.html(array['nickname']);
+                            chart_list_create.html(array['daka_day']);
+                            chart_list_type.html(array['typetext']);
+                            chart_list_distance.html(array['distance']);
+                            chart_list_time.html(array['time']);
+                            chart_list_speed.html(array['speed']+'/KM');
+                            chart_list_thumb.lazyload({effect: "fadeIn", threshold: 100});
+                            $(".chart-list-box .chart-lists-ul").append(chart_list_li);
+                        });
+                        $(".chart-list-box").trigger("scroll");
+                        loading_text.html('加载更多');
+                        loading_icon.hide();
+                        loading_i++;
+                        $('.loading-more').scrollspy({});
+                    } else {
+                        $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+                        loading_text.html('已经没有了');
+                        loading_icon.hide();
+                    }
+                }); 
+            }
+            get_chart();
+            $('.loading-more').on('inview.scrollspy.amui', function () {
+                timeout = setTimeout(function () {
+                    get_chart();
+                }, 1000);
+            }).on('outview.scrollspy.amui', function () {
+                clearTimeout(timeout)
+            });
+    //ajax选择运动类型
+    $(".typecode").click(function(){
+        var typecodes= $(this).attr('typecode');
+        var is_del = 'true';
+          $.post("{:U('Mobile/Summary/get_count')}", {typecode:typecodes}, function (res) {
+                var count   =   res['mark_count'];
+                    if(res['mark_ttldistance']){
+                        var distance    =   res['mark_ttldistance'];
+                    }else{
+                        var distance    =   0;
+                    }
+                $('.mark_count').html(count);
+                $('.mark_distance').html(distance);
+         }, 'json');
+        get_chart(is_del,0,typecodes);
+         $('.loading-more').on('inview.scrollspy.amui', function () {
+                timeout = setTimeout(function () {
+                    get_chart();
+                }, 1000);
+            }).on('outview.scrollspy.amui', function () {
+                clearTimeout(timeout)
+            });
+     })
+    })
+    </script>
+
+</block>

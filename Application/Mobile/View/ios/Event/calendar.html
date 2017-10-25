@@ -1,0 +1,74 @@
+<extend name="Public/common"/>
+<block name="body">
+
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}日历
+  </div>
+  <div class="am-header-right am-header-nav">
+<a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<div class="h10"></div>
+  <volist name="calendarlist" id="vo" key="key">
+   <div class="calendar-box">
+<div class="calendar-line">   
+    <p class="calendar-month">{$vo.dismonth}</p>            
+      <?php $listweek = $vo[$vo['month']];?>
+      <volist name="listweek" id="v" key="ke">
+
+      <p class="calendar-day"><i class="am-icon-clock-o"></i> {$v.days} {$v.week}</p> 
+      <p class="calendar-dot"></p>       
+      <div class="calendar-all">
+      <ul>
+        <?php $listday = $v['content'];?>
+        <volist name="listday" id="vol" key="k">
+      
+        <li>   
+          <div class="am-g calendar-lists-box">
+            <p class="calendar-count"><i class="am-icon-leaf"></i> <span data-view-count>{$vol['event']['view_count']}</span></p>  
+            <div class="am-u-sm-5 calendar-img-box">
+            <a href="{:U('Mobile/Event/detail',array('id'=>$vol['eventid']))}"><img class="recommend add_loading add_loading_recommend" src="__PUBLIC__/Core/images/blank.png" data-original="{$vol['event']['cover_id']|getThumbImageById=400,300}"/></a>
+          
+          <?php 
+
+            if($vol['calendar']['view_status'] == 1 ){ 
+                echo '<p class="calendar-topleft calendar-topleft-success"></p>';
+                echo ' <p class="calendar-topleft-zi">报名中</p> ';
+            }elseif($vol['calendar']['view_status'] == 3){ 
+                echo '<p class="calendar-topleft calendar-topleft-warning"></p>';
+                echo ' <p class="calendar-topleft-zi">报满中</p> ';
+            }elseif($vol['calendar']['view_status'] == 0){ 
+
+            }
+           ?>
+
+            </div>
+            <div class="am-u-sm-7 calendar-text-box">             
+                <h3 class="calendar-lists-title"  data-title>{$vol['event']['title']}</h3>
+                <p class="calendar-lists-location"><span data-location> {$vol['calendar']['disstart']}-{$vol['calendar']['disend']} {$vol['calendar']['start']['disstarttime']}-{$vol['calendar']['end']['disendtime']} 共{$vol['calendar']['num']}天</span></p>
+           </div>
+          </div>          
+        </li>
+        </volist>
+        
+      </ul> 
+     
+      </div>
+      </volist>
+      </div>
+  </div> 
+  </volist>
+<script>
+  $(function () {
+  hdl_lazyload("img.add_loading_recommend");
+  })
+</script>
+
+<block name="script">
+</block>

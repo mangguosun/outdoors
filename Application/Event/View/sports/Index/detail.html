@@ -1,0 +1,271 @@
+<extend name="sports/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+<div class="container" >
+  <div class="row">
+    <div class="col-md-8">
+      <div class="detail_box">
+        <div class="row detail_box_padding">
+          <div class="col-md-12 event_detail_title"><a href="javascript:"  class="hundred" >【{$content['traveldays']}天】{$content.title}</a></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="pull-left col-md-6">
+              <php>if($pictures){</php>
+			    <style>
+				/* 本例子css */
+				.event_detail_pictures{ width:338px; height:264px; overflow:hidden; position:relative;  }
+				.event_detail_pictures .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1; margin-bottom:10px; }
+				.event_detail_pictures .hd ul{ overflow:hidden; zoom:1; float:left;}
+				.event_detail_pictures .hd ul li{ float:left; margin-right:2px;width:20px; height:20px; line-height:19px; text-align:center; background:#fff; cursor:pointer; font-size:12px}
+				.event_detail_pictures .hd ul li.on{ background:#000; color:#fff; }
+				.event_detail_pictures .bd{ position:relative; height:100%; z-index:0;   }
+				.event_detail_pictures .bd li{ zoom:1; vertical-align:middle; }
+				.event_detail_pictures .bd img{ width:338px; height:254px; display:block; }
+				/* 下面是前/后按钮代码，如果不需要删除即可 */		
+				</style>
+            <div id="event_detail_pictures" class="event_detail_pictures">
+                    <div class="hd">
+                      <ul>
+                        <foreach name="pictures" item="images" key="k">
+                          <li>{$k+1}</li>
+                        </foreach>
+                      </ul>
+                    </div>
+                    <div class="bd">
+                      <ul>
+                        <volist name="pictures"  key="k" id="vo">
+                          <li><img class="add_loading" src="__PUBLIC__/Core/images/blank.png" _src="{$vo.id|getThumbImageById=380,285}" alt="{$vo.title}" /></li>
+                        </volist>
+                      </ul>
+                    </div>
+                    <!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+                    <a class="prev" href="javascript:void(0)"></a> <a class="next" href="javascript:void(0)"></a> </div>
+                  <script type="text/javascript">
+                    $(function () {
+                        jQuery(".event_detail_pictures").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,easing:"swing",switchLoad:"_src",interTime:5000});
+                    });
+                  </script>
+              <php>}else{</php>
+              <a class="thumbnail" href="{:U('Event/Index/detail',array('id'=>$content['id']))}"> <img class="event-detail-img add_loading" src="__PUBLIC__/Core/images/blank.png" data-original="{$content.cover_id|getThumbImageById=380,285}" /></a>
+              <php>}</php>
+              <div class="detail_tag">
+                  <div class="event_tag">
+                    <volist name="tags" id="tag"> <a title="{$tag.name}" href="{:U('Event/Index/index',array('tag'=>$tag['id']))}" class="btn btn-grey">{$tag.name}</a> </volist>
+                  </div>
+                </div>
+            </div>
+            <div class="pull-left col-md-6">
+              <div class="event_fq_count">
+              <div class=""><span class="event-price"><if condition="$content.price_text neq ''"><span style="color:#FD9B00">{$content.price_text}</span><else /><if condition="$content.price eq 0"><span style="color:#FD9B00">免费活动</span><else />￥<span style="color:#FD9B00">{$content.price}</span>元/人</if></if></span></span></div>
+                
+                
+                
+                <div class="detail_zhishu col-md-6">
+                  <php> $begincity = get_citys($content['begincity']);
+                    $finalcity = get_citys($content['finalcity']); </php>
+                  <ul>
+                    <li>时间：{$content['lasted_time']}</li>
+                    <!--li>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}</li-->
+                    <li>地点：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</li>
+                    <!--li>天 &nbsp; 数：{$content['traveldays']}天</li-->
+                    <li>浏 &nbsp; 览：{$content['view_count']}次</li>
+                  </ul>
+                </div>
+                <div class="detail_zhishu col-md-6">
+                  <ul>
+                   <volist name="content['star_con']" id="starvo">
+                        <li>{$starvo.title}：
+                          <?php for($i=1;$i<=$starvo['grade'];$i++):?>
+                          <i class="glyphicon glyphicon-star"></i>
+                          <?php endfor;?>
+                        </li>
+                    </volist>
+                  
+                  </ul>
+                </div>
+                <div class="detail_orther ">
+                  <ul>
+                    <li >集合地址：{:get_city($begincity['province'])}{:get_city($begincity['city'])}{$content['detailadd']}
+                    </li>
+                    <li style="padding-right:0px;margin-right:0px;">{:hook('baidushare')} </li>
+                    <li class="two-dime "> <img src="__PUBLIC__/Core/images/weixing.png">扫一扫二维码，分享给朋友 <a class="btn btn-primary d_detail ">加入收藏夹</a> </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+    		  <div class="two-time-box"><a class="two-close pull-right">×</a>
+      		    <label>分享到微信朋友圈</label>
+      		    <img class="evnet-two-dime" src="{$qrcode_link}"><br>
+      		    <span>打开微信,点击"底部"发现,<br>&nbsp;使用'扫一扫'即可将网页分享至朋友圈</span>
+    		  </div>
+  
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="explain_title ">
+              <ul id="" class="nav nav-pills_btn">
+                <li class="active"><a href="javascript:" rel="#calards" >排期管理</a></li>
+                <li><a href="javascript:" rel="#highlights" >活动亮点</a></li>
+                <li><a href="javascript:" rel="#itinerary" >行程安排</a></li>
+                <li><a href="javascript:" rel="#costsof" >费用说明</a></li>
+                <li><a href="javascript:" rel="#notes" >注意事项</a></li>
+                <li><a href="javascript:" rel="#commentary" >评论（{$tpid}）</a></li>
+              </ul>
+            </div>
+
+            <div class="tab-content event_content_box">
+              <a id="calards">&nbsp;</a>
+              <h3>排期管理</h3>
+              <!--1111-->
+              <div class="">
+                <php>if(ACTION_NAME == 'detail' ){</php>
+                <div class="">
+                  <div class="detail_schedule event-right-nav-start clearfix">
+                    <volist name="detail_schedule" id="ds">
+                      <div class="schedule_content">
+                      <span class="status">{$ds['paytype']}</span><span  class="team">队名：{$ds.team_name}</span>
+                      <span class="schedule"> {$ds['disstarttime']}（{$ds['Weekstarttime']}）至 {$ds['disovertime']}（{$ds['Weekovertime']}）</span><span class="vehicle"><i title="{:get_box($ds['vehicle'],"checkbox",get_vehicle())}" class="glyphicon glyphicon-plane"></i>/<i title="{:get_box($ds['accommodation'],"checkbox",get_accommodation())}" class="glyphicon glyphicon-home" ></i></span><span style='' class="price"><if condition="$ds.price neq 0">价格：<b style="color:red;">{$ds.price}</b>/人<else />免费</if></span> <span style='' class="seats">{$ds.seats}</span> 
+                      
+                  <span class="operation_t">    
+                   <?php if($ds[status] == 1 || $ds[status] == 2):?>
+                          <if condition="is_login() eq 0"> 
+                             <a class="btn btn-green event-participate event-reg">立刻报名</a> 
+                          <else/>
+                            <a class="btn btn-green event-participate"  href="{:U('Usercenter/Eventorder/sign',array('event_id'=>$content['id'],'schedule_id'=>$ds['id']))}">立刻报名</a>  
+                         </if> 
+                    <?php elseif($ds[status] == 3):?>
+                          <if condition="is_login() eq 0">
+                            <span><a class="btn btn-orange event-participate event-reg">排队等候</a></span>
+                          <else/>
+                            <a class="btn btn-orange event-participate" href="{:U('Usercenter/Eventorder/sign',array('event_id'=>$content['id'],'schedule_id'=>$ds['id']))}">排队等候</a> </if>
+                          
+                    <?php else:?>
+                      报名截止
+                    <!--
+                    <a class="btn btn-red event-participate event-reg">预约报名</a>
+                     -->
+                    <?php endif;?> 
+                        </span>
+                        </div>
+                    </volist>
+                  </div>
+                </div>
+                <script>
+                   $(function(){
+                     $('.event-reg').click(function(){
+                        if(MID=="0"){
+                        toast.error('请登录后再报名,页面即将跳转！','温馨提示')
+                        setTimeout(function () {
+                           location.href ="{:U('Home/User/login',array('login_url'=>think_encrypt(U('Usercenter/Eventorder/sign',array('event_id'=>$content['id'],'schedule_id'=>$ds['id'])))))}"  
+                            }, 1500);
+                        return false;
+                         }
+                      })
+                  })
+                </script>
+                <div class="event-right-nav"></div>
+                <php>}</php>
+              </div>
+              <!--1111-->
+              <h3>线路亮点</h3><a id="highlights">&nbsp;</a>
+              <div class="costsof_contents"> {$content.travel_point}</div>
+              <h3>行程安排</h3><a id="itinerary">&nbsp;</a>
+              <div class="costsof_contents">{$content.explain}</div>
+              <h3>费用说明</h3><a id="costsof">&nbsp;</a>
+              <div class="costsof_contents">{$content.pay_info} </div>
+              <h3>注意事项</h3><a id="notes">&nbsp;</a>
+              <div class="notes_contents"> {$content.attention} </div>
+              <h3>评论</h3><a id="commentary">&nbsp;</a>
+              <div class="notes_contents">
+                <div class="commentary_contents">
+                  <div>{:hook('localComment', array('path'=>"Event/event/$content[id]", 'uid'=>$content['uid']))}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4"><include file="_right"/> </div>
+  </div>
+</div>
+</block>
+
+<block name="script">
+  <script>
+	$(function () {
+       /*-二维码-*/
+	   hdl_lazyload("img.add_loading");
+	   var twotimebox=$('.two-time-box');
+	   var twodime=$('.two-dime');
+	       twodime.click(function(){
+		      twotimebox.css('display','block')
+			})
+		/*关闭二维码*/
+	      $('.two-close').click(function(){
+		      twotimebox.css('display','none')
+		  })
+		
+		$('#top_nav >li >a ').mouseenter(function () {
+			$('.children_nav').hide();
+			$('#children_' + $(this).attr('data')).show();
+		});
+
+		$('.event_sign').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					console.log(this.content);
+				}
+			}
+		});
+		$('.d_detail').click(function(){			
+			var event_id = "{$content['id']}";
+			if(MID=="0"){
+				toast.error('请在登录后再收藏。');
+				setTimeout(function () {
+				   location.href ="{:U('Home/User/login')}"  
+						}, 1500);
+				return false;
+			}else{
+				$.post("{:U('Event/Index/dodetail')}", {id: event_id}, function (res) {
+				 if(res=='1'){
+				   toast.error('你已收藏过。');
+				 }else{
+				   toast.success('收藏成功。');
+				 }
+				}, 'json');
+			}
+		});
+		$(".nav-pills_btn a").click(function(){							 
+			$(".nav-pills_btn li").removeClass("active");
+			$(this).parent("li").addClass("active");							 
+			var href = $(this).attr("rel");
+			var pos = $(href).offset().top-70;
+			$("html,body").animate({scrollTop: pos}, 1000);
+		})
+
+		
+		var detailnav = $(".nav-pills_btn");
+		var detailtopMain = $('.nav-pills_btn').offset().top;//是头部的高度加头部与nav导航之间的距离
+		$(window).scroll(function () {
+			var detailtop = $(document).scrollTop();
+			if (detailtop > detailtopMain) {
+				detailnav.addClass("detailnav_scroll");
+			   /* $('#weibo_filter').addClass('filter_attach');*/
+			} else {
+				detailnav.removeClass("detailnav_scroll");
+	   /*         $('#weibo_filter').removeClass('filter_attach');*/
+			}
+		});
+		
+	})
+
+</script>
+</block>

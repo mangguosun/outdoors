@@ -1,0 +1,33 @@
+<div class="col-md-12">
+	<div class="common_block_title ">推荐主题</div>
+	<span class="common-color-red" >(最多可选5个哦)</span>&nbsp;&nbsp;已选择 <span class="common-color-red">{:get_box($websit_config_tags['tag'],"checkbox",get_event_tag())}</span>
+	<div class="row data-table">
+		<table>
+		<!-- 表头 -->
+			<thead>
+				<tr>
+					<th>标签</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+		<!-- 列表 -->
+		</table>
+	</div>
+	<form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Index/tags_doConfig')}" method="post">
+		<div class="form-group">
+			<div class="col-md-12">
+				{:form_checkbox(get_event_tag(),$websit_config_tags[tag],'name="tag[]" id="tag"',0,'100')} 
+			</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-0 col-md-10">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+    

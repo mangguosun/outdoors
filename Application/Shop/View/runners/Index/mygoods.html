@@ -1,0 +1,106 @@
+<extend name="runners/common"/>
+<block name="body">
+<div id="main-container" class="container"> 
+    {:W('Common/SubMenu/render',array($sub_menu,$current,'商城',''))}
+    <div class="container">
+        <div class="shop-box">
+            <div class="clearfix">
+                <div class="col-md-12 common_block_border pad_15">
+                    <h2 class="title_content shop-title-h">我的订单 </h2>
+                    <div class="not_nav_bar">
+                    <ul class="nav_list clearfix shop-common-bten">
+                        <li>
+                            <a href="{:U('myGoods',array('status'=>'0'))}" style="padding: 3px 0;"
+                            <eq name="status" value="0">class="current"</eq>
+                            >未完成订单</a>
+                        </li>
+                        <li>
+                            <a href="{:U('myGoods',array('status'=>'1'))}" style="padding: 3px 0;"
+                            <eq name="status" value="1">class="current"</eq>
+                            >已完成订单</a>
+                        </li>
+                    </ul>
+                    </div>
+                    <volist name="contents" id="vo">
+                        <div class="col-md-4  goods">
+                            <div class="item_goods position_re">
+                                <if condition="$vo['goods']['sell_num'] egt $hot_num"><i class="ico_hot"></i>
+                                    <else/>
+                                    <if condition="$vo['goods']['is_new'] eq 1"><i class="ico_new"></i></if>
+                                </if>
+                                <dl>
+                                    <dt>
+                                        <a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods']['id']))}">
+                                            <img class="img-responsive" src="{$vo.goods.goods_ico|getThumbImageById=222,222}">
+                                        </a>
+                                    </dt>
+                                    <dd>
+                                        <div class="goods-left">
+                                            <a class="text-more color_33"
+                                               href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods']['id']))}"
+                                              >
+                                                <font title="{$vo.goods.goods_name|op_t}">{$vo.goods.goods_name}</font>
+                                            </a>
+                                        </div>
+                                        <div class="goods-right"><a><font title="所需{$tox_money_name}"><i class="ico_to_money"></i>&nbsp;{$vo.goods.tox_money_need}</font></a></div>
+                                        <div class="clearfix"></div>
+                                    </dd>
+                                    <dd class="color_84 font_s_14">
+                                        <div class="left" style="font-size: 14px;line-height: 22px;">
+                                            库存：{$vo.goods.goods_num}
+                                        </div>
+                                        <div class="right" style="font-size: 14px;line-height: 22px;">
+                                            <eq name="status" value="1">
+                                                完成时间：{:date('Y-m-d',$vo['gettime'])}
+                                                <else/>
+                                                购买时间：{:date('Y-m-d',$vo['createtime'])}
+                                            </eq>
+
+                                        </div>
+                                    </dd>
+                                    <div class="clearfix"></div>
+                                </dl>
+                            </div>
+                        </div>
+                    </volist>
+                    <if condition="count($contents) eq 0">
+                        <php>
+                            switch($status){
+                            case '0':
+                            $select_name='等待发货';
+                            break;
+                            case '1':
+                            $select_name='已完成';
+                            break;
+                            default:
+                            $select_name='等待发货';
+                            }
+                        </php>
+                        <div class="shop-box-prompt">
+                            你还没有{$select_name}的交易呦！。O(∩_∩)O~
+                        </div>
+                    </if>
+                </div>
+            </div>
+            <div class="pull-right">
+                {:getPagination($totalPageCount,16)}
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+    <script>
+        $(function () {
+            $('.item_goods').mouseover(function () {
+                $(this).addClass('item_goods_box_shadow');
+            });
+            $('.item_goods').mouseleave(function () {
+                $(this).removeClass('item_goods_box_shadow');
+            });
+        });
+    </script>
+
+</block>

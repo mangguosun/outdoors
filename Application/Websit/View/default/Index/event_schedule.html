@@ -1,0 +1,133 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+  
+  <div id="center">
+    <div class="common_block_title ">
+      <div class="pull-right"><a href="{:U('Websit/Index/event_schedule_add',array('eventid'=>$event_content['id']))}" class="mbtn btn-info schedule_add">增加排期</a> <a class="mbtn btn-default" href="{:U('Websit/Index/content',array('status'=>6))}">返回</a></div>
+      {$event_content.title} —— 排期管理</div>
+    <div class="row data-table usercenter-common-table">
+      <table class="info">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th width="40">ID</th>
+            <th width="40">领队</th>
+            <th width="85">出发时间</th>
+            <th width="60">价格</th>
+            <th width="60">交通</th>
+            <th width="60">住宿</th>           
+			<th>报名人数</th>
+			<th>预约人数</th>
+			<th>未付款</th>
+			<th>定金已付</th>
+			<th>全额已付</th>
+			<th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="contents">
+          <volist name="contents" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><if condition="$vo[leader] neq ''">{$vo.leader}<else />暂无</if></td>
+              <td>{$vo.starttime}</td>
+              <td>￥{$vo.price}</td>
+              <td>{$vo.vehicle}</td>
+              <td>{$vo.accommodation}</td>
+				<?php if(get_status_num($vo['id']) > 0):?>
+              <td><a class="mbtn btn-info" href="{:U('Websit/Index/open_event_dayinfo',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" >共{:get_status_num($vo['id'])}人</a></td>
+			   <?php else:?>
+			   <td><a class="mbtn btn-danger" href="{:U('Websit/Index/open_event_dayinfo',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" >暂无</a></td>
+			   <?php endif;?>
+			  <td>{:get_status_num($vo['id'],'1')}</td>
+			  <td>{:get_pay_num($vo['id'],0)}</td>
+			  <td>{:get_pay_num($vo['id'],1)}</td>
+			  <td>{:get_pay_num($vo['id'],2)}</td>
+              <td>{$vo.info}</td>
+              <td>
+			  <?php if($vo[status] != -1):?>
+                <a href="{:U('Websit/Index/event_schedule_edit',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" class="mbtn btn-default schedule_edit">编辑</a>
+
+				<if condition="$vo[display] eq 0">
+				<a class="mbtn btn-primary schedule_display" data-ID="{$vo['id']}" display="1">显示</a>
+				<else />
+				<a class="mbtn btn-danger schedule_display" data-ID="{$vo['id']}" display="0">隐藏</a>
+				</if>
+              <?php else:?>
+			  <?php endif;?>
+			   </td>
+            </tr>
+          </volist>
+          <else/>
+        <td colspan="13" class="text-center"> aOh! 您还没有发布任何排期哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+<script>
+	$(function () {
+		<?php 
+		$insure_info = D('insurance')->where(array('siteid'=>SITEID,'status'=>1))->count();
+		if($insure_info != 0){
+	?>
+		$('.schedule_add').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});		
+		<?php }else{?>	
+		$('.schedule_add').click(function(){
+			toast.error('请先添加网站保险');
+			return false
+		})
+			
+		<?php }?>
+		$('.schedule_display').click(function(){
+			var schedule_id  = $(this).attr("data-ID");
+			var display = $(this).attr("display");
+			$.post(U('Websit/Index/schedule_display'),{schedule_id:schedule_id,display:display},function(res){
+					if(res['status']){
+						toast.success(res['msg']);
+						setTimeout(function(){
+							window.location.reload();
+						},1500)
+						
+					}else{
+						toast.error(res['msg']);
+					}
+			},'json')
+		})
+		$('.schedule_edit').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+		
+	})
+	function schedule_del(id){
+		if(confirm("您确定要删除吗？")){
+			$.post("{:U('Websit/Index/event_schedule_del')}",{id:id},function(msg){
+				if(msg==1){
+					location.reload();
+				}else{
+					toast.error(msg);
+				}
+				
+			});
+		}
+	}
+</script>
+</block>

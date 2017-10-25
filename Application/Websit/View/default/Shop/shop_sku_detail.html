@@ -1,0 +1,115 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+
+<div class="col-md-12">
+  <h5>商品详情</h5>
+  <div class="aline common-margin-bten"></div>
+   <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Shop/shop_add')}" method="post">
+
+			<div class="form-group has-feedback">
+				<label for="cardnum" class="col-md-2 control-label">选择分类<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+				   {:form_select(get_shop_category(),'','class="form-control form_check shop_cates_select" check-type="Text" name="category_id" id="category_id"',"--请选择商品分类--")}
+				</div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品名称<span class="common-color-red">*</span></label>
+				<div class="col-md-4">
+					<input id="goods_name" name="goods_name" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="请填写商品名称"/>
+				</div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="market_price" class="col-md-2 control-label">市场价格<span class="common-color-red">*</span></label>
+				<div class="col-md-4">
+					<input id="market_price" name="market_price" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="请填写商品市场价格"/>
+				</div>
+				
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">销售价格<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+					<input id="tox_money_need" name="tox_money_need" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="请填写商品价格"/>
+				</div>
+				<div class="col-md-3 row">
+					<input id="goods_num" name="goods_num" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="请填写商品数量"/>
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">列表页封面图<span class="common-color-red">*</span></label>
+				<div class="col-md-10">
+					{:hook('UploadImage', array('find_name'=>'goods_ico','value'=>$event_arr['goods_ico'],'buttontext'=>'列表页封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'400*300'))}
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">是否新品<span class="common-color-red">*</span></label>
+				<div class="col-md-9">
+					<label class="radio-inline"> <input name="is_new" type="radio" value="1" checked>是</label>
+					<label class="radio-inline"> <input name="is_new" type="radio" value="0"> 否 </label>
+                 </div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品详情<span class="common-color-red">*</span></label>
+				 <div class="col-md-10">
+				{:Hook('Ueditor',array('name'=>'goods_detail','value'=>''))}</div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="cardnum" class="col-md-2 control-label"><e class="shop_cates_add"><i class="glyphicon glyphicon-plus" title="添加属性"></i>属性</e></label>
+				<div class="col-md-8 types_first" id="types_first">
+					
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary " href="{:U('Websit/Shop/shop_add')}">发布商品</button>
+				</div>
+			</div>
+        </form>
+		<div id="goodsSelectBox"  style="display:none" >
+		<div id="goodsBox">
+		</div>
+		</div>
+      </div>
+    </div>
+  </div>
+<script>
+$(function(){
+	
+	var shop_cates_select=$('.shop_cates_select');
+		shop_cates_select.change(function(){
+	
+		if(shop_cates_select.attr("selected"),true){
+			$.post("{:U('Websit/Shop/doCates')}",{id:shop_cates_select.val()},function(data){  //ajax 传输
+					if(data['status']==1){
+						toast.error(data.info);
+					}else{
+					  $('#goodsBox').html(data);
+					}
+			
+			},'json')
+			
+			$('.types_first #goodsBox').children(':not(:first)').remove();
+		}
+	})
+	//-点击-属性-
+	$('.shop_cates_add').click(function(){
+		temBox=$('#goodsBox').clone()
+		$('.types_first').append(temBox);
+		$('#goodsBox .goods_detail_span').each(function(){
+			$(this).click(function(){
+			$(this).parents('#goodsBox').remove();
+			})
+		})
+	})	
+
+})
+</script>
+</block>
+

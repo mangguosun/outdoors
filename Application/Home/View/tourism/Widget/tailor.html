@@ -1,0 +1,12 @@
+<?php
+
+	if(!empty($template_info)){
+		if($tailor_color==''){
+			echo "<a href=".U('Tailor/Index/index')."><img style='height:110px; width:326px' src='__PUBLIC__/Core/images/tourism_tailor/tourism_black.jpg'></a>";
+		}else{
+			echo "<a href=".U('Tailor/Index/index')."><img style='height:110px; width:326px' src='__PUBLIC__/Core/images/tourism_tailor/$tailor_color.jpg'></a>";
+		}
+	}else{
+		echo "<a href=".U('Tailor/Index/index')."><img style='height:110px; width:326px' src='__PUBLIC__/Core/images/tourism_tailor/tourism_black.jpg'></a>";
+	}
+?>

@@ -1,0 +1,32 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>编辑线路分类</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/line_type_edit')}" method="post">
+          <input type="hidden" name="id" value="{$event_type.id}">
+		  <div class="form-group has-feedback">
+            <label for="title" class="col-md-2 control-label">类别</label>
+            <div class="col-md-4">
+              <input id="title" name="title" type="text" class="form-control form_check" check-type="Text"  value="{$event_type.title}" placeholder="请填写线路分类"/>
+            </div>
+          </div>
+          <div class="form-group position">
+            <label for="sort" class="col-md-2 control-label">排序</label>
+            
+            <div class="col-md-4"> 
+              <input id="sort" type='text'  class="form-control form_check" name='sort' placeholder="请填写排序" value="{$event_type.sort}"/>
+			</div>
+          </div>
+		   <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/line_type_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,198 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+	<div class="col-lg-12 col-sm-12 col-xs-12">
+		<div class="widget flat radius-bordered">
+			<div class="widget-header bg-themeprimary">
+				<span class="widget-caption">{$website.webname}</span>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main ">
+					
+						
+                        
+                        <div class="row">
+                        	<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                                <div class="widget" style=" border:1px solid #ccc;">
+                                    <div class="widget-body">
+                                        <if condition="$company['site_ico']">
+                                            <p><img src="{$company.site_ico|getThumbImageById=300,150}" width="100%" /></p>
+                                            <else/>
+                                             <p><img src="{$website.logo_icons|getThumbImageById=300,150}" width="100%" /></p>
+                                            </if>
+                                        
+                                       
+                                        <p>{$website.webname}</p>
+                                        <p>全站分销：{$company.count_a}</p>
+                                        <p>单品分销：{$company.count_b}</p>
+                                        <p>地　址：{$website['shop_address']['province']}{$website['shop_address']['city']}{$website['shop_address']['district']}{$website['shop_address']['community']}</p>
+                                        <p>网　址：{$website.domain}</p>
+                                        <p>电　话：{$company.phone}</p>
+                                        <p>QQ：{$company.qq}</p>
+                                        <p>
+                                            <if condition="$website.siteid neq SITEID">
+                                            <button class="btn btn-palegreen bootbox-options" style="margin-top:10px;">我要申请全站分销</button>
+                                            <else/>
+                                            <a class="btn btn-palegreen" href="{:U('Distribute/distribute_site')}" style="margin-top:10px;">编辑商家信息</a>
+                                            </if>
+                                        </p>
+                                    </div><!--Widget Body-->
+                                </div><!--Widget-->
+                            </div>
+                            <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+                            <div class="tabbable">
+                            	<ul class="nav nav-tabs tabs-flat" id="myTab11">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#home11">
+                                            店铺介绍
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#profile11">
+                                            商品展示
+                                        </a>
+                                    </li>
+                                </ul>
+                            
+                            	<div class="tab-content tabs-flat">
+                                    <div id="home11" class="tab-pane in active">
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="widget" style=" border:1px solid #ccc"> 
+                                                  <div class="widget-header bordered-bottom bordered-sky">
+                                                        <span class="widget-caption">店铺介绍</span>
+                                                    </div><!--Widget Header-->
+                                                    <div class="widget-body">
+                                                        <p>{$company.desc}</p>
+                                                    </div><!--Widget Body-->
+            
+                                                </div><!--Widget-->
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div id="profile11" class="tab-pane">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="widget">
+                                                    <div class="widget-header bordered-bottom bordered-blue">
+                                                        <i class="widget-icon fa fa-tags blue"></i>
+                                                        <span class="widget-caption blue">装备</span>
+                                                    </div><!--Widget Header-->
+                                                    <div class="widget-body">
+                                                        <div class="widget-main no-padding">
+                                                            <div class="tickets-container">
+                                                                <ul class="tickets-list">
+                                                                    <volist name="company_goods" id="company_goods">
+                                                                    <li class="ticket-item">
+                                                                        <div class="row">
+                                                                            <div class="ticket-user col-lg-7 col-sm-12">
+                                                                                <a href="javascript:void(0);" class="" data-container="body" data-titleclass="bordered-blue" data-class="" data-toggle="popover-hover" data-placement="right" data-title="{$company_goods.goods_name}" data-content="<img src='{$company_goods.goods_ico|getThumbImageById=222,222}' class='user-avatar' width=150 height=150>" data-original-title="" title=""><span><img src="{$company_goods.goods_ico|getThumbImageById=222,222}" class="user-avatar"></span></a>
+                                                                                <a href="{:U('Distribute/shop_detail',array('id'=>$company_goods['goods_id']))}"><span class="user-name">{$company_goods.goods_name}</span></a>
+                                                                            </div>
+                                                                            <div class="ticket-time col-lg-3 col-sm-6 col-xs-12">
+                                                                                <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                                                                <span class="time">￥{$company_goods.market_price} </span>
+                                                                                <span class="time"> 佣金:{$company_goods.seller_price}%</span>
+                                                                            </div>
+                                                                            <div class="ticket-type col-lg-2 col-sm-6 col-xs-12">
+                                                                                <span class="divider hidden-xs"></span>
+                                                                                
+                                                                             <if condition="$website.siteid neq SITEID">   
+                                                                                
+                                                                                <if condition="$company_goods['distribute_type_b'] eq '1'">
+																				
+																				
+																				<?php if(!$company_goods['has_item_relation']['apply_status']){ ?>
+                                                               
+                                                                                <a class="btn btn-primary market-goods-button ajax-get" href="{:U('Distribute/addtomine',array('goods_id'=>$company_goods['goods_id']))}">代理单品</a>
+																				
+																				<?php
+																				}else{
+																				?>
+																					 <a class="btn btn-danger  ajax-get" href="{:U('Distribute/removefrommine',array('goods_id'=>$company_goods['goods_id']))}">取消代理</a>
+																				<?php
+																					}
+																				?>
+                                                                                <elseif condition="$company_goods['distribute_type_a'] eq '1' and $company_goods['distribute_type_b'] neq '1' " />
+                                                                                
+                                                                                <span>仅支持全站分销</span>
+                                                                                </if>
+                                                                                
+                                                                            </if>    
+                                                                                
+                                                                                
+                                                                            </div>
+                                                                            <a href="{:U('Distribute/shop_detail',array('id'=>$company_goods['goods_id']))}">
+                                                                            <div class="ticket-state bg-blue">
+                                                                                <i class="fa fa-angle-right"></i>
+                                                                            </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </li>
+                                                                    </volist>  
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                            
+                                
+                                    </div>
+         
+                                </div>
+                            </div>    
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
+<div id="myModal" style="display:none;">
+	<h2>你确定向{$webname}提交分销合作申请吗？</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Distribute/relation_a_apply')}" method="post">
+				<div id="editMoneybox" class="editMoneybox">
+					<input type="hidden" name="supplier_id" value="{'$website['siteid']}" >
+					<p>注意事项：</p>
+					<p>1，分销申请，供应商将在7天内审核完毕。</p>
+					<p>2，审核通过后，您的商铺将自动同步商品，您无法添加编辑删除商品</p>
+					<p>3，你可以主动终止分销合作，合作解除后，商铺转为普通模式</p>
+				</div>
+				<p>
+				<input type="submit" class="btn btn-info deliver_goods" value="我要申请全站分销">
+				</p>
+			</div>
+			</form>
+		</div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/jquery-2.0.3.min.js"></script>
+<script src="/Public/static/bootstrap3.2/js/bootstrap.min.js"></script>
+
+<!--Beyond Scripts-->
+
+
+<!--Page Related Scripts-->
+<script src="/Public/static/bootstrap3.2/js/bootbox/bootbox.js"></script>
+
+<script>
+
+        $(".bootbox-options").on('click', function () {
+           bootbox.dialog({
+                message: $("#myModal").html(),
+                title: "申请全站分销",
+                className: "modal-darkorange",
+            });
+        });
+</script>
+
+</block>
+

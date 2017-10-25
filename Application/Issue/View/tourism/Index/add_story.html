@@ -1,0 +1,74 @@
+<extend name="tourism/common"/>
+
+<block name="body">
+<div class="container">
+<div class="white-popup1 boxShadowBorder col-md-12">
+  <h2>发布故事</h2>
+  <span class="issue_prompt" >备注：以下选项除（活动网址）外，其他均为必填项——输入您参加的活动网址，让更多网友分享您的旅行</span>
+  <div class="aline"></div>
+  <div>
+    <div class="row">
+      <form class="form-horizontal ajax-form" role="form" action="{:U('Issue/Index/doPost')}" method="post">
+        <input type="hidden" name="s_url" value="{$url}">
+        <div class="col-md-12">
+          <div class="form-group has-feedback">
+            <label for="title" class="col-md-2 extra control-label">标题<span class="issue_prompt">*</span></label>
+            <div class="col-md-6">
+              <input id="title" name="title" class="form-control form_check" check-type="Text" value="" placeholder="" required />
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="cover_id" class="col-md-2 extra control-label">封面图片<span class="issue_prompt">*</span></label>
+            <div class="col-md-6">{:hook('UploadImage', array('find_name'=>'cover_id','value'=>'','buttontext'=>'上传故事封面图','buttonwidth'=>250,'multi'=>false,'ds'=>'400*300','width'=>400,'height'=>300))} </div>
+          </div>
+          <div class="form-group ">
+            <label for="type_id" class="col-md-2 extra control-label">分类<span class="issue_prompt">*</span></label>
+            <div class="col-md-10">
+              <volist name="tree" id="top"> <input type="radio" name="issue" value="{$top.id}" 
+                <if condition="$top[id] eq 1">checked</if>
+                >&nbsp;{$top.title}&nbsp; </volist>
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="tag" class="col-md-2 extra control-label">特色<span class="issue_prompt" >*</span></label>
+            <div class="col-md-10"> {:form_checkbox(get_event_tag(),'','name="tag[]" id="tag"',0,'100')} </div>
+          </div>
+          <div class="form-group  position">
+            <label for="finalcity" class="col-md-2 control-label">目的地<span class="issue_prompt">*</span></label>
+            <div class="col-md-9"> {:hook('J_China_City', array('find'=>'final','level'=>2))} </div>
+          </div>
+          <div class="form-group">
+            <label for="travel_point" class="col-md-2 control-label">详情<span class="issue_prompt">*</span></label>
+            <div class="col-md-8">
+              {:Hook('Ueditor',array('name'=>'content','value'=>''))}
+              </div>
+          </div>
+          <!--div class="form-group">
+            <label for="url" class="col-md-2 control-label">活动网址</label>
+            <div class="col-md-6">
+              <input id="url" name="url" type="text" class="form-control" value="" placeholder="输入以http://开头的网址"/>
+            </div>
+          </div-->
+          <if condition="app_isopen('Event')">
+          <div class="form-group">
+            <label for="url" class="col-md-2 control-label">相关活动</label>
+            <div class="col-md-6">
+             {:form_select($related_event_list,'','class="form-control form_check" check-type="Text" name="related_event" id="related_event"','请选择')}
+            </div>
+          </div>
+          </if>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Issue/Index/doPost')}">提交 </button>
+            </div>
+            <div class="col-md-8">
+              <button onclick="history.go(-1);" class="btn btn-default">返回 </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</block>

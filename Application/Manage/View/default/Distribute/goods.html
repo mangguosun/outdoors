@@ -1,0 +1,56 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="newfood-box">
+	<div><h3>精选单品</h3></div>
+
+	<div class="nav_c">
+		<ul>
+			<li class="">
+				<a href="{:U('Distribute/goods')}">所有商品</a>
+			</li>
+		<volist name="is_distribute_category" id="is_distribute_category">
+			<li class="menu2" >
+				<a href="{:U('Distribute/goods',array('category_id'=>$is_distribute_category['id']))}">{$is_distribute_category.title}</a>
+				<div class="list">
+				<volist name="is_distribute_category['category_2nd']" id="category_2nd">
+					<a href="{:U('Distribute/goods',array('category_id'=>$category_2nd['id']))}">{$category_2nd.title}</a><br />
+				</volist>
+				</div>
+			</li>
+		</volist>
+		</ul>
+	</div>
+
+	<div style="margin-top:50px">
+    	<div class="foodslist-box">
+		<volist name="shop_list" id="vo">
+        	<div class="foodslist">
+				<a href="{:U('Distribute/shop_detail',array('id'=>$vo['goods_id']))}" title="{$vo.goods_name}">
+					<img src="{$vo.goods_ico|getThumbImageById=222,222}" width="190" height="190" />
+				</a>
+                <div class="foodname"><a href="{:U('Distribute/shop_detail',array('id'=>$vo['goods_id']))}" title="{$vo.goods_name}">{$vo.goods_name|op_t|getShortSp=12}</a></div>
+                <div class="foodprice" ><span><b class="sellprice">￥{$vo.market_price}</b></span><span>佣金：<b class="yongprice">{$vo.seller_price}%</b></span></div>
+				 <div class="foodprice">商家：<a href="{:U('Manage/Distribute/company_detail',array('siteid'=>$vo['siteid']))}">{$vo.webname}</a></div>
+				<div class="webaddress">
+					<center>
+						<a class="mbtn btn-info"  href="{:U('Distribute/shop_detail',array('id'=>$vo['goods_id']))}">详细信息</a> 
+						<if condition="$vo['siteid'] eq SITEID">
+							<a class="mbtn btn-warning" >自己的商品</a>
+						<else/>
+							<if condition="$vo['has_item_relation']">
+							<a class="mbtn btn-success" >已代理</a>
+							<else/>
+							<a class="mbtn btn-primary market-goods-button ajax-get" href="{:U('Distribute/addtomine',array('goods_id'=>$vo['goods_id']))}">我来代理</a>
+							</if>
+						</if>
+					</center>
+				</div>
+             </div>
+        </volist>
+		<div class="clear"></div>
+        </div>
+		<div>{$page}</div>
+    </div>	
+</div>
+</block>

@@ -1,0 +1,39 @@
+<extend name="Public/common_user"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/set')}" class=""><i class="am-icon-chevron-left"></i></a>常用参加者</div>
+  </header>
+  <div class="contacts-list">
+    <ul class="am-list am-list-border am-list-news-bd">
+      <volist name="contacts_arr" id="vo">
+        <li><a href="{:U('Mobile/Config/contacts_edit',array('id'=>$vo[id]))}">{$vo.realname}<span class="telphone">{$vo.telephone}</span>
+          <if condition="$vo['contact_default'] eq 1"> <span class="contact_default">默认</span> </if>
+          <span class="am-list-date contacts-right"><i class="am-icon-edit set-icon"></i></span> </a> </li>
+      </volist>
+    </ul>
+  </div>
+
+  <a href="{:U('Mobile/Config/contacts_add')}" class="am-btn am-btn-block am-btn-through">新增常用参加者</a>
+
+  <script>
+	$(function () {			
+		//删除--
+		$('.contacts_del').click(function () {
+		if (confirm('确定要操作么？')) {
+			var  uid= $(this).attr('data-ID');
+			 $.post("{:U('Mobile/Config/contacts_delete')}", {id: uid}, function (res) {
+				if (res.status) {
+					toasts.success(res.info);
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				}
+				else {
+					toasts.error(res.info);
+				}
+			}, 'json');
+		}
+	  });
+	})
+</script>
+</block>

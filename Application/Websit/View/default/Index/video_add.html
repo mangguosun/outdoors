@@ -1,0 +1,32 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>添加播放视屏</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/video_doAdd')}" method="post">
+          <div class="form-group  has-feedback">
+            <label for="campus" class="col-md-2 control-label">播放视屏名称</label>
+            <div class="col-md-10">
+              <input id="campus" name="video_name" type="" class="form-control form_check" check-type="Text"  value="" placeholder="播放视屏名称"/>
+            </div>
+          </div>
+
+         <div class="form-group  has-feedback">
+            <label for="campus" class="col-md-2 control-label">视屏链接地址</label>
+            <div class="col-md-10">
+              <input id="campus" name="video_url" type="" class="form-control form_check" check-type="Text"  value="" placeholder="播放视屏的链接地址"/>
+            </div>
+         </div>
+
+         <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/video_doAdd')}">确实添加</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

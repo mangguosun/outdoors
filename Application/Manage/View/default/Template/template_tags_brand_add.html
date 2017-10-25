@@ -1,0 +1,44 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add " >
+    <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    <h2><?php echo $list?'编辑品牌':'添加品牌';?></h2>
+    <div class="aline common-margin-bten"></div>
+    <div>
+      <div class="row">
+        <div class="col-md-12"> 
+          <form class="form-horizontal ajax-form" role="form" action="{:U('Template/template_tags_brand_add',array('id'=>$_GET['id']))}" method="post">
+            <div class="form-group has-feedback">
+              <label for="title" class="col-md-2 control-label">品牌名字</label>
+              <div class="col-md-4">
+                <input id="title" name="brand_name" type="text" class="form-control form_check" check-type="Text"  value="{$list.brand_name}" placeholder="品牌名字"/>
+              </div><span class="common-color-red">(*10个字以内)</span>
+            </div>
+          <!--选择品牌 -->
+          <div class="form-group has-feedback">
+              <label for="title" class="col-md-2 control-label">选择品牌</label>
+              <div class="col-md-4">
+                  {:form_select($shop_brand_manage,$list['brand'],'class="" check-type="Text" name="brand" id="brand"',"--请选择商品分类--")}
+              </div><span class="common-color-red">(*必选)</span>
+         </div>
+        <div class="form-group position">
+              <label for="address" class="col-md-2 control-label">品牌链接</label>
+              <div class="col-md-6"> 
+                <input type='text'  class="form-control form_check" name='address' value="{$list.address}" placeholder="品牌链接"/>
+        </div><span class="common-color-red">([选填]设置品牌地址将跳转到相应网页链接)</span>
+            </div>
+        <!-- 图片上传 -->
+          <div class="form-group position">
+             <label for="address" class="col-md-2 control-label">品牌logo</label>
+              <div class="controls-images"  >
+            {:hook('UploadImage', array('find_name'=>'brand_logo','value'=>$list['brand_logo'],'buttontext'=>'品牌logo','buttonwidth'=>200,'multi'=>false,'ds'=>'200*100','width'=>200,'height'=>200))}
+              </div>
+          </div>
+            <div class="form-group">
+              <div class="col-md-offset-2 col-md-10 col-input-images col-input-imagess">
+                <button type="submit" class="btn btn-primary">提交</button>
+              </div>
+            </div>
+          </form> 
+        </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,236 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="table-toolbar">
+			<a class="btn btn-info" href="{:U('Shop/shop_bargains_list')}">特价商品列表</a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+	    <div class="widget-header bordered-bottom bordered-sky">
+			<i class="widget-icon fa fa-tasks themeprimary"></i><span class="widget-caption">特价商品管理</span>
+			<div class="widget-buttons">
+				<a href="#" data-toggle="maximize">
+					<i class="fa fa-expand"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<table class="table table-striped table-bordered table-hover" id="simpledatatable">
+				<!-- 表头 -->
+				<thead>
+					<tr>
+						<th>
+							<label>
+								<span class="text">序号</span>
+                            </label>
+						</th>
+						<th>商品名称</th>
+						<th>商品分类</th>
+						<th>商品余量</th>
+						<th>销售价格</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<!-- 列表 -->
+				<tbody>
+					<volist name="datainfo" id="vo">
+					<tr>
+						<td>
+							<label>
+                                <span class="text">{$vo.id}</span>
+                            </label>
+						</td>
+						<td style="width:250px;"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name}</a></td>
+						<td>{:get_shop_categrory_title($vo['category_id'])}</td>
+						<td>{$vo.goods_num}</td>
+						<td>{$vo.market_price}元</td>
+						<td>
+							<div class="btn-group">        
+								<div class="btn-group">
+									<a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        操作 <i class="fa fa-angle-down"></i>
+                                    </a>
+									<ul class="dropdown-menu">
+										<li>
+											<if condition="$vo['is_bargain']">
+											<span>已设置</span>
+											<else/>
+											<a class="addTags" id="addtobargains-{$vo.id}" goods-id="{$vo.id}" goods-name="{$vo.goods_name}" categrory-title="{:get_shop_categrory_title($vo['category_id'])}" goods-num="{$vo.goods_num}" market-price="{$vo.market_price}" >加入特价</a>
+											</if>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</td>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		
+		
+		<div class="widget-body">
+			<form action="{:U('Manage/Shop/add_shop_bargains')}" class="form-horizontal ajax-form" method="post">
+			
+				<table class="add_shop_bargains table table-striped table-bordered table-hover" id="simpledatatable"">
+					<!-- 表头 -->
+					<thead>
+						<tr>
+						  <th>商品</th>
+						  <th>分类</th>
+						  <th>余量</th>
+						  <th>售价</th>
+						  <th>开始时间</th>
+						  <th>结束时间</th>
+						  <th>特价</th>
+						  <!--th>特价数量</th-->
+						  <th>操作</th>
+						</tr>
+					</thead>
+					<!-- 列表 -->
+					<tbody id="spec_box">
+
+					</tbody>
+				</table>
+					<input class="btn btn-palegreen add_shop_bargains" type="submit" value="提交">
+			</form>
+		</div>
+	</div>
+</div>
+ </block>
+  
+
+  
+<block name="script">
+<!--Page Related Scripts-->
+	<script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+	
+
+	<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+	<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+	<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <script>
+	var InitiateSimpleDataTable = function () {
+		return {
+			init: function () {
+				//Datatable Initiating
+				var oTable = $('#simpledatatable').dataTable({
+					"sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+					"iDisplayLength": 10,
+	
+					"oTableTools": {
+						"aButtons": [],
+						"sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+					},
+					"language": {
+						"search": "",
+						"sLengthMenu": "_MENU_",
+						"sZeroRecords": "对不起，查询不到任何相关数据",
+						"sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+						"sInfoEmpty": "共查询到 _TOTAL_ 条记录",
+
+						"sInfoEmtpy": "找不到相关数据",
+						"sInfoFiltered": "(数据表中共为 _MAX_ 条记录)",
+				 		"sProcessing": "正在加载中...",
+						"oPaginate": {
+							"sFirst":    "首页",
+							"sPrevious": "上页",
+							"sNext":     "下页",
+							"sLast":     "末尾"
+						}
+					},
+					"bFilter": true, //搜索栏
+					"bPaginate": true, //翻页
+					"bLengthChange": true, ////每页显示的记录数
+					"bInfo": false, //显示表格信息
+					"bAutoWidth": true, //自适应宽度
+					"aoColumns": [
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": false },
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": false }
+					],
+					"aaSorting": []
+				});
+
+	
+			}
+	
+		};
+	
+	}();
+	InitiateSimpleDataTable.init();
+    </script>
+	
+	<script type="text/javascript">
+	$(function(){
+		$(".add_shop_bargains").hide();	
+	});
+	$("body").on("click",".addTags", function(e){
+		var  goods_id	= $(this).attr('goods-id');
+		var  goods_name	= $(this).attr('goods-name');
+		var  categrory_title	= $(this).attr('categrory-title');
+		var  goods_num	= $(this).attr('goods-num');
+		var  market_price	= $(this).attr('market-price');
+		var str = "<tr><td>"+goods_name+"<input name='goods[goods_id][]' type='hidden'  value='"+goods_id+"' /></td><td>"+categrory_title+"</td><td>"+goods_num+"</td><td>"+market_price+"</td><td><input name='goods[starttime][]' type='text' class='form_datetime form-control' check-type='Text' value='<?php echo date('Y-m-d H:i:s',time());?>' /></td><td><input name='goods[endtime][]' type='text' class='form_datetime form-control' check-type='Text' value='' /></td><td><input type='text' class='form-control' name='goods[bargain_price][]'  placeholder='0.00'></td><td><a  class='removeclass btn btn-default' goods-id='"+goods_id+"' >取消</a></td></tr>";
+		document.getElementById("spec_box").innerHTML += str;
+		$(this).removeClass("addTags"); 
+		 $(this).addClass("add-btn"); 
+		 $(this).html("已选中");
+		if($(".removeclass").hasClass("removeclass")){
+				$("#add_shop_bargains").attr("disabled",false);
+				$(".add_shop_bargains").show();
+				
+			}else{
+				$("#add_shop_bargains").attr("disabled",true);
+				$(".add_shop_bargains").hide();	
+			}
+			
+		$(".form_datetime").datetimepicker({
+			format: "yyyy-mm-dd hh:ii",
+			language:"zh-CN",
+			showmeridian: false,
+			autoclose: true,
+			pickerPosition: "top-right",
+			minuteStep: 5,
+			todayBtn: true,
+			todayHighlight:true,
+			minView:0,
+		});
+	})
+
+	$("body").on("click",".removeclass", function(e){ 
+	   $(this).parent().parent('tr').remove();
+	   var  goods_id	= $(this).attr('goods-id');
+		$('#addtobargains-'+goods_id).addClass("addTags"); 
+		$('#addtobargains-'+goods_id).removeClass("add-btn"); 
+		$('#addtobargains-'+goods_id).html("加入特价");
+		if($(".removeclass").hasClass("removeclass")){
+				$("#add_shop_bargains").attr("disabled",false);
+				$(".add_shop_bargains").show();
+				
+			}else{
+				$("#add_shop_bargains").attr("disabled",true);
+				$(".add_shop_bargains").hide();	
+			}
+	   return false;  
+	})   
+
+</script>
+
+</block>
+

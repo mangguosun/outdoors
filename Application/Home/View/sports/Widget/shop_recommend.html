@@ -1,0 +1,38 @@
+<if condition="$data neq false">
+    <div class="shop_recomm">
+      <div class="s_title">
+            推荐装备<span class="more"><a href="{:U('Shop/Index/goods',array('action'=>'recommend'))}">更多&nbsp;></a></span>
+       </div>
+       <div class="h10"></div>
+       <div class="indexbox_content">
+            <ul>
+                <volist name="data" id="vo">
+                    <a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}">
+                        <li>
+                            <img class="add_loading add_loading_shop_recommend" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.goods_ico|getThumbImageById=300,300}"  title="{$vo.goods_name|op_t|getShortSp=15}"/>
+                            <p class="shop_brand">{$vo.custom_brand_name|op_t|getShortSp=10}</p>
+                            <p class="shop_name">{$vo.goods_name|op_t|getShortSp=12}</p>
+                            <p class="shop_price"><b>￥{$vo.market_price|op_t|getShortSp=10}</b></p>
+                        	<div class="shop_recomm_mask"  title="城市日用/出游/商务/双肩背包"><span>查看详情 ></span></div>
+                        </li>
+                    </a>
+                </volist>
+            </ul>           
+       </div>
+    </div>
+    <div class="h15"></div>
+<script>
+$(function () {
+	hdl_lazyload("img.add_loading_shop_recommend");
+  $(function () {
+	 $(".indexbox_content ul a li .shop_recomm_mask").hide();
+    $(".indexbox_content ul a li").find(".shop-list-item-mask").stop().fadeTo(200,0)
+    $(".indexbox_content ul a li").hover(function(){
+        $(this).find(".shop_recomm_mask").stop().fadeTo(200,0.5)
+    },function(){
+        $(this).find(".shop_recomm_mask").stop().fadeTo(200,0)
+    });
+})
+ })
+</script>
+</if>

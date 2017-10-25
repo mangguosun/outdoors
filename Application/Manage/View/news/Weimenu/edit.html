@@ -1,0 +1,164 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+  <style>
+.popover{ max-width:750px;}
+ </style>
+ </block>
+ <block name="body">
+ <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header  bordered-bottom bordered-sky">
+            	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">修改自定义菜单&nbsp;&nbsp;                          
+                <a href="javascript:void(0);" class="label label-darkorange" data-container="body" data-titleclass="bordered-purple" data-class="dark aaa" sty data-toggle="popover" data-placement="bottom-left" data-title="帮助信息" data-content="<img src='__PUBLIC__/Manage/images/weixin/tishi.png' width=700>" data-original-title="" title="">帮助</a></span>
+            </div>
+            <div class="widget-body">
+                <form id="defaultForm" action="{:U('Manage/Weimenu/edit')}" method="post" class="form-horizontal form-bordered" > 
+                    <input type="hidden" name="id" value="{$menu_list.id}">
+		            <div class="form-group">
+                        <label class="col-lg-3 control-label">排序号:</label>
+                        <div class="col-lg-9">
+                        	<div class="input-group">
+                            	<input id="sort" name="sort" type="text" class="form-control" check-type="Text"  value="{$menu_list.sort}"/>
+                            	<span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="数值越小越靠前"><i class="fa fa-question darkorange danger circular"></i></span>
+							</div>
+                        </div>
+                    </div>
+    				<div class="form-group">
+                        <label class="col-lg-3 control-label">菜单名称:</label>
+                        <div class="col-lg-9">
+                        	<div class="input-group">
+                            	<input id="title" name="title" type="text" class="form-control" check-type="Text" placeholder="中文为3个字节，英文符号为1个字节" value="{$menu_list.title}" />
+                            	<span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="顶级菜单不超过16个字节，二级菜单不超过40个字节"><i class="fa fa-question darkorange danger circular"></i></span>
+    						</div>
+                        </div>    
+                    </div>
+					<div class="form-group">	
+						<label class="col-lg-3 control-label">上级菜单:</label>
+						<div class="col-lg-9">
+							<select id="first_menu_s" check-type='Text' name='first_menu' style="width:100%;">
+								<volist name="first_menu" id="vo">
+									<?php if ($key==$menu_list['pid']): ?>
+                                        <option value="{$key}" selected>{$vo}</option>
+                                    <?php else:?>
+                                        <option  value="{$key}" >{$vo}</option>
+                                    <?php endif ;?>
+        						</volist>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">	
+						<label class="col-lg-3 control-label">动作(默认为跳转URL):</label>
+						<div class="col-lg-9">
+							<select class='wei_button_type' check-type='Text' name='type' style="width:100%;">
+								<volist name="type_list" id="v" >
+
+									<?php if ($key==$menu_list['type']): ?>
+										<option  value="{$key}"  selected>{$v}</option>
+									<?php else:?>
+										<option  value="{$key}" >{$v}</option>
+									<?php endif ;?>					
+								</volist>
+								<?php if ($menu_list['type']==0): ?>
+									<option class='none' value='0'  style="display:block" selected>无事件顶级菜单</option>
+								<?php else:?>
+									<option  class='none' value='0'  style="display:block" >无事件顶级菜单</option>
+								<?php endif ;?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" id="wei_url">
+                        <label class="col-lg-3 control-label">关联URL:</label>
+                            <div class="col-lg-9">
+                            	<div class="input-group">
+                                	<input id="url" name="url" type="text" class="form-control" check-type="Text" placeholder="中文为3个字节，英文符号为1个字节" value="{$menu_list.url}"  />
+                                	<span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="需为http://</aa>  开头，类型为跳转URL则必须，不超过256字节"><i class="fa fa-question darkorange danger circular"></i></span>
+								</div>
+                            </div>
+                    </div>	
+	                <div class="form-group" id="wei_key" style="display:none">
+                        <label class="col-lg-3 control-label">关键字:</label>
+                        <div class="col-lg-9">
+                            <div class="input-group">
+                                <input id="url" id="keyword" name="keyword" type="text" class="form-control" check-type="Text" placeholder="" value="{$menu_list.keyword}"/>
+                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="中文为3个字节，英文符号为1个字节"><i class="fa fa-question darkorange danger circular"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+						<div class="col-lg-offset-3 col-lg-10">
+							<input class="btn btn-palegreen" type="submit" value="确定">
+							<input onclick="javascript:history.back(-1);return false;" href="{:U('Weimenu/index')}" class="btn btn-palegreen" type="button" value="返回">
+						</div>
+					</div>
+				</div>
+            </form>
+            </div>
+            </div>
+            </div>
+            </div>
+
+   </block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+    $('#first_menu_s').change(function(){ 
+        var sss=$('#first_menu_s  option:selected').val();
+        if(sss!=0){ 
+            $('.none').hide();
+        }else{ 
+            $('.none').show();
+        }
+    }).trigger('change','.wei_button_type');
+    $('.wei_button_type').change(function(){ 
+        var button_val=$('.wei_button_type  option:selected').val();
+        if(button_val==2){ 
+            $('#wei_url').show();
+            $('#wei_key').hide();
+        }else{ 
+            $('#wei_url').hide();
+            $('#wei_key').show();
+        }
+
+    }).trigger('change','.wei_button_type')
+        
+})
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        
+        /*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+                    
+                validator.defaultSubmit();
+                    
+                }
+            })
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

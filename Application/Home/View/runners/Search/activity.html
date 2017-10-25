@@ -1,0 +1,28 @@
+<div class="search_shop">
+  <div class="search_shop_activity">
+    <volist name="documentlist" id="vo">
+      <div class="search_shop_activity_block">
+        <div class="activity_image"> <a href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" target="_blank"><img src="{$vo.cover_id|getThumbImageById=300,300}" alt=""></a> </div>
+        <div class="activity_substance">
+          <ul>
+            <li class="title"><a href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" target="_blank">{$vo['title']}</a></li>
+            <li class="tagname">{$vo.tagname}</li>
+            <li class="together">集合地：{:get_city($vo['begincity']['province'])}{:get_city($vo['begincity']['city'])}{:get_city($vo['begincity']['district'])}{:get_city($vo['begincity']['community'])}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目的地：{:get_city($vo['finalcity']['province'])}{:get_city($vo['finalcity']['city'])}{:get_city($vo['finalcity']['district'])}{:get_city($vo['finalcity']['finalcitycommunity'])}</li>
+            <li class="lasted_time"><span class="date">出发日期：</span>
+			<if condition="$vo['lasted_time']">
+				{$vo.lasted_time|date="Y-m-d",###}
+				<else/>
+				暂无排期
+			</if>
+			</li>
+            <li class="description">{$vo['description']|op_t|getShortSp=50}</li>
+          </ul>
+        </div>
+      </div>
+    </volist>
+    <div> {:getPagination($totalCount,10)}</div>
+    <if condition="!$documentlist">
+      <div class="shop-box-prompt">该分类下现在还没有活动哦。O(∩_∩)O~ </div>
+    </if>
+  </div>
+ </div>

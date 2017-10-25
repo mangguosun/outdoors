@@ -1,0 +1,117 @@
+<?php if($param['level'] == 1):?>
+<select class="form-control" name="{$param.find}_gid" id="{$param.find}_J_gid"></select>
+<?php elseif($param['level'] == 2):?>
+<select class="form-control" name="{$param.find}_gid" id="{$param.find}_J_gid"></select>
+<select class="form-control"  name="{$param.find}_zid" id="{$param.find}_J_zid" style="display:none;"></select>
+<?php elseif($param['level'] == 3):?>
+<select class="form-control" name="{$param.find}_gid" id="{$param.find}_J_gid"></select>
+<select class="form-control"  name="{$param.find}_zid" id="{$param.find}_J_zid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_shengid" id="{$param.find}_J_shengid" style="display:none;"></select>
+<?php elseif($param['level'] == 4):?>
+<select class="form-control" name="{$param.find}_gid" id="{$param.find}_J_gid"></select>
+<select class="form-control"  name="{$param.find}_zid" id="{$param.find}_J_zid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_shengid" id="{$param.find}_J_shengid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_shiid" id="{$param.find}_J_shiid" style="display:none;"></select>
+<?php elseif($param['level'] == 5):?>
+<select class="form-control" name="{$param.find}_gid" id="{$param.find}_J_gid"></select>
+<select class="form-control"  name="{$param.find}_zid" id="{$param.find}_J_zid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_shengid" id="{$param.find}_J_shengid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_shiid" id="{$param.find}_J_shiid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_quid" id="{$param.find}_J_quid" style="display:none;"></select>
+<select class="form-control"  name="{$param.find}_cunid" id="{$param.find}_J_cunid" style="display:none;"></select>
+<?php endif;?>
+<script type="text/javascript">
+
+
+$(function(){
+	var finds = "{$param.find}_";
+
+	var gid=0;  //默认省份id
+	var zid=0;  //默认城市id
+	var shengid=0;  //默认区县市id
+	var shiid=0;  //默认乡镇id
+	var quid=0;  //默认乡镇id
+	var cunid=0;  //默认乡镇id
+
+    /*修复联动不及时的bug，陈一枭*/
+function change_gid(pid){
+        $.post("{:addons_url('ChinaCity://ChinaCity/getProvince')}", {pid: pid}, function(result){
+            $("#"+finds+"J_gid").html(result);
+        });
+    }
+
+function change_zid(p_pid,p_cid){
+    $.post('{:addons_url("ChinaCity://ChinaCity/getCity")}', {pid: p_pid, cid: p_cid}, function(result){
+        $("#"+finds+"J_zid").show().html(result);
+    });
+    var cid_g=$(this).children('option:selected').val();
+	//alert(cid_g);
+    change_shengid(cid_g)
+}
+function change_shengid(p_pid,p_cid){
+    $.post('{:addons_url("ChinaCity://ChinaCity/getDistrict")}', {pid: p_pid, cid: p_cid}, function(result){
+        $("#"+finds+"J_shengid").show().html(result);
+    });
+    var did_g=$(this).children('option:selected').val();
+    change_shiid(did_g)
+}
+function change_shiid(p_pid,p_cid){
+	$.post('{:addons_url("ChinaCity://ChinaCity/getCommunity")}', {pid: p_pid, cid: p_cid}, function(result){
+		$("#"+finds+"J_shiid").show().html(result);
+	});
+	var did_g=$(this).children('option:selected').val();
+    change_quid(did_g)
+}
+
+function change_quid(p_pid,p_cid){
+	$.post('{:addons_url("ChinaCity://ChinaCity/getqu")}', {pid: p_pid, cid: p_cid}, function(result){
+		$("#"+finds+"J_quid").show().html(result);
+	});
+	var did_g=$(this).children('option:selected').val();
+    change_cunid(did_g)
+}
+
+function change_cunid(p_pid,p_cid){
+	$.post('{:addons_url("ChinaCity://ChinaCity/getcun")}', {pid: p_pid, cid: p_cid}, function(result){
+		$("#"+finds+"J_cunid").show().html(result);
+	});
+}
+
+    change_gid(gid);
+    change_zid(gid,zid);
+    change_shengid(zid,shengid);
+    change_shiid(shengid,shiid);
+	change_quid(shiid,quid);
+	change_cunid(quid,cunid);
+
+
+	$('#'+finds+'J_gid').change(function(){
+		var pid_g=$(this).children('option:selected').val();
+		change_zid(pid_g)
+
+
+	});
+
+	$('#'+finds+'J_zid').change(function(){
+		var cid_g=$(this).children('option:selected').val();
+		change_shengid(cid_g)
+	});
+
+	$('#'+finds+'J_shengid').change(function(){
+		var did_g=$(this).children('option:selected').val();
+		change_shiid(did_g)
+	});
+	
+	$('#'+finds+'J_shiid').change(function(){
+		var did_g=$(this).children('option:selected').val();
+		change_quid(did_g)
+	});
+	
+	$('#'+finds+'J_quid').change(function(){
+		var did_g=$(this).children('option:selected').val();
+		change_cunid(did_g)
+	});
+
+});
+/*修复联动不及时的bug，陈一枭end*/
+</script>

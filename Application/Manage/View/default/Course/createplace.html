@@ -1,0 +1,40 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>创建场地</h2>
+</div>
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" action="{:U('Manage/Course/addPlace')}" method="post">
+<div class="cf">
+    <div class="form-item">
+            <label for="title" class="item-label">场地编号<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="num" maxlength="25" class="text input-large" check-type="Text" value="{$num}" />
+            </div>
+        </div>
+        <br/><br/>
+        <div class="form-item">
+            <label for="title" class="item-label">场地名称<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="name" maxlength="25" class="text input-large" check-type="Text" value="{$name}" />
+            </div>
+        </div>
+        <br/>
+        <div class="form-item">
+            <label for="title" class="item-label">具体地址<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="detail" maxlength="25" class="text input-large" check-type="Text" value="{$detail}" />
+            </div>
+        </div>
+        <br/>
+         <div class="form-item">
+            <button type="submit" class="w_btn submit-btn ajax-post" target-form="form-horizontal">确定</button>
+            <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+          </div>
+     </form>
+</div>
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+</block>

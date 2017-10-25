@@ -1,0 +1,567 @@
+<extend name="Public/base1" />
+<block name="style">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=exk5q5HUIK5L1ifB1A4eKv2M"></script>
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.pag_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Event/doPost')}" class="form-horizontal form-bordered" method="post" >
+                        <input type="hidden" name="event_price_text" id="event_price_text" value="{$content.price_text}"/>
+                        <input type="hidden" name="id" id="id" value="{$content.id}"/>
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动名称 </label>
+                            <div class="col-lg-10">
+                                <input type="text"  id="title"  maxlength="25" class="form-control" placeholder="标题限25字以内" name="title" value="{$content['title']}" /><br /> 您还可以输入<span style="color:red" id="need">25</span>个字
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动标签 </label>
+                            <div class="col-lg-10">
+                                {:form_checkbox_manage(get_event_tag('','selected'),$content[tag],'name="tag[]" id="tag"',0,'100')}
+                            </div>
+                        </div>
+                                                
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动摘要 </label>
+                            <div class="col-lg-10">
+                                <textarea rows="4" cols="54" class="form-control" name="description" required>{$content.description}</textarea>
+                            </div>
+                        </div>   
+                          
+                         <div class="form-group">
+                            <label class="col-lg-2 control-label">目的地 </label>
+                            <div class="col-lg-10">
+                            
+                                 <div class="form-inline">
+                                    {:hook('Citylinkage',array('find'=>'finalcity','level'=>3,'linkageid'=>$content['finalcity']))}
+                                </div>
+                            </div>
+                        </div>                        
+                         <div class="form-group">
+                            <label class="col-lg-2 control-label">集合城市</label>
+                            <div class="col-lg-10">
+                            	<div class="form-inline">
+                                    {:hook('Citylinkage',array('find'=>'begincity','level'=>3,'linkageid'=>$content['begincity']))}
+                                </div>
+				 			
+                            </div>
+                        </div> 
+                         <div class="form-group">
+                            <label class="col-lg-2 control-label">具体地址 </label>
+                            <div class="col-lg-10">
+                                <input  type="text" id="detailadd" name="detailadd" class="form-control"  value="{$content['detailadd']}" placeholder="具体地址"/>
+                                <input  type="hidden" id="containertext" name="containertext" class=""  value="{$content['point']}" placeholder="" />
+                            </div>
+                        </div>                         
+                        
+                        <div class="form-group" style="display:none;">
+                            <label class="col-lg-2 control-label">集合城市坐标 </label>
+                            <div class="col-lg-10">
+                            <div class="input-group">
+                                <span class="input-group-btn" for="containertext" >
+                                    <button class="btn btn-default" type="button" onclick="searchByStationName();">获取坐标</button>    
+                                </span>       
+                            </div>
+                            </div>
+                        </div>                                                  
+ 
+                        <div class="form-group">
+                        <label class="col-lg-2 control-label">该活动发布到哪些栏目 </label>
+                            <div class="col-lg-10">
+                            	<div class="radio">
+                                          
+                                <volist name="tree" id="top">
+                                    <label><input type="radio" name="type_id" value="{$top.id}" <if condition="$top[id] eq $content[type_id]">checked</if>><span class="text">{$top.title}&nbsp;&nbsp;</span></label>
+                                </volist>   
+                                </div>
+                                
+                                         
+                            </div>
+                        </div>
+ 
+		  <!---------------------------------------------------------------------------->
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">参考价格 </label>
+                            <div class="col-lg-10">
+                            	<div class="radio">
+                                <label><input type="radio" id="price_text_choose" name="price_type" value="1" checked><span class="text">输入文本</span></label>
+                                <label><input type="radio" id="price_num_choose" name="price_type" value="2"  ><span class="text">输入金额</span></label>
+                                </div>
+                            </div>           
+                        </div>
+ 
+                        <div class="form-group price_text">
+                            <label class="col-lg-2 control-label">输入文本</label>
+                            <div class="col-lg-10">
+                                <input type="text" id="price_text" maxlength="6" name="price_text"  class="form-control price_text_input text input-large" value="{$content.price_text}" placeholder="限6个字">
+                            </div>
+                        </div>
+                        <div class="form-group price_num">
+                            <label class="col-lg-2 control-label">输入金额</label>
+                            <div class="col-lg-10">
+                                <input type="text" id="price" name="price" class="form-control judgeNan price_num_input input-large"  value="{$content.price}" placeholder="输入金额">
+                            </div>
+                        </div>
+		   <!---------------------------------------------------------------------------->        
+        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动天数 </label>
+                            <div class="col-lg-10">
+                                <input type="text" id="traveldays" name="traveldays" class="form-control judgeNan" check-type="Num"  value="{$content.traveldays}" placeholder="活动天数"/>
+                            </div>
+                        </div>       
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动图片列表<br />（默认第一张为封面）</label>
+                            <div class="col-lg-10">
+                                {:hook('UploadImagePc', array('find_name'=>'pictures_id','value'=>$content['pictures_id'],'multi'=>true,'thumb_width'=>80,'thumb_height'=>80,'width'=>'400','height'=>'300'))}
+                            </div>
+                        </div> 
+
+                        <div class="form-title">
+                            选填项
+                        </div>  
+                        
+                         
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">推荐 </label>
+                                <div class="col-lg-10">
+                                    <div class="radio">
+                                        <label><input name="recommend" type="radio" value="1" <if condition=" $content[is_recommend] eq 1">checked</if>><span class="text">是</span></label>
+                                        <label><input name="recommend" type="radio" value="0" <if condition=" $content[is_recommend] eq 0">checked</if> checked</eq><span class="text">否</span></label>
+                                    </div>
+                                </div>
+                        </div>                       
+ 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">排序 </label>
+                            <div class="col-lg-10">
+                            	<div class="input-group">
+                                 <input type="text" id="sort" name="sort" maxlength="24" class="form-control judgeNan" value="{$content['sort']}" placeholder="" /> <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="活动排序推荐时前台按排序序号由小到大排序"><i class="fa fa-question darkorange danger circular"></i></span> 
+                                </div>
+                            </div> 
+                        </div> 
+  
+                                                 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动副标题</label>
+                            <div class="col-lg-10">
+                                <input  type="text" name="vice_title" maxlength="25" class="form-control"  value="{$content['vice_title']}" placeholder="仅限输入25个字哦，快快添加您对活动的说明吧" />
+                            </div>
+                        </div> 
+     
+                    
+                                                
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">选择保险 </label>
+                            <div class="col-lg-10">
+                                <a class="event_insurace">
+                                  <if condition="$insurance_string neq ''">
+                                  {:get_insurance_select($content['insurance'])}
+                                <else />
+                                    暂无保险&nbsp;&nbsp;<a class="mbtn insurance_sign btn-info">点击添加</a>
+                                </if>
+                                </a>
+                            </div>
+                         </div> 
+ 
+        
+		<!--星级-------------------------------------------------------------------------------->
+                            <div class="form-group">
+                                <?php $list = get_custom_eventtag(); $event_tag = $list['custom_event']['attribute']; ?>
+
+                                    <label class="col-lg-2 control-label">
+                                    	 
+                                    </label>
+                                    <div class="col-lg-10">
+                                        <span class="btn btn-default upstar_con" data-toggle="modal" data-target=".bs-example-modal-lg">添加星级指数</span>  （最多可以添加5项）
+                                    </div>
+                             </div>   
+
+                             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="myLargeModalLabel">添加星级指数</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>为您的活动填写一个指数星级吧！让用户更加了解您的活动！</div>
+                                            
+                                            <div class="form-group">	
+                                                <label class="col-lg-2 control-label">星级名称：</label>
+                                                <div class="col-lg-10">
+                                                    <input type="text" class="form-control text input-large"  id="starname" name="starname" maxlength="5"  check-type="Text" value="" placeholder="名称限5字以内"/>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <div class="radio">
+                                                    <label><input  type="radio"class='starnum starnum_1' name="starnum" value="1"  checked="checked"  /><span class="text">一颗星</span></label>
+                                                    <label><input type="radio" class='starnum starnum_2' name="starnum" value="2"> <span class="text">二颗星</span></label>
+                                                    <label><input type="radio" class='starnum starnum_3' name="starnum" value="3"> <span class="text">三颗星</span></label>
+                                                    <label><input type="radio" class='starnum starnum_4' name="starnum" value="4"> <span class="text">四颗星</span></label>
+                                                    <label><input type="radio" class='starnum starnum_5' name="starnum" value="5"> <span class="text">五颗星</span></label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                     <button type="button" class="btn btn-default btn-default_close" data-dismiss="modal">关闭</button>
+                                                    <button type="button" class="btn btn-primary starname_num">提交</button>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>      
+                        
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"></label>
+                                <div class="col-lg-10">
+                                     <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+                                        <thead>
+                                            <tr>
+                                                <th>编号</th>
+                                                <th>星级名称</th>
+                                                <th>级别</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="start-table" id="start-table">
+                                            
+                                            <volist name="star_content" id="vo"> 
+                                                <tr ><td class='numx'>{$key+1}</td><td class='statitle'>{$vo.title}</td><td class='stanum' value='{$vo.grade}'>{$vo.grade}颗星</td><td><a class='up_star  btn btn-default btn-sm' >修改</a> <a class='del_star  btn btn-default btn-sm '>删除</a></td><input type = 'hidden' class='starnum_input' name='starnum[]' starid='{$vo.id}' value="{$vo.title},{$vo.grade},{$vo.id}" > </tr>
+                                         </volist>
+                                           
+                                        </tbody>    
+                                    </table>
+                                    <div id="starid_del"></div>                                       
+                                </div>
+                             </div>                          
+                     
+                                
+                        <div class="form-group">
+
+                            <label class="col-lg-2 control-label">详细内容 </label>
+                                <div class="col-lg-10">
+                                    <div class="tabbable">
+                                        <ul class="nav nav-tabs" id="myTab7">
+                                            <li class="active"><a data-toggle="tab" href="#p1">线路亮点 </a></li>
+ 
+                                            <li class="tab-red"><a data-toggle="tab" href="#p2">行程安排</a></li>
+
+                                            <li class="tab-red"><a data-toggle="tab" href="#p3">费用说明</a></li>
+
+                                            <li class="tab-red"><a data-toggle="tab" href="#p4">注意事项</a></li>  
+                                        </ul>
+                                        <div class="tab-content radius-bordered">
+                                            <div id="p1" class="tab-pane in active">
+                                                <p>{:Hook('Ueditor',array('name'=>'travel_point','value'=>$content['travel_point']))}</p>
+                                            </div>
+                                            <div id="p2" class="tab-pane">
+                                                <p>{:Hook('Ueditor',array('name'=>'explain','value'=>$content['explain']))}</p>
+                                            </div>
+                                            <div id="p3" class="tab-pane">
+                                                <p>{:Hook('Ueditor',array('name'=>'pay_info','value'=>$content['pay_info']))}</p>
+                                            </div>
+                                            <div id="p4" class="tab-pane">
+                                                <p>{:Hook('Ueditor',array('name'=>'attention','value'=>$content['attention']))}</p>
+                                            </div>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>     
+   
+         
+		  <!-------------------------------------------->
+   
+     <!--                 <div class="insurance_event">
+                        <div class="insurance_inner">
+                            <div class="form-group insurance_form has-feedback">
+                                <label for="name" class="col-md-2 control-label">保险名称</label>
+                                <div class="col-md-4">
+                                    <input id="name" type="text" class="form-control insurance_name form_check" check-type="Text"  value="" placeholder="请填写保险名称"/>
+                                </div>
+                            </div>
+                            <div class="form-group insurance_form position">
+                                <label for="sum_insured" class="col-md-2 control-label">保额</label>
+                                <div class="col-md-4"> 
+                                    <input id="sum_insured" type='text'  class="form-control insurance_insured form_check" placeholder="请填写保额"/>
+                                </div>
+                            </div>
+                            <div class="form-group insurance_form position">
+                                <label for="price" class="col-md-2 control-label">保险价格</label>
+                                <div class="col-md-4"> 
+                                    <input id="price" type='text'  class="form-control insurance_price form_check" placeholder="请填写保险购买价格"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-10">
+                                    <a class="btn btn-primary insurance_sure_add">提交</a>
+                                </div>
+                            </div>			
+                        </div>
+                      </div>-->
+		  <!---------------------------------------------->        
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input onclick="javascript:history.back(-1);return false;" class="btn btn-default " type="button" value="返回">
+                            </div>
+                        </div>
+
+                   </form>
+                </div>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+
+
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+ <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=exk5q5HUIK5L1ifB1A4eKv2M"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '活动名称不能为空'
+                    }
+                }
+            },
+            'tag[]': {
+                validators: {
+                    notEmpty: {
+                        message: '活动标签至少选择一个'
+                    }
+                }
+            },
+            price: {
+                 validators: {
+                   regexp: {
+                     regexp: /^([0-9]{1,8})(\.\d{1,2})?$/,
+                     message: '金额为大于等于0的数字'
+                    }
+                }
+            },
+            description: {
+                validators: {
+                    notEmpty: {
+                        message: '活动摘要不能为空'
+                    }
+                }
+                 
+            },
+           
+            traveldays: {
+                validators: {
+                    notEmpty: {
+                        message: '活动天数不能为空'
+                    },
+                    regexp: {
+                     regexp: /^[0-9]+$/,
+                     message: '活动天数为大于等于0的数字'
+                    }
+                }
+                 
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+
+	function event_price_toform(){  
+		var event_price_text = $('#event_price_text').val();
+		var event_id = $('#event_id').val();
+		if(event_id == ''){
+			$("input[name='price_type']").prop('checked',false)
+			$('.price_text').hide();
+			$('.price_num').hide();
+			$('.price_text_input').val('');
+			$('.price_num_input').val(0);
+		}else{
+			if(event_price_text != ''){
+				$('.price_text').show();
+				$('.price_num').hide();
+				$('.price_text_input').val(event_price_text)
+				$('#price_text_choose').prop('checked',true)
+			}else{
+				$('.price_num').show();
+				$('.price_text').hide();
+				$('#price_num_choose').prop('checked',true)
+			}
+		}
+	
+	} 
+	$('#price_text_choose').click(function(){
+		$('.price_text').show();
+		$('.price_num').hide();
+		$('.price_text_input').val(event_price_text)
+		$('.price_num_input').val(0);
+	})
+	$('#price_num_choose').click(function(){
+		$('.price_num').show();
+		$('.price_text').hide();
+		$('.price_text_input').val('');
+	})
+
+
+
+	function loadScript(){  
+		//empPoints=getEmployeePostion();//初始化所有的在勤人员  
+		//alert("init emp:"+empPoints.length);  
+		var scriptDom=document.createElement("script");  
+		//scriptDom.src="http://api.map.baidu.com/api?v=2.0&ak=exk5q5HUIK5L1ifB1A4eKv2M&v=1.3&services=false&callback=initialize";  
+		scriptDom.src="http://api.map.baidu.com/api?v=2.0&ak=exk5q5HUIK5L1ifB1A4eKv2M&callback=initialize";  
+		document.body.appendChild(scriptDom);  
+		  
+	}  
+
+    function searchPoint(){ 
+
+		var options0=$("#begincity_J_province option:selected");
+		var options1=$("#begincity_J_city option:selected");
+		var options2=$("#begincity_J_district option:selected");
+		var options3 = $('#detailadd').val();
+		var keyword = options0.text()+options1.text()+options2.text()+options3;
+		
+		if(keyword){
+			var myGeo = new BMap.Geocoder();
+			
+			myGeo.getPoint( keyword, function(point){
+			if (point) {
+	
+					$("#containertext").val(point.lng + "," + point.lat);
+					//document.getElementById("containertext").value = point.lng + "," + point.lat;
+					//map.centerAndZoom(point, 16);
+					//map.addOverlay(new BMap.Marker(point));
+				}else{
+				   // alert("您选择地址没有解析到结果!");
+				}
+			}, "北京市");
+		}
+		
+    } 
+
+    $("input[name='detailadd']").change( function() {
+        searchPoint();
+    });
+
+    $("#begincity_J_province").change(function(){ 
+       searchPoint();
+    })
+
+    $("#begincity_J_city").change(function(){ 
+        searchPoint();
+    })
+    $("#begincity_J_district").change(function(){ 
+       searchPoint();
+    })
+
+	event_price_toform();
+	loadScript();
+})
+	
+</script>
+
+      <script type="text/javascript"> 
+		var num=1;
+		var updateStar = null;
+		var starid = null ;
+		$("body").on("click",".starname_num", function(e){ 
+			var statitle = $("#starname").val();
+			var stanum =  $("input[name='starnum']:checked").val();
+			if(updateStar != null){ 
+				updateStar.parent().parent().children(".statitle").html(statitle);
+				updateStar.parent().parent().children(".stanum").attr('value',stanum);
+				updateStar.parent().parent().children(".stanum").html(stanum+'颗星');
+				updateStar.parent().parent().children(".starnum_input").val(statitle+','+stanum+','+starid);
+				$(".btn-default_close").trigger('click');
+				updateStar = null;
+			}else{
+
+				var num = $(".numx").length;
+				num++
+				if(num > 5){ 
+					alert("星级指数最多可以添加5项");
+				}else{ 
+					
+					$(".start-table").append("<tr ><td class='numx'>"+num+"</td><td class='statitle'>"+statitle+"</td><td class='stanum' value='"+stanum+"'>"+stanum+"颗星</td><td><a class='up_star btn btn-default btn-sm'  >修改</a> <a class='del_star btn btn-default btn-sm'>删除</a></td><input type = 'hidden' class='starnum_input' name='starnum[]' value='"+statitle+','+stanum+"' > </tr>");
+					
+					$(".btn-default_close").trigger('click');
+					//num ++;
+				}
+
+			}
+			
+		})
+		$("body").on("click",".del_star", function(e){
+			var star_del_id = $(this).parent().parent().children(".starnum_input").attr('starid');
+			if(star_del_id != undefined){ 
+				$("#starid_del").append("<input type = 'hidden' class='starnum_del' name='stardel[]' value='"+star_del_id+"' >");
+			}
+			
+			$(this).parent().parent().remove();
+			var delid   =   $(this).attr('del-id');
+			var pnum    =   1;
+			 $(".numx").each(function(){
+				$(this).html(pnum);
+				pnum++;
+			  });
+			num--
+		})
+		$("body").on("click",".up_star",function(){ 
+			updateStar = $(this);
+			starid = $(this).parent().parent().children(".starnum_input").attr('starid');
+			//alert(starid)
+			var statitle = $(this).parent().parent().children(".statitle").text();
+			var stanum = $(this).parent().parent().children(".stanum").attr('value');
+			$("#starname").val(statitle);
+			$(".starnum_"+stanum).trigger('click');
+			$(".upstar_con").trigger('click');
+		})
+		
+	</script>
+ 
+</block>
+
+ 

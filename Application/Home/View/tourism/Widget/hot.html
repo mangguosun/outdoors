@@ -1,0 +1,10 @@
+<if condition="$lists neq false">
+  <div class="index_list_block">
+    <h3><span class="more-text"><a href="{:U('Blog/Index/index')}">更多></a></span>最新公告</h3>
+    <ul class="list_block_ul">
+    <volist name="lists" id="data">
+      <li><a title="{$data.title|op_t}" href="{:U('Blog/Article/detail?id='.$data['id'])}" title="{$data.title}">{$data.title|op_t|getShortSp=18}</a> </li>
+    </volist> 
+    </ul>
+  </div>
+</if>

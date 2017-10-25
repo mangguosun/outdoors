@@ -1,0 +1,91 @@
+	  <div class="tab-pane">
+		  <div class="clearbox-ol"></div>
+	      <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>标识</th>
+                <th>描述</th>
+                <th>状态</th>
+                <th>操作</th>             
+              </tr>
+            </thead>
+            <tbody>
+              <volist name="apply" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td>{$vo.app_name}</td>
+              <td>{$vo.app_model}</td>			  
+			  <td>{$vo.describe}</td>			
+              <td>{:get_common_app_status($vo[id])}</td>
+
+			<?php 
+				$data = get_all_app_btn($vo['id']);
+			?>
+			<if condition="$data eq 1">
+			<td><a class='mbtn  btn-info config_app' href="{:U('Manage/Apply/event_websit',array('id'=>$vo['id']))}">配置</a></td>
+			<else />
+				<td>{:$data}</td>
+			</if>			 
+            </tr>
+            </volist>
+            <tr><td colspan="6">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+        
+        </div>
+	  </div>
+<script>
+//锁定全屏
+$(function () {	
+	$('.config_app').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+})
+
+
+
+$(function(){
+	$('.install_app').click(function(){
+		if(confirm('确定启用吗？')){
+			var id = $(this).attr('data-ID')
+			$.post(U('Websit/Apply/install_app'),{id:id,type:1},function(res){
+				if(res['status'] == 1){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+	$('.unstall_app').click(function(){
+		if(confirm('确定禁用？')){
+			var id = $(this).attr('data-ID');			
+			$.post(U('Websit/Apply/unstall_app'),{id:id,type:1},function(res){
+				if(res['status'] == 1){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+})	
+</script>

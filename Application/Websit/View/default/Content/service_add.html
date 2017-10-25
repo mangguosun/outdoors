@@ -1,0 +1,42 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <?php if($content['service_process'] == ''):?>
+  <h2>添加服务流程URL</h2>
+  <?php else:?>
+  <h2>编辑服务流程URL</h2>
+  <?php endif;?>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+	  <?php if($content['service_process'] == ''):?>
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Content/do_service_add')}" method="post">
+		<?php else:?>
+		<form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Content/do_service_edit')}" method="post">
+		<?php endif;?>
+          <!--<div class="form-group  has-feedback">
+            <label for="campus" class="col-md-2 control-label">公司名称</label>
+            <div class="col-md-10">
+              <input id="campus" name="title" type="" class="form-control form_check" check-type="Text"  value="" placeholder=""/>
+            </div>
+          </div>-->
+         <div class="form-group  has-feedback">
+            <label for="campus" class="col-md-2 control-label">链接地址</label>
+            <div class="col-md-10">
+              <input id="campus" name="url" type="" class="form-control form_check" check-type="Text"  value="{$content.service_process}" placeholder=""/>
+            </div>
+         </div>
+         <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+			<?php if($content['service_process'] == ''):?>
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Content/do_service_add')}">添加</button>
+			<?php else:?>
+			  <button type="submit" class="btn btn-primary " href="{:U('Websit/Content/do_service_edit')}">编辑</button>
+			<?php endif;?>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

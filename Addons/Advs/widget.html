@@ -1,0 +1,115 @@
+<if condition="$list['type'] eq 2">
+    <if condition="count($list['res']) gt 0">
+        <switch name="list.style">
+
+            <case value="2">
+                <script src="__PUBLIC__/Core/js/ext/kinmaxshow/js/kinmaxshow.min.js"></script>
+                <div  style="width:{$list.ad.width}px;height:{$list.ad.height}px">
+                    <div id="slide_{$list.ad.pos}" >
+                        <volist name="list.res" id="vo">
+                            <div>
+                                <a href="{$vo.link}" target="_blank" title="{$vo.title}"><img src="{$vo.advspic|getThumbImageById=$list['ad']['width'],$list['ad']['height']}" alt="{$vo.title}"></a>
+                            </div>
+
+
+                        </volist>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function(){
+                        var h_s={$list.ad.height};
+                    $("#slide_{$list.ad.pos}").kinMaxShow({height:h_s});
+                    });
+                </script>
+            </case>
+            <default />
+                <script src="__PUBLIC__/Core/js/ext/slider/js/jquery.slides.min.js"></script>
+                <link href="__PUBLIC__/Core/js/ext/slider/css/slider.css" rel="stylesheet" type="text/css"/>
+                <div style="height: {$list.ad.height};width:{$list.ad.width}px;">
+
+                    <div id="slide_{$list.ad.pos}" style="">
+                        <volist name="list.res" id="vo">
+                            <a href="{$vo.link}" title="{$vo.title}" target="_blank"><img src="{$vo.advspic|getThumbImageById=$list['ad']['width'],$list['ad']['height']}" alt="{$vo.title}"></a>
+                        </volist>
+                        <a href="#" class="slidesjs-previous slidesjs-navigation"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                        <a href="#" class="slidesjs-next slidesjs-navigation"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+
+                </div>
+                <script>
+                    $(function () {
+                        $("#slide_{$list.ad.pos}").slidesjs({
+                            navigation: false
+                        });
+                    })
+                </script>
+        </switch>
+    </if>
+
+
+    <elseif condition="$list['type'] eq 3"/>
+    <div style="width:{$list['width']};height:{$list['height']};background: #cecece;">
+        <div style="margin:0px auto;width:150px;line-height: 30px;">{$list.advstext}</div>
+    </div>
+    <elseif condition="$list['type'] eq 1"/>
+    <if condition="$list['advspic'] neq 0">
+    <php>if($list['link']){</php>
+    <a href="{$list.link}" title="{$list.title}" target="_blank"><img src="{$list.advspic|get_cover='path'}" alt="{$list.title}"/></a>
+    <php>}else{</php>
+    <img src="{$list.advspic|get_cover='path'}" alt="{$list.title}" title="{$list.title}"/>
+    <php>}</php>
+    </if>
+
+    <elseif condition="$list['type'] eq 4"/>
+    {$list.advshtml}
+    <elseif condition="$list['type'] eq 5"/>
+    <if condition="count($list['res']) egt 1">
+        <style>
+        /* 本例子css */
+		.slideBox{ width:1140px; height:400px; overflow:hidden; position:relative;  }
+		.slideBox .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1; }
+		.slideBox .hd ul{ overflow:hidden; zoom:1; float:left;  }
+		.slideBox .hd ul li{ float:left; margin-right:2px;  width:20px; height:20px; line-height:19px; text-align:center; background:#fff; cursor:pointer; font-size:12px}
+		.slideBox .hd ul li.on{ background:#000; color:#fff; }
+		.slideBox .bd{ position:relative; height:100%; z-index:0;   }
+		.slideBox .bd li{ zoom:1; vertical-align:middle; }
+		.slideBox .bd img{ width:1140px; height:400px; display:block;  }
+
+		/* 下面是前/后按钮代码，如果不需要删除即可 */
+		
+        </style>    
+            
+            
+        <div id="slideBox" class="slideBox">
+			<div class="hd">
+				<ul>
+                <foreach name="list.res" item="images" key="k">
+                <li>{$k+1}</li>
+                 </foreach>
+                </ul>
+			</div>
+			<div class="bd">
+				<ul>
+                <foreach name="list.res" item="images" key="k">
+                <php>if($images['link']){</php>
+					<li><a href="{$images['link']}" target="_blank"><img src="{$images.advspic|get_cover='path'}" alt="{$images.title}" /></a></li>
+                 <php>}else{</php>   
+                    <li><img src="{$images.advspic|get_cover='path'}" alt="{$images.title}" /></li>
+                  <php>}</php>  
+				 </foreach>	
+				</ul>
+			</div>
+			<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+			<a class="prev" href="javascript:void(0)"></a>
+			<a class="next" href="javascript:void(0)"></a>
+
+		</div>
+		<script type="text/javascript">jQuery(".slideBox").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,easing:"swing",interTime:3000});</script> 
+
+    </if>
+    
+    
+    
+    
+</if>
+<!-- add more -->

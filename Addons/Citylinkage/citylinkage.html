@@ -1,0 +1,77 @@
+<if condition="$param.level egt '2'">
+{:form_select_manage($linkage_info['province'],$linkage_info['on']['province'],'class="form-control" name="'.$param['find'].'_province" id="'.$param['find'].'_J_province"',"--省份--")}
+</if>
+<if condition="$param.level egt '2'">
+{:form_select_manage($linkage_info['city'],$linkage_info['on']['city'],'class="form-control" name="'.$param['find'].'_city" id="'.$param['find'].'_J_city"',"--城市--")}
+</if>
+<if condition="$param.level egt '3'">
+{:form_select_manage($linkage_info['district'],$linkage_info['on']['district'],'class="form-control" name="'.$param['find'].'_district" id="'.$param['find'].'_J_district"',"--州县--")}
+</if>
+<if condition="$param.level egt '4'">
+{:form_select_manage($linkage_info['community'],$linkage_info['on']['community'],'class="form-control" name="'.$param['find'].'_community" id="'.$param['find'].'_J_community"',"--乡镇--")}
+</if>
+<input type="hidden" name="{$param['find']}" id="{$param['find']}" value="{$linkage_info['linkageid']}" />
+<?php
+if(!defined('CITYLINKAGE_INIT_PC')){
+?>
+<script type="text/javascript">   
+var citylinkage = function (finds , level){
+	
+	function change_city(p_pid,p_cid){
+		$.post('{:addons_url("Citylinkage://Citylinkage/getCity")}', {pid: p_pid, cid: p_cid}, function(result){																	
+			$("#"+finds+"_J_city").html(result);
+		});
+		if(level >= 3){
+			var cid_g=$(this).children('option:selected').val();
+			change_district(cid_g)
+		}
+
+	}
+	function change_district(p_cid,p_did){
+		$.post('{:addons_url("Citylinkage://Citylinkage/getDistrict")}', {cid: p_cid, did: p_did}, function(result){
+			$("#"+finds+"_J_district").html(result);
+		});
+		
+		if(level >= 4){
+			var did_g=$(this).children('option:selected').val();
+			change_community(did_g)
+		}
+	}
+	function change_community(p_did,p_coid){
+		$.post('{:addons_url("Citylinkage://Citylinkage/getCommunity")}', {did: p_did, coid: p_coid}, function(result){
+			$("#"+finds+"_J_community").html(result);
+		});
+	}
+	$('#'+finds+'_J_province').change(function(){
+		var pid_g=$(this).children('option:selected').val();
+		$("#"+finds).val(pid_g);
+		change_city(pid_g)
+	});
+	$('#'+finds+'_J_city').change(function(){
+		var cid_g=$(this).children('option:selected').val();
+		$("#"+finds).val(cid_g);
+		change_district(cid_g)
+	});
+	$('#'+finds+'_J_district').change(function(){
+		var did_g=$(this).children('option:selected').val();
+		$("#"+finds).val(did_g);
+		change_community(did_g)
+	});
+	$('#'+finds+'_J_community').change(function(){
+		var yid_g=$(this).children('option:selected').val();
+		$("#"+finds).val(yid_g);
+	});
+}
+
+</script>
+<?php
+define('CITYLINKAGE_INIT_PC', 1);
+}
+?>
+<script type="text/javascript"> 
+$(function(){	  
+	citylinkage('{$param.find}','{$param.level}');  
+})
+
+
+</script>

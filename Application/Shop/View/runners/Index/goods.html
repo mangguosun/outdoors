@@ -1,0 +1,5 @@
+<extend name="runners/common"/>
+<block name="body">
+{:W('CommonShop/screeningmenu',array($sub_menu,$model_info,''))}
+{:W('CommonShop/goods',array($_GET['page'],$_GET['category_id'],$_GET['tag'],$_GET['shop_brand'],$_GET['action']))}
+</block>

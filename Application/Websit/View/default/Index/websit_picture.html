@@ -1,0 +1,84 @@
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right"><a class="mbtn btn-info add_adv" href="{:U('Websit/Index/websit_picture_add')}">添加</a></div>
+    轮播大图管理</div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>广告名称</th>
+          <th>广告类型</th>
+         
+		  <th>显示状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="pictrue">
+        <volist name="pictrue" id="vo">
+          <tr>
+            <td width="60">{$vo.id}</td>
+            <td>
+			   <?php if(!empty($vo['link'])):?>
+			   <a href="{$vo.link}" target="_blank"><i class="glyphicon glyphicon-link"></i> {$vo.title}</a>
+			   <?php else:?>
+			   {$vo.title}
+			   <?php endif;?>
+		  </td>
+            <th>{$vo.positiontext}</th>
+
+			<td width="80">{$vo.statustext}</td>
+            <td width="150"><a class="mbtn btn-info add_adv common-color-white"  href="{:U('Websit/Index/websit_picture_add?id='.$vo['id'])}">编辑</a>
+            <if condition="$vo['status'] eq 1">
+            <a class="mbtn btn-danger adv_status common-color-white" data-ID="{$vo['id']}" data-Status="0"  href="javascript:">禁用</a>
+            <else/>
+             <a class="mbtn btn-info adv_status common-color-white" data-ID="{$vo['id']}" data-Status="1"  href="javascript:">启用</a>
+            </if>
+            </td>
+          </tr>
+        </volist>
+        <else/>
+      <td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+	$(function () {			
+		$('.add_adv').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+				   // console.log(this.content);
+				}
+			}
+		});
+	})
+	
+		$('.adv_status').click(function () {
+		if (confirm('确定要操作么？')) {
+			var id = $(this).attr('data-ID');
+			var status = $(this).attr('data-Status');
+			$.post(U('Websit/Index/websit_picture_status'), {id: id,status: status}, function (res) {
+				if (res.status) {
+					toast.success(res.info);
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				}
+				else {
+					toast.error(res.info);
+				}
+			}, 'json');
+		}
+	});	
+	
+    </script>
+</div>
+

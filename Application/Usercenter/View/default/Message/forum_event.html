@@ -1,0 +1,45 @@
+<extend name="Public/usercenter"/>
+<block name="body">
+
+<div class="row">
+  <div class="col-md-12">
+    <p>&nbsp;</p>
+    <h4>我收藏的活动</h4>
+    <hr class="oneuser-title-hr"/>
+    <ul class="nav nav-pills ucenter-tab">
+      <li
+                
+      <eq name="type" value="forum"> class="active"</eq>
+      ><a href="{:U('Usercenter/Message/collection',array('type'=>'forum'))}">活动收藏</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="forum-maxwidth">
+  <if condition="!$list">
+    <p class="text-muted forum-center">
+      <!--<br><br>
+            暂无该类型收藏～
+            <br><br><br>-->
+      <?php echo "<script>alert('亲你还没有收藏活动,赶快去收藏一个活动吧!')</script>";?> </p>
+  </if>
+  <table id="forum1_m1">
+    <tr>
+      <td>旅游地</td>
+      <td>活动名称</td>
+      <td>出发地</td>
+      <td>操作</td>
+    </tr>
+    <volist name="list" id="vl">
+      <tr>
+        <td><a href="{:U('Event/Index/detail',array('id'=>$vl['id']))}"> <img src="{$vl.cover_id|getThumbImageById=100,70}" title="{$vl.title}" id="forum_img"  onabort="alert('正在玩命加载中...')"></td>
+        </a>
+        <td><span>{$vl.title}</span></td>
+        <td>{:get_city($vl['begincity'])}</td>
+        <td><a href="{:U('Event/Index/detail',array('id'=>$vl['id']))}">查看</a> <a href="{:U('Message/del_collection',array('id'=>$vl['id']))}"><span class="common-color-red">删除</span></a></td>
+      </tr>
+    </volist>
+  </table>
+  <div class="pull-right"> {:getPagination($totalCount,15)} </div>
+</div>
+</block>

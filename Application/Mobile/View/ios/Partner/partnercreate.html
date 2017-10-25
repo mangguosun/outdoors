@@ -1,0 +1,197 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<script src="__PUBLIC__/static/amaze/js/timejs/mobiscroll_my.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/static/amaze/js/timejs/mobiscroll.js" type="text/javascript"></script>
+	<link href="__PUBLIC__/static/amaze/css/timecss/mobiscroll.css" rel="stylesheet" type="text/css">
+	<link href="__PUBLIC__/static/amaze/css/timecss/mobiscroll_my.css" rel="stylesheet" type="text/css">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 创建约伴<!--填写返回打卡-->
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+	<form action="" class="am-form" id="form-with-tooltip">
+	<!-- 输入运动主题 -->
+    <div class="par-create-sign">
+		<div class="par-create-signb">
+			<label for="title">活动主题</label>
+			<input type="text"  name="title" placeholder="主题活动(最多24个字)" id="title">
+		</div>
+	</div>
+    
+    <div class="par-create-sign">
+		<div class="par-create-signb">
+			<label for="address">活动地址</label>
+			<input type="text"  name="address" placeholder="活动地址" id="address">
+		</div>
+	</div>
+    
+    
+    <!-- 报名费用及人数 -->
+	<div class="par-create-sign">
+		<div class="par-create-signb">
+			<label for="par-create-idsignb">人数上限</label>
+			<input type="text"  name="human_number"  id="par-create-idsignb" placeholder="默认为无上限">
+		</div>
+	</div>
+	<!-- 上传图片 -->
+	<div class="partnercreate-images">
+		<div class="par-ind-img">
+            {:hook('UploadImageMobilesingle', array('find_name'=>'imgids','value'=>'','title'=>'上传图片','display_width'=>107,'display_height'=>80,'thumb_width'=>400,'thumb_height'=>300))}
+		</div>
+        
+        <div class="par-create-time">
+        	<div class="par-index-time">
+        		<input value="" class="par-time par-timestart" readonly="readonly" name="start_time" id="appDateTime" type="text" placeholder="活动集合时间">
+        	</div>
+			
+			<input value="" class="par-time" readonly="readonly" name="deadline" id="appDateTime2" type="text" placeholder="报名截止时间">
+		</div>
+	</div>
+
+
+	<!-- 标签 -->
+	<div class="par-create-tab">
+		<div class="par-create-font">活动分类</div>
+		
+
+		<div class="par-type-icon">
+			<div>
+				<div  class="am-circle par-type-img hdlsports iconsport-paobu2 partnertype par-creat-tabimg" type="1"></div>
+			</div>
+			<div>	
+				<div  class="am-circle par-type-img hdlsports iconsport-tubu partnertype par-creat-tabimg" type="2"></div>
+			</div>
+			<div>
+				<div  class="am-circle par-type-img hdlsports iconsport-598kuaizhuangqixing partnertype par-creat-tabimg" type="3"></div>
+			</div>
+			<div>	
+				<div  class="am-circle par-type-img hdlsports iconsport-huilvyouyongchi partnertype par-creat-tabimg" type="4"></div>
+			</div>	
+			
+		</div>
+		<input type="hidden" name="partnertype" id="partner-type" value="">
+
+		<div class="par-create-fonts">
+			<li>跑步</li>
+			<li>徒步</li>
+			<li>骑行</li>
+			<li>游泳</li>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<!-- 活动介绍，详细说明 -->
+	<div class="par-create-activity">
+		<div class="am-form-group par-create-actup">
+			<textarea class="par-create-acttext" name="details" rows="5" placeholder="活动介绍，详细说明(最多500个字)"></textarea>
+		</div>
+	</div>
+	<div class="par-create-button">
+		<button type="button" id="edit-config-btn" class="am-btn am-btn-block am-btn-warning par-create-btn">发布</button>
+	</div>
+</form>
+</body>
+ <script>		
+	//约伴类型
+	$(".partnertype").click(function(){
+		var type=$(this).attr('type');
+		$('#partner-type').val(type);
+		$('.par-type-img').removeClass('partner-type');
+		$(this).addClass('partner-type');
+	})
+   //ajax提交form表单
+        $("#edit-config-btn").click(function(){
+	        $.ajax({
+	           cache: true,
+			   type: "POST",
+			   dataType: "json",
+			   url: "{:U('Mobile/partner/set_partnercreate')}",
+			   data: $('#form-with-tooltip').serialize(),
+			   success: function(data){
+			   	if(data['status'] == 1){
+			 		toasts.success(data.info,"{:U('Mobile/Partner/index')}");
+			   		}else{
+			   		toasts.info(data.info);
+			   		}
+			 	}
+			});
+	    });
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		preset : 'date', //日期 
+		//theme : 'Datewheel', //皮肤样式黑色 
+		theme: 'android-ics light', //皮肤样式
+        display: 'modal', //显示方式 
+        mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		dateOrder : 'yymmdd', //面板中日期排列格式 
+        startYear: currYear - 0, //开始年份
+        endYear: currYear + 10 //结束年份
+	};
+  	$("#appDate").mobiscroll($.extend(opt['date'], opt['default']));//日期
+  	var optDateTime = $.extend(opt['datetime'], opt['default']);
+  	var optTime = $.extend(opt['time'], opt['default']);
+    $("#appDateTime").mobiscroll(optDateTime).datetime(optDateTime);//日期和时间
+    $("#appDateTime2").mobiscroll(optDateTime).datetime(optDateTime);//日期和时间
+	$("#appTime").mobiscroll(optTime).time(optTime);//时间
+});
+function get_unix_time(dateStr){
+    var newstr = dateStr.replace(/-/g,'/'); 
+    var date =  new Date(newstr); 
+    var time_str = date.getTime().toString();
+    return time_str.substr(0, 10);
+}
+/**              
+ * 时间戳转换日期              
+ * @param <int> unixTime    时间戳(秒)                          
+ */
+function getLocalTime(unixTime) {
+        var time = new Date(unixTime * 1000);
+        var ymdhis = "";
+        var y=time.getUTCFullYear();	
+        var m=time.getUTCMonth()+1;
+        var d=time.getUTCDate();
+        var h=time.getUTCHours()+8;	//返回UTC小时  UTC和北京时间差8小时
+        if(h >= 24){var	h = h - 24;}
+        var time_info = new Date((unixTime + 60 * 60 * 24) * 1000);
+        if(h < 8){var d = time_info.getUTCDate(); var m = time_info.getUTCMonth() + 1;}
+        var i=time.getUTCMinutes();
+        //计算长度
+        var mlength=(m+"").length;
+        var dlength=(d+"").length;
+        var hlength=(h+"").length;
+        var ilength=(i+"").length;
+        ymdhis += y + "-";		//年
+        ymdhis += (mlength == 1) ? "0"+m + "-" : m+ "-";		//月
+        ymdhis += (dlength == 1) ? "0"+d : d;			//日
+        ymdhis += (hlength == 1) ?" " +  "0"+h + ":" : " " +  h + ":";	//小时
+        ymdhis += (ilength == 1) ? "0"+i : i;		//分钟
+        return ymdhis;
+    }
+$('#appDateTime').change(function(){
+	var start_time = get_unix_time($(this).val());
+	var deadline = start_time - 7200;
+	// alert(deadline);
+	var tt =getLocalTime(deadline);
+	$('#appDateTime2').val(tt);
+})
+</script>
+
+</block>

@@ -1,0 +1,103 @@
+<extend name="Public/common_user"/>
+<block name="body">
+    <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+        <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/address')}" class=""><i class="am-icon-chevron-left"></i></a>
+        <if condition="$address_data['id']">
+        修改收货地址
+        <else/>
+        添加收货地址
+        </if>
+        </div>
+    </header>
+    <form class="am-form" id="add-address-form" method="post">
+    <input  name="id" type="hidden"  value="{$address_data.id}"/>
+        <div class="edit-contacts-box">
+            <ul class="edit-contacts-box-list">
+                <li>
+                  <div class="edit-contacts-box-list-group-title">必填项</div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">姓名</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="name" name="name" type="text" class="am-form-field" value="{$address_data.name}" placeholder="收件人姓名"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">手机</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="phone" name="phone" type="text" class="am-form-field" value="{$address_data.phone}" placeholder="手机号：用于发送短信通知"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">地区</span>
+                    <div class="edit-contacts-box-list-text select-area-box">
+                       {:hook('M_China_City', array('find'=>'address','level'=>3,'province'=>$address_data['province'],'city'=>$address_data['city'],'district'=>$address_data['district']))}
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">街道</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="detailed" name="detailed" type="text" class="am-form-field" value="{$address_data.detailed}" placeholder="请填写详细地址"/>
+                    </div>
+                </li>
+                
+                <li>
+                  <div class="edit-contacts-box-list-group-title">选填项</div>
+                </li>
+				<li>
+                    <span class="edit-contacts-box-list-title">邮箱</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="email" name="email" type="text" class="am-form-field" value="{$address_data.email}" placeholder="邮箱：用于发送邮件"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title"></span>
+                    <div class="edit-contacts-box-list-text address_isdefault">
+                        <label class="am-checkbox am-danger"><input type="checkbox" value="1" <if condition="$address_data['isdefault'] eq 1"> checked </if> data-am-ucheck name="isdefault">设置为默认地址</label>
+                    </div>
+                </li>
+            </ul>
+
+            <div data-am-widget="navbar" class="am-navbar am-navbar-default address_btn">
+            <if condition="$address_data['id']">
+            <div class="address_btn_del"><a href="javascript:" class="address_del am-btn am-btn-block am-btn-default" data-ID='{$address_data.id}'><i class="am-icon-trash"></i></a></div>
+            <div class="address_btn_ok"><button  type="button" id="add-address-btn" class="am-btn am-btn-block am-btn-yellow">保存收货地址</button></div>
+            <else/>
+            <button  type="button" id="add-address-btn" class="am-btn am-btn-block am-btn-yellow">保存收货地址</button>
+            </if>
+            </div>
+        </div>
+    </form>
+    <script>
+        $(function () {
+            var $add_address_btn = $('#add-address-btn');
+            $add_address_btn.on('click', function() {
+                var self = $('#add-address-form');
+                $.post("{:U('Mobile/Config/do_address')}", self.serialize(), function (data) {
+                    if(data['status']==1){
+                        toasts.success(data.msg,"{:U('Mobile/Config/address')}");
+                    }else{
+                        toasts.error(data.msg);
+                    }
+                }, 'json');
+            });
+		 $('.address_del').click(function () {
+                if (confirm('确定要操作么？')) {
+                    var id = $(this).attr('data-ID');
+                    $.post("{:U('Mobile/Config/address_delete')}", {id: id}, function (res) {
+                        if (res.status) {
+                            toasts.success(res.info);
+                            setTimeout(function () {
+								window.location.href = "{:U('Mobile/Config/address')}";
+                            }, 1000);
+                        }
+                        else {
+                            toasts.error(res.info);
+                        }
+                    }, 'json');
+                }
+            });
+        });
+
+    </script>
+</block>

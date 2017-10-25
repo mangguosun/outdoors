@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="__STATIC__/superslide/superslide.css">
+<script src="__PUBLIC__/Shop/js/jqfnTimeCountDown.js"></script>
+<div class="runners_index_left"> 
+<div class="runners_index_title">
+    <span class="pull-right"><a href="{:U('Shop/Index/goods',array('action'=>'limit_bargains'))}"><i class="glyphicon glyphicon-plus"></i></a></span> <span class="orange_title">限时特价 | Limit</span>          
+</div>
+ 
+<if condition="$shop_limit_bargains_info neq false">
+    <div id="focusAd" class="tv-slideBox">    
+        <a class="prev"></a><a class="next"></a>
+        <div class="bd">
+          <ul>
+          <volist name="shop_limit_bargains_info" id="vo">
+            <li class="">
+                <div class="pic">
+                  <a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods_id']))}" target="_self">
+                    <img class="add_loading" src="__PUBLIC__/Core/images/blank.png" _src="{$vo.goods_ico|getThumbImageById=450,310}">
+                  </a>
+                </div>
+              <div class="con">
+                <div class="bg"></div>
+                <div class="title"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods_id']))}" target="_self">{$vo.goods_name}</a></div>
+                <div class="runners-price"><span  class="runners-newprice">￥{$vo.bargain_price}</span> <span class="runners-oldprice">原价:<del> ￥{$vo.tox_money_need} </del></span> </div>
+                <div class="chakan"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods_id']))}"> 立即抢购</a></div>
+                <div class="runners-index-timedown ">
+                  <i class="glyphicon glyphicon-time "></i>&nbsp;剩余
+                  <span id="day-{$vo['goods_id']}" class="day time_td">00</span>天
+                  <span id="hour-{$vo['goods_id']}" class="hour time_td">00</span>时
+                  <span id="mini-{$vo['goods_id']}" class="time_td mini ml5">00</span>分
+                  <span id="sec-{$vo['goods_id']}" class="sec time_td">00</span>秒
+                  <span id="hm-{$vo['goods_id']}" class="hm time_td" style="display:none">0</span>
+                </div>
+                    <if condition="$vo['bargain_price']">
+                    <script type="text/javascript">
+                        var zxx = {
+                          obj: function(){
+                            return {
+                              hm: $("#hm-{$vo['goods_id']}"),
+                              sec: $("#sec-{$vo['goods_id']}"),
+                              mini: $("#mini-{$vo['goods_id']}"),
+                              hour: $("#hour-{$vo['goods_id']}"),
+                              day: $("#day-{$vo['goods_id']}"),
+                              month: $("#month-{$vo['goods_id']}"),
+                              year: $("#year-{$vo['goods_id']}")
+                            }
+                          }
+                        };
+                        fnTimeCountDown('{$vo.overtime}', zxx.obj());
+                    </script>
+                    </if>
+              </div>
+            </li>
+          </volist>
+          </ul>
+        </div>
+    </div> 
+    
+<script language="javascript"> jQuery("#focusAd").slide({ mainCell:".bd ul",effect: "leftLoop",autoPlay:true,switchLoad:"_src",interTime:5000});</script>
+<else />
+    <div class="runners_index_title bargains" style=" width:808px;">
+        <span class="bargains_font">暂无限时特价商品</span>
+    </div>    
+</if>
+</div>

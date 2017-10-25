@@ -1,0 +1,158 @@
+<extend name="Public/common"/>
+<block name="body">
+<style>
+.mobile_pay_common{font-size:13px;}
+</style>
+  <div class="top_bar_mobile"><span class="mobile_crumbs"><a onClick="javascript:history.go(-1);" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn"> 确认并支付 </div>
+    </div>
+    </span> </div>
+  <div class="h40"></div>
+  <div class="mobile_pay_box mobile_myevent_detail">
+    <div class="event_info">
+      <h4>订单信息：</h4>
+      <div class="event_detail">
+        <div>订单号：{$event_attend.trade_sn}</div>
+        <div>状态：{:op_t(get_event_order_status($event_attend['status']))}</div>
+        <if condition="$event_attend['paytype'] eq 1">
+          <if condition="$event_attend['pay_status'] eq 0">
+            <div>所需支付定金：<b>¥{$event_attend.payprice}</b></div>
+            <elseif  condition="$event_attend['pay_status'] eq 1"/>
+            <div>所需支付余额：<b>¥{:($event_attend['totalprice'] - $event_attend['payprice'])}</b><span> ，已支付¥{$event_attend['payprice']}</span></div>
+          </if>
+          <elseif  condition="$event_attend['paytype'] eq 0"/>
+          <div>所需支付金额：<b>¥{$event_attend.payprice}</b></div>
+        </if>
+		<if condition="$event_attend['cardid'] != ''">
+	   
+		<div class="form-inline ">优惠信息：成功使用<b>【{$card_info[name]}】</b>x1,其中:<b>【{$card_info[name]}】</b>卡号 {$card_info[cardid]}，面值<b> ¥{$card_info[amount]}</b></div>
+	  
+	  </if>
+      </div>
+      <h5><strong>线路信息：</strong></h5>
+      <div class="rodeinformation">
+        <div class="mobile_pay_event_pic"><img src="{$event_content.cover_id|getThumbImageById=40,40,1}" alt="">{$event_content.title} </div>
+        <div>
+          <div>时间：<span>{$calendar_content.starttime}~{$calendar_content.overtime}</span> </div>
+          <php> $begincity = get_citys($event_content['begincity']);
+            $finalcity = get_citys($event_content['finalcity']); </php>
+          <div>目的地：<span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</span> </div>
+          <div>单价：<span>{$event_attend.price}元/人</span></div>
+          <div>定金：<span>{$event_attend.deposit}元/人</span></div>
+          <div>支付类型： <span style="color:#F60; font-weight:bold" class="">
+            <?php switch($event_attend['paytype']){case 0;echo '全款支付';break;case 1;echo '定金支付';break;case 2;echo '免费活动';break;}?>
+            </span></div>
+        </div>
+      </div>
+      <h5><strong>活动参加者：</strong></h5>
+      <div class="pay_contact_info">
+        <volist name="contacts_info" id="vo">
+          <ul class="">
+            <li>姓名：{$vo.realname} </li>
+            <li class="un_border">身份证：{$vo.card}</li>
+          </ul>
+        </volist>
+      </div>
+      <h5><strong>联系人信息：</strong></h5>
+      <div class="order_contact_info">
+        <div>姓名：{$event_attend.contact_name} </div>
+        <div>手机：{$event_attend.contact_telephone}</div>
+        <div>邮箱：{$event_attend.contact_email}</div>
+      </div>
+	  <!--------------------------------------------------------->
+	  <h5>订单备注：</h5>
+		<div class="sign_text mobile_pay_common">
+		<if condition="$event_attend.remarks neq ''">
+		  {$event_attend.remarks}
+		<else />
+		  暂无备注</textarea>
+		</if>
+		</div>
+		<h5>优惠信息：</h5>	
+		<div class="form-inline mobile_pay_common">
+		<if condition="$event_attend['cardid'] != ''">			  
+		优惠信息：成功使用<span style="color:red"><b>【{$card_info[name]}】</b></span>x1,其中:<span style="color:red"><b>【{$card_info[name]}】</span></b>卡号 <span style="color:red">{$card_info[cardid]}</span>，面值<span style="color:red"><b> ¥{$card_info[amount]}</b></span>
+			
+		<else />
+		您目前未使用任何优惠
+		</if>
+		</div>	
+	<h5>汇总信息：</h5>
+		<!-------------------------------------------------------------------------------------------------------->
+		<if condition="$event_attend[paytype] eq 1">	
+		<!---------------------余额支付------------------------->
+		<div id="totalprice" class="totalprice mobile_pay_common"></span>总计 <b><span style="color:red">¥{$event_attend.totalprice}</span><span style="color:red" class="total"></span></b> =	
+		定金支付 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="fropay"></span></b> + 
+		余额支付 <b><span style="color:red">¥{$event_attend.leftprice}</span><span style="color:red" class="leftpay"></span></b>
+			<if condition="$event_attend[cardid] neq ''">
+			<php>
+				$card_info = D('pointcard')->where(array('cardid'=>$event_attend['cardid'],'siteid'=>SITEID))->find();				
+				$diff_price = ($event_attend['price'] - $event_attend['deposit']) * $total_num;
+				if($card_info['amount'] > $diff_price){
+					$card_amount = $diff_price;
+				}else{
+					$card_amount = $card_info['amount'];
+				}				
+			</php>
+			<span class="card_o_total" style="color:green"> <br>(代金券省 <b><span class="card_o_amount" style="color:red">¥<?php echo $card_amount?></span></b>)</span>	
+			<else />
+			</if>
+		</div>
+		<!------------------------------------------------------------>
+		<else />
+		<!------------------------全款支付---------------------------->
+		<div id="totalprice" class="totalprice mobile_pay_common">总计 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="total"></span></b> =	
+		人数[<span style="color:red" class="contact_count">{$total_num}</span>] x <b><span style="color:red">¥{$event_attend.price}</span></b>
+			<if condition="$event_attend[cardid] neq ''">
+			<php>
+				$card_info = D('pointcard')->where(array('cardid'=>$event_attend['cardid'],'siteid'=>SITEID))->find();
+				$total_price = $event_attend['price'] * $total_num;
+				if($total_price > $card_info['amount']){
+					$card_amount = $card_info['amount'];
+				}else{		
+					$card_amount = $event_attend['totalprice'];
+				}
+			</php>
+			<span class="card_o_total"> - 优惠信息 <span style="color:green"><br>(代金券省 <b><span class="card_o_amount" style="color:red">¥<?php echo $card_amount?></span></b>)</span></span>
+			<else />
+			</if>
+		</div>
+		<!------------------------------------------------------------>
+		</if>
+		<!--------------------------------------------------------------------------------------------------->
+	  <!--------------------------------------------------------->
+      <h5><strong>支付方式</strong></h5>
+      <form class="" role="form" action="{:U('Mobile/Pay/do_pay')}" method="post" target="_blank" style="">
+        <input type="hidden" name="order_id" id="trade_sn" value="{$event_attend.trade_sn}"/>
+        <if condition="$pay_types">{:mk_pay_btn($pay_types,'3','',0)}
+          <else/>
+          本站暂未开启在线支付功能，如需帮助请联系管理员。 </if>
+        <div class="" style="text-align:center; margin-top:20px">
+          <button type="submit" class="btn btn-primary mobile_pay_btn">确认并支付</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+
+$(function(){
+	$("form").submit(function(e){				  
+	setTimeout(function(){
+		$(".pay_popup").trigger("click")
+	},2000)  						
+	});		
+	$('.pay_popup').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+  
+});
+</script>
+</block>

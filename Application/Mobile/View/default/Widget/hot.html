@@ -1,0 +1,15 @@
+<if condition="$lists neq false">
+  <div class="login_notice">
+    <div class="hd">
+        <h3>最新公告</h3><span class="more"><a href="{:U('Mobile/Blog/index')}">更多></a></span>
+    </div>
+    <div class="bd">
+            <ul>
+            <volist name="lists" id="data">
+                <li><a href="{:U('Mobile/Blog/detail?id='.$data['id'])}">{$data.title}</a></li>
+                 </volist> 
+            </ul>
+    </div>
+</div>
+</if>
+

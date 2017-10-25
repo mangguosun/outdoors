@@ -1,0 +1,316 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                    <i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">补发商品卡券</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Pointcard/pointcard_replacement')}" class="form-horizontal form-bordered" method="post" >  
+                        <div class="form-title">
+                            卡券信息
+                        </div>
+                        <input type="hidden" name="couponcode" value="2" />
+                        <input type="hidden" name="card_type" value="2" />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">号码前缀</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="号码前缀" name="prefix" value="{$card_info.unifiedcardid}" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">类型名称</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="类型名称" name="typename" value="{$card_info.typename}" readonly /> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">面值(元)</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="面值(元)" name="amount" value="{$card_info.amount}" readonly /> 
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="form-group have_server_condition" >
+                            <label class="col-lg-2 control-label">使用条件</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    单笔订单满&nbsp;&nbsp;<input  type="text" class="" placeholder="请填写价格" name="server_condition" value="{$card_info.server_condition}" readonly />&nbsp;元使用
+                                </div>
+                            </div>
+                        </div> 
+                        <input type="hidden" name="have_service" value="3"/>
+                        <div class="form-group have_server_condition">
+                            <label class="col-lg-2 control-label">指定商品</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">商品范围</button>共计<span class="red point_need">{$shop_count}</span>件商品
+                                     <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="必须为数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                                     <input type="hidden" name="shop_id" value="{$card_info.shop_id}"  />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">补发数量(张):</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text"  class="form-control"  name="cardnum" value=""/> 
+                                     <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="<=10000"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">生效时间</label>
+                            <div class="col-lg-10">
+                                <div class="input-group date form_datetime">
+                                   <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" name="starttime" class="form-control" placeholder="请选择时间" value="" readonly />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                     <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="默认为无限制"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">到期时间</label>
+                            <div class="col-lg-10">
+                                <div class="input-group date form_datetime">
+                                   	<span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" name="endtime" class="form-control" placeholder="请选择时间" value="" readonly />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                     <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="默认为无限制"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input class="btn btn-default" type="submit" onclick="javascript:history.back(-1);return false;" value="返  回" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title" id="myModalLabel">本卡券适用的商品</h4>
+       </div>
+            
+        <div class="widget-body">
+                <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+                    <thead>
+                        <tr>
+                            <th class="">商品名称</th> 
+                            <th class="">分类</th>               
+                            <th class="">价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="shopinfo" id="vo">
+                        <tr>
+                            <td style="width:250px;"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name}</a></td>
+                            <td>{:get_shop_categrory_title($vo['category_id'])}</td>
+                            <td>{$vo.market_price}元</td>
+                           
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        <div class="modal-footer">
+            共计<span class="red point_need">{$shop_count}</span>件商品
+           <button type="button" class="btn btn-default"data-dismiss="modal" aria-label="Close">关闭</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<!--Bootstrap Date Picker-->
+<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+ var InitiateSimpleDataTable = function () {
+        return {
+            init: function () {
+                //Datatable Initiating
+                var oTable = $('#simpledatatable').dataTable({
+                    "sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+                    "iDisplayLength": 10,
+    
+                    "oTableTools": {
+                        "aButtons": [],
+                        "sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+                    },
+                    "language": {
+                        "search": "搜索    ",
+                        "sLengthMenu": "_MENU_",
+                        "sZeroRecords": "对不起，查询不到任何相关数据",
+                        "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                        "sInfoEmpty": "共查询到 _TOTAL_ 条记录",
+
+                        "sInfoEmtpy": "找不到相关数据",
+                        "sInfoFiltered": "(数据表中共为 _MAX_ 条记录)",
+                        "sProcessing": "正在加载中...",
+                        "oPaginate": {
+                            "sFirst":    "首页",
+                            "sPrevious": "上页",
+                            "sNext":     "下页",
+                            "sLast":     "末尾"
+                        }
+                    },
+                    "bFilter": true, //搜索栏
+                    "bPaginate": true, //翻页
+                    "bLengthChange": false, ////每页显示的记录数
+                    "bInfo": false, //显示表格信息
+                    "bAutoWidth": true, //自适应宽度
+                    "aoColumns": [
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                    ],
+                    "aaSorting": []
+                });
+
+    
+            }
+    
+        };
+    
+    }();
+    InitiateSimpleDataTable.init();
+
+
+$(".form_datetime").datetimepicker({
+    format: "yyyy-mm-dd hh:ii",
+    language:"zh-CN",
+    showmeridian: false,
+    autoclose: true,
+    pickerPosition: "top-right",
+    minuteStep: 5,
+    todayBtn: true,
+    todayHighlight:true,
+    minView:0,
+});
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        
+        /*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+                    
+                validator.defaultSubmit();
+                    
+                }
+            })
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            couponcode: {
+                validators: {
+                    notEmpty: {
+                        message: '卡券类型是必需的，不能是空的'
+                    }
+                }
+            },
+            typename: {
+                validators: {
+                    notEmpty: {
+                        message: '类型名称是必需的，不能是空的'
+                    }
+                }
+            },
+               prefix: {
+                validators: {
+                    notEmpty: {
+                        message: '号码前缀是必需的，不能是空的'
+                    },
+                     regexp: {
+                     regexp: /^[0-9a-zA-Z]{4,8}$/,
+                     message: '号码前缀为4-8位数字或者字母组合'
+                    }
+                }
+            },
+            cardnum: {
+                validators: {
+                    notEmpty: {
+                        message: '发放数量是必需的，不能是空的'
+                    },
+                    regexp: {
+                     regexp:/^([1-9]\d{0,3}|10000)$/,
+                     message: '补发数量为大于1小于10000的整数'
+                    }
+                }
+            },
+            amount: {
+                validators: {
+                    notEmpty: {
+                        message: '面值是必需的，不能是空的'
+                    },
+                    regexp:{
+                        regexp:/^([0-9]+)$/,
+                        message:'面值必须是数字'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+
+
+</script>
+
+</block>

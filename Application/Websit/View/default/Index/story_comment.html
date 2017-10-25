@@ -1,0 +1,131 @@
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right"><a class="mbtn  btn-info common-color-white"  href="{:U('Websit/Index/content',array('status'=>7))}">故事类型</a></div>旅行故事<span class="common-color-red">最多显示10个推荐故事，请谨慎选择</span></div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>编号</th>
+          <th>故事名称</th>
+		  <th>状态</th>
+		  <th>操作</th>
+          <th>{$tree[0]['title']}推荐</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="story_comment">
+        <volist name="story_comment" id="vo">
+          <tr>
+		    <td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+		    <td>
+			  <if condition="$vo.status eq 0">禁用
+			  <elseif condition="$vo.status eq 1"/>启用
+			  </if>
+			</td>
+            <td>
+				<if condition="$vo.status eq 0">
+				   <elseif condition="$vo.status eq 1"/>  
+					<if condition="$vo.is_recommend eq 0">
+					   <a href="javascript:" data-ID="{$vo.id}" data-Recommend="1" class="mbtn btn-info story_recommend" >故事推荐</a>
+					   <elseif condition="$vo.is_recommend eq 1"/> 
+					   <a href="javascript:" data-ID="{$vo.id}" data-Recommend="0" class="mbtn btn-danger story_recommend">取消推荐</a>
+				   </if>
+				</if>
+		    <a class="mbtn btn-info  event_sign1 common-color-white" href="{:U('Websit/Index/story_comment_edit?id='.$vo['id'])}">编辑</a> 
+		        <if condition="$vo['status'] eq 1">
+				<a class="mbtn btn-danger story_disable common-color-white" data-ID="{$vo['id']}" data-Status="0"  href="javascript:">禁用</a>
+				<elseif condition="$vo['status'] eq 0"/>
+				 <a class="mbtn btn-info story_disable common-color-white" data-ID="{$vo['id']}" data-Status="1"  href="javascript:">启用</a>
+				</if>
+			</td>
+            <td>
+			 <?php if($vo['issue_id']==$tree[0]['id']):?>
+				  <if condition="$vo.status eq 0">
+				    <elseif condition="$vo.status eq 1"/>
+				  	<if condition="$vo.recommend_brand eq 0">
+					   <a href="javascript:" data-ID="{$vo.id}" data-Recommend="1" class="mbtn btn-info recommend_brand" >{$tree[0]['title']}推荐</a>
+					   <elseif condition="$vo.recommend_brand eq 1"/> 
+					   <a href="javascript:" data-ID="{$vo.id}" data-Recommend="0" class="mbtn btn-danger recommend_brand">取消推荐</a>
+				    </if>
+				  </if>
+			    <?php else:?>
+		        <?php endif;?>
+			</td>
+          </tr>
+        </volist>
+		     <tr><td colspan="4">{$page}</td></tr>
+        <else/>
+      <td colspan="4" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+			//-是否品牌-2014-11-10-dlx--/
+			$('.recommend_brand').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var recommend_brand=$(this).attr('data-Recommend');
+				
+				$.post(U('Websit/Index/recommend_brand'), {id: id,recommend_brand:recommend_brand}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+		
+		//-是否推荐-
+			$('.story_recommend').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var is_recommend=$(this).attr('data-Recommend');
+				
+				$.post(U('Websit/Index/story_recommend'), {id: id,is_recommend:is_recommend}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+         
+			//是否禁用-
+		$('.story_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var status = $(this).attr('data-Status');
+				$.post(U('Websit/Index/story_disable'), {id: id,status: status}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+	   });	
+				
+			
+	    })
+    </script>
+</div>

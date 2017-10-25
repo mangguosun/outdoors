@@ -1,0 +1,41 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>我要成为分销上游</h2>
+</div>
+<div id="auth_groups">
+	<div class="form-item">
+		<label for="goods_name" class="item-label">联系方式<a>&nbsp;(必填)</a></label>
+		<div class="controls">
+			Q Q：{$apply_content.qq}<br>
+			电话：{$apply_content.phone}
+		</div>
+	</div>
+	<!--div class="form-item">
+		<label for="goods_name" class="item-label">选择要开启的模式<a>&nbsp;(必填)</a></label>
+		<div class="controls">
+			全站分销：不开启<input type='radio' name="distribute_type_a" value="0"> 
+			开启<input type='radio' name="distribute_type_a" value="1" checked><br>
+			全站分销：不开启<input type='radio' name="distribute_type_b" value="0"> 
+			开启<input type='radio' name="distribute_type_b" value="1" checked>
+		</div>
+	</div-->
+	<div class="form-item">
+		<label for="goods_name" class="item-label">证件照<a>&nbsp;(必选)</a></label>
+		<div class="controls">
+		<img src="{$apply_content.license_photo|getThumbImageById=600,600}" width="300" height="300" />
+		</div>
+	</div>
+	<!--div class="form-item">
+		<label for="goods_name" class="item-label">商家简介/备注<a>&nbsp;(必选)</a></label>
+		<div class="controls">
+
+			{:Hook('Ueditor',array('name'=>'desc','value'=>''))}
+		</div>
+	</div-->
+	<div class="form-item">
+		<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	</div>
+</div>
+</block>
+

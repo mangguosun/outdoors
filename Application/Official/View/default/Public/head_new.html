@@ -1,0 +1,58 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $icp=C('WEB_SITE_ICP');
+    $count_code=C('COUNT_CODE');
+</php>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<include file="Public/seo"/>
+<meta name="keywords" content=""/>
+<meta name="description" content=""/>
+<!--Basic Styles-->
+<link href="__STATIC__/bootstrap3.2/css/bootstrap.min.css?v={:C('WEB_VERSION')}" rel="stylesheet" />
+<link href="__STATIC__/bootstrap3.2/css/font-awesome.min.css?v={:C('WEB_VERSION')}" rel="stylesheet" />
+<link href="__STATIC__/bootstrap3.2/css/hdlfont.css?v={:C('WEB_VERSION')}" rel="stylesheet" />
+<link href="__PUBLIC__/Official/css/official.css?v={:C('WEB_VERSION')}" rel="stylesheet" />
+
+<!--Fonts-->
+<!--Beyond styles-->
+
+<!--[if lt IE 9]>
+<script src="__STATIC__/static/bootstrap/js/html5shiv.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/static/bootstrap/js/respond.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!--Basic Scripts-->
+
+<!-- jQuery库 -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js?v={:C('WEB_VERSION')}"></script>
+<!--<![endif]-->
+<script src="__STATIC__/bootstrap3.2/js/bootstrap.min.js?v={:C('WEB_VERSION')}"></script>
+<block name="style"></block>
+<php>$logo_icons = get_webinfo('logo_icons')</php>
+<link rel="shortcut icon" href="{$logo_icons|get_cover='path'}"/>
+<!--合并前的js-->
+<script type="text/javascript">
+    var ThinkPHP = window.Think = {
+        "ROOT": "__ROOT__", //当前网站地址
+        "APP": "__APP__", //当前项目地址
+        "PUBLIC": "__PUBLIC__", //项目公共目录地址
+        "DEEP": "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+        "MODEL": ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+        "VAR": ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+        'URL_MODEL': "{:C('URL_MODEL')}",
+        'WEIBO_ID': "{:C('SHARE_WEIBO_ID')}"
+    }
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var initNum = "{:C('WEIBO_WORDS_COUNT')}";
+</script>
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->

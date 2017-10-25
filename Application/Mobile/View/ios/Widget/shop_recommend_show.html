@@ -1,0 +1,22 @@
+
+<if condition="!empty($shop_recommend_data)">
+<div class="hdl-panel-hd">
+<h3 class="hdl-panel-title">精品推荐 <a style="color:#333;" href="{:U('Mobile/Shop/goods',array('mod'=>'recommend'))}"><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a></h3>
+</div>
+<div class="hdl-hot-list">
+  
+<ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-bordered"> 
+<volist name="shop_recommend_data" id="vo" key="i" mod="4">
+  <li>
+    <div class="am-gallery-item">
+      <a href="{:U('Mobile/Shop/goodsDetail',array('id'=>$vo['id']))}" class="">
+        <img class="lazy" src="{$vo.thumb_200_200}" data-original="{$vo.goods_ico|getThumbImageById=140,105}" alt="  {$vo.goods_name}" />
+        <h3 class="am-gallery-title">{$vo.goods_name}</h3>
+      </a>
+    </div>
+  </li>
+   </volist>
+</ul>
+ 
+ </div> 
+ </if>

@@ -1,0 +1,35 @@
+<if condition="!empty($event_data)">
+  <div class="index-event-box">
+    <volist name="event_data" id="vo">
+      <li> <a href="{:U('Mobile/Event/detail',array('id'=>$vo['id']))}"> <img data-thumb="" title="" alt="{$vo.title}" data-original="{$vo.thumb}" src="__PUBLIC__/Core/images/blank.png" class="event-lists-thumb" style="display: inline;">
+        <p class="index-event-lists-traveldays"><span class="m-badge am-badge-secondary am-radius" data-traveldays>{$vo.traveldays}天</span></p>
+        <p class="index-event-lists-location"><span class="m-badge am-badge-success am-radius" data-location>{$vo.finalcity_province}{$vo.finalcity_city}</span></p>
+      	<div class="index-event-lists-bg"></div>
+        <h3 class="index-event-lists-title" data-title>{$vo.title}</h3>
+        <p class="index-event-lists-lasted_time">出发时间：<span data-lasted-time>{$vo.lasted_time}</span></p>
+        <p class="index-event-list-view-count"><i class="am-icon-leaf"></i> <span data-view-count>{$vo.view_count}</span></p>
+
+        <?php  
+            if($vo['view_status'] == 1 ){             
+              echo '<p class="index-triangle-topleft index-triangle-topleft-warning"></p>
+        <p class="index-triangle-topleft-zi">报名中</p>';
+            }elseif($vo['view_status'] == 3){ 
+              echo '<p class="index-triangle-topleft index-triangle-topleft-default"></p>
+        <p class="index-triangle-topleft-zi">报满中</p>';
+            }elseif($vo['view_status'] == 0){ 
+              echo '';
+            }
+
+        ?>
+        
+
+
+        </a> </li>
+    </volist>
+<script>
+$(function () {
+	hdl_lazyload('img.event-lists-thumb');
+})
+</script>
+  </div>
+</if>

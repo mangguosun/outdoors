@@ -1,0 +1,26 @@
+<if condition="!empty($rs_issue)">
+<link rel="stylesheet" href="__STATIC__/superslide/superslide.css">
+<div id="focusAd" class="tv-slideBox">
+    <a class="prev"></a><a class="next"></a>
+    <div class="bd">
+          <ul>
+          <volist name="rs_issue" id="vo" key="k">
+            <li class="li{$k}">
+              <div class="pic"><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" target="_self"><img class="add_loading" src="__PUBLIC__/Core/images/blank.png" _src="{$vo.cover_id|getThumbImageById=450,310}"></a></div>
+              <div class="con">
+                <div class="bg"></div>
+                <div class="title"><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" target="_self">{$vo.title}</a></div>
+                
+                <div class="more_info">发布人：<a href="{$vo.user.space_url}"> {$vo.user.nickname} </a></div>
+                <div class="more_info">活动特色：<span><volist name="vo.tags" id="tag">{$tag.name}&nbsp;&nbsp; </volist></span></div>
+                <div class="more_info">发布时间：<span>{$vo.create_time|date='Y-m-d H:i:s',###}</span></div>
+                <div class="chakan"><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}"> 立即查看</a></div>
+              
+              </div>
+            </li>
+            </volist>
+          </ul>
+        </div>
+</div>
+<script language="javascript"> jQuery("#focusAd").slide({ mainCell:".bd ul",effect: "leftLoop",autoPlay:true,switchLoad:"_src",interTime:5000});</script>
+</if>

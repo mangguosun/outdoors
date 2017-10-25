@@ -1,0 +1,87 @@
+<div id="center">
+ 
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>领队</th>
+          <th>注册时间</th>
+		  <th>最后登录</th>
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="member_vip">
+        <volist name="member_vip" id="vo">
+          <tr>
+            <td>{$vo.nickname}</td>
+            <td>{$vo.reg_time|date="Y-m-d",###}</td>
+			<td>{$vo.last_login_time|date="Y-m-d H:i:s",###}</td>
+           
+			  
+			<td> 
+			  <if condition="$vo.recommendm eq 0">
+			     <a href="javascript:" data-ID="{$vo.uid}" data-Status="{$vo.recommendm}" class="mbtn btn-danger adv_disable" title="推荐">未 推 荐</a>
+			  <elseif condition="$vo.recommendm eq 1"/>
+			     <a href="javascript:" data-ID="{$vo.uid}" data-Status="{$vo.recommendm}" class="mbtn btn-danger adv_disable"  title="不推荐">推 荐</a>
+			  </if>
+			</td>
+		  </tr>
+        </volist>
+        <else/>
+      <td colspan="4" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+ 
+  <script>
+        $(function () {			
+			$('.event_sign').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+			
+			//更新
+			$('.event_sign1').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+			//
+			
+			//--selected--
+			$('.adv_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid = $(this).attr('data-ID');
+				var recommendm =$(this).attr('data-Status');
+				$.post(U('Websit/Index/doRecommendm'), {uid: uid,recommendm:recommendm}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+			
+	    })
+    </script>
+</div>

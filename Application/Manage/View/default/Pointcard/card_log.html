@@ -1,0 +1,58 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>优惠日志</h2>
+</div>
+<div class="cf">
+     <div class="fl">
+        <a class="w_btn " href="{:U('Pointcard/index')}">返回</a>
+     </div>
+</div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th>编号</th>
+		  		<th>卡号</th>
+				<th>卡状态</th>
+				<th>行为类型</th>
+				<th>行为名称</th>
+				<th>执行者</th>
+				<th>执行者ID</th>
+				<th>执行时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="card_log">
+                <volist name="card_log" id="vo">
+                    <tr>
+                    	<td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                        <td>{$vo.id}</td>
+						<td>{$vo.cardid}</td>
+						<td>{:get_pointcard($vo['cardid'])}</td>
+						<td>{$vo.action_type}</td>
+						<td>{$vo.action_name}</td>
+						<td>{$vo.userinfo.nickname}</td>
+						<td>{$vo.uid}</td>
+						<td>{$vo.createtime|date="Y-m-d H:i:s",###}</td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+	 <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+   
+    </script>
+	
+</block>

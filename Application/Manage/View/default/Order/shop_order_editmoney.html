@@ -1,0 +1,32 @@
+<div id="frm-post-popup" class="white-popup" style="max-width: 745px">
+  <button title="Close (Esc)" type="button" class="mfp-close" style="color: #333;">×</button>
+  <h2>修改订单总价</h2>
+  <div class="aline" style="margin-bottom: 10px"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Manage/Order/shop_order_doeditMoney')}" method="post">
+			<div id="editMoneybox" class="editMoneybox">
+				<input type="hidden" name="order_sn" value="{$alltotalprice.order_sn}" >
+				<table width="100%">
+					<tr align="center">
+						<td class="w85">应付订单金额</td>
+						<td class="w155">实付订单金额</td>
+					</tr>
+					<tr align="center">
+						<td class="w85"><span class="red3">{$alltotalprice.alltotalprice}</span></td>
+						<td><input type="text" name="real_amount"  class="real_amount"/></td>
+					</tr>
+					<tr align="center">
+						<td colspan="4"></td>
+						<td><button type="submit" class="btn btn-primary ">提交</button></td>
+					</tr>
+				</table>
+				<p>小提示：您可以直接调整订单的最终付款价格，输入实付订单金额即可</p>
+			</div>
+					 
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<div id="center">
+<div class="cf">
+     <div class="fl">
+            
+            <button class="w_btn ajax-post" url="{:U('User/changeStatus',array('method'=>'forbiduser'))}"
+                    target-form="ids">启 用
+            </button>
+            <button class="w_btn ajax-post" url="{:U('User/changeStatus',array('status'=>0,'method'=>'resumeuser'))}"
+                    target-form="ids">禁 用
+            </button>
+            <button class="w_btn ajax-post" url="{:U('User/doRecommendm',array('tip'=>1))}"
+                    target-form="ids">设为推荐
+            </button>
+            <button class="w_btn ajax-post" url="{:U('User/cancel_recommendm',array('tip'=>0))}"
+                    target-form="ids">取消推荐
+            </button>
+
+            
+        </div>
+
+
+      <!-- 高级搜索 -->
+        <div class="search-form pull-right">
+            <div class="sleft">
+                <input type="text" name="user_id" class="search-input" value="{:I('user_id')}"
+                       placeholder="请输入用户昵称或者ID">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('team_member')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">用户(ID)</th>
+                <th class="">最后登录时间</th>
+                <th class="">角色</th>
+                <th class="">是否推荐</th>
+                <th class="">状态</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="leader_info">
+                <volist name="leader_info" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.uid}"/></td>
+                        <td><a href="{:U('Usercenter/Index/index?uid='.$vo['uid'])}">[{$vo.uid}]{$vo.nickname}</a></td>
+						<td>{:date('Y-m-d H:i:s',$vo[last_login_time])}</td>
+                        <td>{:get_upgrading($vo['is_use'])}</td>
+						<td><if condition="$vo.recommendm eq 0">未推荐<elseif condition="$vo.recommendm eq 1"/>已推荐</if></td>
+                        <td>  
+							<if condition="$vo.status eq 0">
+                                <a href="{:U('User/changeStatus?method=forbidUser&id='.$vo['uid'])}"
+                                   class="ajax-get">禁用</a>
+                                <else />
+                                <a href="{:U('User/changeStatus?method=resumeUser&id='.$vo['uid'])}"
+                                   class="ajax-get">启用</a>
+                            </if></td>
+                        <td><a href="javascript:" data-ID="{$vo.uid}" class="adv_disable"  title="踢出{$m_level_name.2}">踢出{$m_level_name.2}</a></td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+	 <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+		
+		 $(function () {	
+          
+		  //--禁止--退出领队--
+			$('.adv_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid= $(this).attr('data-ID');
+				
+				$.post(U('Manage/User/manage_team_disable'), {uid: uid}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+		  })
+		
+        
+    </script>
+</div>

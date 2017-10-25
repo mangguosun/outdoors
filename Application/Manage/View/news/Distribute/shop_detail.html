@@ -1,0 +1,178 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+<div class="col-lg-12 col-sm-12 col-xs-12">
+	<div class="widget">
+		<div class="widget-header bordered-bottom bordered-blue bg-blue">
+			<span class="widget-caption">精选装备</span>
+		</div><!--Widget Header-->
+		<div class="widget-body">
+        
+        <div class="row">
+        
+		<div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+			<div class="widget">
+				<div class="widget-header bordered-bottom bordered-sky">
+					<span class="widget-caption">{$shop_list.goods_name}</span>
+				</div><!--Widget Header-->
+				<div class="widget-body">
+                	<div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
+                            <div class="widget" style=" border:1px solid #ccc">
+                                <div class="widget-body">
+                                    <p><img src="{$shop_list.goods_ico|getThumbImageById=600,600}" width="100%" /></p>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
+                            <div class="widget">
+                                <div class="">
+                                    <p><span>品　　牌：</span> {$shop_list['custom_brand_name']}<if condition="$shop_list['englist_name']">({$shop_list.englist_name})</if></p>
+                                    <p><span>售　　价：</span> ￥<b> {$shop_list.market_price} </b>元</p>
+                                    <p><span>佣　　金：</span> {$distribute.seller_price}%</p>
+                                    <p><span>运　　费：</span> <if condition="(!$shop_list['fr_id']) and ($shop_list['fr_freight'])">
+                                        ￥{$shop_list.fr_freight} 元
+                                        <else/>
+                                        包邮
+                                        </if></p>
+                                    <p><span>库存总量：</span>{$shop_list['goods_num']}</p>
+                                    <div>
+                                    
+                                         <if condition="$website.siteid neq SITEID">   
+                                            <if condition="!$has_item_relation">
+                                                <a href="{:U('Distribute/addtomine',array('goods_id'=>$shop_list['id']))}" class="btn btn-primary ajax-get" >分销此商品</a>
+                                            <else/>
+                                                <a href="{:U('Distribute/removefrommine',array('goods_id'=>$shop_list['id']))}"  class="btn btn-danger ajax-get" >取消分销</a>
+                                            </if>
+                                         </if> 
+        
+                                    </div>
+                                    <div class="sku_box">
+                                        <div>
+                                            <volist name="shop_detail" id="val">
+                                            <p>
+                                                <volist name="val['sku_title']" id="v">
+                                                规格：{:get_shop_sku_types_attribute($v)} 
+                                               </volist>
+                                                价格：￥{$val['price']} 
+                                                库存：{$val['stock']} 
+                                            </p>
+                                          </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+					</div>
+				</div><!--Widget Body-->
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-4  col-sm-12 col-xs-12">
+			<div class="widget" style=" border:1px solid #ccc">
+            	<div class="widget-header bordered-bottom bordered-sky">
+					<span class="widget-caption">商家信息</span>
+				</div>
+				<div class="widget-body">
+                <div class="clearfix">
+				 <if condition="$company['site_ico']">
+					<p><img src="{$company.site_ico|getThumbImageById=300,150}" width="100%" /></p>
+				<else/>
+				 	<p><img src="{$website.logo_icons|getThumbImageById=300,150}" width="100%" /></p>
+				</if>
+					<p>网站名：{$website.webname}</p>
+					<p>地　址：{$website['shop_address']['province']}{$website['shop_address']['city']}{$website['shop_address']['district']}{$website['shop_address']['community']}</p>
+					<p>网　址：{$website.domain}</p>
+					<p>电　话：{$company.phone}</p>
+					<p>QQ：{$company.qq}</p>
+					<p class="pull-right"><a href="{:U('Manage/Distribute/company_detail',array('siteid'=>$company['siteid']))}">查看商家信息</a></p>
+                </div>   
+                    
+				</div>
+			</div>
+		
+		</div>
+		
+        </div>
+      
+        
+        <div class="row">
+		<div class="col-lg-12 col-sm-12 col-xs-12">
+			<div class="widget flat radius-bordered">
+				<div class="widget-body">
+					<div class="widget-main ">
+						<div class="tabbable">
+							<ul class="nav nav-tabs tabs-flat" id="myTab11">
+								<li class="active">
+									<a data-toggle="tab" href="#home11">
+										商品详情
+									</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#profile11">
+										分销说明
+									</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#comdetail">
+										商家介绍
+									</a>
+								</li>
+							</ul>
+							<div class="tab-content tabs-flat">
+								<div id="home11" class="tab-pane in active">
+									
+									  <p>商品名称：{$shop_list.goods_name}</p>
+									  <p>商品编号：{$shop_list.goods_sn}</p>
+									  <p>品牌名称：{$shop_list['custom_brand_name']}<if condition="$shop_list['englist_name']">({$shop_list.englist_name})</if></p>
+									  <?php foreach($shop_detail as $key=>$val):?>
+										   <?php foreach($val['sku_title'] as $v):?>
+											<p style="padding:3px 0px;">规格：{:get_shop_sku_types_attribute($v)}
+										   <?php endforeach;?>
+											价格：￥{$val['price']}
+											库存：{$val['stock']}</p> 
+									  <?php endforeach;?>
+									<div class="clear"></div>
+									<div class="item_con_info">
+									  {$shop_list.goods_detail} 
+										<div class="clear"></div>
+									</div>
+														
+								
+									<div class="clear"></div>
+								</div>
+
+								<div id="profile11" class="tab-pane">
+									<p> 佣　　金： {$distribute.seller_price}%</p>
+									<div class="item_con_info">
+									  {$distribute['distribute_desc']}
+									  <div class="clear"></div>
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<div id="comdetail" class="tab-pane">
+										<div class="item_con_info">
+										   {$company.desc}
+										  <div class="clear"></div>
+										</div>
+
+									<div class="clear"></div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div><!--Widget Body-->
+	</div><!--Widget-->
+</div>
+</div>
+
+
+</block>
+

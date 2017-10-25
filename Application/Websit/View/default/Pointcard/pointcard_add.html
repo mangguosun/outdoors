@@ -1,0 +1,94 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>发放卡券</h2><span style="color:green">带<span class="common-color-red">*</span>号为必填</span>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Pointcard/pointer_doAdd')}" method="post">
+			<div class="form-group has-feedback">
+
+			<label for="cardnum" class="col-md-2 control-label">发放数量<span class="common-color-red">*</span></label>
+			<div class="col-md-4">
+			  <input id="cardnum" name="cardnum" type="text" class="form-control form_check" check-type="Text"  value="" placeholder="必须为数字"/>
+			</div>
+			<label for="typeid" class="col-md-2 control-label">卡券类型<span class="common-color-red">*</span></label>
+				<notempty name="cardlist">
+				<div class="col-md-4" id="second" style="margin:0;pading:0">			
+					<select	class='form-control form_check' check-type='Text' name='ptypeid'>
+						<volist name="cardlist" id="vo">
+						<option value="{$vo.ptypeid}">{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+				<else />
+				<div class="col-md-4"><span style="color:red">您当前还未添加任何卡券类型。</span><a class="mbtn  btn-info pointcard_sign common-color-white"  href="{:U('pointer_type_add')}">新增类型</a></div>
+				</notempty>
+			</div>
+			<div class="form-group  has-feedback">
+			<label for="starttime" class="col-md-2 control-label">生效时间</label>
+			<div class="col-md-4">
+				<input id="starttime" name="starttime" type="text" class="form-control form_check time" check-type="Text"  value="" placeholder="为空则无该时间限制"/>
+			</div>
+			<span for="amount" class="col-md-0 control-label common-color-red"></span>
+			<label for="endtime" class="col-md-2 control-label">到期时间</label>
+			<div class="col-md-4">
+				<input id="endtime" name="endtime" type="text" class="form-control form_check time" check-type="Text"  value="" placeholder="为空则无该时间限制"/>
+			</div>
+			<span for="amount" class="col-md-0 control-label common-color-red"></span>
+		</div>
+			<php>$webinfo = json_decode(WEBSITEINFO,true);
+				$url =$webinfo['url']; 
+			</php>
+		  <div class="form-group  has-feedback">
+            <label for="prefix" class="col-md-2 control-label">号码前缀<span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="prefix" name="prefix" type="text" class="form-control form_check" check-type="Text"  value="<?php echo $url?>" placeholder="可以为数字或字母"/>
+            </div>
+			<!----------------------------------------------------->
+			 <label for="cardlength" class="col-md-2 control-label">号码长度<span class="common-color-red">*</span></label>
+            <div class="col-md-2"> 
+			  <select class="form-control form_check" name="cardlength">
+				<option value="5">5</option><option value="6">6</option><option value="7">7</option>
+				<option value="8">8</option><option value="9">9</option><option value="10">10</option>
+			  </select>
+            </div>
+			<!--------------------------------------------------->
+          </div>
+		 
+		
+         <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Pointcard/pointer_doAdd')}">添加</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+$(function(){
+        $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+	$('.pointcard_sign').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+					//	console.log(this.content);
+					}
+				}
+			});
+});
+
+</script>

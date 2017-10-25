@@ -1,0 +1,261 @@
+<extend name="Public/common_user"/>
+<block name="body">
+ <header data-am-widget="header" class="am-header am-header-default am-header-fixed"><div class="am-header-left am-header-nav"><a href="{:U('Mobile/Shopcart/shopcartitem')}" class=""><i class="am-icon-chevron-left"></i></a>订单结算</div>
+</header>
+<form action="{:U('Mobile/Shoporder/dosign')}" name='lastForm' method="post" id="lastForm" class="ajax-form">
+<div class="order-all">
+    <div class="delivery-address">
+        <div class="order-all-title">收货信息</div>
+        <div class="delivery-address-list" id="sign-address-btn" >
+        	<i class="am-icon-angle-right"></i>       
+            <div class="delivery-address-list-info">
+            
+            	<if condition="$shop_address_default">
+                
+                    <div class="delivery-address-text"><span class="delivery-address-name">{$shop_address_default.name}</span><span class="delivery-address-phone">{$shop_address_default.phone}</span></div>
+                    <div class="delivery-address-address">{$shop_address_default['province']}{$shop_address_default['city']}{$shop_address_default['district']}{$shop_address_default.detailed}</div>
+                <else/>
+                	<div class="delivery-address-text" style="display:none"><span class="delivery-address-name"></span><span class="delivery-address-phone"></span></div>
+                    <div style="display:none" class="delivery-address-address"></div>
+                	<div class="delivery-address-no">请选择收货信息</div>
+                </if>  
+            </div>
+        </div>
+    </div>
+    <div class="order-goods-list">
+        <div class="order-all-title">商品清单</div>
+        <volist name="ord" id="vo2">
+        	<input type="hidden" name="ids[]" value="{$vo2.id}|{$vo2.sku_id}|{$vo2.num}" class="goods_id">
+           <div class="order-pay-lists">
+                <div class="order-pay-img">
+                    <img src="{$vo2.goods_ico|getThumbImageById=100,100}"/>
+                </div>            
+                <div class="order-pay-name">
+                    <div class="order-title">{$vo2.goods_name}</div>
+                    <div class="order-guige">{:get_shop_types_attribute_names($vo2['sku_id'])}</div>   
+                </div>           
+                <div class="pay-value">
+                    <div><i class="am-icon-close am-icon-fw "></i>{$vo2.num}</div>
+                    <div class="order-value-shu"><i class="am-icon-rmb am-icon-fw"></i>{$vo2['totle_price']}</div>
+                </div> 
+             </div>               
+         </volist>                                 
+    </div>
+    
+    <div class="order-information">
+    	<div class="order-information-goodsnum">
+            <span class="information-text">商品件数：</span>
+            <span class="information-num"><i class="am-icon-close am-icon-fw "></i>{$totalnum}</span>
+        </div>
+        <div class="order-information-goodsnum">
+            <span class="information-text">运费：</span>
+            <span class="information-num">{$money_fr}</span>
+        </div>	 
+        <div class="order-information-goodsnum">
+            <span class="information-text">金额合计：</span>
+            <span class="information-num"><i class="am-icon-rmb am-icon-fw"></i>{$alltotalprice }</span>
+        </div>
+        <!--div class="order-information-goodsnum">
+            <span class="information-text">优惠折扣：</span>
+            <span class="information-num">-0.00</span>
+        </div-->
+          
+    </div>    
+</div>
+
+<input type="hidden" id="allfreight" name="allfreight" checked value="{$money_fr}" class="allfreight">
+<input type="hidden" id="alltotalprice" name="alltotalprice" checked value="{$alltotalprice}" class="alltotalprice">
+<input type="hidden" name="totalNum" checked value="{$totalnum}" class="totalNum">
+<!--<input type="hidden" name="alltotalprice" checked value="{$alltotalprice}" class="totalNum">-->
+<input type='hidden' name="reds_id"  value="{$shop_address_default.id}" class="reds_id">
+<input type="hidden" name="random_code" value="<?php echo md5($_SESSION['pay']);?>">
+<?php if(isset($_POST['tocreateorder'])){ ?>
+<input type="hidden" name="dosign" value="dosign">
+<?php }else{ ?>                  
+<input type="hidden" name="fastbuydosign" value="fastbuydosign">
+<?php } ?>
+<div data-am-widget="navbar" class="am-navbar am-cf button-box"  id="">
+ <button type="submit" class="am-btn am-btn-block am-btn-through">提交订单</button>
+</div>
+</form>
+
+
+<div class="am-popup" id="sign-address">
+
+    <header class="am-header am-header-default am-header-fixed">
+      <div class="am-header-left am-header-nav"><a href="javascript:" class="" data-am-modal-close><i class="am-icon-chevron-left"></i></a>常用收货地址</div>
+      <div class="am-header-right am-header-nav"><a href="javascript:" class="" id="add-address-btn"><i class="am-icon-plus-square"></i></a></div>
+    </header>
+    <div class="am-popup-inner">
+        <div class="am-popup-bd" style="padding:10px">
+            <div class="sign-address-loading">
+              <span class="am-icon-spinner am-icon-spin"></span>奋力加载中...
+            </div>
+            <div class="sign-address-tpl">
+                <ul class="sign-address-list">
+                    <div ajax_contacts_checkbox>
+                    <li class="sign-address-list-head"><span class="sign-address-list-name"><span ajax_address_name>姓名</span></span><span ajax_address_telephone>电话</span></li>
+                    <li class="sign-address-list-body"><span><span ajax_address_address>地区</span></span></li>
+                    </div>
+                </ul> 
+            </div>
+            <div class="sign-address-content">
+                <div class="sign-address-lists"></div>
+            </div>
+            <div class="sign-address-msg am-alert am-alert-danger"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="am-popup" id="add-address">
+    <header class="am-header am-header-default am-header-fixed">
+      <div class="am-header-left am-header-nav"><a href="javascript:" class="" data-am-modal-close><i class="am-icon-chevron-left"></i></a>添加收货地址</div>
+      <div class="am-header-right am-header-nav"><a href="javascript:" class="am-btn am-btn-block am-btn-default am-radius" data-am-modal-confirm>确定</a></div>
+    </header>
+    <div class="am-popup-inner">
+        <div class="am-popup-bd" style="padding:0">
+            <form class="am-form" id="add-address-form" method="post">
+                <div class="edit-contacts-box">
+            <ul class="edit-contacts-box-list">
+                <li>
+                  <div class="edit-contacts-box-list-group-title">必填项</div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">姓名</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="name" name="name" type="text" class="am-form-field" value="{$address_data.name}" placeholder="收件人姓名"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">手机</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="phone" name="phone" type="text" class="am-form-field" value="{$address_data.phone}" placeholder="手机号：用于发送短信通知"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">地区</span>
+                    <div class="edit-contacts-box-list-text select-area-box">
+                       {:hook('M_China_City', array('find'=>'address','level'=>3,'province'=>$address_data['province'],'city'=>$address_data['city'],'district'=>$address_data['district']))}
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title">街道</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="detailed" name="detailed" type="text" class="am-form-field" value="{$address_data.detailed}" placeholder="请填写详细地址"/>
+                    </div>
+                </li>
+                
+                <li>
+                  <div class="edit-contacts-box-list-group-title">选填项</div>
+                </li>
+				<li>
+                    <span class="edit-contacts-box-list-title">邮箱</span>
+                    <div class="edit-contacts-box-list-text">
+                        <input id="email" name="email" type="text" class="am-form-field" value="{$address_data.email}" placeholder="邮箱：用于发送邮件"/>
+                    </div>
+                </li>
+                <li>
+                    <span class="edit-contacts-box-list-title"></span>
+                    <div class="edit-contacts-box-list-text address_isdefault">
+                        <label class="am-checkbox am-danger"><input type="checkbox" value="1" checked  data-am-ucheck name="isdefault">设置为默认地址</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+var $address_modal = $('#sign-address');
+var $address_modal_btn = $('#sign-address-btn');
+var $add_address_btn = $('#add-address-btn');
+var $add_address = $('#add-address');
+
+$address_modal_btn.on('click', function(e) {
+	$address_modal.modal({closeViaDimmer:0,relatedTarget: this});
+});
+$address_modal.on('open.modal.amui', function() {
+	$address_modal.find('.sign-address-loading').show();
+	$address_modal.find('.sign-address-msg').html('').hide();
+	$address_modal.find('.sign-address-content').hide();
+	$address_modal.find('.sign-address-content ul').remove();//
+	
+	var event_id = $('#event_id').val();
+	var calendar_id = $('#calendar_id').val();
+	var event_membercontacts = $("#event_membercontacts").val();
+	
+	$.getJSON("{:U('Mobile/Config/ajax_get_address')}",'', function (data) {	
+		if(data){
+		  $.each(data, function(i,g_data){
+			var ajax_member_address_tpl = $('.sign-address-tpl ul');
+			var ajax_member_address_li = ajax_member_address_tpl.clone();
+			var ajax_contacts_checkbox = ajax_member_address_li.find('[ajax_contacts_checkbox]');
+			var ajax_address_name = ajax_member_address_li.find('[ajax_address_name]');
+			var ajax_address_telephone = ajax_member_address_li.find('[ajax_address_telephone]');//mobile
+			var ajax_address_address = ajax_member_address_li.find('[ajax_address_address]');//-address-
+			
+			ajax_contacts_checkbox.attr("data-id",g_data['id']);
+			ajax_address_name.html(g_data['name']);
+			ajax_address_telephone.html(g_data['phone']);
+			ajax_address_address.html(g_data['province']+g_data['city']+g_data['district']+g_data['detailed']);
+			ajax_member_address_li.on('click', function() {
+				$('.delivery-address-name').html(g_data['name']);
+				$('.delivery-address-phone').html(g_data['phone']);
+				$('.delivery-address-address').html(g_data['province']+g_data['city']+g_data['district']+g_data['detailed']).show();
+				$('.delivery-address-text').show();
+				$('.delivery-address-no').hide();
+				$('.reds_id').val(g_data['id']);
+				$address_modal.modal('close');
+			});
+			ajax_member_address_li.insertBefore('.sign-address-lists').show();
+		  }); 
+		  $address_modal.find('.sign-address-loading').hide();
+		  $address_modal.find('.sign-address-content').show();	  
+		}else{
+			$address_modal.find('.sign-address-loading').hide();
+			$address_modal.find('.sign-address-msg').html('没有收货地址').show();	
+		}
+	});
+});
+
+$add_address_btn.on('click', function(e) {						   
+	$add_address.modal({closeViaDimmer:0,relatedTarget: this});
+	$address_modal.modal('close');
+ $('.bloodtype-select').chosen({width:"100%",height:"60",disable_search: true});
+	$('.accpre-select').chosen({width:"100%",height:"60",disable_search: true});
+	$('.role-select').chosen({width:"100%",height:"60",disable_search: true});		
+	$('.setup-list-sex .sex').on('click', function() {
+		var sexval =  $(this).attr('data-sex-id');							   
+		$('#sex').val(sexval);
+		if(sexval ==1){
+			$('.sex-man').addClass('chosen');
+			$('.sex-women').removeClass('chosen');
+		}else{
+			$('.sex-man').removeClass('chosen');
+			$('.sex-women').addClass('chosen');
+		}
+	});
+});
+
+
+$add_address.on('closed.modal.amui', function() {
+	$address_modal.modal({closeViaDimmer:0,relatedTarget: this});											
+});
+$add_address.on('confirm.modal.amui', function() {
+	var self = $('#add-address-form');
+	$.post("{:U('Mobile/Config/do_address')}", self.serialize(), function (data) {
+		if(data['status']==1){
+			$add_address.modal('close');
+		}else{
+			toasts.error(data.msg);
+		}
+	}, 'json');
+});
+</script>
+
+</block>

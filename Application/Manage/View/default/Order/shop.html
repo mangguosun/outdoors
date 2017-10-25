@@ -1,0 +1,148 @@
+<extend name="Public/base" />
+<block name="body">
+
+		<div class="main-title">
+		    <h2>{$title}</h2>
+		</div>
+	 	<div class="cf" id="event_tailor">
+		<div class="fl event-height">
+		 <div class="pull-left event-height">订单状态: <a class="w_btn w_btn" href="{:U('/Manage/Order/shop/status/3')}">全部</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Order/shop/',array('status'=>3,'order_status'=>20))}">未处理</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Order/shop/',array('status'=>3,'order_status'=>21))}">待发货</a>
+         <a class="w_btn w_btn" href= "{:U('/Manage/Order/shop/',array('status'=>3,'order_status'=>33))}">已完成</a>
+         <a class="w_btn w_btn" href= "{:U('/Manage/Order/shop/',array('status'=>3,'order_status'=>2))}">已作废</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Order/shop/',array('status'=>3,'pay_status'=>3))}">优惠卷支付</a></div>
+      </div>
+      <div class="search-form pull-right">
+					<div class="sleft">
+            <input class="search-input" name="seek" type="text" placeholder="单号/联系人手机/联系人姓名" value="">
+              <a id="search" class="sch-btn" href="javascript:;" class="sch-btn" url="{:U('/Manage/Order/seek')}" href="javascript:;"><i class="btn-search"></i></a>
+          </div>
+      </div>
+  </div>
+	      <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+                <th>订单号</th>
+				<th>用户昵称</th>
+                <th>订单总额</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>下单时间</th>
+	
+                <th>订单状态</th>
+                <th>支付状态</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <volist name="shop_arr" id="vo">
+            <tr>
+              <td>{$vo.order_sn}</td>    
+              <td>{$vo.nickname}	</td>  		  
+              <td>￥{$vo.alltotalprice}</td>	
+              <td>{$vo.consignee_name}</td>	
+			  <td>{$vo.consignee_address_detailed}</td>				  
+              <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+              <td>{:get_shop_order_status($vo['status'])}</td>			  
+              <td>{:get_shop_order_pay_status($vo['pay_status'])}</td>			  
+              <td><if condition="$vo['supplier_id'] eq $siteid or ($vo['siteid'] eq $siteid and !$vo['supplier_id'])">{:get_shop_admin_btn_tow($vo)}<else/><font color='red'>{:get_shop_order_status($vo['status'])}</font></if><div><a class='' target="_blank" href="{:U('Manage/Order/shop_order_detail',array('order_sn'=>$vo['order_sn']))}">查看详情</a></div></td>			  
+            </tr>
+            </volist>
+             <tr><td colspan="9">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+        
+        </div>
+	  </div>
+
+<style type="text/css">
+
+  #punch_mask{ position:fixed; display:none; top:0px; left:0px;  background:#000;  opacity:0.5; width:100%; z-index:99998;}
+  .punch_con{   position:fixed;display:none; left:40%;top:25%; padding:2px; width:300px;border: 1px solid #ccc;height:150px;background:#fff;z-index:99999;
+    }
+  .punch_con_html{ width:300;line-height: 35px; text-align: center; margin-top: 20px;margin-bottom: 30px;}
+  .punch_click_t{margin-left: 90px; width: 40px; line-height: 25px;}
+  .punch_click_f{margin-left: 40px; width: 40px; line-height: 25px;}
+</style>
+<div id = "punch_mask"></div>
+<div class = "punch_con">
+  <div class="punch_con_html"></div>
+  <div ><a class="mbtn btn-default punch_click_t">确定</a><a class="mbtn btn-default punch_click_f">取消</a></div>
+</div>
+<script>
+$(function(){
+	$('.deliver_goods').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+
+
+
+		$('.updateOrder').click(function(){
+
+       id = $(this).attr('data-orderID');
+       status = $(this).attr('data-status');
+      $("#punch_mask").animate({height:"100vh"}).show();
+      $(".punch_con").show();
+      $(".punch_con_html").html("确定要操作么？");
+      $(".punch_click_f").click(function(){
+        $("#punch_mask").hide();
+        $(".punch_con").hide();     
+      });
+      $(".punch_click_t").click(function (){
+        var ids = id;
+        var status_t = status;
+        $.post(U('Manage/Order/do_update_shop_status'), {id: ids,status: status_t}, function (res) {
+          if (res.status == 1) {
+            toast.success(res.m);
+            setTimeout(function () {
+              location.reload();
+            }, 1500);
+          }
+          else {
+            toast.error(res.m);
+          }
+        }, 'json');
+
+      })
+		})
+		
+})	
+</script>
+   <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+	
+</block>

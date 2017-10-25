@@ -1,0 +1,27 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Video/index')}" class=""> <i class="am-icon-chevron-left"></i></a>{$model_info['name']}详情</div>
+    <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+  </header>
+  <include file="Public/topnavbar"/>
+  
+  <div class="video-detail">
+  
+  <div class="video-title"> <b>{$content.video_name}</b> </div>
+  
+    <article class="am-article">
+    
+      <div class="am-article-bd">
+        <p class="am-article-lead">
+        <iframe height=300 width=100% src="{$content.video_html5_url}" frameborder=0 allowfullscreen></iframe>
+        </p>
+      </div>
+    </article>
+    
+    </div>
+</block>

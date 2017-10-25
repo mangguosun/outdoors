@@ -1,0 +1,23 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="am-fr" data-am-offcanvas="{target: '#home_all_bar'}"> <i class="am-header-icon am-icon-bars"></i> </a> 
+      <a href="{:U('Mobile/Shopcart/shopcartitem')}" class="am-fr"><i class="am-header-icon am-icon-shopping-cart"></i></a>  
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<include file="Public/navbar"/> 
+{:W('HomeAdvs/lists',array('advtype'=>'shop_ad'))}
+
+<div class="">
+    {:W('Iclub/shop',array('where'=>'new','limit'=>'4'))}
+    {:W('Iclub/shop',array('where'=>'discount','limit'=>'2'))}
+    {:W('Iclub/shop',array('where'=>'recommend','limit'=>'4'))}
+</div>  
+</block>

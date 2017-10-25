@@ -1,0 +1,77 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/bootstrap-switch.min.css" rel="stylesheet" />
+</block>
+<block name="body">
+<form id="defaultForm" action="{:U('Manage/User/channel_member')}" class="form-horizontal form-bordered ajax-form" method="post" > 
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-user themeprimary"></i>
+                    <span class="widget-caption">会员自定义角色</span>
+                </div>
+                <div class="widget-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-12 control-label">开启角色自定义</label>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <div class="">
+                                {:form_switche_manage($newlist['status'],'name="status" id="status"')} 
+                                </div>
+                            </div>
+                            
+                        </div>   
+                </div>
+        </div>
+        <div class="widget radius-bordered juesepeizi">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-user themeprimary"></i>
+                    <span class="widget-caption">角色配置</span>
+                </div>
+                <div class="widget-body">
+                     	<div class="form-group">
+                            <label class="col-lg-2 control-label">原（管理员）更改为</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="admin" value="{$newlist.admin}" placeholder="不填默认为管理员" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">原（官方领队）更改为</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="leader" value="{$newlist.leader}" placeholder="不填默认为官方领队" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">原（认证达人）更改为</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="master" value="{$newlist.master}" placeholder="不填默认为认证达人" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">原（普通会员）更改为</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="member" value="{$newlist.member}" placeholder="不填默认普通会员" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+       		
+    </div>
+</div>
+</form>
+</block>
+
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/switch/bootstrap-switch.min.js"></script>
+<script type="text/javascript">
+$("[name='status']").bootstrapSwitch({ size: '',onText: "开",offText: "关",handleWidth: "50",});
+
+
+</script>
+</block>

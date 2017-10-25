@@ -1,0 +1,198 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 发现约伴
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="am-fr" data-am-offcanvas="{target: '#home_all_bar'}"> <i class="am-header-icon am-icon-bars"></i> </a> 
+      <a href="{:U('Mobile/Partner/partnercreate')}" class="" id="evevt-search-btn">创建
+      </a>
+  </div>
+
+
+</header>
+<body>
+	<include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+  <include file="Public/navbar"/> <!-- 底部菜单 -->
+
+<!-- 自定义弹层 显示分类类型-->
+<div class="par-create-type">
+  <div class="par-index-type">
+      <div class="par-ind-typecon">
+          <div class="par-ind-t am-fl" event_type="0">不限</div>
+      </div>
+      <div class="par-ind-typecon">
+          <div class="par-ind-t am-fl" event_type="1">跑步</div>
+      </div>
+      <div class="par-ind-typecon">
+          <div class="par-ind-t am-fl" event_type="2">徒步</div>
+      </div>
+      <div class="par-ind-typecon">
+          <div class="par-ind-t am-fl" event_type="3">骑行</div>
+      </div>
+      <div class="par-ind-typecon">
+          <div class="par-ind-t am-fl" event_type="4">游泳</div>
+      </div>
+  </div>
+</div>
+	<!-- 全部分类和我的约伴 -->
+	<div class="par-ind-class">
+      <div class="par-ind-class2">
+        <div class="am-fl par-ind-class3">全部分类&nbsp;<i class="am-icon-angle-down am-icon-sm"></i></div>
+        <a href="{:U('Mobile/Partner/findpar_event')}"><div class="am-fr par-ind-class4">我的约伴</div></a>
+      </div>
+  </div>
+  <div class="am-panel-default">
+    <div class="collection-lists-li">
+    <div class=" par-sign-det">
+        <div class="am-g">    
+            <div class="am-u-sm-5  par-sign-detaila">
+                <a href="" data-href>
+                  <img src="__PUBLIC__/Core/images/grey.gif" data-original="" class="lazy" data-thumb/>
+                </a>
+            </div>
+        <div class="am-u-sm-7 par-sign-detailb">
+            <a href="" data-href>
+              <div class="par-sign-a" data-title>标题</div>
+            </a>
+            <div class="par-sign-detailbb">
+              <div class="par-sign-detailcc"><i class="am-icon-map-marker par-sign-tub"></i><span data-city>城市</span></div>
+              <div class="par-sign-detailcc"><i class="am-icon-clock-o par-sign-tub"></i><span data-time>时间</span></div>
+              <div class="par-sign-detailcc"><i class="am-icon-user par-sign-tub"></i><label class="par-sign-label" data-people>人参加</label><label class="par-sign-labelr" data-apply><!-- 已报名 --></label><label class="par-sign-labelend" data-info><!-- 报名已结束 --></label></div>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+            <div class="collection-list-box">
+                <div class="collection-lists-ul"></div>
+                <div class="loading-more">
+                <i class="am-icon-circle-o-notch am-icon-spin" loading-icon style=" display:none"></i> 
+                <span loading-text>加载更多</span>
+                </div>
+            </div>
+<script>
+      $(function () {
+                    var type_c = 0;
+                    var loading_i = 0;
+                    var get_url = {};
+                    var gget_url = {$get_url};
+                    if (!$.isEmptyObject(gget_url)) {
+                        get_url = gget_url;
+                    }
+                    function get_partner(is_del,loading_page,type_code) {
+                        if (is_del == 'true') {
+                            $(".collection-list-box .collection-lists-ul .par-sign-det").remove();
+                           
+                        }
+                        var loading_more = $(".loading-more");
+                        var loading_text = loading_more.find('[loading-text]');
+                        var loading_icon = loading_more.find('[loading-icon]');
+                        loading_text.html('奋力加载中');
+                        loading_icon.show();
+                            get_url['page'] = loading_i;
+                            get_url['typecode'] = type_c;
+                            if(type_code){
+                             get_url['page'] = loading_page;
+                             get_url['typecode'] = type_code;
+                             }
+                        $.getJSON("{:U('Mobile/Partner/get_partner')}", get_url, function (json) {
+                            if (json) {
+
+                                $.each(json, function (index, array) {
+                                  // console.log(array);
+                                    var partner_list = $('.collection-lists-li .par-sign-det');
+                                    var partner_list_li = partner_list.clone();
+                                    var partner_list_href = partner_list_li.find('[data-href]');//url
+                                    var partner_list_thumb = partner_list_li.find('[data-thumb]');//图片
+                                    var partner_list_city = partner_list_li.find('[data-city]'); //地址
+                                    var partner_list_title = partner_list_li.find('[data-title]');//标题
+                                    var partner_list_time = partner_list_li.find('[data-time]');//开始时间
+                                    var partner_list_people = partner_list_li.find('[data-people]');//人数
+                                    var partner_list_apply = partner_list_li.find('[data-apply]');//报名状态
+                                    var partner_list_info = partner_list_li.find('[data-info]');//活动状态
+                                    partner_list_href.attr("href", array['url']);
+                                    partner_list_thumb.attr("data-original",array['thumb']);
+                                    partner_list_city.html('&nbsp;&nbsp;&nbsp;'+array['address']);
+                                    partner_list_title.html(array['title']);
+                                    partner_list_time.html('&nbsp;&nbsp;'+array['week'] +'&nbsp;&nbsp;'+ array['time']);
+                                    partner_list_people.html('&nbsp;&nbsp;'+array['people']);
+                                    if(array['info']){
+                                        partner_list_info.html(array['info']);
+                                    }
+                                    if((!array['info']) && (array['apply'])){
+                                      partner_list_apply.html(array['apply']);
+                                    }
+                                    partner_list_thumb.lazyload({effect: "fadeIn", threshold: 100});
+                                    $(".collection-list-box .collection-lists-ul").append(partner_list_li);
+                                });
+                                $(".collection-list-box").trigger("scroll");
+                                loading_text.html('加载更多');
+                                loading_icon.hide();
+                                loading_i++;
+                                type_c = type_code;
+                                $('.loading-more').scrollspy({});
+                            } else {
+                                $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+                                loading_text.html('已经没有了');
+                                loading_icon.hide();
+                            }
+                        });
+                    }
+                    get_partner();
+                    $('.loading-more').on('inview.scrollspy.amui', function () {
+                        timeout = setTimeout(function () {
+                            get_partner();
+                        }, 1000);
+                    }).on('outview.scrollspy.amui', function () {
+                        clearTimeout(timeout)
+                    });
+
+                //ajax选择运动类型
+                $(".par-ind-typecon").click(function(){
+                  var typecodes= $(this).children().attr('event_type');
+                  var event= $(this).children().html();
+                  $(".par-ind-typecon").children("div").removeClass("par-create-color");
+                  $(this).children("div").addClass("par-create-color");
+                  $(".par-ind-typecon").children(".am-icon-check").remove();
+                  $(this).children("div").after('<div class="par-ind-typei am-icon-check"></div>');
+                  $(".par-create-type").css("display","none");
+                  $(".par-ind-class3").html(event);
+                  $(".par-ind-class3").append('<i class="am-icon-angle-down am-icon-sm"></i>');
+                  var is_del = 'true';
+                    $.post("{:U('Mobile/Partner/get_partner')}", {typecode:typecodes},'json');
+                  get_partner(is_del,0,typecodes);
+                   $('.loading-more').on('inview.scrollspy.amui', function () {
+                        timeout = setTimeout(function () {
+                            get_partner();
+                              }, 1000);
+                    }).on('outview.scrollspy.amui', function () {
+                              clearTimeout(timeout);
+                    });
+              })
+  })
+ $(function () {
+    //展开 关闭
+    $(".par-ind-class3").click(function(){
+     var info= $(".par-create-type").css("display");
+      if(info == "none"){
+        $(".par-create-type").css("display","block");
+        $(this).children("i").remove();
+        $(this).append('<i class="am-icon-angle-up am-icon-sm"></i>');
+      }else{
+        $(".par-create-type").css("display","none");
+        $(this).children("i").remove();
+        $(this).append('<i class="am-icon-angle-down am-icon-sm"></i>');
+      }
+    })
+  });
+  $(function () {
+    hdl_lazyload('img.lazy');
+  })
+</script>
+</body>
+</block>

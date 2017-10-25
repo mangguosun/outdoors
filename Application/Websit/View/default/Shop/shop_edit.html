@@ -1,0 +1,593 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+
+<div class="col-md-12">
+<div class="pull-right"><a class="btn btn-info common-color-white"  href="{:U('Websit/Shop/index',array('status'=>0,'id'=>$shop_list['id']))}">返回列表</a></div>修改商品</div>
+
+ <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" name="shop_data"  action="{:U('Websit/Shop/shop_edit')}" method="post">
+            <input type='hidden' name='id' value="{$shop_list.id}">
+			<input type="hidden" name="category_id" value="{$shop_list['category_id']}">
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品封面图<span class="common-color-red">*</span></label>
+				<div class="col-md-10">
+					{:hook('UploadImage', array('find_name'=>'goods_ico','value'=>$shop_list['goods_ico'],'buttontext'=>'商品封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600'))}
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品轮播图<span class="common-color-red"></span></label>
+				<div class="col-md-10">
+					{:hook('UploadImage', array('find_name'=>'goods_pictures_id','value'=>$shop_list['goods_pictures_id'],'buttontext'=>'详情页轮播图','buttonwidth'=>200,'multi'=>true,'ds'=>'600*600'))}<span class="common-color-red">&nbsp;(点击按钮添加商品图片，更好的展示商品)</span>
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品名称<span class="common-color-red">*</span></label>
+				<div class="col-md-4">
+					<input id="goods_name" name="goods_name" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.goods_name}" placeholder="请填写商品名称"/>
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">副标题简介<span>(不能超过100字)</span></label>
+				<div class="col-md-3">
+					<textarea id="goods_introduct" name="goods_introduct"  class="form-control form_check">{$shop_list.goods_introduct}</textarea>
+				</div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">商品是否运费<span>&nbsp;(必填)</span></label>
+			  <div class="col-md-3">
+				    
+					 <select name="select" id="select">
+				      <option value="1" <eq name="shop_list.fr_id" value="1"> selected="selected"</eq>>包邮</option>
+				      <option value="0" <eq name="shop_list.fr_id" value="0"> selected="selected"</eq>>不包邮</option>
+		            </select>
+					<div>
+					<span class="opshow"> 请输入产品邮费价格：<input name="fr_freight" type="text"  id="fr_freight" value="{$shop_list.fr_freight}" size="10"/></span>
+					</div>
+					 <script>
+					  $(document).ready(function(){
+						if($(this).find('option:selected').val()==0){
+							$('.opshow').show();}
+							else{
+							$('.opshow').hide();
+							}
+						}); 
+						$('#select').change(function(){					
+						if($(this).children('option:selected').val()==0){
+							$('.opshow').show();}
+							else{
+							$('.opshow').hide();
+							}
+						});
+						</script>
+	
+		      </div>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="cardnum" class="col-md-2 control-label">商品分类<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+				   {:form_select(get_shop_category(),$shop_list['category_id'],'class="form-control form_check shop_cates_select" check-type="Text" name="category_id" id="category_id"',"--请选择商品分类--")}
+				</div>
+			</div>
+			
+
+			<div class="form-group has-feedback">
+				<div>
+				<label for="cardnum" class="col-md-2 control-label">商品品牌<span>&nbsp;(为商品选择所属品牌)</span></label>
+				<input type="radio" class="sel" name="shop_brand_mode" <if condition="!$shop_list['custom_brand_name']">checked</if> value="1"/>
+				<span>选择商品品牌</span>
+				<input type="radio" class="edi" name="shop_brand_mode" <if condition="(!$shop_list['shop_brand']) and ($shop_list['custom_brand_name'])">checked</if>  value="2"/>
+				<span>填写品牌</span>
+				<input type="radio" class="no_use" name="shop_brand_mode" value="3"/>
+				<span>不设置品牌</span>
+				</div>
+				<div class="col-md-3 select_brand">
+				   {:form_select(get_shop_brand(),$shop_list['shop_brand'],'class="form-control form_check" check-type="Text" name="shop_brand" id="shop_brand"',"--请选择品牌--")}
+				</div>
+				<div class="col-md-3 edit_brand">
+					<input id="custom_brand_name" name="custom_brand_name" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.custom_brand_name}" placeholder="填写商品名称"/><br>
+					<input id="custom_brand_enname" name="custom_brand_enname" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.custom_brand_enname}" placeholder="填写英文名称"/>
+				</div>
+			</div>
+			<br>
+			<div class="form-group has-feedback">
+				<label for="market_price" class="col-md-2 control-label">市场参考价<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+					<input id="tox_money_need" name="tox_money_need" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.tox_money_need}" placeholder="0.00"/>
+				</div><span class="common-color-red">&nbsp;(市场参考价格最多两位小数点)</span>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="market_price" class="col-md-2 control-label">销售价<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+					<input id="market_price" name="market_price" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.market_price}" placeholder="0.00"/>
+				</div><span class="common-color-red">&nbsp;(销售价格不大于市场价格,且最多两位小数点)</span>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<label for="goods_num" class="col-md-2 control-label">总库存<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+					<input id="goods_num" name="goods_num" type="text" class="form-control form_check" check-type="Text"  value="{$shop_list.goods_num}" placeholder="请填写商品数量"/>
+				</div><label class="common-color-red">&nbsp;(库存须为整数)</label>
+				
+			</div><br><hr><br>
+			<?php if(!empty($shop_detail)):?>
+			<div class="form-group has-feedback shops_attr">
+			<label for="goods_name" class="col-md-2 control-label">商品型号<span class="common-color-red">*</span></label>
+			<div class="col-md-10">
+			
+			      <?php foreach($shop_detail as $key=>$val):?>
+				    <div class="col-md-12 shop_sku_del">
+				       <?php foreach($val['sku_title'] as $v):?>
+					   <div style="float:left">规格：</div>
+					   <input type="hidden" name="oldgoods[attribute_id][]" value="{$v}">
+					   <input type="text" name="oldgoods[attribute_name][]" value="{:get_shop_sku_types_attribute($v)}" class='col-md-2' placeholder='价格'>
+					   <?php endforeach;?>
+					   <div style="float:left"> 销售价格：</div> 
+					  <input type="text" name="oldgoods[price][]" value="{$val['price']}" class='col-md-2 oldprice' placeholder='价格'>
+					  <div style="float:left"> 库存：</div>
+					  <input type="text" name="oldgoods[stock][]" value="{$val['stock']}"  class='col-md-2 oldgoods_stock' placeholder='请输入库存'>
+					   <input type="hidden" name="oldgoods[sku_id][]" value="{$val['sku_id']}">
+					   &nbsp;<span data-Sku="{$val['sku_id']}" class="glyphicon glyphicon-remove shop_sku_delete" title="删除"></span>
+					</div>
+					
+				  <?php endforeach;?>
+				
+				</div>
+			</div><?php endif;?>
+			
+			
+				<!--存放商品规格-->
+		  <div class="form-item tab-pane" id="event_tailor">
+			<div  id='spec_box' style="border:none"></div>
+		  </div>
+		  <div class='form-item'>
+				<label for="goods_num" class="item-label"><span class="common-color-red"></span></label>
+				<a onclick="addTags()"><img src="__PUBLIC__/Core/images/spec_add.png" style="padding:10px;float:left"></a>
+				<label style="color:red">点击编辑商品规格可为不同规格的商品指定不同的库存和和价格，方便用户选择购买</label>
+				<div class='controls'></div>
+		  </div><br>
+			<script type="text/javascript">
+			 function addTags(){
+				var item_attribute_name =document.getElementsByName("goods[attribute_name][]");
+				var item_price =document.getElementsByName("goods[price][]");
+				var item_stock =document.getElementsByName("goods[stock][]");
+				var arr = new Array(item_attribute_name.length);
+				var arr2 = new Array(item_price.length);
+				var arr3 = new Array(item_stock.length);
+				for(var j = 0; j < item_attribute_name.length;j++){
+					arr[j] = item_attribute_name.item(j).value;
+				}
+				for(var k = 0; k < item_price.length;k++){
+					arr2[k] = item_price.item(k).value;
+				}
+				for(var l = 0; l < item_stock.length;l++){
+					arr3[l] = item_stock.item(l).value;
+				}
+				var str = "<div>规格：<input type='text' name='goods[attribute_name][]'/>&nbsp;&nbsp;销售价格：<input type='text' class='newprice' name='goods[price][]' placeholder='0.00'>&nbsp;&nbsp;库存：<input type='text' name='goods[stock][]' class='new_price' placeholder='0' placeholder='请输入库存'><a  class='removeclass'>删除</a></div>";
+				document.getElementById("spec_box").innerHTML += str;
+				var attribute_name = document.getElementsByName("goods[attribute_name][]");
+				var price = document.getElementsByName("goods[price][]");
+				var stock = document.getElementsByName("goods[stock][]");
+				for(var i=0;i<arr.length;i++)
+				{
+					attribute_name.item(i).value = arr[i];
+					price.item(i).value = arr2[i];
+					stock.item(i).value = arr3[i];
+				}
+			}
+
+			$("body").on("click",".removeclass", function(e){ 
+			   $(this).parent('div').remove();
+			   return false;  
+			})   
+
+			</script>
+			
+			<!---------------------
+			<div class='row'>
+				<label for="goods_num" class="col-md-2 control-label"><span class="common-color-red"></span></label>
+					<a onclick="ShowDiv('MyDiv','fade')"><img src="__PUBLIC__/Core/images/spec_add.png" style="padding:10px;float:left"></a>
+				    <label class="common-color-red">点击编辑商品规格可为不同规格的商品指定不同的库存和和价格，方便用户选择购买</label>
+			</div>
+			<div class='row'>
+				<label for="goods_num" class="col-md-2 control-label"><span class="common-color-red"></span></label>
+			   <input id="Button1" type="button" value="批量修改价格数量" onclick="ShowDiv('MyDiv2','fade')" style="display:none;" />
+			 </div>
+			<table  id='spec_box'>
+
+			</table>
+	
+			------------------------>
+			<!--弹出层时背景层DIV
+			<div id="fade" class="black_overlay">
+			</div>
+			-->
+			<!---------弹出层内容
+			<div id="MyDiv" class="white_content">
+				<div style="text-align: right; cursor: default; height: 40px;">
+				<span style="font-size: 16px;" onclick="CloseDiv('MyDiv','fade')">关闭</span>
+				</div>
+			<div id="center">
+				<div class="common_block_title ">
+					规格列表
+				</div>
+			  
+			  <div class=""></div>
+			</div>
+			<div class="shoppay">
+			<table>
+			<thead>
+				<tr>
+					<th width="30%">
+						属性名称
+					</th>
+					<th>
+						内容
+					</th>
+				</tr>
+			</thead>
+			 <volist name="list" id="vo">
+				<tr>
+				  <td> {$vo.types_name}
+					<input type="checkbox" name="s" value="{$vo.sku_types_id}" /></td>
+					 <td>
+						 <volist name="vo['arr']" id="vo2">{$vo2.attribute_name}<input type="checkbox" name="s{$vo.sku_types_id}" value="{$vo2.sku_types_id}|{$vo.types_name}|{$vo2.attribute_id}|{$vo2.attribute_name}" />&nbsp;&nbsp;&nbsp;</volist>
+					</td>
+				</tr>
+			</volist>
+				<tr colspan="2">
+				  <td> 
+						<input type="button" value="确定" onclick="add()"/>
+				  </td>
+				</tr>
+			</table>
+			危险操作：此处修改的值将对之前所有商品值进行清空；请小心操作。
+			</div>
+
+			</div>
+			------------------->
+			<div class="form-group  has-feedback">
+				<label for="tag" class="col-md-2 extra control-label">商品标签<span class="event-prompt">*</span></label>
+				<div class="col-md-10">
+				{:form_checkbox(get_event_tag(),$shop_list[tag],'name="tag[]" id="tag"',0,'100')}
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_detail" class="col-md-2 control-label">商品详情<span class="common-color-red">*</span></label>
+				 <div class="col-md-10">
+				{:Hook('Ueditor',array('name'=>'goods_detail','value'=>$shop_list['goods_detail']))}</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">是否新品<span class="common-color-red">*</span></label>
+				<div class="col-md-9">
+					<label class="radio-inline"> <input name="is_new" type="radio" value="1"   <eq name="shop_list.is_new" value="1"> checked</eq>>是</label>
+					<label class="radio-inline"> <input name="is_new" type="radio" value="0"  <eq name="shop_list.is_new" value="0"> checked</eq>> 否 </label>
+                 </div>
+			</div>
+			<div class="form-group has-feedback">
+				<label for="goods_name" class="col-md-2 control-label">是否支持购买<span class="common-color-red">*</span></label>
+				<div class="col-md-3">
+					<label class="radio-inline"> <input name="purchase_status" type="radio" value="1"  <eq name="shop_list.purchase_status" value="1"> checked</eq>>是</label>
+					<label class="radio-inline"> <input name="purchase_status" type="radio" value="0"  <eq name="shop_list.purchase_status" value="0"> checked</eq>> 否 </label>
+                 </div><span class="common-color-red">(小提示：选择是否支持购买，选择‘是’即为可购买，选择‘否’仅可做展示但不可购买)</span>
+			</div>
+			
+			<!------------------
+				<script>
+					function add(){
+						if (confirm('谨慎操作：本操作会覆盖掉原填写的属性且不可恢复，确定要执行此操作么？')) {
+							var zz=new Array();
+							$("input[name=s]").each(function () {
+								if ($(this).prop("checked")) {
+									var z=new Array();
+									$("input[name=s"+$(this).val()+"]").each(function () {
+									 
+										if ($(this).prop("checked")) {	
+											z.push($(this).val());
+										}
+									});
+									zz.push(z);
+								}
+							});
+
+							var result=new Array();//结果保存到这个数组
+							function toResult(arrIndex,aresult)
+							{
+							  if(arrIndex>=zz.length) {result.push(aresult);return;};
+							  var aArr=zz[arrIndex];
+							  if(!aresult) aresult=new Array();
+							  for(var i=0;i<aArr.length;i++)
+							  {
+								var theResult=aresult.slice(0,aresult.length);
+								theResult.push(aArr[i]);
+								toResult(arrIndex+1,theResult);
+							  }
+							}
+							toResult(0);
+							$('#spec_box').children().remove();
+							if(result!=''){
+							$("#Button1").show();
+							var str="<tr><td>属性</td><td width='15%'>价格</td><td width='15%'>数量</td><td width='15%'>操作</td></tr>";
+							document.getElementById("spec_box").innerHTML = str;
+								for(var x in result){
+									var type_str = ""+result[x] ;
+									var type_strs=new Array();
+									type_strs=type_str.split(","); //字符分割 
+									var attribute_names="";
+									var str_ids="";
+									for(var tkey in type_strs){
+										var attribute_str=type_strs[tkey];
+										var attribute_strs=new Array();
+										attribute_strs=attribute_str.split("|"); //字符分割 
+										attribute_names=attribute_names+attribute_strs[1]+"："+attribute_strs[3]+"；";
+										str_ids=str_ids+"<input type='hidden' name='goods[sku_title]["+attribute_strs[0]+"][]' value='"+attribute_strs[2]+"' />"
+									}
+									var itemOriginal =document.getElementsByName("tagsinput[]");
+									var arr = new Array(itemOriginal.length);
+									for(var j = 0; j < itemOriginal.length;j++){
+										arr[j] = itemOriginal.item(j).value;
+									}
+									 str = "<tr><td class='sku_del'>"+attribute_names+str_ids+"</td><td><input type='text' name='goods[price][]' value='0.00' class='new_goods_price' placeholder='价格' style='width:100%;text-align:center;'></td><td><input type='text' class='new_goods_stock' name='goods[stock][]' value='0' style='width:100%;text-align:center;'  placeholder='请输入库存'></td><td  class='removeclass'><a>删除</a></td></tr>";
+									document.getElementById("spec_box").innerHTML += str;
+									var itemNew =document.getElementsByName("tagsinput[]");
+									for(var i=0;i<arr.length;i++)
+									{
+										itemNew.item(i).value = arr[i];
+									}
+								}
+							}
+							var goods_id="{$_GET['id']}";
+							$.post(U('Websit/Shop/shop_sku_alldelete'), {goods_id: goods_id}, function (res) {
+									if (res.status) {
+										$('.shops_attr').children('div').remove();
+									}
+									else {
+										toast.error(res.info);
+									}
+								}, 'json');
+							CloseDiv('MyDiv','fade');
+						}
+					}
+				$("body").on("click",".removeclass", function(e){ 
+				   $(this).parent('div').remove();
+				   return false;  
+				})
+					
+				</script>
+				选择属性结束----->
+				
+
+			<!---------弹出层1结束-------------->
+			<!---------弹出层2：批量修改--------
+<div id="MyDiv2" class="white_content">
+	<div style="text-align: right; cursor: default; height: 40px;">
+	<span style="font-size: 16px;" onclick="CloseDiv('MyDiv2','fade')">关闭</span>
+	</div>
+	批量编辑商品数量以及价格
+	<div class="row data-table">
+	<table>
+		<tr>
+			<th>
+				销售价格
+			</th>
+			<th>
+				库存
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="shop_price_change" class="shop_price_change" value="+0.00" />
+			</td>
+			<td>
+				<input type="text" name="goods_number_change" class="goods_number_change" value="+0" />
+			</td>
+
+		</tr>
+	</table>
+	<button class="all_change" type="button">确定</button>
+	</div>
+	小提示：此处修改的值将对所有商品值进行加减修改如:+10 -5<br>
+	库存必须是整数 价格可带两位小数
+</div>
+			------>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary " href="{:U('Websit/Shop/shop_edit')}">保存</button>
+				</div>
+			</div>
+        </form>
+		<div id="goodsSelectBox"  style="display:none" >
+		<div id="goodsBox">
+		   
+		</div>
+		</div>
+      </div>
+    </div>
+  </div>
+<script>
+$(function(){
+		//是否禁用
+	  $('.shop_disable').click(function () {
+		if (confirm('确定要操作么？')) {
+			var  id= $(this).attr('data-ID');
+			var status=$(this).attr('data-Status');
+			$.post(U('Websit/Shop/shop_disable'), {id: id,status: status}, function (res) {
+				if (res.status) {
+					toast.success(res.info);
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				}
+				else {
+					toast.error(res.info);
+				}
+			}, 'json');
+		}
+	  });
+	var olds_num=0;
+	var shop_sku_detail={$shop_sku_detail};
+    $('#goodsBox').append(shop_sku_detail);
+    $('.types_first #goodsBox').children(':not(:first)').remove();
+    //-点击-属性-
+	$('.shop_cates_add').click(function(){
+		temBox=$('#goodsBox').clone(true)
+		$('.types_first').append(temBox);
+		$('#goodsBox .goods_detail_span').each(function(){
+			$(this).click(function(){
+				$(this).parents('#goodsBox').remove();
+			})
+		})
+
+    })
+
+	//是否删除-
+		$('.shop_sku_delete').each(function(){
+		
+		$(this).click(function () {
+				if (confirm('确定要操作么？')) {
+					var sku_id = $(this).attr('data-Sku');
+					 $(this).parents('.shop_sku_del').remove();
+					
+					
+					$.post(U('Websit/Shop/shop_sku_delete'), {sku_id: sku_id}, function (res) {
+						
+						if (res.status) {
+						   
+					if($('.shop_sku_delete').length==0){
+					   $('.shops_attr').hide();
+					
+					}
+							//toast.success(res.info);
+							
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+		   });	
+	 });
+	  //--市场价格--
+	var tox_money_need=$("input[name='tox_money_need']");
+	var market_price=$("input[name='market_price']");
+    tox_money_need.blur(function(){
+	    if(tox_money_need.val()<=0){
+		   toast.error('请输入正确有市场参考价格哦!');
+		   return;
+		}
+		if(tox_money_need.val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+		   toast.error('市场参考价格最多两位小数点哦');
+		   return;
+		}
+	
+		
+	})	
+	//---促销价格---
+	
+	market_price.blur(function(){
+	    if(market_price.val()<=0){
+		   toast.error('请输入正确有销售价格!');
+		   return;
+		}
+		if(market_price.val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+		   toast.error('销售价格最多两位小数点');
+		   return;
+		}
+        if(tox_money_need.val()!=null){
+			if(market_price.val()>tox_money_need.val()){
+			    toast.error('销售价不应高于市场参考价格!');
+			    return;
+			}
+		}		
+	    
+	})
+	//----验证库存---
+	var goods_num=$("input[name='goods_num']");
+	goods_num.blur(function(){
+		if(goods_num.val().match(/^\+?[1-9][0-9]*$/)==null){
+			toast.error('请输入正确的整数库存数量!');
+			return;
+		}
+	})
+	 
+	 
+   
+})
+
+//弹出隐藏层
+function ShowDiv(show_div,bg_div){
+document.getElementById(show_div).style.display='block';
+document.getElementById(bg_div).style.display='block' ;
+var bgdiv = document.getElementById(bg_div);
+bgdiv.style.width = document.body.scrollWidth;
+// bgdiv.style.height = $(document).height();
+$("#"+bg_div).height($(document).height());
+};
+//关闭弹出层
+function CloseDiv(show_div,bg_div)
+{
+document.getElementById(show_div).style.display='none';
+document.getElementById(bg_div).style.display='none';
+};
+
+//批量修改信息
+
+		$('.all_change').click(function(){
+			goods_number_change 	= $('[name="goods_number_change"]').val();
+			shop_price_change 		= $('.shop_price_change').val();
+			var num_reg = /^[-\+]?\d*$/;
+			var price_reg = /^[-\+]?\d+(\.\d{2})?$/;
+			if(!(num_reg.test(goods_number_change)) || !(price_reg.test(shop_price_change))){
+				alert('请输入正确的数字!');
+				return false;
+			}
+			
+			//库存
+			$('.new_goods_stock').each(function(){
+				num = parseInt($(this).val()) + parseInt(goods_number_change);
+				num = num < 0 ? 0 : num;
+				$(this).val(num);
+			})
+			
+			//销售价
+			$('.new_goods_price').each(function(){
+				num = Number($(this).val()) + Number(shop_price_change);
+				num = num < 0 ? 0 : num;
+				$(this).val(num.toFixed(2));
+			})
+			CloseDiv('MyDiv2','fade')
+			$('.goods_number_change').val('+0');
+			$('.shop_price_change').val('+0.00');
+			
+			
+		})
+		//设置品牌
+		<?php if($shop_list['shop_brand']){ ?>
+		$('.select_brand').show();
+		$('.edit_brand').hide();
+		<?php }elseif(!$shop_list['shop_brand'] && $shop_list['custom_brand_name']){ ?>
+		$('.select_brand').hide();
+		$('.edit_brand').show();
+		<?php }elseif(!$shop_list['shop_brand'] && !$shop_list['custom_brand_name']){ ?>
+		$('.select_brand').show();
+		$('.edit_brand').hide();
+		<?php } ?>
+		$(".sel").click(function(){
+				$('.select_brand').show();
+				$('.edit_brand').hide();
+			})
+		$(".edi").click(function(){
+				$('.select_brand').hide();
+				$('.edit_brand').show();
+			})
+		$(".no_use").click(function(){
+				$('.select_brand').hide();
+				$('.edit_brand').hide();
+			})
+
+</script>
+</block>
+

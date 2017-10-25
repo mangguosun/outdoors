@@ -1,0 +1,55 @@
+<div class="row data-table">
+  <table>
+    <!-- 表头 -->
+    <thead>
+      <tr>
+        <th>旅游地</th>
+        <th>活动名称</th>
+        <th>出发地</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <!-- 列表 -->
+    <tbody>
+      <notempty name="list">
+      
+      <volist name="list" id="vl">
+        <tr>
+          <td><a href="{:U('Event/Index/detail',array('id'=>$vl['id']))}"> <img src="{$vl.cover_id|getThumbImageById=50,40}" title="{$vl.title}" id="forum_img"  onabort="alert('正在玩命加载中...')"></td>
+          </a>
+          </td>
+          <td>{$vl.title}</td>
+          <td>{:get_city($vl['begincity'])}</td>
+          <td><a class="mbtn btn-info common-color-white" href="{:U('Event/Index/detail',array('id'=>$vl['id']))}">查看</a> <a href="javascript:" data-ID="{$vl.id}" class="mbtn btn-danger adv_del" title="删除分类">删除</a></td>
+        </tr>
+      </volist>
+      <else/>
+    <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+      </notempty>
+      </tbody>
+  </table>
+</div>
+<script>
+        $(function () {			
+			//删除
+			$('.adv_del').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				$.post(U('Usercenter/Config/del_collection'), {id: id}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});     
+			
+			
+	    })
+    </script>
+</div>

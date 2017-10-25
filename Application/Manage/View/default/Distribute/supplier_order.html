@@ -1,0 +1,99 @@
+<extend name="Public/base" />
+<block name="body">
+
+		<div class="main-title">
+		    <h2>{$title}</h2>
+		</div>
+	 	  <div class="tab-pane" id="event_tailor">
+		<div class="select_order clearfix">
+		 <div class="pull-left event-height">订单状态: <a class="w_btn w_btn" href="{:U('/Manage/Distribute/supplier_order/status/3')}">全部</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Distribute/supplier_order/',array('status'=>3,'order_status'=>20))}">未处理</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Distribute/supplier_order/',array('status'=>3,'order_status'=>21))}">待发货</a>
+         <a class="w_btn w_btn" href= "{:U('/Manage/Distribute/supplier_order/',array('status'=>3,'order_status'=>33))}">已完成</a>
+         <a class="w_btn w_btn" href= "{:U('/Manage/Distribute/supplier_order/',array('status'=>3,'order_status'=>2))}">已作废</a>
+         <a class="w_btn w_btn" href="{:U('/Manage/Distribute/supplier_order/',array('status'=>3,'pay_status'=>3))}">优惠卷支付</a></div>
+		<div class="pull-right" >
+              <form action="{:U('/Manage/Distribute/supplier_order_seek')}" method="post" class="navbar-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn text-left">
+					 <input type="text" name="seek" class="form-control" placeholder="单号/手机号/收件人姓名均可">
+                    <button type="submit" value="" class="btn btn-default glyphicon glyphicon-search" ></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+		  <div class="clearbox-ol"></div>
+	      <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+                <th>订单号</th>
+				<th>用户昵称</th>
+                <th>订单总额</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>下单时间</th>
+	
+                <th>订单状态</th>
+                <th>支付状态</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <volist name="shop_arr" id="vo">
+            <tr>
+              <td>{$vo.order_sn}</td>    
+              <td>{$vo.nickname}	</td>  		  
+              <td>￥{$vo.alltotalprice}</td>	
+              <td>{$vo.consignee_name}</td>	
+			  <td>{$vo.consignee_address_detailed}</td>				  
+              <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+              <td>{:get_shop_order_status($vo['status'])}</td>			  
+              <td>{:get_shop_order_pay_status($vo['pay_status'])}</td>			  
+              <td><if condition="$vo['supplier_id'] eq $siteid or ($vo['siteid'] eq $siteid and !$vo['supplier_id'])">{:get_shop_admin_btn_tow($vo)}<else/><font color='red'>{:get_shop_order_status($vo['status'])}</font></if><div><a class='' target="_blank" href="{:U('Manage/Order/shop_order_detail',array('order_sn'=>$vo['order_sn']))}">查看详情</a></div></td>			  
+            </tr>
+            </volist>
+             <tr><td colspan="9">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+        
+        </div>
+	  </div>
+<script>
+$(function(){
+	$('.deliver_goods').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+		$('.updateOrder').click(function(){
+			if (confirm('确定要操作么？')) {
+			var id = $(this).attr('data-orderID');
+			var status = $(this).attr('data-status');
+				$.post(U('Manage/Order/do_update_shop_status'), {id: id,status:status}, function (res) {
+					if (res.status == 1) {
+						toast.success(res.m);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}else {
+						toast.error(res.m);
+					}
+				}, 'json');
+			}
+		})
+		
+})	
+</script>
+	
+</block>

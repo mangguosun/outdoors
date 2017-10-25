@@ -1,0 +1,146 @@
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right">
+	    <a class="mbtn  btn-info  event_sign3 common-color-white"  href="{:U('Websit/Index/video_add')}">添加视频</a>       
+	</div>
+    视频管理
+	</div>
+  <div class="row data-table">
+  <label class="common-color-red">亲!只能推荐一个视屏哦</label>
+    <table>
+      <!-- 表头 -->
+       <thead>
+        <tr>
+          <th>编号</th>
+          <th>视屏名称</th>
+          <th>链接地址</th>
+		  <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <?php if(!empty($video)):?>
+        <?php foreach($video as $key=>$vo):?>
+        <tr>
+          <td><?php echo $vo['id'];?></td>
+          <td><?php echo $vo['video_name'];?></td>
+          <td><?php echo substr($vo['video_url'],0,30);?></td>
+		  <td><if condition="$vo.status eq 0">禁用<elseif condition="$vo.status eq 1"/>  启用</if></td>
+        
+        <td>  
+        <eq name="vo.status" value="1">
+          <eq name="vo.video_recommend" value="0">
+            <a href="javascript:" data-ID='{$vo.id}' data-Recommend='1' class='mbtn btn-info video_recommend' >视频推荐</a>
+          <else/>
+            <a href="javascript:" data-ID='{$vo.id}' data-Recommend='0' class='mbtn btn-danger story_recommend' >取消推荐</a>
+          </eq>
+        </eq>
+		   <a class="mbtn btn-info  event_sign2 common-color-white"  href="{:U('Websit/Index/video_edit',array(id=>$vo['id']))}">编辑</a>
+
+			<if condition="$vo.status eq 0">
+			<a href="javascript:" data-ID="{$vo.id}" data-Status="1" class="mbtn btn-info service_disable" >启用</a>
+		   <elseif condition="$vo.status eq 1"/> 
+
+			<a href="javascript:" data-ID="{$vo.id}" data-Status="0" class="mbtn btn-danger service_disable">禁用</a>
+		   </if>
+		 </td>
+
+        </tr>
+        <?php endforeach;?>
+		  <tr><td colspan="5">{$page}</td></tr>
+        <?php else:?>
+      <td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        <?php endif;?>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+
+
+  <script>
+
+      $(function () {			
+			$('.event_sign3').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+			//更新
+			$('.event_sign2').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+			//是否禁用
+			$('.service_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var is_recommend=$(this).attr('data-Status');
+				  $.post(U('Websit/Index/video_is_disable'), {id: id,status:is_recommend}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		 });   
+ 
+     //取消推荐
+      $('.story_recommend').click(function () {
+      if (confirm('确定要操作么？')) {
+        var id = $(this).attr('data-ID');
+        var is_recommend=$(this).attr('data-Recommend');
+          $.post(U('Websit/Index/is_recommend'), {id: id,video_recommend:is_recommend}, function (res) {
+          if (res.status) {
+            toast.success(res.info);
+            setTimeout(function () {
+              location.reload();
+            }, 1500);
+          }
+          else {
+            toast.error(res.info);
+          }
+        }, 'json');
+      }
+     }); 
+
+   //视频推荐
+     $('.video_recommend').click(function () {
+      if (confirm('确定要操作么？')) {
+        var id = $(this).attr('data-ID');
+        var is_recommend=$(this).attr('data-Recommend');
+          $.post(U('Websit/Index/video_recommend'), {id: id,video_recommend:is_recommend}, function (res) {
+          if (res.status) {
+            toast.success(res.info);
+            setTimeout(function () {
+              location.reload();
+            }, 1500);
+          }
+          else {
+            toast.error(res.info);
+          }
+        }, 'json');
+      }
+     }); 
+
+	
+        })
+    </script>
+</div>
+

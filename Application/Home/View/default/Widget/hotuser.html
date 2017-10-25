@@ -1,0 +1,11 @@
+<if condition="$lists neq false">
+  <div class="common_block_border">
+    <div class="common_block_title_right"><span class="pull-right"><a href="{:U('People/Index/index')}">更多></a></span>推荐{$m_level_name}</div>
+    <volist name="lists" id="vo">
+      <dl  class="hotuser-ol">
+        <dt class="col-md-3"><a target="_blank" href="{$vo.user.space_url}"><img src="{$vo.user.avatar64}" class="avatar-img" ucard="{$vo.uid}"></a></dt>
+        <dd class="col-md-9"><a title="{$vo.user.nickname}" href="{$vo.user.space_url}">{$vo.user.nickname}</a> </dd>
+      </dl>
+    </volist>
+  </div>
+</if>

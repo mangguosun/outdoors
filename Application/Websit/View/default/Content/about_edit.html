@@ -1,0 +1,36 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+</style>
+ <div id="center" class="">
+	<div class="common_block_title ">
+	<div class="pull-right"><a class="btn  btn-info common-color-white"  href="javascript:history.go(-1)">返回上级</a></div>编辑关于我们</div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Content/about_doEdit')}" method="post">
+          <div class="form-group">
+            <label for="title" class="col-md-2 control-label">类别名称</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="title" placeholder="请输入类别名称" name="title"
+					   value="{$list.title}">
+            </div>
+          </div>
+          <input type="hidden" name="id" value="{$list['id']}">
+          <div class="form-group">
+            <label for="content" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'content','value'=>$list['content']))}
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Content/about_doEdit')}">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</block>
+
+

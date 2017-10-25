@@ -1,0 +1,263 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+<div class="row">
+<ol class="breadcrumb">
+  <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+  <li class="active">网站申请</li>
+</ol>
+</div>
+
+<div class="row">
+      <div class="widget radius-bordered">
+        <div class="widget-header  bordered-bottom bordered-sky"> <i class="widget-icon fa fa-tasks themeprimary"></i> <span class="widget-caption">网站申请</span> </div>
+        <div class="widget-body">
+          <form id="defaultForm" class="form-horizontal" role="form" action="{:U('Official/Usercenter/do_webconfig')}" method="post">
+      <input type="hidden" id="siteid" name="siteid" value="{$web_info.siteid}">
+      <input type="hidden" id="oldurl" name="oldurl" value="{$web_info.url}">
+      <input type="hidden" id="olddomain" name="olddomain" value="{$web_info.domain}">
+      
+      <if condition="$web_info['siteid']">
+		<div class="form-group">
+          <label for="webname" class="col-md-2 control-label">网站状态</label>
+          <div class="col-md-7">
+          	<div class="form-control-static" style="color:#F00;"><?php if($web_info['status'] == 1):?>
+                  已审核
+                  <?php elseif($web_info['status'] == 0):?>
+                  未审核
+                  <?php elseif($web_info['status'] == -1):?>
+                  已禁用
+                  <?php elseif($web_info['status'] == -2):?>
+                  已删除
+                  <?php endif;?></div>
+          </div>
+        </div>
+      </if>  
+        <div class="form-group">
+          <label for="webname" class="col-md-2 control-label">网站名称</label><span style="color:#F00">*</span>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="webname" placeholder="请输入网站名称" name="webname" value="{$web_info.webname}">
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="club_name" class="col-md-2 control-label">负责人名称</label><span style="color:#F00">*</span>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="club_name" placeholder="负责人名称" name="club_name" value="{$web_info.club_name}">
+          </div>
+        </div>
+		<div class="form-group position">
+			<label for="club_address" class="col-md-2 control-label">所在城市</label><span style="color:#F00">*</span>
+			<div class="col-md-7"> 
+            	<div class="form-inline"> {:hook('Citylinkage',array('find'=>'club_address','level'=>4,'linkageid'=>$web_info['club_address']))} </div>
+			</div>
+		</div>
+		<div class="form-group">
+          <label for="club_mobile" class="col-md-2 control-label">负责人手机</label><span style="color:#F00">*</span>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="club_mobile" placeholder="负责人手机号码" name="club_mobile" value="{$web_info.club_mobile}">
+          </div>
+        </div>
+<div class="form-group">
+          <label for="club_email" class="col-md-2 control-label">负责人邮箱</label><span style="color:#F00">*</span>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="club_email" placeholder="负责人邮箱" name="club_email" value="{$web_info.club_email}">
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="theme_type" class="col-md-2 control-label">俱乐部类型</label><span style="color:#F00">*</span>
+          <div class="col-md-7">
+             {:form_select(get_clubName(),$web_info['theme_type'],'class="form-control" check-type="Text" name="theme_type" id="theme_type"','请选择')}
+          </div>
+          
+         </div>
+         <div class="form-group">
+		<label for="theme" class="col-md-2 control-label">模板</label><span style="color:#F00">*</span>
+		 <div class="col-md-7">
+         		 {:form_select(get_website_theme(),$web_info['theme'],'class="form-control" check-type="Text" name="theme" id="theme"','请选择')}<img class="theme_img" style="display:none">
+		 </div>
+		</div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">二级域名前缀</label>
+            <div class="col-lg-7">
+                <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                    <input type="text" class="form-control" placeholder="域名前缀" name="url" value="{$web_info.url}" <notempty name="web_info.url">readonly</notempty> /> 
+                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="申请后不可修改">.huodongli.cn <i class="fa fa-question darkorange danger circular"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+          <label for="domain" class="col-md-2 control-label">独立域名</label>
+          <div class="col-lg-7">
+                <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                    <input type="text" class="form-control" placeholder="独立域名" name="domain" value="{$web_info.domain}" <notempty name="web_info.domain">readonly</notempty> /> 
+                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="如：www.abc.com，修改请联系官方客服"><i class="fa fa-question darkorange danger circular"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+          <label for="email" class="col-md-2 control-label">客服邮箱</label>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="email" placeholder="请输入正确的客服email" name="email" value="{$web_info.email}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="telphone" class="col-md-2 control-label">客服电话</label>
+          <div class="col-md-7">
+            <input type="text" class="form-control" id="telphone" placeholder="请输入正确的客服电话" name="telphone" value="{$web_info.telphone}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-12">
+          <if condition="$web_info['siteid']">
+         	 <button type="submit" class="btn btn-primary">修改配置</button>
+          <else/>
+          	<button type="submit" class="btn btn-primary">申请网站</button>
+          </if>
+          </div>
+        </div>
+      </form>
+        </div>
+      </div>
+
+  </div>
+
+
+    
+    
+    
+
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#theme").change(function(){
+		var theme=$(this).children('option:selected').val();
+		if(theme){
+			$.post(U('Official/Usercenter/dotheme'), {theme:theme}, function (data) {
+				if(data['status']==0){
+					
+				}else{
+					var url = '__PUBLIC__/Core/images/theme/'+data['img'];
+					$(".theme_img").attr({src : url}).show();
+				}														  
+			}, 'json');
+			
+		}
+	})
+})
+
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            webname: {
+                validators: {
+                    notEmpty: {
+                        message: '网站名称不能为空'
+                    },
+					
+					
+                }
+            },
+			club_name: {
+                validators: {
+                    notEmpty: {
+                        message: '负责人名称不能为空'
+                    }
+                }
+            },
+			club_mobile: {
+                validators: {
+                    notEmpty: {
+                        message: '负责人手机不能为空'
+                    },
+                    regexp: {
+                        regexp: /^1[0-9]{10}$/,
+                        message: '请输入正确的手机号码'
+                    },
+                }
+            },
+			club_email: {
+                validators: {
+                    notEmpty: {
+                        message: '负责人邮箱不能为空'
+                    },
+					emailAddress: {
+                        message: '请填写正确格式的邮箱'
+                    }
+                }
+            },
+			theme_type: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择俱乐部类型'
+                    }
+                }
+            },
+			theme: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择俱乐部模板'
+                    }
+                }
+            },
+			url: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写域名前缀'
+                    },
+					regexp: {
+                        regexp: /^([\w-])+[\w-]+(\.+[\w-]*)?$/,
+                        message: '域名前缀不能带http://'
+                    },
+                }
+            },
+			domain: {
+                validators: {
+                   regexp: {
+                        regexp: /^([\w-]+\.)+[\w-]+([\w-.]*)?$/,
+                        message: '域名前缀不能带http://'
+                    },
+                }
+            },
+			email: {
+                validators: {
+                   notEmpty: {
+                        message: '客服邮箱不能为空'
+                   },
+				   emailAddress: {
+                        message: '请填写正确格式的邮箱'
+                    }
+                }
+            },
+			telphone: {
+                validators: {
+                   notEmpty: {
+                        message: '客服电话不能为空'
+                    },regexp: {
+                        regexp: /^\+?[1-9][0-9]*$/,
+                        message: '客服电话只能为数字'
+                    },
+                }
+            },
+			
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

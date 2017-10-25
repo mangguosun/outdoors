@@ -1,0 +1,25 @@
+<div id="frm-post-popup" class="white-popup pay-popups">
+  <h2>在线支付信息</h2>
+  <div class="aline common-margin-bten" ></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Pay/pay_popup')}" method="post">
+          <input type="hidden" name="trade_sn" id="trade_sn" value="{$order_info.trade_sn}"/>
+          <div class="form-group has-feedback">
+            <div class="col-md-12 pay-popup">
+            支付流水单号：<span class="pay-popup-order">{$order_info.trade_sn}</span><br />
+              请在新打开的窗口完成支付，<br />支付完成前请不要关闭本页面!
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary btn-primary-pay" >已经完成支付</button>
+              <button type="submit" class="btn btn-primary btn-primary-pay" >支付遇见问题，重新支付</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+ <style>
+.popover{ max-width:750px;z-index: 10001;}
+.weixin_out_underline:hover {text-decoration:none;}
+ </style>
+</block>
+<block name="body">
+
+ <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">公众号管理&nbsp;&nbsp;</span>                          
+                    
+                </div>
+                <div id="simplewizardinwidget" class="wizard" data-target="#simplewizardinwidget-steps">
+		            <ul class="steps">
+		                <li class="active"><a href="{:U('Manage/Weixin/public_add',array('id'=>$id))}" class="weixin_out_underline"><span class="step">1</span>增加基本信息<span class="chevron"></span></a></li>
+		                <li ><a href="<empty name='id'>###<else /> {:U('Manage/Weixin/step_1',array('id'=>$id))}</empty>" class="weixin_out_underline"><span class="step">2</span>配置公众平台<span class="chevron"></span></a></li>
+		                <li ><a href="<empty name="id">###<else /> {:U('Manage/Weixin/step_2',array('id'=>$id))}</empty>" class="weixin_out_underline"><span class="step">3</span>保存接口配置<span class="chevron"></span></a></li>
+		            </ul>
+		    	</div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Weixin/do_publicadd')}" class="form-horizontal form-bordered" method="post" >  
+                        <div class="form-title">
+                            必填项&nbsp;&nbsp;
+                            <a href="javascript:void(0);" class="label label-darkorange" data-container="body" data-titleclass="bordered-purple" data-class="dark aaa" sty data-toggle="popover" data-placement="bottom-left" data-title="帮助信息" data-content="<img src='__PUBLIC__/Manage/images/weixin/help01.png' width=700>" data-original-title="" title="">帮助</a></span>
+                        </div>
+                        <input name="id" type="hidden" value="{$public_info.id}" />
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">公众号名称：</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="public_name" name="public_name" value="{$public_info.public_name}" placeholder="公众号名称" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">原始ID：</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="public_id" id="public_id" value="{$public_info.public_id}" placeholder="原始ID" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">微信号：</label>
+                            <div class="col-lg-9">
+                                <div class="input-group">
+                                    <input id="wechat" type="text" class="form-control" placeholder="微信号" name="wechat" value="{$public_info.wechat}" /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="请正确填写，保存后不能再修改，且无法接收到微信的信息"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+							<span class="col-lg-3 control-label">公众号类型：</span>
+								<div class="col-lg-9">
+									<div class="radio">
+                                    {:form_radio_manage(array('0'=>'普通订阅号','1'=>'认证订阅号/普通服务号','2'=>'认证服务号'),$public_info['type'],'name="type" class="type"','','type')}
+									</div>
+								</div>
+						</div>
+                        <div class="form-group">
+							<div class="col-lg-offset-2 col-lg-10">
+								<input class="btn btn-palegreen" type="submit" value="下一步">
+								<input onclick="javascript:history.back(-1);return false;" href="{:U('Weixin/index')}" class="btn btn-palegreen" type="button" value="返回">
+							</div>
+						</div>
+                    </form>
+                </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        
+        /*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+                    
+                validator.defaultSubmit();
+                    
+                }
+            })
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            public_name: {
+                validators: {
+                    notEmpty: {
+                        message: '公众号名称是必需的，不能是空的'
+                    },
+                }
+            },
+            public_id: {
+                validators: {
+                    notEmpty: {
+                        message: '原始ID是必需的，不能是空的'
+                    }
+                }
+            },
+            wechat: {
+                validators: {
+                    notEmpty: {
+                        message: '微信号是必需的，不能是空的'
+                    }
+                }
+            },
+            type: {
+                validators: {
+                    notEmpty: {
+                        message: '公众号类型是必需的，不能是空的'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

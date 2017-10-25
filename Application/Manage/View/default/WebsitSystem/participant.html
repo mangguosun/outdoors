@@ -1,0 +1,20 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>常用参加者填写信息设置</h2>
+</div>
+<!-- 数据列表 -->
+<div id="auth_groups">
+	<form class="form-horizontal center_info ajax-form" role="form" action="{:U('Manage/WebsitSystem/participant')}" method="post">
+ 		<div class="form-item">
+			<label for="participant" class="item-label" style="color:red;">(勾选项为必填项)</label>
+			<div class="">
+			{:form_checkbox(get_participant(),$participant,'name="participant[]" id="participant"',0,'120')} 
+			</div>
+		</div>
+		<div class="form-item">
+			<button type="submit" class="w_btn submit-btn">保存</button>
+		</div>
+	</form>
+</div>
+</block>

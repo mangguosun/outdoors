@@ -1,0 +1,24 @@
+<div class="search_shop">
+  <div class="associator">
+    <volist name="documentlist" id="vo">
+      <div class="whole">
+        <div class="associator_image"> <a href="{:U('Usercenter/Index/index',array('uid'=>$vo['uid']))}" target="_blank"><img src="{$vo['userinfo']['avatar128']}"/></a> </div>
+        <div class="detail-information">
+          <ul>
+            <li class="signature"><a href="{:U('Usercenter/Index/index',array('uid'=>$vo['uid']))}" target="_blank">{$vo['nickname']}</a></li>
+            <li class="same">简介:&nbsp;&nbsp;<?php echo $vo['userinfo']['self_introduction']=$vo['userinfo']['self_introduction']?$vo['userinfo']['self_introduction']:'暂无个人简介';?></li>
+            <li class="same">星座:&nbsp;&nbsp;{$vo['userinfo']['constellation']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别:&nbsp;&nbsp;
+              <if condition="$vo['userinfo']['sex'] eq 1">男</if>
+              <if condition="$vo['userinfo']['sex'] eq 2">女</if>
+              <if condition="$vo['userinfo']['sex'] eq 0">保密</if>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </volist>
+    <div> {:getPagination($totalCount,10)}</div>
+    <if condition="!$documentlist">
+      <div class="shop-box-prompt">该分类下现在还没有会员哦。O(∩_∩)O~ </div>
+    </if>
+  </div>
+</div>

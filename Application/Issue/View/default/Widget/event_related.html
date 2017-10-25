@@ -1,0 +1,15 @@
+<if condition="!empty($event_info)">
+  <div class="common_block_border">
+    <div class="common_block_title_right">相关活动</div>
+    <div class="common_block_title_right_common">      
+        <div> <a href="{:U('Event/Index/detail',array('id'=>$event_info['id']))}"> <img class="recommend add_loading add_loading_relatedevent" src="__PUBLIC__/Core/images/blank.png" data-original="{$event_info.cover_id|getThumbImageById=300,225}"/></a> <span><strong><a href="{:U('Event/Index/detail',array('id'=>$event_info['id']))}" class="text-more hundred">{$event_info.title}</a></strong>
+          <div class="font_grey"> 集合地：{:get_city($event_info['begincity'])} 目的地：{:get_city($event_info['finalcity'])}</div>
+          <span class="font_grey"></span> </div>    
+    </div>
+  </div>
+<script>
+$(function () {
+hdl_lazyload("img.add_loading_relatedevent");
+ })
+</script>
+</if>

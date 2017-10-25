@@ -1,0 +1,46 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>备注列表</h2>
+</div>
+<div class="cf">
+     <div class="fl">
+       <a class="w_btn" href="{:U('Order/custom')}">返回           	
+       </a>
+    </div>
+ </div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+            	<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th>备注ID</th>
+                <th>添加备注者</th>
+                <th>备注时间</th>
+                <th>备注内容</th>                
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="tailor_note">
+                <volist name="tailor_note" id="vo">
+                    <tr>
+                   		<td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                       <td>{$vo.id}</td>
+                       <td>{$vo.nickname}</td>
+                       <td>{:date('Y-m-d H:i:s',$vo[create_time])}</td>
+                       <td>{$vo.content}</td>
+                    </tr>                    
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+	 
+</block>

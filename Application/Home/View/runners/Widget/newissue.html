@@ -1,0 +1,43 @@
+
+<div class="runners_index_left">   
+<if condition="$rs_newissue neq false">
+
+<div class="runners-index-issue-box">
+  <div class="runners_index_title">
+       <span class="pull-right"><a href="{:U('Issue/index/index')}"><i class="glyphicon glyphicon-plus"></i></a></span> 故事 
+  </div>
+  <div class="runners-issue-list">
+    <ul>
+      <volist name="rs_newissue" id="vo" key="k">
+        <li>
+          <div class="img">
+            <div class="imgdiv"> <a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}"><img class="add_loading add_loading_newissue" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=380,285}" /></a> </div>
+          </div>
+          <div class="text">
+                <div><h4>{$vo.title}</h4></div>
+                <div class="fontcolor"> <i class="glyphicon glyphicon-tag"></i>
+                  <volist name="vo['tags']" id="v"> {$v.name}&nbsp;&nbsp; </volist>
+                </div>
+                <div class="text-people"> 
+                    <a href="{$vo.user.space_url}">
+                        <div class="people-photo"><img src="{$vo.user.avatar128}" /></div>
+                        <div class="people-name">{$vo.user.nickname}</div>
+                    </a> 
+                </div>
+                <div class="text-content">{$vo.content|op_t|getShortSp=65} <a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}">&nbsp;&nbsp;阅读全文></a> </div>
+                <div class="bottomimg"> 
+                    <span><i class="glyphicon glyphicon-eye-open"></i>{$vo.view_count}</span> <span class="like2"><i class="glyphicon glyphicon-heart"></i>{$vo.collect_count}</span> <span><i class="glyphicon glyphicon-comment"></i>{$vo.reply_count}</span> 
+                </div>
+          </div>
+        </li>
+      </volist>
+    </ul>
+  </div>
+</div>  
+  <script type="text/javascript">
+$(function () {
+hdl_lazyload("img.add_loading_newissue");
+})
+</script>
+</if>
+</div>

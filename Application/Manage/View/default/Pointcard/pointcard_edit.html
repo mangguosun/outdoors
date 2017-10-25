@@ -1,0 +1,131 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+        <h2>补发卡券</h2>
+    </div>
+    <form action="{:U('Manage/Pointcard/pointcard_replacement')}" method="post" class="form-horizontal">
+
+		<div class="form-item">
+			<label for="traveldays" class="item-label">卡券类型<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+			
+			<if condition="$card_info.stamp eq '1' ">
+				<input type="radio" name="couponcode" value="1" checked>&nbsp;一码一券&nbsp;
+			<else/>	
+				<input type="radio" name="couponcode" value="2" checked>&nbsp;一码多券&nbsp;
+			</if>	
+			</div>
+		</div>
+		<label class="item-label">号码前缀:&nbsp;&nbsp;{$card_info.unifiedcardid}</label>
+		<div class="controls">
+          <input id="prefix" name="prefix" type="hidden" class="text input-large" check-type="Text"  value="{$card_info.unifiedcardid}" />
+        </div> 
+        <label class="item-label">类型名称:&nbsp;&nbsp;{$card_info.typename}</label>
+        <div class="controls">
+             <input id="typename" name="typename" type="hidden" class="text input-large" check-type="Text"  value="{$card_info.typename}" />   
+        </div>
+         <label class="item-label">面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;值:&nbsp;&nbsp;{$card_info.amount}(元)</label>
+        <div class="controls">
+             <input id="amount" name="amount" type="hidden" class="text input-large" check-type="Text"  value="{$card_info.amount}"/>   
+        </div>
+        <label class="item-label">补发数量(张):<span class="check-tips">(<=10000)</span></label>
+        <div class="controls">
+             <input id="cardnum" name="cardnum" type="text" class="text input-large" check-type="Text"  value="" />   
+        </div>
+        
+		
+        <label class="item-label">生效时间:<span class="check-tips">(默认为无限制)</span></label>
+            <div class="controls">
+				<input id="starttime" name="starttime" type="text" class="text input-large time" check-type="Text"  value="" />
+			</div>
+        <label class="item-label">到期时间:<span class="check-tips">(默认为无限制)</span></label>
+            <div class="controls">
+				<input id="endtime" name="endtime" type="text" class=" time text input-large" check-type="Text"  value="" />
+			</div>    
+		
+     		
+		
+        <br/>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" target-ls="a">提交</button>
+            <a class="w_btn btn-return" href="{:U('Pointcard/index')}">返回</a>
+        </div>
+    </form>
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+
+$(function(){
+        $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+	$('.pointcard_sign').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+					//	console.log(this.content);
+					}
+				}
+			});
+			
+	
+});
+
+ Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份 
+			"d+": this.getDate(), //日 
+			"h+": this.getHours(), //小时 
+			"m+": this.getMinutes(), //分 
+			"s+": this.getSeconds(), //秒 
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S": this.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+
+    $('#starttime').change(function(){	
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 00:00';  
+	   
+		setTimeout(function () {
+			 $('#starttime').val(date1);
+		}, 10);
+	})
+	
+	 $('#endtime').change(function(){	
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 23:59';  
+	   
+		setTimeout(function () {
+			 $('#endtime').val(date1);
+		}, 10);
+	})
+</script>
+
+
+
+	
+</block>

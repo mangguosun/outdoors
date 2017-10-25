@@ -1,0 +1,23 @@
+<div id="frm-post-popup" class="white-popup" style="max-width: 745px">
+  <button title="Close (Esc)" type="button" class="mfp-close" style="color: #333;">×</button>
+  <h2>你确定向左优户外提交分销合作申请吗？</h2>
+  <div class="aline" style="margin-bottom: 10px"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Manage/Distribute/relation_a_apply')}" method="post">
+			<div id="editMoneybox" class="editMoneybox">
+				<input type="hidden" name="supplier_id" value="{$_GET['supplier_id']}" >
+				<p>注意事项：</p>
+				<p>1，分销申请，供应商将在7天内审核完毕。</p>
+				<p>2，审核通过后，您的商铺将自动同步商品，您无法添加编辑删除商品</p>
+				<p>3，你可以主动终止分销合作，合作解除后，商铺转为普通模式</p>
+					<p>（可以自己发布商品）</p>
+			</div>
+			<p>
+			<input type="submit" class="mbtn btn-info deliver_goods" value="我要申请全站分销">
+			</p>
+      </div>
+    </div>
+  </div>
+</div>

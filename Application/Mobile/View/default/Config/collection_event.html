@@ -1,0 +1,41 @@
+<extend name="Public/common_user"/>
+<block name="body">
+<div class="moblie_user_box"> <span class="mobile_crumbs "><a href="javascript:history.go(-1)" title="{:get_webinfo('webname')}"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_user">
+	<div class="text-right">
+		<div>
+		<div class="user_screening_btn user_screening_btn_con">我收藏过的活动</div>
+		</div>
+	</div>
+</span></div>
+    <div class="moblie_line"></div>
+    <notempty name="list">
+       <volist name="list" id="vl">
+	    <div class="mobile-event-box_con">
+			<div class="moblie_event_collection_con">
+			  <a href="{:U('Mobile/Event/detail',array('id'=>$vl['id']))}"><img class="mobile-avatar_con" src="{$vl.cover_id|getThumbImageById=50,50}" title="{$vl.title}"  id="forum_img" onabort="alert('正在玩命加载中...')"></a>
+			</div>
+			<div class='wenzi'>
+				{$vl.title}<p class='wenzi_p'><a class="my_collection" data-id="{$vl['id']}" href="javascript:void(0)" class="my_collection">取消收藏</a></p>
+			</div>
+		</div>
+		<hr width="100%" style="border:1px dashed #ccc;"/>
+	    </volist>
+      <else/>
+    <span> aOh! 暂时还没有内容!</span>
+    </notempty>
+<script>
+	$('.my_collection').click(function(){
+		var id = $(this).attr('data-id');
+		$.post(U('Mobile/Config/cancel_collection'),{id:id},function(res){
+			if(res.status == 1){
+				toast.success(res.msg);
+				 setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+			}else{
+				toast.error(res.msg)
+			}
+		},'json')
+	})
+</script>
+</block>

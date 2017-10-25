@@ -1,0 +1,84 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="top_bar_mobile"> <span class="mobile_crumbs "><a onclick="window.history.go(-1)" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_search">
+    <div class="text-right">
+      <div class="event_screening_btn">筛选</div>
+    </div>
+    </span> </div>
+  <div class="search_event_screening">
+    <if condition="$_GET['type_id'] eq ''">
+      <php> $select_enenttype_arr = filters('type_id',get_enenttype()); </php>
+      <div class="event_screen_list"> <span class="event_screen_name">类别：</span>
+        <volist name="select_enenttype_arr" id="pr"> {:$pr[menu]} </volist>
+      </div>
+    </if>
+    <php> $select_starttime_arr = filters('starttime',get_timetoweek()); </php>
+    <div class="event_screen_list"> <span class="event_screen_name">出发时间：</span>
+      <volist name="select_starttime_arr" id="pr"> {:$pr[menu]} </volist>
+    </div>
+    <php> $select_holiday_arr = filters('holiday',get_holiday()); </php>
+    <div class="event_screen_list"> <span class="event_screen_name">节日：</span>
+      <volist name="select_holiday_arr" id="pr"> {:$pr[menu]} </volist>
+    </div>
+  </div>
+  <script>
+$(function () {
+
+$('.event_screening_btn').click(function () {
+	var search_event_screening = $(".search_event_screening");
+	if(search_event_screening.is(":hidden")){
+		search_event_screening.slideDown(200);
+	}else{
+		search_event_screening.slideUp(200);
+	}	
+});		
+		
+$('.submit_search').click(function () {
+	$('#forum_search').attr('action', $(this).attr('url'));
+	$('#forum_search').submit();
+});
+})
+</script>
+  <div class="h40"></div>
+  <div class="mobile_type_lists">
+    <ul>
+      <volist name="tree" id="top">
+        <li><a 
+          <eq name="type_id" value="$top['id']">class="cur"</eq>
+          href="{:U('Mobile/Event/index',array('type_id'=>$top['id'],'norh'=>$norh))}" data="{$top.id}">{$top.title}</a></li>
+      </volist>
+    </ul>
+  </div>
+  <!--导航-->
+  <div class="mobile_module">
+  <div class="mobile_event_list">
+      <ul>
+        <volist name="contents" id="vo">
+          <li><a class="mobile_event_a" title="{$vo.title|strip_tags}" href="{:U('Mobile/Event/detail',array('id'=>$vo['id']))}"><img class="" src="{$vo.cover_id|getThumbImageById=200,180}" />
+          <div class="m_e_l_box">
+            <div class="m_e_l_t">{$vo.title}</div>
+            <div class="m_e_l_c">
+              <php> $begincity = get_citys($vo['begincity']);
+                $finalcity = get_citys($vo['finalcity']); </php>
+              <div class="mobile_event_list_icon"><span class="fa fa-tag"></span><volist name="vo.tags" id="tag" key="k"><if condition="$k elt 3">{$tag.name}&nbsp;</if>
+                </volist>
+              </div>
+              <div class="mobile_event_list_icon"><span class="fa fa-map-marker"></span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])} ({$vo.traveldays}天)</div>
+              <div class="mobile_event_list_icon"><span class="fa fa-clock-o"></span>开始时间：{$vo.lasted_time}</div>
+              <div class="mobile_event_list_icon"><span class="fa fa-jpy"></span><if condition="$vo.price_text neq ''"><span style="color:#FD9B00">{$vo.price_text}</span><else /><if condition="$vo.price eq 0"><span style="color:#FD9B00">免费活动</span><else /><span style="color:#FD9B00">{$vo.price}</span>元/人</if></if></div>
+            </div>
+            </div>
+            <div class="m_l_more"><i class="glyphicon glyphicon-chevron-right"></i></div></a></li>
+        </volist>
+      </ul>
+      <div>
+        <if condition="count($contents) eq 0">
+          <div style="font-size:3em;padding:2em 0;color: #ccc;text-align: center">此分类下暂无内容哦。O(∩_∩)O~</div>
+        </if>
+      </div>
+      <div class="mobile_event_page">{:getPagination($totalPageCount,10)}</div>
+    </div>
+    
+  </div>
+</block>
+<block name="script"></block>

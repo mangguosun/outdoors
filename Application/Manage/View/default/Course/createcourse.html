@@ -1,0 +1,105 @@
+<extend name="Public/base" />
+<block name="style">
+<link href="__STATIC__/datetimepickerV3/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+</block>
+<block name="body">
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Course/addcourse')}" method="post">
+	
+		<div class="form-item">
+			<label for="couresclass" class="item-label">课程类别</label>
+			<div class="controls">
+				<input type="radio" id="price_text_choose" name="couresclass" value="0">私教课程
+				<input type="radio" id="price_num_choose" name="couresclass" value="1">公共课程
+			</div>           
+		</div>
+		<div class="form-item">
+			<label for="couresname" class="item-label">课程名称<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input id="title" name="couresname" maxlength="25" class="text input-large" check-type="Text" value="{$name}" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="subsn" class="item-label">课程编号<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input id="subsn" name="subsn" maxlength="25" class="text input-large" check-type="Text" value="{$subsn}" />
+			</div>
+		</div>
+		<div class="form-item">
+				<label for="goods_name" class="item-label">标题图<a>&nbsp;(必填)</a></label>
+				<div class="controls">
+					{:hook('UploadImage', array('find_name'=>'goods_ico','value'=>$event_arr['goods_ico'],'buttontext'=>'商品封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600','width'=>600,'height'=>600))}
+				</div>
+		</div>
+		<div class="form-item">
+			<label for="cover_id" class="item-label">详情页轮播图</label>
+			<div class="controls">
+				{:hook('UploadImage', array('find_name'=>'pictures_id','value'=>$event_arr['pictures_id'],'buttontext'=>'详情页轮播图','buttonwidth'=>200,'multi'=>true,'ds'=>'400*300','width'=>400,'height'=>300))}
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="class_time" class="item-label">课时<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input id="class_time" name="class_time" maxlength="25" class="text input-large" check-type="Text" value="{$class_time}" />
+				分钟/课时
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="price" class="item-label">参考价格<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input id="price" name="price" maxlength="25" class="text input-large" check-type="Text" value="{$price}" />
+				元
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="effect_date" class="item-label">有效期<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input id="effect_date" name="effect_date" maxlength="25" class="text input-large" check-type="Text" value="{$course.effect_date}" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="price_type" class="item-label">支付方式</label>
+			<div class="controls">
+				<input type="radio" id="price_text_choose" name="price_type" value="1">全额付款
+			</div>           
+		</div>
+		<div class="form-item">
+			<label for="price" class="item-label">教练</label>
+			<div class="controls">
+				<input type="radio" id="price_text_choose" name="price_type" value="1">可指定教练
+				<input type="radio" id="price_text_choose" name="price_type" value="2">不可指定教练
+			</div>           
+		</div>	
+		  </div>  
+
+		    <div class="form-item">
+            <label for="travel_point" class="item-label">课程简介<a>&nbsp;(上传的图片宽度建议小于700像素)</a></label>
+            <div class="controls">
+              {:Hook('Ueditor',array('name'=>'brief_desc','value'=>$event_arr['brief_desc']))}
+            </div>
+          </div>
+		   <div class="form-item">
+            <label for="explain" class="item-label">课程介绍<a>&nbsp;(上传的图片宽度建议小于700像素)</a></label>
+            <div class="controls">
+              {:Hook('Ueditor',array('name'=>'desc','value'=>$event_arr['desc']))}
+              </div>
+          </div>
+		  <div class="form-item">
+            <label for="apply_notice" class="item-label">报告须知<a>&nbsp;(上传的图片宽度建议小于700像素)</a></label>
+            <div class="controls">
+                {:Hook('Ueditor',array('name'=>'apply_notice','value'=>'33333333'))}
+            </div>
+          </div>
+          <br>
+		   <div class="form-item">
+            <button type="submit" class="w_btn submit-btn" target-form="form-horizontal">确定</button>
+            <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+          </div>
+    </form>
+</div>
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+
+</block>

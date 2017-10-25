@@ -1,0 +1,161 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">      
+  <div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="table-toolbar">
+        	<a href="javascript:history.go(-1)" class="btn btn-default">返回</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">排期订单信息</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body"> 
+ 
+ 				<notempty name="detainfo">
+			        <table  class="table table-bordered">
+						 <tr>
+                         	<thead>
+                                <th>订单号</th>
+                                <th>报名人</th>
+                                <th>报名时间</th>
+                                <th>应付金额</th>
+                                <th>实付金额</th>
+                                <th>报名人</th>
+                                <th>状态</th>
+                                <th>订单类型</th>
+                                <th>操作</th>
+                            </thead>
+						</tr>
+				      <!-- 列表 -->
+					  <tbody>
+						<volist name="detainfo" id="v">
+						  <tr>
+						    <td>{$v.trade_sn}
+                            </td>
+							<td><a href="{:U('Usercenter/Index/index',array('uid'=>$v['uid']))}" title="点击查看该用户信息"  target="_blank">{$v.contact_name}</a></td>
+							<td>{:date('Y-m-d H:i:s',$v[creat_time])}</td>
+							<td>￥{$v.totalprice}</td>
+							<td>￥{$v.payprice}</td>
+							<td >共{:get_signnum($v['id'])}人</td>
+							<td>{:get_event_order_status($v['status'])}</td>
+							<td>
+							<?php if($v['ordertype'] == 1):?>
+							<span>正常报名</span>
+							<?php elseif($v['ordertype'] == 2):?>
+							<span>报满预约</span>
+							<?php endif;?>
+							</td>
+							<td>
+                            
+                                <div class="btn-group">
+                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        操作 <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{:U('Manage/Order/event_allmember',array('id'=>$v['calendar_id'],'eventid'=>$v['event_id']))}">查看所有参加者</a>
+                                        </li>
+
+                                        <?php if(get_signnum($v['id']) > 0): ?>
+                                        <li>
+                                            <a href="{:U('Manage/Order/order_allmember',array('calendar_id'=>$v['calendar_id'],'order_id'=>$v['id']))}">订单参加者</a>
+                                        </li> 
+                                        <?php endif;?>   
+                                      
+                  						<li>
+                                        <a class="" href="{:U('Manage/Order/event_detail',array('trade_sn'=>$v['trade_sn']))}">详情查看</a> 
+                                        </li>
+                                   
+                                    </ul>
+                                    </div>
+                            
+                           </td>
+						  </tr>
+ 
+						</volist>
+					   </tbody>
+					</table>
+ 				</notempty>
+ 
+			</div>
+		</div>
+	</div>
+</div> 
+ 
+ 
+
+</block>
+
+<block name="script">
+<!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script>
+	var InitiateSimpleDataTable = function () {
+		return {
+			init: function () {
+				//Datatable Initiating
+				var oTable = $('#simpledatatable').dataTable({
+					"sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+					"iDisplayLength": 10,
+	
+					"oTableTools": {
+						"aButtons": [],
+						"sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+					},
+					"language": {
+						"search": "",
+						"sLengthMenu": "_MENU_",
+						"sZeroRecords": "对不起，查询不到任何相关数据",
+						"sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+						"sInfoEmpty": "共查询到 _TOTAL_ 条记录",
+
+						"sInfoEmtpy": "找不到相关数据",
+						"sInfoFiltered": "(数据表中共为 _MAX_ 条记录)",
+				 		"sProcessing": "正在加载中...",
+						"oPaginate": {
+							"sFirst":    "首页",
+							"sPrevious": "上页",
+							"sNext":     "下页",
+							"sLast":     "末尾"
+						}
+					},
+					
+					"bFilter": true, //搜索栏
+                    "bPaginate": true, //翻页
+                    "bLengthChange": true, ////每页显示的记录数
+                    "bInfo": false, //显示表格信息
+                    "bAutoWidth": true, //自适应宽度
+                    "aoColumns": [
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": false }
+                    ],
+					"aaSorting": []
+				});
+			}
+	
+		};
+	
+	}();
+	InitiateSimpleDataTable.init();
+    </script>
+
+</block> 

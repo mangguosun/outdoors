@@ -1,0 +1,133 @@
+<div class="shop_submenu_box">
+    <div class="shop_title_box">
+        <div class="shop_submenu_title">
+			<eq name="brand.icon" value=""><i class="submenu_ico_i fa fa-th-large"></i><else/><i class="submenu_ico_i fa fa-{$brand.icon}"></i></eq>{$brand.name}
+		</div>
+    </div>
+</div>	 
+<div id="shopfilter">  
+	<div class="screening">
+		<dl>  
+			<dt>品牌：</dt>  
+			<volist name="shop_brand" id="shop_brand">
+			{$shop_brand['menu']}
+			</volist>
+			<div class="clear"></div>
+		</dl>  
+		<div class="the-more"><a href="javascript:">更多<i class="fa fa-caret-down"></i></a></div>
+		<div class="clear"></div>
+	</div>
+	<div class="screening">
+		<dl>  
+			<dt>标签：</dt> 
+			<volist name="tags" id="tags">
+			 {$tags['menu']} 
+			</volist>
+			<div class="clear"></div>
+		</dl>  
+		<div class="the-more"><a href="javascript:">更多<i class="fa fa-caret-down"></i></a></div>
+		<div class="clear"></div>
+	</div>
+	<div class="screening">	
+		<dl>  
+			<dt>筛选：</dt>  
+			<volist name="action" id="action">
+			 {$action['menu']} 
+			</volist>  
+			<div class="clear"></div>
+		</dl> 
+		<div class="clear"></div>
+	</div>
+</div>  
+<div class="shop_menu">
+<script type="text/javascript">   
+ $(function () {  
+		$("#shopfilter .the-more").click(function (){
+			$(this).prev().toggleClass("open");
+			$(this).find('i').toggleClass("fa-chevron-down");
+			$(this).find('i').toggleClass("fa-caret-up");
+		})
+        $("#shopfilter dl a").hover(function (){ 
+            $(this).toggleClass("seling");  
+        })  
+  
+    
+  
+        //为filter下的所有a标签添加单击事件  
+        $("#shopfilter dl a").click(function () {  
+            $(this).parents("dl").children("dd").each(function () {   
+                $('a',this).removeClass("seled");  
+            });  
+            $(this).attr("class", "seled");  
+        });  
+    });  
+  
+
+	
+</script>
+
+
+<div class="submenu_box">
+   <div class="submenu_child_nav">
+  
+ 
+<style type="text/css">
+.submenu_child_nav .nav_list_ul > li .children-menu {
+	margin: 0;
+}
+.submenu_child_nav .nav_list_ul > li:hover .children-menu {
+	display: block;
+}
+</style>  
+  <div class="submenu_nav">
+         <ul class="nav_list_ul">
+		 	<dt>类别：</dt> 
+            <volist name="scr_menu['left']" id="menu">
+                
+
+                    <!--二级菜单-->
+                    <li>
+                       <a href="{$menu.href}" class=" <if condition='$menu["tab"] eq $current'>seled</if>" title="{$menu.title}">{$menu.title}<if condition="$menu['children']"> <span class="fa fa-caret-down"></span></if></a>
+						<if condition="$menu['children']">
+                        <ul class="children-menu">
+                            <volist name="menu['children']" id="children">	
+                                <li><a href="{$children.href}"  title="{$children.title}">{$children.title}</a></li>
+                            </volist>
+                        </ul>
+						</if>
+                    </li>
+
+            
+            </volist>
+			<volist name="d_menu_list.left" id="d_menu">
+                
+                <if condition="$d_menu['children']">
+                    <!--二级菜单-->
+                    <li class="">
+                        <a href="{$d_menu.href}" class="dropdown-toggle"> <neq name="d_menu.icon" value=""><i class="glyphicon glyphicon-{$d_menu.icon}"></i></neq>{$d_menu.title}<span class="caret"></span></a>
+                        <ul class="children-menu">
+                            <volist name="d_menu.children" id="child">
+                            	<php>$class=($current==$child['tab']?'active':'');</php>
+                                <li class="{$class}"><a href="{$child.href}"><neq name="child.icon" value=""><i class="glyphicon glyphicon-{$child.icon}"></i></neq>{$child.title}</a></li>
+                            </volist>
+            
+                        </ul>
+                    </li>
+                <else/>
+                	<php>$class=($current==$d_menu['tab']?'active':'');</php>
+                    <!--一级菜单-->
+                    <li class="{$class}"><a href="{$d_menu.href}"><neq name="d_menu.icon" value=""><i class="glyphicon glyphicon-{$d_menu.icon}"></i></neq>{$d_menu.title}</a></li>
+                </if>
+            
+            </volist>
+        </ul>
+        </div>
+  
+  </div>
+  
+</div>	
+
+
+
+</div>
+<div class="clear"></div>

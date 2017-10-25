@@ -1,0 +1,248 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Index/index')}" class=""> <i class="am-icon-chevron-left"></i></a>{$model_info['name']}</div>
+    <div class="am-header-right am-header-nav"> <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}"> <i class="am-header-icon am-icon-bars"></i> </a> </div>
+  </header>
+  <include file="Public/topnavbar"/>
+  <section class="am-panel am-panel-default">
+    <header class="am-panel-hd">
+      <h3 class="am-panel-title">请填写以下需求单</h3>
+    </header>
+    <div class="am-panel-bd">
+      <div><span class="title-color-red">*</span>为必填项，掌柜将会尽快联系您为您服务。 国内团队人数较少时，包团产品价格相对较高，建议您查找预订网上散客活动产品</div>
+    </div>
+  </section>
+  <form action="{:U('Mobile/Tailor/doPost')}" class="am-form" id="add-tailor-form" >
+    <div class=" am-panel-default tailor_lists">
+      <div class="am-panel-hd"><b>定制表单</b></div>
+      <div class="am-panel-bd">
+        <div class="am-form-group">
+          <label for="minprice" >活动预算<span class="title-color-red">*</span></label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-database"></i></span>
+            <input type="text" class="js-pattern-number" id="minprice" name="minprice" placeholder="最低预算" required data-foolish-msg="请填写最低预算"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-database"></i></span>
+            <input type="text" class="js-pattern-number" id="maxprice" name="maxprice" minlength="1" placeholder="最高预算" required data-foolish-msg="请填写最高预算"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="totalnum" >参加人数<span class="title-color-red">*</span></label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-meh-o"></i></span>
+            <input type="text" class="js-pattern-number" id="totalnum" name="totalnum" placeholder="参加人数" required data-foolish-msg="请填写参加人数"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="childnum" >其中小孩(人数)</label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-child"></i></span>
+            <input type="text" class="js-pattern-number" id="childnum" name="childnum"  value="" placeholder="请填写参加小孩人数" />
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="minage">年龄段(小孩)</label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-minus"></i></span>
+            <input type="number" class="js-pattern-number" name="minage" id="minage" placeholder="最小年龄(0-18)"  min="0" max="18"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-plus"></i></span>
+            <input type="number" class="js-pattern-number" name="maxage" id="maxage" placeholder="最大年龄(0-18)"  min="0" max="18"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="desty" class="control-label">目的地<span class="title-color-red">*</span></label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-plane"></i></span>
+            <div class="am-u-sm-6 am-u-md-3 am-u-lg-1">
+              <label class="am-radio">
+                <input type="radio" name="desty_type" value="1" data-am-ucheck checked>
+                国内 </label>
+            </div>
+            <div class="am-u-sm-6 am-u-md-3 am-u-lg-1">
+              <label class="am-radio">
+                <input type="radio" name="desty_type" value="2" data-am-ucheck >
+                国际 </label>
+            </div>
+          </div>
+        </div>
+        <div class="am-form-group" id="return_desty_in">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-sign-in"></i></span>
+            <volist name=":return_desty_in()" id="top">
+              <div class="am-u-sm-6 am-u-md-3 am-u-lg-1">
+                <label class="am-checkbox">
+                  <input type="checkbox" class="desty_in" name="desty[]" value="{$top.id}" data-am-ucheck minchecked="1" required data-foolish-msg="最少选择一个需求" >
+                  {$top.name} </label>
+              </div>
+            </volist>
+          </div>
+        </div>
+        <div class="am-form-group" id="return_desty_out" style="display:none">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-sign-out"></i></span>
+            <volist name=":return_desty_out()" id="top">
+              <div class="am-u-sm-6 am-u-md-3 am-u-lg-1">
+                <label class="am-checkbox">
+                  <input type="checkbox" class="desty_out" name="desty[]" value="{$top.id}" data-am-ucheck minchecked="1" required data-foolish-msg="最少选择一个需求" >
+                  {$top.name} </label>
+              </div>
+            </volist>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="tag" >出发日期</label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-calendar"></i></span>
+            <input type="text" class="am-form-field"  id="earlytime" name="earlytime" placeholder="最早出发" data-am-datepicker readonly/>
+          </div>
+          <div class="h10"></div>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-calendar"></i></span>
+            <input type="text" class="am-form-field"  id="latetime" name="latetime" placeholder="最晚出发" data-am-datepicker readonly/>
+          </div>
+          <div class="h10"></div>
+          <label class="am-checkbox">
+            <input type="checkbox" name="unsure" value="unsure" data-am-ucheck checked />
+            尚未确定</label>
+        </div>
+        <div class="am-form-group">
+          <label for="traveldays" >行程天数<span class="title-color-red">*</span></label>
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-bus"></i></span>
+            <input type="text" class="js-pattern-number"  id="traveldays" name="traveldays" placeholder="行程天数" required data-foolish-msg="请填写行程天数" />
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="title" >特色需求<span class="title-color-red">（至少 1 项）</span></label>
+          <div class="am-form-group">
+            <div class="am-cf">
+              <volist name=":get_event_tag()" id="tag" key="k">
+                <div class="am-u-sm-4 am-u-md-3 am-u-lg-1">
+                  <label class="am-checkbox">
+                    <input type="checkbox" name="tag[]" value="{$key}" data-am-ucheck minchecked="1" required data-foolish-msg="最少选择一个需求" >
+                    {$tag} </label>
+                </div>
+              </volist>
+            </div>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="reference">参考线路</label>
+          <textarea id="reference"  name="reference" maxlength="100" placeholder="请复制你希望参考的线路行程的网址或内容" rows="5"></textarea>
+          您还可以输入<span style="color:red" id="refe">100</span>个字 </div>
+        <div class="am-form-group">
+          <label for="other">其他需求</label>
+          <textarea id="other"  name="other" maxlength="100" placeholder="限100字以内"  rows="5"></textarea>
+          您还可以输入<span style="color:red" id="need">100</span>个字 </div>
+      </div>
+    </div>
+    <div class=" am-panel-default tailor_lists ">
+      <div class="am-panel-hd"><b>联系信息<span class="title-color-red">*</span></b></div>
+      <div class="am-panel-bd">
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-user"></i></span>
+            <input type="text" class="am-form-field" name="contact_name"  id="contact_name" placeholder="联系人姓名" required data-foolish-msg="请填写联系人姓名"/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-child"></i></span>
+            <select name="sex" id="sex" data-am-selected="{btnWidth:200,dropUp: 1}" minchecked="1">
+              <option value="1" >先生</option>
+              <option value="0" selected>女士</option>
+            </select>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-phone-square"></i></span>
+            <input type="text" class="js-pattern-mobile" name="contact_telephone" id="contact_telephone" placeholder="联系人手机" required data-foolish-msg="请填写联系人手机">
+          </div>
+        </div>
+        <div class="am-form-group">
+          <div class="am-input-group am-input-group-secondary"> <span class="am-input-group-label"><i class="am-icon-envelope-square"></i></span>
+            <input type="email" class="js-pattern-email" name="contact_email" id="contact_email" placeholder="联系人email" required data-foolish-msg="请填写联系人email">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div data-am-widget="navbar" class="am-navbar am-cf" id="tailor_lists_btn">
+      <ul class="am-navbar-nav am-cf am-avg-sm-1"> 
+        <li>
+         <button class="am-btn am-btn-block am-btn-secondary am-btn-xl" type="submit">提交</button>
+        </li>
+      </ul>
+    </div>
+    
+    
+  </form>
+</block>
+<block name="script">
+  <script>
+
+
+$(function(){
+	$('input[name="desty_type"]').click(function(){								   
+		var desty_type = $("input[type='radio']:checked").val()
+		if(desty_type ==1){
+			$("#return_desty_in").show();
+			$("#return_desty_out").hide();
+			$(".desty_out").uCheck('uncheck');
+			
+		}else{
+			$("#return_desty_in").hide();
+			$("#return_desty_out").show();
+			$(".desty_in").uCheck('uncheck');
+		}
+	})	   
+	$('#other').val('');
+	$('#other').keyup(function(){
+		var need_length = $(this).val().length;
+		var html = 100 - need_length;
+		$('#need').html(html)	
+	})
+	$('#reference').val('');
+	$('#reference').keyup(function(){
+		var refe_length = $(this).val().length;
+		var html = 100 - refe_length;
+		$('#refe').html(html)
+	
+	})
+	var $form = $('#add-tailor-form');
+	var $tooltip = $('<div id="vld-tooltip">提示信息！</div>');
+	$tooltip.appendTo(document.body);
+
+	$form.validator({
+		onValid: function(validity) {
+		   $tooltip.hide();
+		},				  
+		submit: function(e) {
+			if(this.isFormValid() ==true){
+				var self = $('#add-tailor-form');
+				$.post("{:U('Mobile/Tailor/doPost')}", self.serialize(), function (data) {
+					if(data['status']==1){
+						toasts.success(data.info,data.url);
+					}else{
+						toasts.error(data.info);
+					}
+				}, 'json');
+				
+			}	
+			return false;
+		}
+		
+	});
+  var validator = $form.data('amui.validator');
+  $form.on('focusin focusout', '.am-form-error input', function(e) {				
+    if (e.type === 'focusin') {
+      var $this = $(this);
+      var offset = $this.offset();
+      var msg = $this.data('foolishMsg') || validator.getValidationMessage($this.data('validity'));
+
+      $tooltip.text(msg).show().css({
+        left: offset.left + 10,
+        top: offset.top + $(this).outerHeight() + 10
+      });
+    } else {
+      $tooltip.hide();
+    }
+  });
+})
+</script>
+</block>

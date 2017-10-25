@@ -1,0 +1,70 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div id="center" class="" >
+   <div class="common_block_title ">
+    <div class="pull-right"><a class="btn  btn-info common-color-white"  href="{$story_url}">返回上级</a></div>编辑旅行故事</div>
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/story_doPost')}" method="post">
+					<input type="hidden" name="url" value="{$story_url}">
+					<input type="hidden" name="id" id="id" value="{$content.id}"/>
+					<div class="form-group has-feedback">
+						<label for="title" class="col-md-2 control-label">标题<span class="common-color-red" >*</span></label>
+						<div class="col-md-6">
+							<input id="title" name="title" class="form-control form_check" check-type="Text" value="{$content.title}" placeholder="" required />
+						</div>
+					</div>
+				    <div class="form-group has-feedback">
+						<label for="cover_id" class="col-md-2 control-label">封面图片<span class="common-color-red">*</span></label>
+						<div class="col-md-6"> {:hook('UploadImage', array('find_name'=>'cover_id','value'=>$content['cover_id'],'buttontext'=>'上传故事封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'400*300'))} </div>
+					</div>
+					<div class="form-group ">
+						<label for="type_id" class="col-md-2 control-label">分类<span class="common-color-red">*</span></label>
+						<div class="col-md-10">          
+						<volist name="tree" id="top">          
+							<input value="{$top.id}" name="issue" type="radio" <?php if($top['id'] == $content['issue_id']) echo 'checked'?>>&nbsp;{$top.title}&nbsp;
+						</volist>            
+						</div>
+					</div>
+					<div class="form-group  has-feedback">
+						<label for="tag" class="col-md-2 control-label">特色<span class="common-color-red">*</span></label>
+						<div class="col-md-10">
+							{:form_checkbox(get_event_tag(),$content['tag'],'name="tag[]" id="tag"',0,'100')} 
+						</div>
+					</div>
+					<!--div class="form-group">
+						<label for="url" class="col-md-2 control-label">活动网址</label>
+						<div class="col-md-6">
+							<input id="url" name="url" type="text" class="form-control" value="{$content['url']}" placeholder="输入以http://开头的网址"/>
+						</div>
+					</div-->  
+					
+					<div class="form-group  position">
+						<label for="finalcity" class="col-md-2 control-label">目的地<span class="common-color-red">*</span></label>
+						<div class="col-md-9">
+								{:hook('J_China_City', array('find'=>'final','level'=>2,'province'=>$citys['province'],'city'=>$citys['city'],'district'=>$citys['district'],'community'=>$citys['community']))}
+						</div>
+					</div> 
+					<div class="form-group">
+						<label for="travel_point" class="col-md-2 control-label">详情<span class="common-color-red">*</span></label>
+						<div class="col-md-8">
+							{:Hook('Ueditor',array('name'=>'content','value'=>$content['content']))}
+						</div>
+					</div>
+                     <if condition="app_isopen('Event')">
+                      <div class="form-group">
+                        <label for="url" class="col-md-2 control-label">相关活动</label>
+                        <div class="col-md-6"> {:form_select($related_event_list,$content['related_event'],'class="form-control form_check" check-type="Text" name="related_event" id="related_event"','请选择')} </div>
+                      </div>
+                       </if>
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-2">
+							<button type="submit" class="btn btn-primary " href="{:U('Websit/story_doPost')}">提交</button>
+						</div>
+					</div>
+                </form>
+            </div>
+        </div>
+</div>
+
+</block>

@@ -1,0 +1,131 @@
+<extend name="Public/base" />
+<block name="body">
+<style>
+a{ text-decoration:none; font-size:14px; color:#F00;}
+a:hover{color:#900;}
+
+.clear{ clear:both; overflow:hidden;}
+.box{ width:1140px; margin:0 auto;  }
+.top{ width:1140px; height:300px;  }
+.bottom{width:1100px;border-top:2px solid #F8A024;}
+.bottom2{width:1100px; min-height:300px; }
+.bottom1{width:1100px; min-height:300px; }
+.jieshao{ float:left; width:150px; height:30px;font-size:16px; text-align:center; background:#F8A024}
+.tuku{float:left;  width:150px;height:30px;font-size:16px; text-align:center;  }
+.bottom1-text{ width:1000px; min-height:250px; margin:40px 40px;font-size:14px; }
+.bottom2-text{ width:1000px; min-height:250px; margin:40px 40px;font-size:14px;  }
+
+
+.top-left{ float:left; width:300px;height:300px; line-height:300px;  }
+.top-left img{ padding:10px;}
+
+.top-right{float:left; width:760px;height:300px; }
+.text-box{  height:225px;  margin:40px 40px;}
+.text-box h3{ height:40px; line-height:40px; width:700px; }
+.add{ height:60px; line-height:60px; font-size:14px;}
+.tel{ height:40px; line-height:40px; font-size:14px; }
+
+.goods_name{margin:7px 15px; width:200px; height:20px; font-size:12px; line-height:20px; }
+.website_name{margin:0px 15px; width:200px; height:15px; font-size:12px; line-height:15px; }
+.clear{clear:both}
+.webname{padding:4px 15px; font-size:12px; line-height:20px; border-bottom:1px solid #ccc }
+.webaddress{padding:4px 15px; font-size:12px; line-height:20px;}
+.webaddress a{padding:0px 15px; font-size:12px; line-height:20px;}
+</style>
+
+<script>
+	$(document).ready(function(){
+		$("#jieshaobox").show();
+					$("#tukubox").css("display","none");
+					$("#tuku").css("background","none");					
+					$("#jieshao").css("background","#F8A024"); 
+			$("#jieshao").click(function(){
+					$("#jieshaobox").show();
+					$("#tukubox").css("display","none");
+					$("#tuku").css("background","none");					
+					$("#jieshao").css("background","#F8A024"); 
+				 
+				});	
+				
+			$("#tuku").click(function(){
+					$("#tukubox").show();
+					$("#jieshaobox").css("display","none");
+					 
+					$("#tuku").css("background","#F8A024"); 					
+					$("#jieshao").css("background","none"); 
+			 
+				});			
+		});
+</script>
+<div class="whole" style="background:#fff; padding-top:20px">
+<div class="box">
+	<div class="header2">
+    <!-- 上传图片 -->
+    <div id="top-left">
+      <img src="{$company.site_ico|getThumbImageById=600,600}"  width="300" height="300"/>
+    </div>
+    <div class="top-right">
+      <dl>
+        <dt>{$website.webname}</dt>
+          <dd><i class="glyphicon glyphicon-star"></i> 商家关键字：{$company.keyword}</dd>
+          <dd><i class="glyphicon glyphicon-map-marker"></i> 地址：{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</dd>
+          <dd><i class="glyphicon glyphicon-phone-alt"></i> 电话：{$company.phone}</dd>
+          <dd><i class="fa fa-qq"></i> Q Q：{$company.qq}</dd>
+				  <dd><i class="fa fa-home"></i> 网址：{$website.domain}</dd>
+          </dl>
+    </div>
+  </div>
+
+  <div class="bottom">
+      <div class="jieshao" id="jieshao">介绍 </div>
+      <div class="tuku" id="tuku">商品</div>
+ 
+      <div class="bottom1" id="jieshaobox">
+       	<div class="bottom1-text">
+		<br>
+         {$company.desc}
+
+		</div>
+	  </div>
+ 
+  <div class="bottom2" id="tukubox">
+    <div class="bottom2-text">
+      
+      <!-- 商品列表 -->
+      <div class="goods-detail">
+	   <volist name="company_goods" id="company_goods">
+        <div class="detail">
+            <ul>
+				<li> <a href="{:U('Manage/Distribute/shop_detail',array('id'=>$company_goods['id']))}"><img src="{$company_goods.goods_ico|getThumbImageById=222,222}"  height="190" width="190" /></a></li>
+				<li>{$company_goods.goods_name|op_t|getShortSp=12}</li>
+				<li>销售价：<span id="price">￥{$company_goods.market_price}</span> 佣金：<span id="commission">{$company_goods.seller_price}%</span></li>
+				<li>
+
+					<a class="mbtn btn-info"  href="{:U('Distribute/shop_detail',array('id'=>$company_goods['goods_id']))}">详细信息</a> 
+					<if condition="$company_goods['siteid'] eq SITEID">
+						<a class="mbtn btn-warning" >自己的商品</a>
+					<else/>
+						<if condition="$company_goods['has_item_relation']">
+						<a class="mbtn btn-success" >已代理</a>
+						<else/>
+							<php>if($company_goods['distribute_type_b']==1){;</php>
+							<a class="mbtn btn-primary market-goods-button ajax-get" href="{:U('Distribute/addtomine',array('goods_id'=>$company_goods['goods_id']))}">代理单品</a>
+							<php>}elseif($company_goods['distribute_type_a']==1 && $company_goods['distribute_type_b']!=1){</php>
+							<a class="mbtn btn-success" >仅支持全站分销</a>
+							<php>}</php>
+						</if>
+					</if>
+					
+				</li>
+			</ul>
+			
+        </div>
+        </volist>  
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+</block>
+

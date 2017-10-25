@@ -1,0 +1,28 @@
+<div id="frm-post-popup" class="white-popup" style="max-width: 745px">
+  <button title="Close (Esc)" type="button" class="mfp-close" style="color: #333;">×</button>
+  <h2>填写保单信息</h2>
+  <div class="aline" style="margin-bottom: 10px"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Usercenter/Config/do_insurance')}" method="post">
+          <div class="form-group has-feedback">
+            <label  class="col-md-2 control-label">{$arr['realname']}</label>
+            <div class="col-md-4">
+              <input  name="status" type="hidden" value="{$status_id}"/>
+              <input name="id" type="hidden" value="{$id}"/>
+              <input  name="policy_number" type="text"  check-type="Text" placeholder="请填写保险单号"/>
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/do_insurance')}">提交保单号</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Config/wallet')}" class=""> <i class="am-icon-chevron-left"></i></a>券</div>
+  </header>
+  <include file="Public/topnavbar"/> <include file="Public/navbar"/>
+  <div class="pointcard-lists-box">
+    <ul class="am-list am-list-border am-list-news-bd">
+      <volist name="pointcard" id="vo">
+        <li><a href="javascript:">
+        <div class="pointcard-list-box-left">
+        <span class="am-icon-rmb am-text-warning"></span><span class="pointcard-list-box-amount am-text-warning">{$vo.card_info.amount}</span>
+        </div>
+          <div class="pointcard-list-box-right">
+            <p class="card_info_name">{$vo.card_info.typename}</p>
+            <p class="card_info_msg am-text-warning"><if condition="$vo['card_info']['endtime'] neq 0">有效期至{$vo['card_info']['endtime']|date="Y-m-d",###}<else/>无期限</if></p>
+            <p class="card_info_status am-text-success">{$vo.card_status}</p>
+          </div>
+          
+          
+          
+          </a></li>
+      </volist>
+    </ul>
+  </div>
+</block>

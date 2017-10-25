@@ -1,0 +1,87 @@
+<extend name="Public/base" />
+<block name="style">
+<link href="__STATIC__/datetimepickerV3/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+</block>
+<block name="body">
+<div class="main-title">
+    <h2>创建科目</h2>
+</div>
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Course/doAdd')}" method="post">
+        <input type="hidden" name="id" id="id" value="{$Think.get.id}"/>            
+        <input type="hidden" name="event_id" id="event_id" value="{$Think.get.event_id}"/>          
+        <input type="hidden" name="event_price_text" id="event_price_text" value="{$event_arr['price_text']}"> 
+        <div class="form-item">
+            <label for="title" class="item-label">课程名称<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="25" class="text input-large" check-type="Text" value="" />
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="price" class="item-label">课程类别</label>
+            <div class="controls">
+                <input type="radio" id="price_text_choose" name="price_type" value="1">私教课程
+                <input type="radio" id="price_num_choose" name="price_type" value="2">公共课程
+            </div>           
+        </div>
+         <div class="form-item">
+            <label for="price" class="item-label">时间协商</label>
+            <div class="controls">
+                <input type="radio" id="price_text_choose" name="price_type" value="1">可协商时间
+                <input type="radio" id="price_num_choose" name="price_type" value="2">不可协商时间
+            </div>           
+        </div>
+        <div class="form-item">
+            <label for="title" class="item-label">上课时间：<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="5" class="text" check-type="Text" value="" />至<input id="title" name="title" maxlength="5" class="text" check-type="Text" value="" />
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label for="title" class="item-label">上课次数<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="25" class="text input-large" check-type="Text" value="" />
+                分钟/课时
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="title" class="item-label">具体价格<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="25" class="text input-large" check-type="Text" value="" />
+                元
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="title" class="item-label">价格指定<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="25" class="text input-large" check-type="Text" value="" />
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="title" class="item-label">价格指定<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="title" maxlength="25" class="text input-large" check-type="Text" value="" />
+            </div>
+        </div><div class="form-item">
+            <label for="title" class="item-label">上课地点</label>
+            <div class="controls">
+                <select name=""
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="title" class="item-label">具体地址：</label>
+        </div>
+          <br>
+           <div class="form-item">
+            <button type="submit" class="w_btn submit-btn ajax-post" target-form="form-horizontal" target-ls="a" href="{:U('Manage/Course/doPost')}">确定</button>
+            <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+          </div>
+    </form>
+</div>
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+
+</block>

@@ -1,0 +1,113 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.page_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Event/event_type_edit')}" class="form-horizontal form-bordered" method="post" >
+                    	<input type="hidden" name="id" value="{$datainfo.id}" />
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">类型名称</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                	<input type="text" class="form-control" placeholder="类型名称" name="title" value="{$datainfo.title}"  />
+    								<span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="类型名称不能为空"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">排序</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="排序" name="sort" value="{$datainfo.sort}"  />
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="排序不能为空"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">显示服务企业</label>
+                            <div class="col-lg-10">
+                                
+                            <label><input value="1" name="customization"  class="rdchange" type="radio" <?php if($datainfo['customization'] == 1) echo 'checked'?>><span class="text">是</span></label>
+
+                            <label><input value="0" name="customization"  class="rdchange" type="radio" <?php if($datainfo['customization'] == 0 ) echo 'checked'?>><span class="text">否</span></label>
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input class="btn btn-default" type="submit" onclick="javascript:history.back(-1);return false;" value="返 回" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '活动类型不能为空'
+                    }
+                }
+            },
+             sum_insured: {
+                 validators: {
+                    notEmpty: {
+                        message: '保额不能为空'
+                    }
+                }
+            },
+             sort: {
+                validators: {
+                    notEmpty: {
+                        message: '排序不能为空'
+                    },
+                    regexp: {
+                     regexp: /^\d+$/,
+                     message: '排序必须为数字'
+                    }
+                }
+                 
+            },
+  
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

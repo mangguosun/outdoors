@@ -1,0 +1,84 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/myevent_detail',array('trade_sn'=>$event_attend['trade_sn']))}" class=""><i class="am-icon-chevron-left"></i></a>确认并支付</div>
+</header>
+<div class="pay_money am-text-warning on_line">
+
+    <if condition="$event_attend['paytype'] eq 1">
+    
+ 		<php>
+         if($cardinfo_money){
+            if($cardinfo_money > $event_attend['leftprice']){
+                $card_amount = $event_attend['leftprice'];
+                $leftprice = 0;
+            }else{
+                $card_amount = $cardinfo_money;
+                $leftprice = $event_attend['leftprice'];
+            }
+         }else{
+         	$leftprice = $event_attend['leftprice'];
+         }		
+        </php>
+    
+        <if condition="$event_attend['pay_status'] eq 0">
+        	<span class="pay_money_text">支付定金 <i class="am-icon-jpy"></i></span> <span class="pay_money_price">{$event_attend.payprice}</span> 
+        <elseif  condition="$event_attend['pay_status'] eq 1"/>
+        	<span class="pay_money_text">支付余额 <i class="am-icon-jpy"></i></span> <span class="pay_money_price">{$leftprice}</span> 
+        </if>
+	<elseif  condition="$event_attend['paytype'] eq 0"/>
+    <php>
+     if($cardinfo_money){
+        if($cardinfo_money > $event_attend['payprice']){
+            $card_amount = $event_attend['payprice'];
+            $payprice = 0;
+        }else{
+            $card_amount = $cardinfo_money;
+            $payprice = $event_attend['payprice'];
+        }
+     }else{
+        $payprice = $event_attend['payprice'];
+     }		
+    </php>
+    	<if condition="$event_attend['pay_status'] eq 0">
+    	<span class="pay_money_text">支付金额 <i class="am-icon-jpy"></i></span> <span class="pay_money_price">{$payprice}</span>
+    	</if>
+    </if>
+</div>
+
+<form class="am-form" role="form" action="{:U('Mobile/Pay/do_pay')}" method="post" target="">
+<input type="hidden" name="order_id" id="trade_sn" value="{$event_attend.trade_sn}"/>
+<div class="pay_online_box">
+	<div class="pay_online_box_title">使用第三方平台支付</div>
+    
+    <div class="pay_online_box_type">
+	<if condition="$pay_types">{:mobile_mk_pay_btn($pay_types,$default_paytypeid,'',0)}
+          <else/>
+          本站暂未开启在线支付功能，如需帮助请联系管理员。
+        </if>
+    </div>
+
+</div>
+<div class="action_btn">
+<button type="submit" class="am-btn am-btn-block am-btn-green">确认支付</button>
+</div>
+</form> 
+<script>
+
+$(function(){
+		   
+	$(".banklist label span").on('click', function(e) {									   
+		$(".banklist label .span_checked").remove();				   									   
+		$("input[name='pay_type']").attr("checked",false);
+		$(this).parent().find('input').attr("checked",true).after('<span class="span_checked"><i class=" am-icon-check-circle-o am-text-success"></i></span>');
+	})
+ 
+	$("input[name='pay_type'][checked]").after('<span class="span_checked"><i class=" am-icon-check-circle-o am-text-success"></i></span>');   
+	$("form").submit(function(e){				  
+	setTimeout(function(){
+		//$(".pay_popup").trigger("click")
+	},2000)  						
+	});
+});
+</script>
+</block>

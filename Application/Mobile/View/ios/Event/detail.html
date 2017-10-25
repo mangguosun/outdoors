@@ -1,0 +1,271 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:window.history.back();" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}详情
+  </div>
+  <div class="am-header-right am-header-nav">
+   <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<php>if($pictures){</php>
+<div class="event-detail-slider">
+<div data-am-widget="slider" class="am-slider am-slider-default" data-am-flexslider="{animation: 'slide',directionNav: false}">
+  <ul class="am-slides">
+  <foreach name="pictures" item="images" key="k">
+    <li>
+      <img class="lazy-event" src="{$images.id|getThumbImageById=328,300}" data-original="{$images.id|getThumbImageById=400,300}"  >
+      <div class="am-slider-desc">{$content['title']}</div>
+    </li>
+   </foreach> 
+  </ul>
+</div>
+</div>
+<php>}else{</php>
+<ul data-am-widget="gallery" class="am-gallery am-gallery-overlay event-detail-toppic" data-am-gallery="{ pureview: true }">
+  <li>
+    <div class="am-gallery-item">
+        <img class="lazy-event" src="__PUBLIC__/Core/images/grey.gif" data-original="{$content.cover_id|getThumbImageById=400,300}" data-rel="{$content.cover_id|getThumbImageById=400,300}"  alt="{$content['title']}" />
+        <h3 class="am-gallery-title">{$content['title']}</h3>
+    </div>
+  </li>
+  </ul>
+ <php>}</php> 
+<div class="event-detail-img-day">{$content['traveldays']}天</div>
+
+<div class="event-detail-star">
+    <if condition="$is_collection eq '1'">
+    <a href="javascript:">
+        <i class="am-icon-star event-detail-star-color  event-detail-list-icon" ></i><span>{$content['ForumBookmark']}</span>
+    </a>
+   <else />
+    <a href="javascript:"  id="collection-btn">
+        <i class="am-icon-star-o event-detail-list-icon"></i><span>{$content['ForumBookmark']}</span>
+    </a>
+   </if>
+</div>
+<div class="event-detail-list">
+<ul class="am-list am-list-border am-list-static"> 
+  <li>参考价格：<if condition="$content.price_text neq ''"><span class="am-text-warning">{$content.price_text}</span><else /><if condition="$content.price eq 0"><span class="am-text-warning">免费活动</span><else /><span class="am-text-warning">￥{$content.price}/人</span></if></if></li>
+  <li>目的地点：{$content['finalcity_province']}-{$content['finalcity_city']}</li>
+  <li>集合地点：{$content['begincity_province']}-{$content['begincity_city']}</li>
+
+<if condition = "$content['star_con'][0]">
+  <li>
+    <div class="event-detail-whole">
+      <div class="event-view-index">{$content['star_con'][0]['title']}：
+        <?php for($i=1;$i<=$content['star_con'][0]['grade'];$i++):?> 
+          <i class="am-icon-star am-event-exponent"></i>
+        <?php endfor;?>
+      </div>
+      <if condition = "$content['star_con'][1]">
+        <div class="event_detail_distance">{$content['star_con'][1]['title']}：
+          <?php for($i=1;$i<=$content['star_con'][1]['grade'];$i++):?> 
+            <i class="am-icon-star am-event-exponent"></i>
+          <?php endfor;?>
+        </div>
+      </if>
+    </div>
+  </li>
+</if>
+<if condition = "$content['star_con'][2]">
+  <li>
+    <div class="event-detail-whole">
+      <div class="event-view-index">{$content['star_con'][2]['title']}：
+        <?php for($i=1;$i<=$content['star_con'][2]['grade'];$i++):?> 
+          <i class="am-icon-star am-event-exponent"></i>
+        <?php endfor;?>
+      </div>
+      <if condition = "$content['star_con'][3]">
+        <div class="event_detail_distance">{$content['star_con'][3]['title']}：
+          <?php for($i=1;$i<=$content['star_con'][3]['grade'];$i++):?> 
+            <i class="am-icon-star am-event-exponent"></i>
+          <?php endfor;?>
+        </div>
+      </if>
+    </div>
+  </li>
+</if>
+
+<if condition = "$content['star_con'][4]">
+  <li>
+    <div class="event-detail-whole">
+      <div class="event-view-index">{$content['star_con'][4]['title']}：
+        <?php for($i=1;$i<=$content['star_con'][4]['grade'];$i++):?> 
+          <i class="am-icon-star am-event-exponent"></i>
+        <?php endfor;?>
+      </div>
+    </div>
+  </li>
+</if>
+</ul>  
+</div>
+
+</div>
+<div class="detail-time-box"> 
+
+  <if condition="$timelist != ''" >
+   <i class="am-icon-angle-right event-chevron-right-icon " data-am-modal="{target: '#event_signlist_box',closeViaDimmer:0}"></i>
+    <div class="event-detail-time" data-am-modal="{target: '#event_signlist_box',closeViaDimmer:0}" style="padding-left:10px">
+		  <i class="am-icon-clock-o event-detail-list-icon"></i><div class="event-go-time" style="margin-top:-38px;margin-left:38px;width:65px">出发时间</div><div class="event-detail-day" style="margin-top:-22px;margin-left:108px;width:65px">({$timelist['num']})</div>
+		  <p>{$timelist['time']}</p>
+	 </div>
+  </if>
+
+	<php>$website_telphone = get_webinfo('telphone')</php>
+    <div class="event-detail-tel" style="padding-left:10px;">
+		  <span class="icon-phone"><i class="am-icon-phone event-detail-lists-icon"></i></span><span class="event-go-time">客服电话</span><a href="tel:{$website_telphone}" class="event-detail-phone">{$website_telphone}</a>
+	  </div>
+</div>
+	
+<div  style="background:#FFF;margin-top:8px;height:36px;">
+
+  <div class="detail-explain-box"> 
+      <nav class="scrollspy-nav" data-am-scrollspy-nav="{offsetTop: 97}" data-am-sticky="{top:49}">
+          <ul>
+              <li><a href="#profile">概要</a></li>
+              <li><a href="#trip">行程</a></li>
+              <li><a href="#cost">费用</a></li>
+              <li><a href="#things">事项</a></li> 
+          </ul>
+      </nav>
+      <div class="am-panel am-panel-default" id="profile">
+          <div class="am-panel-hd"><span class="icon-repeat"><i class="am-icon-repeat event-detail-lists-icon"></i></span>线路亮点</div>
+          <div class="am-panel-bd event_travel_point">{$content.travel_point}</div>
+      </div>
+      <div class="am-panel am-panel-default" id="trip">
+          <div class="am-panel-hd"><span class="icon-list"><i class="am-icon-clipboard  event-detail-lists-icon"></i></span>行程安排</div>
+          <div class="am-panel-bd event_travel_point">{$content.explain}</div>
+      </div>
+      <div class="am-panel am-panel-default" id="cost">
+          <div class="am-panel-hd"><span class="icon-rmb"><i class="am-icon-rmb event-detail-lists-icon"></i></span>费用说明</div>
+          <div class="am-panel-bd event_travel_point">{$content.pay_info}</div>
+          </div>
+      <div class="am-panel am-panel-default" id="things">
+          <div class="am-panel-hd"><span class="icon-list"><i class="am-icon-list event-detail-lists-icon"></i></span>注意事项</div>
+          <div class="am-panel-bd event_travel_point">{$content.attention}</div>
+      </div> 
+  </div>
+
+
+  {:W('RelatedIssue/relatedissue',array('event_id'=>$content['id']))}
+
+  {:hook('localCommentMobile', array('path'=>"Event/event/$content[id]", 'uid'=>$content['uid'], 'title'=>$content['title'], 'cover_id'=>$content['cover_id']))}
+</div>  
+<script type="text/javascript">
+ $(function() {	
+	hdl_lazyload('img.lazy');
+	hdl_lazyload('img.lazy-event');
+	hdl_lazyload('#event_hotevent img');
+	$('.event-content img').each(function() {								
+		 var maxWidth = $('.event-content').width(); // 图片最大宽度
+		 var ratio = 0;  // 缩放比例   
+		 var width = $(this).width();    // 图片实际宽度   
+		 var height = $(this).height();  // 图片实际高度   
+		 // 检查图片是否超宽   
+		 if(width > maxWidth){  
+			 ratio = maxWidth / width;   // 计算缩放比例   
+			 $(this).css("width", maxWidth); // 设定实际显示宽度   
+			 height = height * ratio;    // 计算等比例缩放后的高度    
+			 $(this).css("height", height);  // 设定等比例缩放后的高度   
+		 }  
+ 	});
+	$("#comment-content").focus(function(){
+		$("#event_sign_box").hide();
+	}); 
+	$("#comment-content").blur(function(){
+		$("#event_sign_box").show();
+	}); 	 
+	 
+ });  
+</script> 
+<div data-am-widget="navbar" class="am-navbar am-g" id="event_sign_box">
+  <div class=""> 
+     <a href="javascript:"  data-am-toggle="share"> 
+    <div class="<if condition="$event_signlist">event_sign_box_tel</if>" >
+      <div class="am-btn am-btn-default am-btn-block">
+        <span class="am-icon-share-alt am-share"></span>
+      </div>
+    </div>
+  </a>
+    <if condition="$event_signlist">
+    <div class="<if condition="$website_telphone">event_sign_box_sign</if>" data-am-modal="{target: '#event_signlist_box',closeViaDimmer:0}">
+      <a href="javascript:" class="am-btn am-btn-warning am-btn-block">
+        <span class="am-icon-user-plus"></span>
+        <span class="am-navbar-label">立即报名</span>
+      </a>
+    </div>
+     </if>
+
+  </div>
+</div>
+
+<if condition="$event_signlist">
+<div class="am-modal-actions" id="event_signlist_box">
+  <div class="am-modal-actions-group">
+    <ul class="am-list">
+      <li class="am-modal-actions-header">活动报名</li>
+        <volist name="event_signlist" id="signlist" key="k">
+          <if condition="$signlist['sign_type'] eq 1">
+          <li class=""><a href="javascript:" class="event_sign_btn sign-link-secondary" data-schedule-id="{$signlist.id}" data-event-id="{$content.id}" style="color:#FF913F;">【{$signlist.starttime}】&nbsp;&nbsp;&nbsp;{$signlist.team_name} <span class="am-icon-yen" style="margin-left:12px;"></span>{$signlist.price}<span class="am-badge am-radius am-badge-warning" style="margin-left:25px;">{$signlist.sign_text}</span></a></li>
+        <else/>    
+            <li class=""><a href="javascript:" class="event_sign_btn sign-link-default" data-schedule-id="{$signlist.id}" data-event-id="{$content.id}">{$signlist.starttime} &nbsp;&nbsp;&nbsp;{$signlist.team_name} <span class="am-icon-yen" style="margin-left:12px;"></span>{$signlist.price}<span class="am-badge am-radius am-badge-success" style="margin-left:25px;">{$signlist.sign_text}</span></a></li>   
+         </if>  
+       	</volist>
+    </ul>
+  </div>  
+  <div class="am-modal-actions-group">
+    <button class="am-btn am-btn-default am-btn-block" data-am-modal-close>取消</button>
+  </div>
+</div>
+
+<script>
+	$('.event_sign_btn').click(function (e) {							 
+		//e.preventDefault();
+		if(MID=="0"){	
+			$("#event_signlist_box").modal('close');
+			 location.href ="{:U('Mobile/User/login',array('login_url'=>think_encrypt(U('Mobile/Config/sign',array('event_id'=>$content['id'],'schedule_id'=>$signlist['id'])))))}";
+			//user_login();
+		}else{
+			var event_id = $(this).attr('data-event-id');
+			var schedule_id = $(this).attr('data-schedule-id');
+			var signurl = "{:U('Mobile/Config/sign/event_id/"+event_id+"/schedule_id/"+schedule_id+"')}";
+			location.href = signurl;
+		}
+		return false;
+	});
+</script>
+ </if>
+
+<script>
+$(function () {
+	//收藏
+ 	$('#collection-btn').click(function (e) {
+		if(MID=="0"){
+			user_login();
+		}else{
+			var event_id = "{$content['id']}";
+			$.post("{:U('Mobile/Event/dodetail')}", {id: event_id}, function (res) {
+			 if(res.status == '1'){
+				 toasts.info('你已收藏过');
+			 }else{
+				 $('#collection-btn').find('i').removeClass('am-icon-star-o').addClass('am-icon-star').addClass('event-detail-star-color');
+        $('#collection-btn').find('span').text(res.ForumBookmark);
+				 $('#collection-btn').unbind("click");
+				 toasts.success('收藏成功');
+			 }
+			}, 'json');
+		}
+	 });
+});
+</script>
+
+ 
+</block>
+<block name="script">
+</block>

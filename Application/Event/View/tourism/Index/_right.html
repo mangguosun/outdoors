@@ -1,0 +1,21 @@
+
+<div class="event-right-nav"></div>
+
+<php>if($customization == 0){</php>
+{:W('TourismEvent/TourismEventService')}
+<div class="event-right-nav"></div>
+<php>}</php>
+
+{:W('TourismEvent/TourismEventIssue',array('limit'=>10))}
+<div class="event-right-nav"></div>
+{:W('TourismEvent/TourismEventShop',array('limit'=>10))}
+<div class="event-right-nav"></div>
+{:W('TourismEvent/TourismEventRecommendEvent',array('limit'=>2))}
+<div class="event-right-nav"></div>
+{:W('TourismEvent/TourismEventRelatedIssue',array('event_id'=>$content['id']))}
+
+<div class="event-right-nav"></div>
+{:W('TourismEvent/TourismEventSexCompare',array('id'=>$content['id']))}
+<div class="event-right-nav"></div>
+
+{:W('TourismEvent/TourismEventTailorEvent')}

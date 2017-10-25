@@ -1,0 +1,44 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="top_bar_mobile"> <span class="mobile_crumbs"><a onclick="window.history.go(-1)" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn">公告详情</div>
+    </div>
+    </span>
+    </div>
+  <div class="h40"></div>
+<script type="text/javascript" src="__STATIC__/superslide/jquery.superslide.js"></script>
+<script type="text/javascript" src="__STATIC__/superslide/touchslide.1.1.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.lazyload.js"></script>  
+  <!--导航-->
+ <div class="mobile_detail_conts" id="get_content">
+    	<h3 class="detail_cont_title">{$title.title}</h3>
+		<div class="detail_cont_contnet"> 	
+	       <?php echo $content['content'];?>
+	    </div>
+  </div>
+</block>
+
+<block name="script">
+<script>
+ $(function() {	
+	 $(".mobile_detail_conts img").lazyload();		
+			
+	$('#get_content img').each(function() {								
+		 var maxWidth = $('#get_content').width(); // 图片最大宽度
+		 var ratio = 0;  // 缩放比例   
+		 var width = $(this).width();    // 图片实际宽度   
+		 var height = $(this).height();  // 图片实际高度   
+		 // 检查图片是否超宽   
+		 if(width > maxWidth){  
+			 ratio = maxWidth / width;   // 计算缩放比例   
+			 $(this).css("width", maxWidth); // 设定实际显示宽度   
+			 height = height * ratio;    // 计算等比例缩放后的高度    
+			 $(this).css("height", height);  // 设定等比例缩放后的高度   
+		 }  
+ 	});				   
+});  
+
+</script>
+</block>
+

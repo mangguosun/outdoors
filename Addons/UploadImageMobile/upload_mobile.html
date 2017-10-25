@@ -1,0 +1,95 @@
+<div class="mobile_uploadfile" id="mobile_uploadfile_{$infos['find_name']}" data-am-widget="gallery" data-am-gallery="{ pureview: true }">
+        <notempty name="thumb_picture">
+             <volist name="thumb_picture" id="v">
+                <div class="upload-pre-item-home">
+                    <img src="{$v.url_thumb}" data-id="{$v.id}" data-rel="{$v.url_rel}"/>
+                    <span class='am-icon-times btn-close-{$infos['find_name']}' title='删除图片'></span>
+                </div>
+             </volist>
+        </notempty>
+    <div class="mobile_uploadbtn">
+        <i class='am-icon-plus'></i>
+        <input type="file" class="upload_picture_file" id="upload_picture_{$infos['find_name']}">
+        <input type="hidden" name="{$infos['find_name']}" value="{$infos['value']}" class="icon {$infos['find_name']}" />
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+		   
+	$("#upload_picture_{$infos['find_name']}").on('change', function() {
+	
+		// 也可以传入图片路径：lrz('../demo.jpg', ... 
+		filereaders(this.files[0],{
+			before: function() {
+				setSpinner.open("图片正在努力处理");
+			},
+			fail: function(err) {
+				toasts.error(err);
+			},
+			always: function() {
+			   
+			},
+			done: function (results) {
+				 //你需要的数据都在这里，可以以字符串的形式传送base64给服务端转存为图片。
+				//console.log(results);
+				setSpinner.close();
+				setSpinner.open("图片正在上传");
+				$.ajax({ 
+				url:"{:U('Mobile/Public/upload')}", 
+				data:{formFile:results.base64}, 
+				type:'post', 
+				dataType:'json',
+				success:function(data){
+					if(data.status == 1){
+						var param ={};
+						param['id'] = data.data.id;
+						param['width'] = '{$infos['width']}';
+						param['height'] = '{$infos['height']}';
+						param['thumb_width'] = '{$infos['thumb_width']}';
+						param['thumb_height'] = '{$infos['thumb_height']}';
+						$.getJSON("{:U('Mobile/Public/get_uploadthumb')}",param,  function (res) {																				   
+							upload_img = "<div class='upload-pre-item-home'><img src='" + res.url_thumb +"' title='点击显示大图 ' data-rel='" + res.url_rel + "' data-id="+data.data.id+"> <span class='am-icon-times btn-close-{$infos['find_name']}' title='删除图片'></span></div>";
+							picsbox = $("#mobile_uploadfile_{$infos['find_name']}");
+							if({$infos['multi']} == false){
+								picsbox.find('.upload-pre-item-home').remove();
+							}
+							$('.mobile_uploadbtn').before(upload_img);
+							picArr = [];
+							for (var i = 0; i < picsbox.children('.upload-pre-item-home').length ; i++) {
+								picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+							};
+							picStr = picArr.join(',');
+							$('.icon.{$infos['find_name']}').val(picStr);
+							 setSpinner.close();
+						});
+					
+					}else{
+						toasts.error(data.info);
+						 setSpinner.close();
+					}
+					
+				   }
+				});
+			}
+		});	
+	});  
+	$(document).on('click', '.btn-close-{$infos['find_name']}', function(event) {
+		event.preventDefault();
+		var curIndex = $("#mobile_uploadfile_{$infos['find_name']} .upload-pre-item-home").index($(this).parent());
+		$(this).parent().remove();
+		picsbox = $("#mobile_uploadfile_{$infos['find_name']}");
+		picArr = [];
+		for (var i = 0; i < picsbox.children('.upload-pre-item-home').length ; i++) {
+			picArr.push(picsbox.children('.upload-pre-item-home:eq('+i+')').find('img').attr('data-id'));
+		};
+		picStr = picArr.join(',');
+		$('.icon.{$infos['find_name']}').val(picStr);
+		var this_gallery = $("#mobile_uploadfile_{$infos['find_name']}").data('amui.pureview');
+		var $options = this_gallery.options;
+		var $pureview = this_gallery.$pureview;
+		$($pureview.find($options.selector.slider).find('li').eq(curIndex)).remove();
+		$($pureview.find($options.selector.nav).find('li').eq(curIndex)).remove();
+		this_gallery.refreshSlides();
+	});
+})
+</script>

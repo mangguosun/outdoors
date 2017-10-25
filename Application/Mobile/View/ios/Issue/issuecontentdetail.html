@@ -1,0 +1,106 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Issue/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}详情
+  </div>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<ul data-am-widget="gallery" class="am-gallery am-gallery-overlay issue-detail-toppic" data-am-gallery="{ pureview: true }">
+  <li>
+    <div class="am-gallery-item">
+        <img class="lazy" src="__PUBLIC__/Core/images/grey.gif" data-original="{$content.cover_id|getThumbImageById=400,300}" data-rel="{$content.cover_id|getThumbImageById=400,300}" alt="{$content['title']}" />
+        <h3 class="am-gallery-title">{$content['title']}</h3>
+        <div class="issue-detail-toppic-user"><img class="am-img-thumbnail am-circle" src="{$content.user.avatar64}" alt="{$content.user.nickname}" /></div>
+    </div>
+  </li>
+  
+</ul>
+<php>$begincity = get_citys($content['begincity']);$finalcity = get_citys($content['finalcity']); </php>
+<ul class="am-list am-list-border am-list-static iisue-detail-list">
+  <li><i class="am-icon-paper-plane event-detail-list-icon"></i>目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</li>
+  <li><i class="am-icon-tag event-detail-list-icon"></i>活动特色：<volist name="content.tags" id="tag">{$tag.name}&nbsp;</volist></li>
+</ul>
+
+<div class="" style="background:#FFF">
+<div class="h20"></div>
+<div class="event-detail-share">
+
+ <if condition="$is_collection eq '1'">
+ <a href="javascript:" class="am-btn am-btn-white am-btn-lg">&nbsp;&nbsp;<i class="am-icon-heart am-text-warning"></i> 已收藏&nbsp;&nbsp;</a>
+  <else />
+ <a href="javascript:" class="am-btn am-btn-white am-btn-lg" id="collection-btn">&nbsp;&nbsp;<i class="am-icon-heart-o am-text-warning"></i> <span>收藏</span>&nbsp;&nbsp;</a> 
+  </if>
+ <a href="javascript:" class="am-btn am-btn-white am-btn-lg" data-am-toggle="share">&nbsp;&nbsp;<i class="am-icon-share-alt am-text-warning"></i> 分享&nbsp;&nbsp;</a>
+</div>
+<div class="hdl-panel-hd">
+<h3 class="hdl-panel-title">故事详情</h3>
+</div>
+<div class="am-article iisue-content">
+    <div class="am-article-hd">
+        <div class="am-article-bd ">
+        <article data-am-widget="paragraph" class="" data-am-paragraph="{ tableScrollable: true, pureview: true }">
+       {$content['content']}
+        </article>
+        </div>
+    </div>
+</div>
+
+
+
+{:W('Related/RelatedHotEvent',array('issue_id'=>$content['id']))}
+{:W('Iclub/shop',array('where'=>'widget','limit'=>'4'))}
+
+{:hook('localCommentMobile', array('path'=>"Issue/issueContent/$content[id]", 'uid'=>$content['uid'],'title'=>$content['title'], 'cover_id'=>$content['cover_id']))} 
+
+</div>
+<script>
+	$(function () {
+				
+				
+		hdl_lazyload('img.lazy');
+		hdl_lazyload('.iisue-content img');
+		$('.iisue-content img').each(function() {								
+			 var maxWidth = $('.iisue-content').width(); // 图片最大宽度
+			 var ratio = 0;  // 缩放比例   
+			 var width = $(this).width();    // 图片实际宽度   
+			 var height = $(this).height();  // 图片实际高度   
+			 // 检查图片是否超宽   
+			 if(width > maxWidth){  
+				 ratio = maxWidth / width;   // 计算缩放比例   
+				 $(this).css("width", maxWidth); // 设定实际显示宽度   
+				 height = height * ratio;    // 计算等比例缩放后的高度    
+				 $(this).css("height", height);  // 设定等比例缩放后的高度   
+			 }  
+		});	
+		//删除--
+		$('#collection-btn').click(function () {
+			if(MID=="0"){
+				//toast.error('请在登录后再收藏。');
+				user_login();
+			}else{
+				var issue_id = "{$content['id']}";
+				$.post("{:U('Mobile/Issue/issue_collection')}", {id: issue_id}, function (res) {
+				 if(res=='1'){
+					 toasts.info('你已收藏过');
+				 }else{
+					 $('#collection-btn').find('i').removeClass('am-icon-heart-o').addClass('am-icon-heart');
+					 $('#collection-btn').find('span').html('已收藏');
+					 $('#collection-btn').unbind("click");
+					 toasts.success('收藏成功');
+				 }
+				}, 'json');
+			}
+	  });
+	})
+</script>
+</block>
+<block name="script">
+</block>

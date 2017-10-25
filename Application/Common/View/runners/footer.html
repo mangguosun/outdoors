@@ -1,0 +1,154 @@
+<!-- 底部 ================================================== -->
+<div class="footer_bar">
+<div class="container">
+  <php> $enter=D('enterprises')->where("status=1 and siteid=".SITEID)->select(); </php>
+  <notempty name="enter">
+    <div class="footer_nav">
+      <ul>
+        <li class="title">关于我们</li>
+        <volist name="enter" id="v">
+          <li><a href="{$v.url}">{$v.company_name}</a></li>
+        </volist>
+      </ul>
+    </div>
+  </notempty>
+  <div class="footer_nav">
+    <ul>
+      <li class="title">联系方式</li>
+      <li>电话：{:get_webinfo('telphone')}</li>
+      <li>邮箱：{:get_webinfo('email')}</li>
+      <php>$weibo = get_webinfo('weibo')</php>
+      <notempty name="weibo">
+      <li>微博：{$weibo}</li>
+      </notempty>
+      <php>$webqq = get_webinfo('qq')</php>
+      <notempty name="webqq">
+      <li>QQ群：{$webqq}</li>
+      </notempty>
+    </ul>
+  </div>
+
+  <php>$get_qrcode = D('qrcode')->where(array('types'=>'website','siteid'=>SITEID))->find();</php>
+  <notempty name="get_qrcode">
+    <div class="qrcode_nav">
+      <dl>
+        <dd><img class="footer-two-dime" src="{$get_qrcode.url}"></dd>
+        <dt class="title">扫一扫浏览<br />手机版</dt>
+      </dl>
+    </div>
+  </notempty>
+  <php>
+  $img_url = get_cover(get_webinfo('micro'),'path')
+  </php>
+  <notempty name="img_url">
+    <div class="qrcode_nav">
+      <dl>
+        <dd><img class="footer-two-dime" src="{$img_url}"></dd>
+        <dt class="title">扫一扫关注<br />官方微信</dt>
+      </dl>
+    </div>
+  </notempty> 
+    <php> $share=D('share')->where("status=1 and siteid=".SITEID)->select(); </php>
+  <notempty name="share">
+  <div class="share_nav">
+    <dl>    
+      <volist name="share" id="vo">
+      <dd><a href="{$vo.url}" target="_blank"><img src="__PUBLIC__/Core/images/share/{$vo.cover_logo}.png"></a></dd>
+      </volist>
+      <dt class="title">关注我</dt>
+    </dl>
+  </div>
+  </notempty>
+  <php>$rs_customer = D('customer_service')->where(array('status'=>1,'siteid'=>SITEID))->limit(3)->select();</php>
+  <php>$get_qrcode = D('qrcode')->where(array('types'=>'website','siteid'=>SITEID))->find();</php>
+     <div class="lanren">
+        <div class="slide_min"></div>
+        <div class="slide_box" style="display:none;">
+        	<h2><img src="/Public/Core/images/qq/slide_box.jpg" /></h2>
+        	<li class="title"><b>在线客服</b></li>
+            <volist name="rs_customer" id="vo" key="k2">
+                <li><a href="{$vo.url}" target="_blank" title="{$vo.qq}">{$vo.nickname}</a></li>
+            </volist>
+            <li class="title"><b>手机版二唯码</b></li>
+            <li class="weixin"><img src="{$get_qrcode.url}" /></li>
+            <li class="title"><b>客户服务热线</b></li>
+            <li><b>{:get_webinfo('telphone')}</b></li>
+        </div>
+    </div>
+ <script>
+ $(function(){
+    var thisBox = $('.lanren');
+    var defaultTop = thisBox.offset().top;
+    var slide_min = $('.lanren .slide_min');
+    var slide_box = $('.lanren .slide_box');
+    var closed = $('.lanren .slide_box h2 img');
+    slide_min.on('click',function(){$(this).hide();	slide_box.show();});
+    closed.on('click',function(){slide_box.hide().hide();slide_min.show();});
+    $(window).on('scroll',function(){scro();});
+    $(window).onload = scro();
+    function scro(){
+        var offsetTop = defaultTop + $(window).scrollTop()+'px';
+        thisBox.animate({top:offsetTop},
+            {	duration: 600,	
+                queue: false    
+            });
+    }
+});
+</script>
+  <!----------------------友情链接------------------------------->
+<?php if(app_isopen('Links')):?>
+	<php>$links_arr = D('links')->where(array('siteid'=>SITEID,'status'=>1))->select();</php>
+		<?php if(!empty($links_arr)):?>        
+		  <div class="footer_links">
+          	<div class="footer_links-link">
+              <span>友情链接：</span>
+                <foreach name='links_arr' item='vo'>
+                    <div class='footer_links_list'>
+                         <span><a target='_blank' href='{$vo.link}'>{$vo.title}</a></span>
+                    </div>
+                </foreach>
+            </div> 		 
+		  </div>
+	<?php endif;?>
+<?php endif;?>
+  <!--------------------end-------------------------------------->
+  <div class="footer_coy">
+  	<div class="footer_coy-left">       
+        <php>$logo_footer = get_webinfo('cover_id')</php>
+        <notempty name="logo_footer">
+          <div class="footer_logo"><a href="{:U('Home/Index/index')}"><img src="{$logo_footer|getThumbImageById='auto',45}"  style="cursor:pointer;width:auto;height:auto;" ></a></div>
+        </notempty>
+        <div class="powered_by_text">
+          <p>{:get_webinfo('webname')} {:get_webinfo('slogan')} </p>
+       <!--   <p><a href="">招聘信息</a>|<a href="">申请合作</a>|<a href="">服务资质</a></p>-->
+        </div>    
+    </div>
+ 
+    <div class="footer_coy-right">
+    	<p>&nbsp;</p>
+     	<p><?php if(SITEID != 1):?> {:get_webinfo('webname')} x <a href="http://www.huodongli.com.cn" target="_blank">活动力</a> 联合出品 <?php endif;?><a href="mailto:kefu@huodongli.cn" target="_lank">- 免费申请</a>&nbsp;&nbsp;
+            <if condition="get_webinfo('domaintype') eq 2"><a href="http://www.miitbeian.gov.cn/" target="_blank">{:get_webinfo('icp')}</a>
+              <else/>
+              <a href="http://www.miitbeian.gov.cn/" target="_blank">{:C('WEB_SITE_ICP')}</a></if>
+        </p>    
+    </div>
+  
+  </div>
+  
+</div>
+<include file="runners/js"/>
+<block name="script"></block>
+{:hook('pageFooter', 'widget')}
+<div class="hidden">
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66176938-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  <block name="hidden"></block>
+</div>

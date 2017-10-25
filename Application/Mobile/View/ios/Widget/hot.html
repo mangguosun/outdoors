@@ -1,0 +1,10 @@
+<if condition="$lists neq false">
+  <div class="common_block_border blog_position">
+    <div class="common_block_title">最新公告</div>
+    <ul class="ul_lists">
+    <volist name="lists" id="data">
+      <li><a title="{$data.title|op_t}" href="{:U('Blog/Article/detail?id='.$data['id'])}">{$data.title}</a> </li>
+    </volist> 
+    </ul>
+  </div>
+</if>

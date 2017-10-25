@@ -1,0 +1,51 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+ <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 打卡记录<!--填写返回打卡-->
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+	<!-- 头像及背景图片 -->
+	<div class=" mark-red-head">
+			<div class="mark-div">
+				<a href="javascript:"><img class="mark-img am-circle am-img-thumbnail" src="{$user.avatar128}"/>
+				</a>
+			</div>
+			<div class="mark-name mark-red-name">{$user.nickname}</div>
+			<div class="mark-name mark-red-title">{$get_mark.yuebanname}</div>
+		<div class="mark-suc-con mark-red-con">
+			<p class="mark-red-date"> <label class="mark-red-label2"></label>&nbsp;&nbsp;&nbsp;&nbsp;{$get_mark.daka_day|date='Y-m-d',###}&nbsp;&nbsp;&nbsp;&nbsp;<label class="mark-red-label2"></label></p>
+			<p class="mark-red-date mark-red-long">{$get_mark.distance} &nbsp;<label class="mark-red-label ">KM</label></p>
+			<div class="mark-red-dis">
+				<label class="mark-red-time">{$get_mark.speed}/KM</label>
+				<label class="mark-red-time1">{$get_mark.hour}:{$get_mark.minute}:{$get_mark.second}</label>
+			</div>
+		</div>
+		<div class="clear"></div>
+		
+		<ul data-am-widget="gallery" data-am-gallery="{ pureview: true}" class="mark-red-ul">
+			<volist name="img" id="imgids">
+					  <li class="mark-red-pic">
+					        <img class="lazy" src="__PUBLIC__/Core/images/grey.gif" data-original="{$imgids['id']|getThumbImageById=400,300}" data-rel="{$imgids['path']}"/>
+					        <i class=" am-icon-search mark-red-big"></i>
+					  </li>
+			</volist>
+		</ul>
+	</div>
+</body>
+<script>
+$(function () {
+		hdl_lazyload('img.lazy');
+	})
+</script>
+</block>
+<block name="script"></block>

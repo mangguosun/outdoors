@@ -1,0 +1,41 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Blog/index')}" class=""><i class="am-icon-chevron-left"></i></a>{$model_info['name']}详情</div>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<div class="blog-detail">
+<div class="blog-title"> <b>{$content.title}</b> </div>
+<p class="am-article-meta blog-time">{$content.create_time|date="Y-m-d H:i",###}</p>
+<article class="am-paragraph am-paragraph-default" data-am-paragraph="{ tableScrollable: true, pureview: true }">
+ <p>{$content['content']}</p>
+</article>  
+</div> 
+<script>
+	$(function () {	
+		hdl_lazyload('img.lazy');
+		hdl_lazyload('.blog-detail img');
+		$('.blog-detail img').each(function() {								
+			 var maxWidth = $('.blog-detail').width(); // 图片最大宽度
+			 var ratio = 0;  // 缩放比例   
+			 var width = $(this).width();    // 图片实际宽度   
+			 var height = $(this).height();  // 图片实际高度   
+			 // 检查图片是否超宽   
+			 if(width > maxWidth){  
+				 ratio = maxWidth / width;   // 计算缩放比例   
+				 $(this).css("width", maxWidth); // 设定实际显示宽度   
+				 height = height * ratio;    // 计算等比例缩放后的高度    
+				 $(this).css("height", height);  // 设定等比例缩放后的高度   
+			 }  
+		});	
+	})
+</script>
+</block>
+
+

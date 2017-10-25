@@ -1,0 +1,204 @@
+<extend name="Public/base1" />
+<block name="style">
+<link href="/Public/static/bootstrap3.2/css/bootstrap-switch.min.css" rel="stylesheet" />
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{:isset($info['id'])?'编辑':'新增'}后台菜单</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U()}" class="form-horizontal form-bordered" method="post" >  
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">标题</label>
+                            <div class="col-lg-10">
+	                            <div class="input-group">
+	                                <input type="text" class="form-control" name="title" value="{$info.title|default=''}" />
+	                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（用于后台显示的配置标题）"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">排序</label>
+                            <div class="col-lg-10">
+	                            <div class="input-group">
+	                                <input type="text" class="form-control" name="sort" value="{$info.sort|default=0}" />
+	                                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（用于分组显示的顺序）"><i class="fa fa-question darkorange danger circular"></i></span>
+	                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">链接</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"name="url" value="{$info.url|default=''}"/> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（U函数解析的URL或者外链）"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">上级菜单</label>
+                            <div class="col-lg-10">
+                             <div class="input-group">
+                             {:form_select_menu($Menus,$info['pid'],'class="" style="width:100%" check-type="Text" name="pid" id="pid"','')}
+                              	
+				                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（所属的上级菜单）"><i class="fa fa-question darkorange danger circular"></i></span>
+				                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" value="{$info.id|default=''}">
+                        
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">图标</label>
+                            <div class="col-lg-10">
+                            	<div class="input-group">
+                              	 <input type="text" class="form-control" name="icon" value="{$info.icon|default=''}"/>
+				                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（用于左侧菜单图标）例：glyphicon glyphicon-..."><i class="fa fa-question darkorange danger circular"></i></span>
+				                </div>
+				            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">应用</label>
+                            <div class="col-lg-10">
+                            	<div class="input-group">
+                              	 <input type="text" class="form-control" name="model" value="{$info.model|default='System'}"/>
+				                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（用于权限判断）"><i class="fa fa-question darkorange danger circular"></i></span>
+				                </div>
+				            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-12 control-label">是否隐藏</label>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <div class="">
+                                {:form_switche_manage($info['hide'],'name="hide" id="hide"')} 
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-12 control-label">仅开发者模式可见</label>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <div class="">
+                                {:form_switche_manage($info['is_dev'],'name="is_dev" id="is_dev"')} 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">分组</label>
+                            <div class="col-lg-10">
+                            	<div class="input-group">
+                              	 <input type="text" class="form-control" name="group" value="{$info.group|default=''}"/>
+				                <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（请填上级菜单名称）"><i class="fa fa-question darkorange danger circular"></i></span>
+				                </div>
+				            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">说明</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"name="tip" value="{$info.tip|default=''}"/> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="（菜单详细说明）"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input class="btn btn-default" type="submit" value="返 回" onclick="javascript:history.back(-1);">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/switch/bootstrap-switch.min.js"></script>
+
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+
+
+<script type="text/javascript">
+
+$("#pid").select2({language:"zh-CN"});
+
+$("[name='hide']").bootstrapSwitch({ size: '',onText: "是",offText: "否",handleWidth: "50",});
+$("[name='is_dev']").bootstrapSwitch({ size: '',onText: "是",offText: "否",handleWidth: "50",});
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+		
+		/*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+					
+				validator.defaultSubmit();
+					
+				}
+			})
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '标题不能是空的'
+                    },
+                }
+            },
+            sort: {
+                validators: {
+                    notEmpty: {
+                        message: '排序不能是空的'
+                    },
+                    regexp:{
+                        regexp:/^([0-9]+)$/,
+                        message:'排序必须是数字'
+                    }
+                }
+            },
+            url: {
+                validators: {
+                    notEmpty: {
+                        message: '链接不能是空的'
+                    },
+                }
+            },
+            
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

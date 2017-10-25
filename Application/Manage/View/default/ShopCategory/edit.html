@@ -1,0 +1,73 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{:isset($info['id'])?'编辑':'新增'}商品分类</h2>
+    </div>
+    <form action="{:U()}" method="post" name="catesinfo" class="form-horizontal">
+        <div class="form-item">
+            <label class="item-label">分类名称<span class="check-tips">（用于添加商品选择分类）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="title" value="{$info.title|default=''}">
+            </div>
+        </div>
+		<div class="form-item">
+            <label class="item-label">分类陈列图<span class="check-tips">（每个分类可以自行上传图片，没有图片时，默认图片为灰色活动力logo图片）</span></label>
+            <div class="controls">
+                {:hook('UploadImage', array('find_name'=>'category_pic','value'=>$info['category_pic'],'buttontext'=>'分类陈列图','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600'))}
+            </div>
+        </div>
+		
+        <div class="form-item">
+            <label class="item-label">排序<span class="check-tips">（用于分组显示的顺序）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-small" name="sort" value="{$info.sort|default=0}">
+            </div>
+        </div>
+       
+        <div class="form-item">
+            <label class="item-label">上级分类<span class="check-tips">（所属的上级分类）</span></label>
+            <div class="controls">
+			  
+                <select name="pid" class='category'>
+                    <volist name="cates" id="item">
+                        <option value="{$item.id}">{$item.title_show}</option>
+					</volist>
+                </select>
+				<input type="hidden" name='level' value="0">
+            </div>
+        </div>
+        <br></br><br>
+        <div class="form-item">
+            <input type="hidden" name="id" value="{$info.id|default=''}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+		<?php 
+			foreach($cates as $val){
+		?>
+	    $('.category').change(function(){
+		   var vals = $(this).val();
+		   if(vals=={$val['id']}){
+		     $("input[name='level']").val({$val['level']});
+		   }
+		 
+		
+		})
+		
+		<?php }?>	
+		
+		
+		 
+        Think.setValue("pid", {$info.pid|default = 0});
+        Think.setValue("hide", {$info.hide|default = 0});
+        Think.setValue("is_dev", {$info.is_dev|default = 0});
+        //导航高亮
+        highlight_subnav('{:U('shop_category')}');
+    </script>
+</block>

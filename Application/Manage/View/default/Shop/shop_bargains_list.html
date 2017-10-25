@@ -1,0 +1,64 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>待执行特价商品列表</h2><span class='common-color-red'></span>
+</div>
+	<div class="fl">
+	        <a class="w_btn add-btn w_btn" href="{:U('Shop/shop_bargains')}">新建特价商品</a>
+     </div>
+  <div class="data-table table-striped auth_groups" >
+    <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>商品名称</th>
+		  <th>商品分类</th>
+		  <!--th>特价总量</th>
+		  <th>特价余量</th-->
+		  <th>售价</th>
+		  <th>特价</th>
+		  <th>开始时间</th>
+		  <th>结束时间</th>
+		  <th>状态</th>
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="bargain_list">
+        <volist name="bargain_list" id="vo">
+          <tr>
+			<td><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods_id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+			<td>{:get_shop_categrory_title($vo['category_id'])}</td>
+			<!--td>{$vo.bargain_num}</td>
+			<td>{$vo.surplus_num}</td-->
+			<td>{$vo.market_price}元</td>
+			<td>{$vo.bargain_price}元</td>
+			<td>{$vo.starttime|date="Y-m-d h:m:s",###}</td>
+			<td>{$vo.overtime|date="Y-m-d h:m:s",###}</td>
+			<td>
+				<if condition="$now lt $vo['starttime']">
+					未开始
+				<elseif condition="$now gt $vo['starttime'] and $now lt $vo['overtime']" />
+					正在进行
+				<elseif condition="$now  gt $vo['overtime']" />
+					已结束
+				</if>
+			</td>
+			<td>
+				<if condition="$now lt $vo['starttime']">
+					<a href="{:U('Shop/remove_shop_bargains',array('id'=>$vo['id']))}" class="ajax_get">取消</a>
+				</if>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="11">{$page}</td>
+        <else/>
+			<td colspan="11" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+		   
+  
+</block>
+

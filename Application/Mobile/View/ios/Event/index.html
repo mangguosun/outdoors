@@ -1,0 +1,224 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="am-fr" data-am-offcanvas="{target: '#home_all_bar'}">
+        <i class="am-header-icon am-icon-bars"></i>
+      </a>
+      <a href="javascript:" class="am-fr" id="evevt-search-btn">
+        <i class="am-header-icon am-icon-search"></i>
+      </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<include file="Public/navbar"/>
+<div class="event-typetitle-box">
+    <div data-am-widget="tabs" class="am-tabs-default" >
+          <ul class="am-tabs-nav am-cf" style="border:1px solid #54b2e5; background:#54b2e5;" >
+              <volist name="tree" id="top"> 
+                <li <eq name="type_id" value="$top['id']"> class="am-active" </eq> >
+                <a href="{:U('Mobile/Event/index',array('type_id'=>$top['id']))}" data="{$top.id}" class="">{$top.title}</a>           
+                </li>
+              </volist>  
+          </ul>
+    </div>
+</div>
+<div class="am-panel-default">
+        <div class="enent-list-tpl">
+        <li>
+          <a href="" data-href>
+          <img class="lazy event-lists-thumb"  src="__PUBLIC__/Core/images/grey.gif" data-original="" alt="" title="" data-thumb/>
+          <div class="event-lists-bg"></div>
+          <h3 class="event-lists-title"  data-title>标题</h3>
+          <!--p class="event-lists-price"><i class="am-icon-jpy"></i> <span data-price>价格</span>元</p-->
+          <p class="event-lists-lasted_time">出发时间：<span data-lasted-time>出发时间</span></p>
+          <p class="event-lists-traveldays"><span class="m-badge am-badge-secondary am-radius" data-traveldays>天数</span></p>
+          <p class="event-lists-location"><span class="m-badge am-badge-success am-radius" data-location>目的地</span></p>
+          <p class="event-list-view-count"><i class="am-icon-leaf"></i> <span data-view-count>展现数</span></p>
+          <p class="" data-view-color></p>
+          <p class="triangle-topleft-zi" data-view-status></p>
+          </a>
+        </li>
+        </div>
+        <div class="event-lists">
+          <ul></ul>
+          <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon style=" display:none"></i> <span loading-text>加载更多</span></div>
+      </div>
+  </div>
+<script>
+$(function () {
+	var loading_i = 0;				
+	var get_url = {};
+	var gget_url = {$get_url};
+	if(!$.isEmptyObject(gget_url)){
+		get_url = gget_url;
+	}
+	function get_event(is_del){
+		if(is_del ==true){
+			$(".event-lists ul li").remove();
+		}
+		var loading_more = $(".loading-more");
+		var loading_text = loading_more.find('[loading-text]');
+		var loading_icon = loading_more.find('[loading-icon]');
+		loading_text.html('奋力加载中');
+		loading_icon.show();
+		
+		get_url['page'] = loading_i;
+		$.getJSON("{:U('Mobile/Event/get_event_index')}",get_url,function(json){
+			if(json){
+				$.each(json,function(index,array){
+					var enent_list_tpl = $('.enent-list-tpl li');
+					var enent_list_li = enent_list_tpl.clone();
+					var enent_list_href = enent_list_li.find('[data-href]');//url
+					var enent_list_thumb = enent_list_li.find('[data-thumb]');//图片
+					var enent_list_title = enent_list_li.find('[data-title]');//标题
+					var enent_list_price = enent_list_li.find('[data-price]');//价格
+					var enent_list_lasted_time = enent_list_li.find('[data-lasted-time]');//开始时间
+					var enent_list_traveldays = enent_list_li.find('[data-traveldays]');//天数
+					var enent_list_location = enent_list_li.find('[data-location]');//目的地	
+					var enent_list_view_count = enent_list_li.find('[data-view-count]');//展现数
+          var enent_list_view_status = enent_list_li.find('[data-view-status]');//状态
+          var enent_list_view_color = enent_list_li.find('[data-view-color]');//颜色
+					enent_list_href.attr("href",array['url']);
+					enent_list_thumb.attr("alt",array['title']);
+					enent_list_thumb.attr("title",array['title']);
+					enent_list_thumb.attr("data-original",array['thumb']);
+					enent_list_title.html(array['title']);
+					enent_list_price.html(array['price']);
+					enent_list_traveldays.html(array['traveldays']+'天');
+					enent_list_lasted_time.html(array['lasted_time']);
+					enent_list_view_count.html(array['view_count']);
+          if(array['view_status'] == 1){ 
+              enent_list_view_status.html('报名中');
+              enent_list_view_color.addClass('triangle-topleft index-triangle-topleft-warning');
+          }else if(array['view_status'] == 3){ 
+              enent_list_view_status.html('报满中');
+              enent_list_view_color.addClass('triangle-topleft index-triangle-topleft-default');
+          }else if(array['view_status'] == 0){ 
+              enent_list_view_status.html();
+              enent_list_view_color.addClass();
+          }
+        
+					enent_list_location.html(array['finalcity_province']+array['finalcity_city']);
+					enent_list_thumb.lazyload({effect: "fadeIn",threshold : 100});
+					$(".event-lists ul").append(enent_list_li);
+				});
+				$(".event-lists").trigger("scroll");
+				loading_text.html('加载更多');
+				loading_icon.hide();
+				loading_i++;
+        $('.loading-more').scrollspy({});
+			}else{
+				 $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+				loading_text.html('已经没有了');
+				loading_icon.hide();
+			} 
+		});
+	
+	}		
+            get_event();
+//            $('.loading-more').click(function () {
+//                get_event();
+//            });
+            $('.loading-more').on('inview.scrollspy.amui', function () {
+                timeout = setTimeout(function () {
+                    get_event();
+                }, 1000);
+            }).on('outview.scrollspy.amui', function () {
+                clearTimeout(timeout)
+            });
+
+	
+	$('#evevt-search-btn').click(function () {
+		$("#evevt-search").modal();
+	});	
+	
+	$("#evevt-search").on('confirm.modal.amui', function() {
+														 
+			var s_get_url = {};
+			$(this).find('dl').each(function(){
+															 
+				var data_type = $(this).attr('data-type');
+				$(this).find('label').each(function(){								
+					if($(this).hasClass("am-active")){
+					var data_val = 	$(this).find('input').val();
+						s_get_url[data_type] = data_val;
+					};
+				})
+			})
+			if(!$.isEmptyObject(s_get_url)){
+				
+				get_url = s_get_url;
+				loading_i = 0;
+				
+				get_event(true);
+			}
+			$("#evevt-search").modal('close');								  
+	})
+	
+	$("#evevt-search").on('closed.modal.amui', function() {
+														 
+			$("#evevt-search").find('.am-active').removeClass('am-active');	  
+	})
+	
+});	
+</script>
+
+<div class="am-popup" id="evevt-search">
+
+    <header class="am-header am-header-default am-header-fixed">
+      <div class="am-header-left am-header-nav"><a href="###" class="" data-am-modal-close><i class="am-icon-chevron-left"></i></a>活动筛选</div>
+      <div class="am-header-right am-header-nav"><a href="###" class="am-btn am-btn-block am-btn-default am-radius"  data-am-modal-confirm>确定</a></div>
+    </header>
+  <div class="am-popup-inner">
+    <div class="am-popup-bd">
+    	<div class="evevt-search">
+        
+        	<if condition="$_GET['type_id'] eq ''">
+    		<dl data-type='type_id'>
+            	<dt><span class="am-btn">类别</span></dt>
+                <dd class="am-btn-group"  data-am-button>
+                	<volist name=":get_enenttype()" id="pr">
+                      <label class="am-btn am-btn-default am-btn-xs">
+                        <input type="radio" name="type_id" value="{$key}">
+                        {$pr} </label>
+                    </volist>
+                </dd>
+            </dl>
+            </if>
+            
+            <dl data-type='starttime'>
+            	<dt><span class="am-btn">出发时间</span></dt>
+                <dd class="am-btn-group"  data-am-button>
+                	<volist name=":get_timetoweek()" id="pr">
+                      <label class="am-btn am-btn-default am-btn-xs">
+                        <input type="radio" name="type_id" value="{$key}">
+                        {$pr} </label>
+                    </volist>
+                </dd>
+            </dl>
+            <dl data-type='holiday'>
+            	<dt><span class="am-btn">节日</span></dt>
+                <dd class="am-btn-group"  data-am-button>
+                	<volist name=":get_holiday()" id="pr">
+                      <label class="am-btn am-btn-default am-btn-xs">
+                        <input type="radio" name="type_id" value="{$key}">
+                        {$pr} </label>
+                    </volist>
+                </dd>
+            </dl>
+     </div>
+      
+    </div>
+  </div>
+</div>
+</block>
+<block name="script">
+
+
+</block>

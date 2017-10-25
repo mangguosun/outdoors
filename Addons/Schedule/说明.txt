@@ -1,0 +1,11 @@
+新增计划格式
+
+addons/UserService/doChageStatus
+
+UserService对应的是UserServiceModel.class.php文件
+
+doChageStatus 为 UserServiceModel.class.php下的方法
+
+大家可根据自身需求扩展
+
+PS、这只是懒人使用的一种方法、不喜欢可以是系统自带的行为扩展或者使用linux的cron来执行

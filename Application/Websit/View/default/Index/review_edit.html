@@ -1,0 +1,28 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+	<button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>评论内容</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+          <form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Index/review_doEdit')}" method="post">
+          
+		  <input type="hidden" name="id" value="{$list['id']}">
+		  <div class="form-group">
+            <label for="content" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+			   <php>$config='toolbar:[\'bold italic underline fontsize forecolor justifyleft | map image emotion link \']'; </php>
+              {:W('UeditorMini/editor',array('myeditor_content','content',$list['content'],'550px','250px',$config))}
+			</div>
+          </div>
+		
+	    <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/review_doEdit')}">确定</button>
+            </div>
+           </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

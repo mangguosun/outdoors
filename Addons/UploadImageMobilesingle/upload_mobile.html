@@ -1,0 +1,81 @@
+<div class="mobile_uploadfile_single">
+    
+    
+
+        <input type="file" class="upload_picture_file" id="upload_picture_single{$infos['find_name']}">
+
+	<div class="mobile_uploadfile_single_box" id="mobile_uploadfile_single{$infos['find_name']}" style="width:{$infos['display_width']}px; height:{$infos['display_height']}px;">
+    	<input type="hidden" name="{$infos['find_name']}" value="{$infos['value']}" class="icon single{$infos['find_name']}" />
+        <div class="upload-img-box">
+            <notempty name="thumb_picture">
+                 <volist name="thumb_picture" id="v">
+                        <img src="{$v.url_thumb}"  style="width:{$infos['display_width']}px; height:{$infos['display_height']}px;" /><i class='upload_edit_icon am-icon-pencil'></i>
+                 </volist>
+            <else/>
+            	<if condition="$infos['title'] eq ''">
+            		<i class='upload_icon am-icon-plus' style="line-height:{$infos['display_height']}px;"></i>
+                <else/>
+                	<span class="upload_title" style="line-height:{$infos['display_height']}px;">{$infos['title']}</span>
+                </if>
+            </notempty>
+        </div>
+    
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(function(){
+	$("#mobile_uploadfile_single{$infos['find_name']}").click(function(){ 
+		$("#upload_picture_single{$infos['find_name']}").trigger("click");//模拟执行id=a的事件 
+	}); 
+	$("#upload_picture_single{$infos['find_name']}").on('change', function() {
+	
+		// 也可以传入图片路径：lrz('../demo.jpg', ... 
+		filereaders(this.files[0],{
+			before: function() {
+				setSpinner.open("图片正在努力处理");
+			},
+			fail: function(err) {
+				toasts.error(err);
+			},
+			always: function() {
+			   
+			},
+			done: function (results) {
+				 //你需要的数据都在这里，可以以字符串的形式传送base64给服务端转存为图片。
+				//console.log(results);
+				setSpinner.close();
+				setSpinner.open("图片正在上传");
+				$.ajax({ 
+				url:"{:U('Mobile/Public/upload')}", 
+				data:{formFile:results.base64}, 
+				type:'post', 
+				dataType:'json',
+				success:function(data){
+					if(data.status == 1){
+						var param ={};
+						param['id'] = data.data.id;
+						param['thumb_width'] = '{$infos['thumb_width']}';
+						param['thumb_height'] = '{$infos['thumb_height']}';
+						$.getJSON("{:U('Mobile/Public/get_upload_singlethumb')}",param,  function (res) {	
+							
+							upload_img = "<img src='" + res.url_thumb +"' style='width:{$infos['display_width']}px; height:{$infos['display_height']}px;'><i class='upload_edit_icon am-icon-pencil'></i>";
+							
+							$("#mobile_uploadfile_single{$infos['find_name']}").find('.upload-img-box').html(upload_img);
+							$('.icon.single{$infos['find_name']}').val(data.data.id);
+							 setSpinner.close();
+						});
+					
+					}else{
+						toasts.error(data.info);
+						 setSpinner.close();
+					}
+					
+				   }
+				});
+			}
+		});	
+	});  
+})
+</script>

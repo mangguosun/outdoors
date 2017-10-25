@@ -1,0 +1,70 @@
+<extend name="sports/common"/>
+
+<block name="body">
+{:hook('Advs', 'home_ad')} 
+<div class="h15"></div> 
+
+<div class="indexbox">    
+    <div class="indexbox_left">
+         
+         {:W('SportsHome/EventList',array('limit'=>20))}  
+    
+         {:W('SportsHome/IssueList',array('limit'=>5))}
+         
+         {:W('SportsHome/shopRecommend',array('limit'=>4))}
+     </div>
+
+    <div class="indexbox_right">
+    
+    	{:W('SportsHome/eventCalendar',array('limit'=>5))}
+
+        {:W('SportsHome/hotDocument',array('limit'=>5))}
+ 
+		{:W('SportsHome/dynamic',array('limit'=>6))}
+         <php>$model_info = get_appinfo('Mark');</php>
+         <if condition="$model_info">
+  	 	 {:W('SportsHome/Mark')}
+        </if>
+        
+        
+		{:W('SportsHome/hotUser',array('limit'=>3))} 
+ 
+    	{:W('SportsHome/video',array('limit'=>1))}
+        
+    </div> 
+</div>
+
+<!-- <div class="h10"></div>
+	<div class="index_recomm_photo">
+     	 <div class="recomm_photo">
+             <div class="s_title">
+                    推荐相册<span class="more"><a href="{:U('Shop/Index/goods',array('action'=>'recommend'))}">更多&nbsp;></a></span>
+             </div>
+             <div class="h10"></div>
+             <div class="recomm_photo_con">
+                 <div class="indexbox_content">
+                     <a href=""><img src="http://s.amazeui.org/media/i/demos/bing-1.jpg" /></a>
+                     <p class="clearfix"><span class="pull-left"><a href="">上海中山公园环园跑</a></span><span class="pull-right"><b>33 </b>张</span></p>
+                 </div> 
+                 <div class="indexbox_content">
+                     <a href=""><img src="http://s.amazeui.org/media/i/demos/bing-1.jpg" /></a>
+                     <p class="clearfix"><span class="pull-left"><a href="">上海中山公园环园跑</a></span><span class="pull-right"><b>33 </b>张</span></p>
+                 </div>
+                     <div class="indexbox_content"><a href=""><img src="http://s.amazeui.org/media/i/demos/bing-1.jpg" /></a>
+                     <p class="clearfix"><span class="pull-left"><a href="">上海中山公园环园跑</a></span><span class="pull-right"><b>33 </b>张</span></p>
+                 </div>
+             </div>
+         </div>
+     </div>       
+<div class="h15"></div>-->
+<div class="sports-index-guanggao">{:hook('Advs', 'shop_one')}</div> 
+
+</block>
+<block name="script">
+<script>
+$(function () {
+	hdl_lazyload("img.add_loading");
+})
+</script>
+
+</block>

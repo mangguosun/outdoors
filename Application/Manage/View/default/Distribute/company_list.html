@@ -1,0 +1,53 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="gongyinglist">
+	<div class="yuexing">聚友品质，用心服务，心有所想，跃行无限</div>
+	 <h3>装备供应商</h3> 
+	<volist name="company" id="company_list">
+	<div class="gongyinglist-box">
+    	<div class="gongyingdesc">
+        	<div class="gongyingdesc-img">
+            	<div><a href="{:U('Manage/Distribute/company_detail',array('siteid'=>$company_list['siteid']))}">
+						<img src="{$company_list.site_ico|getThumbImageById=222,222}" width="180" height="180">
+					</a></div>
+                <div class="gongyingdesc-btn"><if condition="$supplier_id_a['supplier_id'] eq $company_list['siteid']"><a class="mbtn btn-info deliver_goods2">我已代理</a> <else/><a class="mbtn btn-info deliver_goods" href="{:U('Manage/Distribute/aaa',array('supplier_id'=>$company_list['siteid']))}">我要申请全站分销</a></if></div>
+            </div>             
+            <div class="gongyingdesc-text">
+            	<span class="gongyingname">{$company_list.webname}</span>
+            	<div>所在地：{$company_list['province']}{$company_list['city']}{$company_list['district']}{$company_list['community']}</div>
+                <div>服务特色：1天内发货</div>
+                <div>联系电话：{$company_list.phone}</div>
+                <div>网址：{$company_list.domain}</div>
+         
+          </div>
+        </div>
+        <div class="goodlist">
+        	<div class="goodnum" > 单品分销共<b>{$company_list.count_b}</b>件商品 全站分销共<b>{$company_list.count_a}</b>件商品 <span class="goodlist-more"><a href="{:U('Manage/Distribute/company_detail',array('siteid'=>$company_list['siteid']))}">更多></a></span></div>
+            <div class="goodlist-img">
+			<volist name="company_list['goods_arr']" id="shop_items_list">
+            	<img src="{$shop_items_list.goods_ico|getThumbImageById=222,222}" width="130" height="130" title="{$shop_items_list.goods_name}"/>
+				
+			</volist>	
+        
+            </div>
+			
+        </div>
+		<div class="clear"></div>
+    </div>
+    </volist>
+	<div>{$page}</div>
+</div>
+<script>
+$('.deliver_goods').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+</script>
+</block>
+

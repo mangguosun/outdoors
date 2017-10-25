@@ -1,0 +1,64 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/People/index')}" class=""> <i class="am-icon-chevron-left"></i></a>个人主页</div>
+  </header>
+  <include file="Public/topnavbar"/>
+  <div class="userconter-topbox">
+    <div class="homepage-topbackground">
+      <div class="homepage-topbox-content"> 
+        <div class="userimg-box" data-am-widget="gallery" data-am-gallery="{ pureview: true }"><img src="{$user.avatar128}" class="userconter-userimg"/></div>
+        <div class="loginname">
+          <div class="loginname-name">{$user.nickname} &nbsp;<span class="am-text-warning">{$user.title}</span></div>
+          <div class="loginname-address"> {:get_upgrading($user['is_use'])}，{$user.addresss.province} {$user.addresss.city}</div>
+          <div class="loginname-word">{$user.signature}</div>
+          <div class="homepage-top-btn">
+            <if condition="is_login() && $user['uid'] !== is_login()"> <span class="sixin" onclick="mobiletalker.start_talk({$user['uid']})">私信</span> </if>
+            
+            
+            <if condition="is_login() && $user['uid'] != get_uid()">
+                <php> $is_following = D('Follow')->where(array('who_follow'=>get_uid(),'follow_who'=>$user['uid']))->find(); </php>
+                 <if condition="!$is_following"> <span class="guanzhu people_ufollow" data-uid="{$user['uid']}"  data-isfollowing="0" >关注</span>
+                 <else/>
+                 	<span class="defriending people_ufollow" data-uid="{$user['uid']}" data-isfollowing="1" >取消关注</span>
+                 </if>  
+            </if>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="homepage-topbox">
+          <div>{$user.issue_count}
+              <div><a href="{:U('Mobile/People/peopledetail',array('uid'=>$user['uid']))}">故事</a></div>
+          </div>
+          <div>{$user.following}
+              <div><a href="{:U('Mobile/People/peoplefollow',array('uid'=>$user['uid']))}">关注</a></div>
+          </div>
+          <div>{$user.fans}
+              <div><a href="{:U('Mobile/People/peoplefan',array('uid'=>$user['uid']))}">粉丝</a></div>
+          </div>
+      </div>
+  </div>
+  <notempty name="myissue_arr">
+    <div class="homepage-lists-box">
+   
+        <volist name="myissue_arr" id="vo">
+          <div class="am-g collection-lists">
+            <div class="am-u-sm-5 collection-issue-img-box"> <a href="{:U('Mobile/Issue/issuecontentdetail',array('id'=>$vo['id']))}"><img src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=400,300}" class="collection-lists-img"/> </a> </div>
+            <div class="am-u-sm-7 collection-text-box"> <a href="{:U('Mobile/Issue/issuecontentdetail',array('id'=>$vo['id']))}">
+              <h3 class="collection-issue-name">{$vo.title}</h3>
+              </a>
+              <div class="collection-issue-time">{:date('Y-m-d H:i:s',$vo['create_time'])}</div>
+              <div class="collection-issue-icon"> <i class="am-icon-eye"></i><span> {$vo.view_count}</span><i class="am-icon-comment"></i><span> {$vo.comment_count}</span> </div>
+            </div>
+          </div>
+        </volist>
+  
+      <script>
+$(function () {
+	hdl_lazyload('img.collection-lists-img');
+})
+</script>
+    </div>
+  </notempty>
+</block>

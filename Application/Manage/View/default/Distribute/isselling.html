@@ -1,0 +1,74 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>分销商品</h2><span class='common-color-red'>(商品列表)</span>
+</div>
+  <div class="data-table table-striped">
+        <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>商品名称</th>
+		  <th>所属商家</th>
+		  <th>分销类型</th>
+		  <th>分销状态</th>
+		  <th>分销时间</th>
+		  <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="relation_item">
+        <volist name="relation_item" id="vo">
+          <tr>
+			<td><a href="{:U('Distribute/shop_detail',array('id'=>$vo['goods_id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+			<td>{$vo.webname}</td>
+			<td><if condition="$vo['distribute_relation_status'] eq 0">单品分销<else/>全站分销</if></td>
+			<td><if condition="$vo['apply_status'] eq 0"><else/>分销中</if></td>
+		    <td>{$vo.apply_time|date="Y-m-d",###}</td>
+			<td>{$vo.createtime|date="Y-m-d",###}</td>
+            <td>
+				<a href="{:U('Distribute/shop_detail',array('id'=>$vo['goods_id']))}">查看商品</a>
+				
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="15">{$page}</td>
+        <else/>
+			<td colspan="15" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+  
+  
+  
+</block>
+

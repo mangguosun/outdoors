@@ -1,0 +1,25 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+  <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li class="active">账号设置</li>
+    </ol>
+  </div>
+  <div class="row">
+    <ul id="mytab" class="nav nav-tabs">
+      <li class="active"><a href="#base_panel" c data-toggle="tab">基本资料</a></li>
+      <li><a href="#avatar_panel" data-toggle="tab">修改头像</a></li>
+      <li><a href="#password_panel" data-toggle="tab">修改密码</a></li>
+    </ul>
+  </div>
+  <div class="tab-content" style="padding-top:25px">
+    <div class="tab-pane active" id="base_panel"><include file="Usercenter/userconfig"/></div>
+    <div class="tab-pane" id="avatar_panel"><include file="Usercenter/changeavatar"/> </div>
+    <div class="tab-pane" id="password_panel"><include file="Usercenter/changepassword"/> </div>
+  </div>
+  <neq name="tab" value=""> </neq>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+</block>

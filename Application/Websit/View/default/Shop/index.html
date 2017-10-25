@@ -1,0 +1,13 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title">商品管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Websit/Shop/index',array('status'=>0))}">商品列表</a></li>
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Websit/Shop/index',array('status'=>1))}">商品分类</a></li>
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li class="usercenter-set-pd" ><include file="shop_list"/></li></if>
+  <if condition="$status eq 1"><li class="usercenter-set-pd" ><include file="shop_category"/></li></if>
+  <if condition="$status eq 2"><li class="usercenter-set-pd" ><include file="shop_sub_list"/></li></if>
+</ul>
+</block>

@@ -1,0 +1,25 @@
+<php>$currentSession=D('Common/Talk')->getCurrentSessions();</php>
+<div class="session-lists" id="session_panel_main">
+  <ul class="friend_list">
+  <volist name="currentSession" id="session">
+    <li id="chat_li_{$session.id}">
+      <a href="javascript:" onclick="mobiletalker.open({$session.id})" class="session_ico">
+      <img class="lazy session-lists-thumb"  src="__PUBLIC__/Core/images/grey.gif" data-original="{$session.first_user.avatar64}" alt="" title=""/>
+      <h3 class="session-lists-title">{$session.first_user.nickname}</h3>
+      <div class="session-lists-message">{$session.last_message.content|op_t|getShortSp=12}</div>
+      <div class="session-lists-uptime">{$session.last_message.create_time|friendlyDate}</div>
+      <eq name="session.new" value="1">
+      <div class="session-lists-badge am-badge am-badge-danger am-round badge_new">&nbsp;</div>
+      </eq>
+      </a>
+      <!--div class="session-lists-close"><i class="am-icon-power-off" onclick="mobiletalker.exit({$session.id})"></i></div-->
+    </li>
+    </volist>
+  </ul>
+</div>
+<script>
+$("#session_panel_main img.lazy").lazyload({effect: "fadeIn",threshold : 100});
+var last_toast_talk_message_time = "{:time()}";//最后提示聊天消息的时间
+</script>
+<!--结束聊天版-->
+

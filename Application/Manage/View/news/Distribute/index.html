@@ -1,0 +1,57 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+<div class="col-lg-12 col-sm-12 col-xs-12">
+<div class="widget">
+		<div class="widget-body">
+			
+			<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="widget">
+					<div class="widget-body bg-blue text-align-center ">
+						<p></p>
+							<div class="white" ><i class="fa fa-share-alt-square" style="font-size:150px"></i></div>
+							<p></p>
+							<div><a href="{:U('Distribute/company_list')}"  class="btn btn-yellow shiny"><b> 申 请 全 站 </b></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('Distribute/goods')}" class="btn btn-darkorange shiny"><b> 申 请 单 品 </b></a></div>
+						<p></p>
+                        <div class="text-align-center"><b style="font-size:20px">我要分销</b></div>
+                        <p></p>
+					</div><!--Widget Body-->
+					
+				</div><!--Widget-->
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="widget">
+					<div class="widget-body bg-palegreen text-align-center ">
+						<p></p>
+							<div class="white" ><i class="fa fa-shopping-cart" style="font-size:150px"></i></div>
+							<p></p>
+							<div>
+								<div><if condition="$status"><a class="btn btn-yellow shiny"><b> 已 入 驻 </b></a><else/><a href="{:U('Distribute/site_distribute_apply')}" class="btn btn-darkorange"><b> 入 驻 申 请 </b></if></a></div>   
+							</div>
+						<p></p>
+                        <div class="text-align-center"><b  style="font-size:20px">我要供货</b></div>
+                        <p></p>
+					</div><!--Widget Body-->
+					
+				</div><!--Widget-->
+			</div>
+			<!--div class="col-lg-4 col-sm-4 col-xs-4">
+				<div class="widget">
+					<div class="widget-header bordered-bottom bordered-sky">
+						<span class="widget-caption">集市公告</span>
+					</div>
+					<div class="widget-body">
+						<p><a href="">好消息！发游记赚代金券，你还不来？</a></p>
+						<p><a href="">写游记 价值2698的北脸顶级冲锋衣</a></p>
+						<p><a href="">写游记 价值2698的北脸顶级冲锋衣...</a></p>
+					</div>
+				</div>
+			</div-->
+			</div>
+		</div><!--Widget Body-->
+	</div>
+</div>
+</div>
+</block>
+

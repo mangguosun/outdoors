@@ -1,0 +1,77 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h4>配置活动筛选分类显示</h4>
+  <div class="aline common-margin-bten"></div>
+  <div id="center">
+    <div class="row">
+      <div class="col-md-12">
+        <form class="ajax-form" role="form" action="{:U('Manage/Apply/doevent_websit')}" method="post">
+          <input type="hidden" name="id" value="{$id}">
+          <div class="form-group has-feedback">
+            <label class=" control-label">活动月份：</label>
+            <input type="radio"  <if condition="($list['starttime'] eq 1) OR ($list['starttime'] eq '')"> checked </if>        name="starttime" value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio" class="" name="starttime" <if condition="($list['starttime'] eq 2) "> checked </if> value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">目 的 地：</label>
+            <input type="radio"  name="finalcity"  <if condition="($list['finalcity'] eq 1) OR ($list['finalcity'] eq '') "> checked </if> value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio"  name="finalcity" <if condition="($list['finalcity'] eq 2) "> checked </if> value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">假日出行：</label>
+            <input type="radio"  name="holiday"   <if condition="($list['holiday'] eq 1) OR ($list['holiday'] eq '')  "> checked </if> value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio"  name="holiday" <if condition="($list['holiday'] eq 2) "> checked </if>  value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">活动特色：</label>
+            <input type="radio" name="tag" <if condition="($list['tag'] eq 1) OR ($list['tag'] eq '')  "> checked </if>  value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio" class="" name="tag" <if condition="($list['tag'] eq '2') "> checked </if>  value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">价格范围：</label>
+            <input type="radio" name="price"  <if condition="($list['price'] eq 1) OR ($list['price'] eq '')  "> checked </if> value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio" class="" name="price" <if condition="($list['price'] eq 2) "> checked </if>  value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">活动天数：</label>
+            <input type="radio"  name="days"  <if condition="($list['days'] eq 1) OR ($list['days'] eq '') "> checked </if>  value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio" class="" name="days" <if condition="($list['days'] eq '2') "> checked </if>   value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">近期出行：</label>
+            <input type="radio"  name="recent"  <if condition="($list['recent'] eq 1) OR ($list['days'] eq '') "> checked </if>  value="1">
+            显示&nbsp;&nbsp;
+            <input type="radio" class="" name="recent" <if condition="($list['recent'] eq '2') "> checked </if>   value="2">
+            不显示 </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">自定义标签</label>
+          </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">标签名称</label>
+            <input type="text"  name="custom_event[name]" class="text input-large" value="{$list['custom_event']['name']}">
+          </div>
+          <div class="form-group has-feedback">
+            <label class=" control-label">标签属性</label>
+            <textarea name="custom_event[attribute]" class="text input-large" rows="5" cols="50%">{$list['custom_event']['attribute']}</textarea>
+            <div style="float:right; margin-right:100px;"> <span style="color:red">注意：每一个属性一行！</span><br>
+              如：一般<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;良好<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优<br>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <div class=" ">
+              <input type="submit" class="btn btn-primary"   value="确定">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>创建科目</h2>
+</div>
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" action="{:U('Manage/Course/createsub')}" method="post">
+	<div class="form-item">
+            <label for="title" class="item-label">科目编号<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="subsn" maxlength="25" class="text input-large" check-type="Text" value="{$subject.subsn}" />
+            </div>
+        </div>
+        <br/><br/>
+        
+        <div class="form-item">
+            <label for="title" class="item-label">科目名称<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <input id="title" name="name" maxlength="25" class="text input-large" check-type="Text" value="{$subject.name}"/>
+            </div>
+        </div>
+        <br>
+        <div class="form-item">
+            <label for="title" class="item-label">科目类别名称<a>&nbsp;(必填)</a></label>
+            <div class="controls">
+                <select name="pid">
+                    <option value="0">顶级分类</option>
+                    <volist  name="subject"  id="vo">
+                        <option value="{$vo.id}"/>{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="form-item">
+            <button type="submit" class="w_btn submit-btn" target-form="form-horizontal">确定</button>
+            <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+          </div>
+ </form>
+</div>
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+</block>

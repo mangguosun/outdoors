@@ -1,0 +1,163 @@
+<extend name="Public/common"/>
+<block name="body">
+    <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+        <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/People/index')}" class=""> <i class="am-icon-chevron-left"></i></a>个人主页</div>
+    </header>
+    <include file="Public/topnavbar"/>
+    <div class="userconter-topbox">
+        <div class="homepage-topbackground">
+            <div class="homepage-topbox-content">
+                <div class="userimg-box" data-am-widget="gallery" data-am-gallery="{ pureview: true }"><img src="{$user.avatar128}" class="userconter-userimg"/></div>
+                <div class="loginname">
+                    <div class="loginname-name">{$user.nickname} &nbsp;<span class="am-text-warning">{$user.title}</span></div>
+                    <div class="loginname-address"> {:get_upgrading($user['is_use'])}，{$user.addresss.province} {$user.addresss.city}</div>
+                    <div class="loginname-word">{$user.signature}</div>
+                    <div class="homepage-top-btn">
+                        <if condition="is_login() && $user['uid'] !== is_login()"> <span class="sixin" onclick="mobiletalker.start_talk({$user['uid']})">私信</span> </if>
+
+
+                        <if condition="is_login() && $user['uid'] != get_uid()">
+                            <php> $is_following = D('Follow')->where(array('who_follow'=>get_uid(),'follow_who'=>$user['uid']))->find(); </php>
+                            <if condition="!$is_following"> <span class="guanzhu people_ufollow" data-uid="{$user['uid']}"  data-isfollowing="0" >关注</span>
+                                <else/>
+                                <span class="defriending people_ufollow" data-uid="{$user['uid']}" data-isfollowing="1" >取消关注</span>
+                            </if>
+                        </if>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-topbox">
+            <div>{$user.issue_count}
+                <div><a href="{:U('Mobile/People/peopledetail',array('uid'=>$user['uid']))}">故事</a></div>
+            </div>
+            <div>{$user.following}
+                <div><a href="{:U('Mobile/People/peoplefollow',array('uid'=>$user['uid']))}">关注</a></div>
+            </div>
+            <div>{$user.fans}
+                <div><a href="{:U('Mobile/People/peoplefan',array('uid'=>$user['uid']))}">粉丝</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="am-panel-default">
+        <div class="people-list-tpl">
+
+            <li>
+                <img class="lazy people-lists-thumb"  src="__PUBLIC__/Core/images/grey.gif" data-original="" alt="" title="" data-thumb/>
+                <h3 class="people-lists-title"  data-title></h3>
+                <div class="people-lists-signatures"><span data-signature>签名</span></div>
+                <div class="people-lists-fun">
+                    <a href="javascript:" class="" onclick="followEvent(this)" data-class>
+                        <span class="guanzhufun" data-follow>关注</span>
+                    </a>
+                </div>
+
+            </li>
+
+        </div>
+        <div class="people-lists">
+            <ul></ul>
+            <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon style=" display:none"></i> <span loading-text>加载更多</span></div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $(function () {
+            var loading_i = 0;
+            var get_url = {};
+            var gget_url = {$get_url};
+            if(!$.isEmptyObject(gget_url)){
+                get_url = gget_url;
+            }
+            function get_people(is_del){
+                if(is_del ==true){
+                    $(".people-lists ul li").remove();
+                }
+                var loading_more = $(".loading-more");
+                var loading_text = loading_more.find('[loading-text]');
+                var loading_icon = loading_more.find('[loading-icon]');
+                loading_text.html('奋力加载中');
+                loading_icon.show();
+
+                get_url['page'] = loading_i;
+                $.getJSON("{:U('Mobile/People/get_people_follow')}",get_url,function(json){
+                    if(json){
+                        $.each(json,function(index,array){
+                            var people_list_tpl = $('.people-list-tpl li');
+                            var people_list_li = people_list_tpl.clone();
+                            var people_list_thumb = people_list_li.find('[data-thumb]');//图片
+                            var people_list_title = people_list_li.find('[data-title]');//标题
+                            var people_list_signature = people_list_li.find('[data-signature]');
+                            var people_list_class = people_list_li.find('[data-class]');
+                            var people_list_follow = people_list_li.find('[data-follow]');
+                            people_list_thumb.attr("alt",array['title']);
+                            people_list_thumb.attr("title",array['title']);
+                            people_list_thumb.attr("data-original",array['thumb']);
+                            people_list_title.html(array['title']);
+                            people_list_signature.html(array['signature']);
+                            people_list_class.attr("class",array['follow_id']);
+                            people_list_follow.html(array['follow']);
+                           if( array['follow']==="自己"){
+                               people_list_follow.remove()
+                           }
+                            people_list_thumb.lazyload({effect: "fadeIn",threshold : 100});
+                            $(".people-lists ul").append(people_list_li);
+                        });
+                        $(".people-lists").trigger("scroll");
+                        loading_text.html('加载更多');
+                        loading_icon.hide();
+                        loading_i++;
+                        $('.loading-more').scrollspy({});
+                    }else{
+                        $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+                        loading_text.html('已经没有了');
+                        loading_icon.hide();
+                    }
+                });
+
+            }
+            get_people();
+            $('.loading-more').on('inview.scrollspy.amui', function () {
+                timeout = setTimeout(function () {
+                    get_people();
+                }, 1000);
+            }).on('outview.scrollspy.amui', function () {
+                clearTimeout(timeout)
+            });
+        });
+        function ufollow(uid) {
+            if ($('.'+uid).text().trim() == '取消关注') {
+                $.post(U('Mobile/Public/unfollow'), {uid: uid}, function (msg) {
+                    if (msg.status) {
+                        toasts.success('取消关注成功。');
+                    var yy ="<?php echo $user['uid'] != get_uid() ?>"
+                        if(yy){
+                            $('.'+uid).find('[data-follow]').html('关注');
+                        }else{
+                            $('.'+uid).parents('li').remove();
+                        }
+                    } else {
+                        toasts.error('取消关注失败。');
+                    }
+                }, 'json');
+            } else {
+                $.post(U('Mobile/Public/follow'), {uid: uid}, function (msg) {
+                    if (msg.status) {
+                        toasts.success('关注成功。');
+                        $('.'+uid).find('[data-follow]').html('取消关注');
+                    } else {
+                        toasts.error('关注失败。');
+                    }
+                }, 'json');
+            }
+
+        }
+        function followEvent(obj) {
+            var ee = obj.outerHTML;
+            var uid = $(ee).attr('class');
+            ufollow(uid);
+        }
+    </script>
+</block>

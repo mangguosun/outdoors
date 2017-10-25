@@ -1,0 +1,58 @@
+<extend name="tourism/common"/>
+<block name="style">
+<style>.nav_bar .all_product_lists{ display:block }</style>
+</block>
+<block name="body">
+<!--导航-->
+<div class="container">{:hook('Advs', 'home_ad')}</div>
+<div class="h30"></div>
+<div class="container">
+<div class="index_hot_top">
+    <div class="index_hot_left">
+    	{:W('TourismHome/hotIssue',array('limit'=>10))} 
+    </div>
+    <div class="index_hot_right">
+    	<div class="index_blog">
+        {:W('TourismHome/hotDocument',array('limit'=>5))}
+        </div>
+	    {:W('TourismHome/TailorEvent')}
+    </div>
+</div>
+</div>
+<div class="h15"></div>
+
+<div class="container">
+ <!--推荐活动-->
+<if condition="getWebsitConfig('index_event_recommend',2) eq '1' or getWebsitConfig('index_event_recommend',2) eq '' ">  
+    {:W('TourismHome/recommendEvent',array('limit'=>7))} 
+  <div class="h15"></div>
+</if> 
+
+<if condition="getWebsitConfig('index_event_new',2) eq '1' or getWebsitConfig('index_event_new',2) eq '' ">          
+  {:W('TourismHome/newEvent',array('limit'=>7))} 
+ 
+</if> 
+</div>
+<div class="h15"></div>
+<div class="container index_footer_bar">
+  <div class="row">
+     <div class="col-md-4" style="padding:0 15px">
+     {:W('TourismHome/brandIssue',array('limit'=>6))} 
+    	</div>
+    <div class="col-md-4" style="padding:0 0">
+      {:W('TourismHome/hotUser',array('limit'=>3))}
+	</div>
+     <div class="col-md-4" style="padding:0 15px">
+      {:W('TourismHome/video',array('limit'=>1))} </div>
+
+  </div></div>
+  <div class="h15"></div>
+</block>
+<block name="script">
+<script>
+$(function () {
+	hdl_lazyload("img.add_loading");
+})
+</script>
+
+</block>

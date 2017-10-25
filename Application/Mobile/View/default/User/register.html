@@ -1,0 +1,276 @@
+<extend name="Public/common_user"/>
+<block name="body">
+  <section>
+    <div class="moblie_user_box"> <span class="mobile_crumbs "><a href="javascript:history.go(-1)" title="{:get_webinfo('webname')}"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_user">
+      <div class="text-right">
+        <div>
+          <div class="user_screening_btn">注 册</div>
+        </div>
+      </div>
+      </span></div>
+    <div class="mobile_login_box">
+     
+        <form action="__SELF__" method="post">
+          <div class="clearfix">
+            <input type="text" id="checkusername" class="form-control" placeholder="手机/邮箱" errormsg="请正确填写手机/邮箱" nullmsg="请填写手机/邮箱" datatype="e" value="" name="email">
+          </div>
+          <span id="checkusername_info" ></span>
+          <div class="h15"></div>
+          <div class="clearfix">
+            <input type="text" id="nickname" class="form-control" placeholder="请输入昵称"  errormsg="请填写1-16位昵称" nullmsg="请填写昵称" datatype="*1-16" value="" name="nickname">
+          </div>
+          <span id="nickname_info" ></span>
+          <div class="h15"></div>
+          <div class="clearfix">
+            <input type="password" id="inputPassword" class="form-control" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+          </div>
+          <span id="inputPasswordInfo" ></span>
+          <div class="h15"></div>
+          <div class="clearfix check_mobile_verify" style="display:none">
+            <div class="col-xs-7" style="padding: 0px; margin:0">
+              <input type="text" id="mobileverify" class="form-control" placeholder="手机验证码"  name="mobileverify">
+            </div>
+            <div class="col-xs-5" style="padding: 0px; margin:0">
+              <button type="button"  class="col-xs-12 btn btn-info mobile_verify">loading...</button>
+            </div>
+          </div>
+          <div class="clearfix user_verify check_email_verify" style="display:">
+            <div class="col-xs-7 user_verify_input" style="padding: 0px; margin:0">
+              <input type="text" id="verifyCode" class="form-control" placeholder="右侧验证码" errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+            </div>
+            <div class="col-xs-5" style="padding: 0px; margin:0"><img class="col-xs-12 verifyimg reloadverify img-responsive" style="padding:0; margin:0" alt="点击切换" src="{:U('verify')}"> </div>
+          </div>
+          <div class="h15"></div>
+          <div class="clearfix">
+            <button type="submit" class="btn btn-primary col-xs-12" >下一步</button>
+          </div>
+          <div class="h15"></div>
+          <div class="form-group">
+            <label for="user_agreement" class="">
+              <input type="checkbox" name="user_agreement" value='1'checked>
+              同意<a href="{:U('Mobile/User/user_agreement')}" target="_blank">{:get_webinfo('webname')}服务协议</a></label>
+          </div>
+        </form>
+    
+    </div>
+  </section>
+  <script type="text/javascript" src="__STATIC__/jquery.cookie.js"></script>
+  <script>
+    $(function(){
+		//---邮箱-----
+		  var checkusername=$('#checkusername');
+		  var checkusername_info=$('#checkusername_info');
+		 
+		      checkusername.blur(function(){
+										  
+				
+				if(checkusername.val()==""){
+					 checkusername_info.html('请填正确的手机或邮箱');
+					 checkusername_info.css('color','red');
+					 return false;
+				}					  
+			    if(checkusername.val().match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)){
+					$.post("{:U('Mobile/User/doemails')}",{email:checkusername.val()},function(datas){
+						if(datas==1){
+							checkusername_info.html('邮箱已被注册');
+							checkusername_info.css('color','red');
+							$('.check_mobile_verify').hide();
+							$('.check_email_verify').hide();
+							$(".reloadverify").click();
+							return false;
+						}else{
+							$('.check_email_verify').show();
+							$('.check_mobile_verify').hide();
+							$(".reloadverify").click();
+							checkusername_info.html('可以注册');
+							checkusername_info.css('color','green');
+						}
+					},'json');
+	 
+				}else if(checkusername.val().match(/^1[3456789]\d{9}$/)){
+					
+					$.post("{:U('Mobile/User/domobile')}",{mobile:checkusername.val()},function(datas){
+						if(datas==1){
+							checkusername_info.html('手机已被注册');
+							checkusername_info.css('color','red');
+							$('.check_mobile_verify').hide();
+							$('.check_email_verify').hide();
+							return false;
+						}else{
+							mobile_verify_times= $.cookie("mobile_verify_times")||60;
+							mobile_verify_dis = $.cookie("mobile_verify_dis");
+							function countDown(){
+								var time;
+								time=--mobile_verify_times;
+								$.cookie("mobile_verify_times",time,{"expires":1});
+								if(time<=0){
+									mobile_verify_times=60;
+									
+									$(".mobile_verify").attr("disabled",false)
+								    if(time==0){
+											clearInterval(inter1);
+											$(".mobile_verify").text("免费获取验证码");
+										}else{
+											$(".mobile_verify").text(time+"秒后重新发送");
+											$.cookie("mobile_verify_dis","");
+										}
+									
+								
+								}else{
+									$(".mobile_verify").attr("disabled",true)
+									$(".mobile_verify").text(time+"秒后重新发送");
+								}
+						
+							}
+						
+							
+							$('.check_mobile_verify').show();
+							$('.check_email_verify').hide();
+							
+							checkusername_info.html('可以注册');
+							checkusername_info.css('color','green');
+							
+							
+							if(mobile_verify_dis=="disabled"){
+								$(".mobile_verify").attr("disabled",true);
+								inter1=setInterval(function(){countDown()},1000)
+							}else{
+								$(".mobile_verify").attr("disabled",false);
+								$(".mobile_verify").text('免费获取验证码');
+							   
+							}  
+						 
+					
+							$(".mobile_verify").click(function(){
+							
+							  //加POST发送验证码
+						        $.post("{:U('Mobile/User/mobile_vido')}",{mobile:checkusername.val()},function(datas){
+								     if(datas['status']==1){
+									      $(".mobile_verify").attr("disabled",true);
+										  $.cookie("mobile_verify_dis","disabled",{"expires":1})
+										  inter1=setInterval(function(){countDown()},1000);
+										  toast.success(datas['meassge']);
+									}else{
+									    
+										$(".mobile_verify").attr("disabled",false);
+										//$.cookie("mobile_verify_dis","",{"expires":1})
+										//inter1=setInterval(function(){countDown()},1000);
+										clearInterval(inter1);
+										toast.error(datas['meassge']);
+									 }
+								},'json')
+									
+							        
+							})
+						}
+					},'json');
+				}else{
+
+					 checkusername_info.html('请填正确的手机或邮箱');
+					 checkusername_info.css('color','red');
+					 checkusername.focus(); //让邮箱文本框获得焦点
+					 checkusername.val(''); //让邮箱文本框获得焦点
+				}
+				
+				
+	
+				
+				
+		    })
+			
+		 //------昵称------
+		 var nicknames=$('#nickname');
+		 var nickname_info=$('#nickname_info');
+		     nicknames.blur(function(){
+			   if(nicknames.val()==''){
+			        nickname_info.html('不能为空');
+					nickname_info.css('color','red');
+				   
+			   }else{
+			        nickname_info.html('可以注册');
+				    nickname_info.css('color','green');
+			   }
+				$.post("{:U('Mobile/User/doNicknames')}",{nickname:nicknames.val()},function(data){
+					if(data==1){
+						nickname_info.html('昵称被占用');
+						nickname_info.css('color','red');
+					}
+				},'json')
+			 })
+		 //---密码---
+		 var pass=$('#inputPassword');
+		 var pass_info=$('#inputPasswordInfo');
+		     pass.blur(function(){
+			 if(pass.val().match(/^[a-zA-Z0-9]{6,30}$/)==null){
+			       pass_info.html('密码长度必须在6到30位之间');
+				   pass_info.css('color','red');
+			  }else{
+			       pass_info.html('可以注册');
+				   pass_info.css('color','green');
+			 }
+			
+			})
+		
+		})
+	</script>
+  <script>    
+        if(MID==0){
+            $(document)
+                    .ajaxStart(function () {
+                        $("button:submit").addClass("log-in").attr("disabled", true);
+                    })
+                    .ajaxStop(function () {
+                        $("button:submit").removeClass("log-in").attr("disabled", false);
+                    });
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+                function success(data) {
+                    if (data.status) {
+                        setTimeout(function () {
+                            window.location.href = data.url
+                        }, 10);
+                    } else {
+                        toast.error(data.info, '温馨提示');
+                        //self.find(".Validform_checktip").text(data.info);
+                        //刷新验证码
+                        $(".reloadverify").click();
+                    }
+                }
+            });
+
+            function change_show(obj) {
+                if ($(obj).text().trim() == 'show') {
+                    var value = $('#inputPassword').val().trim();
+                    var html = '<input type="text" value="' + value + '" id="inputPassword" class="form-control" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">' +
+                            '<div class="input-group-addon"><a style="width: 100%;height: 100%" href="javascript:void(0);" onclick="change_show(this)">hide</a></div>';
+                    $('#password_block').html(html);
+                } else {
+                    var value = $('#inputPassword').val().trim();
+                    var html = '<input type="password" value="' + value + '" id="inputPassword" class="form-control" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">' +
+                            '<div class="input-group-addon"><a style="width: 100%;height: 100%" href="javascript:void(0);" onclick="change_show(this)">show</a></div>';
+                    $('#password_block').html(html);
+                }
+            }
+
+            function setNickname(obj){
+                var text=$(obj).val().trim();
+                if(text!=null&&text!=''){
+                    $('#nickname').val(text);
+                }
+            }
+           
+        }
+		   
+		  var verifyimg = $(".verifyimg").attr("src");
+        $(".reloadverify").click(function () {
+            if (verifyimg.indexOf('?') > 0) {
+                $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+            } else {
+                $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+            }
+        });
+    </script>
+</block>

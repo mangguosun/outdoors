@@ -1,0 +1,66 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>social帐号</h2>
+</div>
+<div class="cf">
+      <div class="fl">
+            <a class="btn" href="{:U('Websit/social_edit')}">新 增</a>
+            <button class="btn ajax-post" url="{:U('Websit/changeStatus',array('method'=>'resumeShare'))}"
+                    target-form="ids">启 用
+            </button>
+            <button class="btn ajax-post" url="{:U('Websit/changeStatus',array('method'=>'forbidShare'))}"
+                    target-form="ids">禁 用
+            </button>
+            <!--button class="btn ajax-post confirm" url="{:U('Websit/changeStatus',array('method'=>'deleteShare'))}"
+                    target-form="ids">删 除
+            </button-->&nbsp;&nbsp;
+			<span class='common-color-red'>(最多添加5条数据哦)</span>
+      </div>
+    </div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">序号</th>
+				<th class="">名称</th>
+                <th class="">图标</th>
+				<th class="">状态</th>
+                <th class="">操作</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="shares">
+                <volist name="shares" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                        <td>{$vo.id}</td>
+						<td>{:get_share($vo['cover_logo'])}</td>
+                        <td><?php if(!empty($vo['url'])):?>
+							<a href="{$vo.url}" target="_blank"><img src="__PUBLIC__/Core/images/share/{$vo.cover_logo}.png"></a>
+							<?php else:?>
+							<img src="__PUBLIC__/Core/images/share/{$vo.cover_logo}.png">
+							<?php endif;?></td>
+                        <td>
+							<if condition="$vo['status'] eq 1">
+							<a href="{:U('Websit/changeStatus?method=forbidShare&id='.$vo['id'])}"  class="ajax-get">启用</a>
+							<elseif condition="$vo['status'] eq 0"/>
+							<a href="{:U('Websit/changeStatus?method=resumeShare&id='.$vo['id'])}" class="ajax-get">禁用</a>
+							</if>
+					    </td>
+						<td><a href="{:U('Websit/social_edit',array('id'=>$vo['id']))}">编辑</a></td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="6" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+</block>

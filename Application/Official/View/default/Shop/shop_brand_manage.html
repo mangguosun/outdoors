@@ -1,0 +1,60 @@
+<div class="row">
+<div class="table-toolbar">
+    <a class="btn  btn-info"  href="{:U('Official/Shop/shop_brand_manage_add')}">添加品牌</a>
+</div>
+</div>
+<div class="row" >
+
+<div class="widget">
+    <div class="widget-header bordered-bottom bordered-sky">
+        <i class="widget-icon fa fa-tasks themeprimary"></i>
+        <span class="widget-caption">品牌列表</span>
+        <div class="widget-buttons">
+            
+        </div>
+    </div>
+    <div class="widget-body">
+        <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>品牌名称</th>
+                    <th>首字母小写</th>
+                    <th>英文名</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <!-- 列表 -->
+            <tbody>
+                <volist name="shop_brand_list" id="vo">
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.ucfirst}</td>
+                        <td>{$vo.englist_name}</td>	
+                        <td>
+                            <div class="btn-group">
+                                <div class="btn-group">
+                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    操作 <i class="fa fa-angle-down"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{:U('Official/Shop/shop_brand_manage_edit?id='.$vo['id'])}">编辑</a>
+                                        </li>										
+                                    </ul>
+                                </div>
+                            </div>								
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>	
+        </table>
+        <div style="clear:both;overflow:hidden;padding:0 5px 0 0"><div style="float:right;margin-top:15px;">{$page}</div></div>
+    </div>
+</div>
+
+</div>
+</block>
+
+
+

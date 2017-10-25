@@ -1,0 +1,23 @@
+<extend name="Public/common"/>
+<block name="body">
+
+  <div class="top_bar_mobile"> <span class="mobile_crumbs "><a onclick="window.history.go(-1)" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_search">
+    <div class="text-right">
+      <div class="event_screening_btn">定制信息</div>
+    </div>
+    </span> </div>
+   <div class="h40"></div>
+  
+  <!--导航-->
+  <div class="tailor_from_box">
+ <div class="tailor_from_title">订单信息：</div>
+ 	<div class="tailor_rtuern_box">您的定制需求单号为【<strong>{$tailor_info.trade_sn}</strong>】<br />
+如果您希望了解相关信息，请通过以下方式联系我们<br />
+电话：<strong>{$webinfo.telphone}</strong><br />
+Email：<strong>{$webinfo.email}</strong><br />
+掌柜将为您提供萌萌达的咨询。
+     </div>
+ </div>
+</block>
+
+

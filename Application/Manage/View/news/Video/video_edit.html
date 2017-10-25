@@ -1,0 +1,107 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.video_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="storyForm" action="{:U('Manage/Video/video_edit')}" class="form-horizontal form-bordered" method="post" > 
+                    	<input type="hidden" name="id" id="id" value="{$datainfo.id}"/>
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">视频名称</label>
+                            <div class="col-lg-10">
+                               <input id="video_name" name="video_name" class="form-control"  value="{$datainfo.video_name}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">视频链接地址</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                   <input type="text" class="form-control" placeholder="链接地址" name="video_url" value="{$datainfo.video_url}"  /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="建议使用优酷或者土豆网址"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+						 <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定" href="{:U('Manage/Video/video_edit')}"/>
+                                <input class="btn btn-palegreen" type="submit" value="返回" onclick="javascript:history.back(-1);return false;"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#storyForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+		
+		/*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#storyForm').slideUp('fast');
+					
+				validator.defaultSubmit();
+					
+				}
+			})
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            video_name: {
+                validators: {
+                    notEmpty: {
+                        message: '视频名称是必需的，不能是空的'
+                    }
+                }
+            },
+
+            video_url: {
+                validators: {
+                    notEmpty: {
+                        message: '视频链接网址是必需的，不能是空的'
+                    },
+                    regexp: {
+                        regexp: /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
+                        message: '视频链接地址不正确!'
+                    }
+                    
+
+                }
+            },
+
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

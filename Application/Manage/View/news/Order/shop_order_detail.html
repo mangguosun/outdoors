@@ -1,0 +1,312 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+<style>
+.updateOrder{background:#FFCE55;padding:2px;color:white;}
+.updateOrder:hover{background:#FFCE55;text-decoration:none;color:white;}
+</style>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">购物清单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;订单号：{$order_info.order_sn} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <if condition="$order_info['supplier_id'] eq $siteid  or ($order_info['siteid'] eq $siteid and !$order_info['supplier_id'])">{:get_shop_admin_btn_tow($order_info)}<else/>{:op_t(get_shop_order_status($status))}</if></span>
+			</div>
+			
+			
+			<div id="myModal2" style="display:none;">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form-horizontal  ajax-form" role="form" action="{:U('Manage/Order/do_deliver')}" method="post">
+						<div class="form-group">
+							<input type="hidden" name="order_sn" value="{$order_info.order_sn}" >
+									<div class="col-md-3">请选择快递公司：</div><div class="col-md-9"> {:get_deliver_com_select()}</div>
+									<div class="col-md-3">请输入快递单号：</div><div class="col-md-9"><input id="express_num" name="express_num" class="form-control form_check" check-type="Num"  value="" placeholder="请输入快递单号" required /></div>
+									<button type="submit" class="btn btn-primary" style="float:right;margin-right:20px;">提交</button>
+							</table>
+							<p style="color:red;">小提示：您可以直接调整订单的最终付款价格，输入实付订单金额即可</p>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+						
+			
+			
+			<div class="widget-body">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>商品</th>
+							<th>商品信息</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>运费</th>
+							<th>商品小计</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="goods_list" id="vo">
+						<tr>
+							<td><img src="{$vo.goods_ico|getThumbImageById=50,50}" width="50" height="50" /></td>
+							<td>商品名：{$vo.goods_name}<br>商品描述：{$vo.goods_desc}</td>
+							<td>{$vo.goods_price}</td>			 
+							<td>{$vo.goods_num}</td>	
+							<td>{$vo['freight']}</td>				  
+							<td>{$vo.total_price}元</td>  
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+				
+				
+				<table class="table table-striped table-bordered table-hover" style="margin-top:20px;">
+					<thead>
+						<tr>
+							<th>应付商品金额</th>
+							<th>商品数量</th>
+							<th>商品运费</th>
+							<th>优惠券抵扣</th>
+							<th>应付订单金额</th>
+							<th>实付订单总额</th>
+						</tr>
+					</thead>
+					<tbody>	
+						<tr>
+							<td>{$order_info.totalcostprice}</td>
+							<td>{$order_info.allgoodsnum}</td>
+							<td>{$order_info.allfreight}</td>			 
+							<td><if condition="$order_info['cardid']"><span style="color:green">【{$order_info.cardname}{$order_info.cardid}】</span><span style="color:red;">省￥{$order_info.amount}元</span><else/>0</if></td>	
+							<td>{$order_info['itselftotalprice']}</td>				  
+							<td>{$order_info['alltotalprice']}元</td>  
+						</tr>	
+					</tbody>
+					 
+				</table>
+                <if condition="$order_info['status'] eq 20">
+                    <if condition="$order_info['supplier_id'] eq $siteid and $order_info['siteid'] eq $siteid or ($order_info['siteid'] eq $siteid and !$order_info['supplier_id'])">
+                    	<div class="clearfix" style="padding:10px">
+                        <div class="btn btn-sky pull-right" href="javascript:" id="bootbox-option">修改商品总价</div>
+                        </div>
+                        </if>
+                    </if>
+               
+                    
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="myModall" style="display:none;">
+	<div class="row">
+		<div class="col-md-12">
+        
+        
+        
+			<form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Order/shop_order_doeditmoney')}" method="post">
+            	<input type="hidden" name="order_sn" value="{$order_info.order_sn}" >
+            	<div class="form-group">	
+					<div class="col-lg-12">
+                    	<div class="form-control-static">应付订单金额：{$order_info.alltotalprice}</div>
+						
+					</div>
+				</div>
+            	<div class="form-inline">	
+                	<div class="form-control-static">实付订单金额：</div>
+                	<input type="text" class="form-control" name="real_amount"/>
+				</div>
+                <div class="form-group">	
+					<div class="col-lg-12 " style=" color:#F00">
+                        <div class="form-control-static">小提示：您可以直接调整订单的最终付款价格，输入实付订单金额即可</div>
+					</div>
+				</div>
+				<div class="form-group">
+                    <div class="col-lg-offset-4 col-lg-8">
+                    	<input class="btn btn-primary pull-right" type="submit" value="提交">
+                    </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">退货退款列表</span>
+			</div>
+			<div class="widget-body">
+
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>商品</th>
+							<th>商品信息</th>
+							<th>申请数量</th>
+							<th>申请时间</th>
+							<th>退款原因</th>
+							<th>退款状态</th>
+							<th>退款金额</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="refund_list" id="refund_list">
+						<tr>
+							<td><img src="{$refund_list.goods_ico|getThumbImageById=55,55}" width="55" height="55" /></td>
+							<td>商品名：{$refund_list.goods_name}<br>商品描述：{$refund_list.goods_desc}</td>
+							<td>{$refund_list.refund_num}</td>	
+							<td>{$refund_list.create_time|date='Y-m-d H:i:s',###}</td>
+							<td>{$refund_list.reason_select}</td>	
+							<td>{:get_shop_refund_status($refund_list['refund_status'])}</td> 
+							<td>{$refund_list.refund_price}</td>
+							<td><!--<a class="mbtn btn-info  refund_goods" href="{:U('Manage/Order/shop_order_refund_edit?order_sn='.$refund_list['order_sn'].'&id='.$refund_list['id'])}" >审批</a>-->{:get_shop_refund_admin_btn($refund_list)}</td>  
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">订单收货人信息</span>
+			</div>
+			<div class="widget-body">
+
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>收货人姓名</th>
+							<th>收货人联系电话</th>
+							<th>收货地址</th>
+							<th>邮编</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{$order_info.consignee_name}</td>
+							<td>{$order_info.phone}</td>
+							<td>{:get_city($begincity['province'])}{:get_city($begincity['city'])}{:get_city($begincity['district'])}{:get_city($begincity['community'])}{$order_info['consignee_address_detailed']}</td>	
+							<td>{$order_info['zipcode']}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">物流信息</span>
+			</div>
+			<div class="widget-body">
+			<if condition="$order_info['express_num'] neq ''">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>快递公司</th>
+							<th>快递单号</th>
+							<th>快递信息</th>
+							<th>操作</th>
+						</tr>
+						
+					</thead>
+					<tbody>
+						<tr>
+							<td>{:get_deliver_com($order_info['express_com'])['name']}</td>
+							<td>{$order_info['express_num']}</td>
+							<td>{$order_info['express_desc']}</td>	
+							<td>
+								<button class="btn btn-palegreen" id="bootbox-options">编辑物流信息</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<else />
+				<tr>
+					<td>
+						暂无物流信息
+					</td>
+				</tr>
+			</if>
+			
+			</div>
+		</div>
+	</div>
+</div>
+<div id="myModal" style="display:none;">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal  ajax-form" role="form" action="{:U('Manage/Order/shop_order_doeditexpress')}" method="post">
+			<div class="form-group">
+				<input type="hidden" name="order_sn" value="{$order_info.order_sn}" id="order_sn">
+				<textarea class="form-control" id="express_desc" name="express_desc" class="form-control" rows="5" required="">{$order_info['express_desc']}</textarea>
+				<button type="submit" class="btn btn-primary " style="float:right;margin-right:20px;">提交</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+</block>      
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/jquery-2.0.3.min.js"></script>
+<script src="/Public/static/bootstrap3.2/js/bootstrap.min.js"></script>
+
+<!--Beyond Scripts-->
+
+
+<!--Page Related Scripts-->
+<script src="/Public/static/bootstrap3.2/js/bootbox/bootbox.js"></script>
+
+<script>
+
+        $("#bootbox-options").on('click', function () {
+           bootbox.dialog({
+                message: $("#myModal").html(),
+                title: "编辑物流信息",
+                className: "modal-darkorange",
+            });
+        });
+		
+		
+		$("#bootbox-option").on('click', function () {
+           bootbox.dialog({
+                message: $("#myModall").html(),
+                title: "修改订单总价",
+                className: "modal-darkorange",
+            });
+        });
+		
+		$(".bootbox-option2").on('click', function () {
+           bootbox.dialog({
+                message: $("#myModal2").html(),
+                title: "订单发货：<span style='color:green'>带<span class='common-color-red'>*</span>号为必填</span>",
+                className: "modal-darkorange",
+            });
+        });
+
+       
+</script>
+
+</block>

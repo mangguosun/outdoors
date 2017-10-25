@@ -1,0 +1,114 @@
+<extend name="Public/base1" />
+<block name="body">
+<div class="row">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div class="orders-container">
+		<ul class="orders-list">
+			<li class="order-item bordered-bottom bordered-sky bg-snow">
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 item-left">
+						<div class="item-price">
+							<div class="item-booker">装备供应商</div>
+						</div>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 item-left">
+						<div class="item-price">
+							<div class="item-booker">供应数量</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 item-left">
+						<div class="item-price">
+							<div class="item-booker">网址</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 item-left">
+						<div class="item-price">
+							<div class="item-booker">所在地</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 item-left">
+						<div class="item-price">
+							<div class="item-booker">操作</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<volist name="company" id="company_list">
+			<li class="order-item">
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 item-left">
+							<div class="item-booker"><a  href="{:U('Manage/Distribute/company_detail',array('siteid'=>$company_list['siteid']))}"><img src="{$company_list.logo_icons|getThumbImageById=120,60}" class="user-avatar" style="height:50px;">{$company_list.webname}</a></div>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 item-left">
+						<div class="item-price">
+							<div class="item-booker">{$company_list.goods_count}</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 item-left">
+						<div class="item-price">
+							<div class="item-booker">{$company_list.domain}</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 item-left">
+						<div class="item-price">
+							<div class="item-booker">{$company_list['province']}{$company_list['city']}{$company_list['district']}{$company_list['community']}</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 item-left">
+						<div class="item-price">
+							<div class="item-booker"><if condition="$supplier_id_a['supplier_id'] eq $company_list['siteid']"><a class="btn-yellow">我已代理</a> <else/><a class="btn btn-palegreen btn-xs bootbox-options" href="javascript:" com-name="{$company_list.webname}" com-id="{$company_list.siteid}">我要申请全站分销</a></if></div>
+						</div>
+					</div>
+				</div>
+				
+				<a class="item-more" href="{:U('Manage/Distribute/company_detail',array('siteid'=>$company_list['siteid']))}">
+					<i></i>
+				</a>
+			</li>
+			</volist>
+		</ul>
+		<div class="orders-footer">
+			{$page}
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="myModal" style="display:none;">
+	<h2>你确定向<span id="supplier_name"></span>提交分销合作申请吗？</h2>
+	<div class="row">
+    	<div class="col-md-12">
+            <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Distribute/relation_a_apply')}" method="post">
+				<div id="editMoneybox" class="editMoneybox">
+					<input type="hidden" name="supplier_id" id="supplier_id" value="{'$website['siteid']}" >
+					<p>注意事项：</p>
+					<p>1，分销申请，供应商将在7天内审核完毕。</p>
+					<p>2，审核通过后，您的商铺将自动同步商品，您无法添加编辑删除商品</p>
+					<p>3，你可以主动终止分销合作，合作解除后，商铺转为普通模式</p>
+				</div>
+				<p>
+				<input type="submit" class="btn btn-info deliver_goods" value="我要申请全站分销">
+				</p>
+			</form>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+
+<script>
+		
+        $(".bootbox-options").on('click', function () {
+			var com_id	=	$(this).attr('com-id');
+		var com_name	=	$(this).attr('com-name');
+			$("#supplier_id").val(com_id);
+			$("#supplier_name").html(com_name);
+           bootbox.dialog({
+                message: $("#myModal").html(),
+                title: "申请全站分销",
+                className: "modal-darkorange",
+            });
+        });
+</script>
+
+</block>

@@ -1,0 +1,944 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head"/>
+</head>
+<body>
+
+<div id="mobile_sign_page" style="display:block">
+  <!-- /头部 -->
+  <!-- 主体 -->
+  <div class="top_bar_mobile"><span class="mobile_crumbs"><a onClick="logout_sign();" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn">
+        <if condition="$ordertype eq 1">确认报名
+          <else/>
+          预约报名</if>
+      </div>
+    </div>
+    </span> </div>
+  <div class="h40"></div>
+  <div class="mobile_detail_box">
+   
+    <div class="mobile_sign_order_info">
+	 <if condition="get_webinfo('sign_notice')">
+	<h4>报名须知：</h4>
+        <div class="sign_text" style="margin-bottom:30px">{:nl2br(get_webinfo('sign_notice'))}</div>
+	 </if>
+		<h4>活动信息：</h4>
+      <div class="img_name"> <img src="{$event_content.cover_id|getThumbImageById=50,50,1}">{$event_content.title} </div>
+      <php>$begincity = get_citys($event_content['begincity']);$finalcity = get_citys($event_content['finalcity']); </php>
+      <ul class="m_o_info">
+        <li>
+          <label>时间：</label>
+          <span>{$content.starttime}~{$content.overtime}</span> </li>
+        <li>
+          <label>集合地：</label>
+          <span>{:get_city($begincity['province'])}-{:get_city($begincity['city'])}</span> </li>
+        <li>
+          <label>目的地：</label>
+          <span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</span> </li>
+        <li>
+          <label>交通工具：</label>
+          <span>{:get_box($content['vehicle'],"checkbox",get_vehicle())}</span> </li>
+        <li>
+          <label>住宿条件：</label>
+          <span>{:get_box($content['accommodation'],"checkbox",get_accommodation())}</span> </li>
+        <li>
+          <label>支付方式：</label>
+          <span><em style="color:#F60; font-weight:bold">
+          <?php switch($content['paytype']){case 0;echo '全款支付';break;case 1;echo '定金支付';break;case 2;echo '免费活动';break;}?>
+          </em></span>&nbsp;&nbsp;
+          <label>支付价格：</label>
+          <span><em style="color:#F60; font-weight:bold">{$content.price}</em>元/人</span></li>
+        <li>
+          <if condition="$content['paytype'] eq 1">
+            <label>定金价格：</label>
+            <span><em style="color:#F60; font-weight:bold">{$content.deposit}</em>元/人</span></if>
+        </li>
+      </ul>
+      <h4>活动参加者：
+        <div class="pull-right"><a id="mobile_get_contacts" class="mobile_get_contacts">选择参加者</a></div>
+      </h4>
+      <form class="form-horizontal ajax-form" role="form" action="{:U('Mobile/Config/doSign')}" method="post">
+        <input id="event_id" name="event_id" type="hidden" class="" value="{$event_content.id}"/>
+        <input id="calendar_id" name="calendar_id" type="hidden" class="" value="{$content.id}"/>
+        <input id="event_membercontacts" name="event_membercontacts" type="hidden" class="" value=""/>
+        <input id="check_id" name="check_id" type="hidden" class="" value=""/>
+		<input id="total" name="total" type="hidden" class="" value=""/>
+        <input id="fropay" name="fropay" type="hidden" class="" value=""/>
+		<input id="paytype" name="paytype" type="hidden" value="{$content.paytype}">
+		<input id="card_amount" name="card_amount" type="hidden" value="">
+        <div class="member_contacts">
+          <div id="member_contacts_tpl">
+            <dl>
+              <dt class="del glyphicon glyphicon-trash" contacts_del></dt>
+              <dd contacts_realname>姓 名</dd>
+              <dd contacts_card>身份证</dd>
+              <dd class="no_border" contacts_insurance>保险</dd>
+            </dl>
+          </div>
+          <div class="member_contacts_table">
+            <div class="in_contacts"></div>
+          </div>
+        </div>
+        <h4>订单联系人信息：</h4>
+        <div class="mobile_order_contact">
+          <div>
+            <label for="contact_name" class="">姓名 <span style="font-size:14px;color:red;">*</span></label>
+          </div>
+          <div>
+            <input id="contact_name" name="contact_name" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.real_name}" placeholder="请填写真实姓名"/>
+          </div>
+          <div>
+            <label for="contact_telephone" class="">手机 <span style="font-size:14px;color:red;">*</span></label>
+          </div>
+          <div>
+            <input id="contact_telephone" name="contact_telephone" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.mobile}" placeholder="请填写手机"/>
+          </div>
+          <div>
+            <label for="contact_email" class="">邮箱 <span style="font-size:14px;color:red;">*</span></label>
+          </div>
+          <div>
+            <input id="contact_email" name="contact_email" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.email}" placeholder="请填写邮箱"/>
+          </div>
+        </div>
+        <h4>订单备注：</h4>
+        <div class="sign_text ">
+          <textarea name="remarks" rows="4" class="form-control form_check" style=""></textarea>
+        </div>
+		<!------------------优惠券信息--------------------------->
+		<h4>优惠信息：<a class="use_detail_mobile" style="color:#6CAEDE;margin-left:88px;position:relative;font-size:13px;">代金券使用说明<img width="20" height="20" src="__PUBLIC__/Core/images/sign_info.png"></a></h4>	
+			<div class="form-group "></div>				
+			<div class="form-group ">
+			<div class="col-md-2">			
+					<div class="use_info_mobile"><span class="left_info_mobile"><b>代金券使用说明</b></span><br>
+					<span class="left_info_mobile">1. 定金支付时，代金券无法抵用定金，但在余额支付里扣除相应金额</span><br>
+					<span class="left_info_mobile">2. 代金券金额大于需支付余额，余额不做退还</span><br>
+					<span class="left_info_mobile">3. 每订单仅限使用一张代金券，抵用金额以订单页面说明为准</span><br>
+					<span class="left_info_mobile">4. 每张代金券只能使用一次，使用后自动作废</span><br>
+					<span class="left_info_mobile">5. 使用代金券的订单，代金券部分金额不能开具发票</span>
+					</div>
+				</div>
+				<if condition="$content['card_use'] eq 1">
+				<div class="col-md-2">          
+					<input type="radio" class="no_use" name="check_card_use" value="1"/>
+					<span>不使用任何优惠</span>
+				</div>
+				<div class="col-md-2">          
+					<input type="radio" class="use_coupon" name="check_card_use" value="2"/>
+					<span>选择代金券</span>
+				</div>
+				<div class="col-md-2">          
+					<input type="radio" class="use_hand" name="check_card_use" value="3"/>
+					<span>输入券码</span>
+				</div>	
+				</if>
+			</div>
+			<!----------------------------------------------------->
+		<if condition="$content['card_use'] eq 1">
+			<div class="form-group has-feedback coupon_text">  
+				<label for="cardid" class="col-md-2 control-label">请选择代金券：</label>
+				<div class="col-md-5">							
+					<select id="cardid" name="cardid" class="form-control col-md-7 form_check"></select>				
+				</div>
+				<div class="col-md-5">
+					<span style="margin-left:30px;color:green" class="card_select_endtime_info"></span>
+				</div>
+			</div>		
+			<div class="form-group has-feedback coupon_hand">  
+				<label for="cardid1" class="col-md-2 control-label">请输入券码:</label>
+				<div class="col-md-5">
+					  <input id="cardid1" name="cardid1" type="" class="form-control form_check" check-type="Text"  />
+					  <a class="mbtn  btn-info click_use">点击使用</a></span>
+				</div>
+				<div class="col-md-5">
+					 <span style="margin-left:30px;color:green" class="card_endtime_info">
+				</div>
+			</div>
+		<else />
+			该排期暂时无法使用优惠！
+		</if>
+        <div  class="mobile_event_agree mobile_total">
+			<!------------------------------------------------------------------------------------------------------------------------>
+			<if condition="$content[paytype] eq 1">	
+			<!---------------------余额支付--------------------------------------->	
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total"></span></b> =	
+			定金支付 <b><span style="color:red">¥</span><span style="color:red" class="fropay"></span></b> + 
+			余额支付 <b><span style="color:red">¥</span><span style="color:red" class="leftpay"></span></b>
+			<span class="card_o_total" style="color:green"> <br>(代金券省 <b><span style="color:red">¥</span><span class="card_o_amount" style="color:red"></span></b>)</span>	
+			</div>
+			<!----------------------余额支付-------------------------------------->
+			<else />
+			<!------------------------全款支付------------------------------------>
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total"></span></b> =	
+			人数[<span style="color:red" class="contact_count"></span>] x <b><span style="color:red">¥{$content.price}</span></b>
+			<span class="card_o_total"> - 优惠信息 <span style="color:green">(代金券省 <b><span style="color:red">¥</span><span class="card_o_amount" style="color:red"></span></b>)</span></span>
+			</div>
+			<!------------------------全款支付------------------------------------>		
+			</if>	
+			<div>
+				<button type="submit" class="btn sub btn-primary " id="order_submit">
+				<if condition="$ordertype eq 1">确认报名
+				  <else/>
+				  预约报名</if>
+				</button>
+		    </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--二级层-->
+<div id="mobile_cotacts_page" style="display:none;">
+  <div class="top_bar_mobile"> <span class="mobile_crumbs"><a onClick="logout_select_contact();" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn"><a class="mobile_cotacts mbtn btn-primary">+添加常用参加者</a></div>
+    </div>
+    </span> </div>
+  <div class="h40"></div>
+  <div class="" id="ajax_member_contacts_tpl" >
+    <div class="mobile_detail_boxs_detail">
+      <input type="checkbox" ajax_contacts_checkbox>
+      <label ajax_contacts_for><span class="glyphicon glyphicon-user"></span><i ajax_contacts_realname></i><br>
+        <span class="glyphicon glyphicon-credit-card"></span><i ajax_contacts_card></i><br>
+        <span class="glyphicon glyphicon-phone"></span><i ajax_contacts_telephone></i></label>
+    </div>
+  </div>
+  <div class="mobile_detail_boxs">
+    <div class="ajax_member_contacts_box">
+      <div class="input_ajax_member_contacts"></div>
+    </div>
+    <div class="mobile_cotacts_btn">
+      <button id="mobile_event_submit" class="btn btn-info">确 定</button>
+    </div>
+  </div>
+  <div class="cotacts_loading">奋力加载中...</div>
+</div>
+<div class="mobile_addcontacts_page" style="display:none;">
+
+
+<div class="top_bar_mobile"> <span class="mobile_crumbs"><a onClick="logout_add_contact();" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn">添加常用参加者</div>
+    </div>
+    </span> </div>
+<div class="h40"></div>
+ <div class="mobile_login">
+		<label for="realname" >真实姓名</label><span style="font-size:14px;color:red;">*</span>
+		<input id="realname" name="realname" type="" class="form-control form_check" check-type="Text"  value="" placeholder="请填写真实姓名"/>
+		<div class="h15"></div>
+		<label for="card" >证件号码</label><span style="font-size:14px;color:red;">*</span>
+		<input id="card" name="card" type="" class="form-control form_check" check-type="Text"  value="" placeholder="请填写身份证或护照号"/>
+		<div class="h15"></div>
+		<label for="telephone" >联系电话 <span style="font-size:14px;color:red;">*</span></label>
+		<input id="telephone" name="telephone" type="" class="form-control form_check" check-type="Phone"  value="" placeholder="请填写联系电话"/>
+		<div class="h15"></div>
+		<label for="email" >邮箱 <span style="font-size:14px;color:red;">*</span></label>
+		<input id="email" name="email" type="" class="form-control form_check" check-type="Email"  value="" placeholder="请填写Email"/>
+		<div class="h15"></div>
+		<label for="emergencycontact" >紧急联系人<span style="font-size:14px;color:red;">*</span></label>
+		<input id="emergencycontact" name="emergencycontact" type="" class="form-control form_check" check-type="Text"  value="" placeholder=""/>
+		<div class="h15"></div>
+		<label for="emergencyphone" >紧急联系电话<span style="font-size:14px;color:red;">*</span></label>
+		<input id="emergencyphone" name="emergencyphone" type="" class="form-control form_check" check-type="Text"  value="" placeholder=""/>
+		<div class="h15"></div>
+		<label for="sex" >性别 <span style="font-size:14px;color:red;">*</span></label>
+		<label class="radio-inline"><input name="sex" type="radio" value="1" checked >男 </label>
+		<label class="radio-inline"><input name="sex" type="radio" value="2" >女 </label>
+		<div class="h15"></div>
+		<label for="qq" >QQ </label>
+		<input id="qq" name="qq" type="" class="form-control form_check" check-type="Text"  value="{$data.qq}" placeholder="请填写QQ"/>
+		<div class="h15"></div>
+	 
+		<label for="accpre" >住宿偏好 <span style="font-size:14px;color:red;">*</span></label>
+		<div class="accpre" style="padding-top:5px"> {:form_checkbox(get_accommodation(),$data['accpre'],'name="accpre" id="accpre"',0,'100')} </div>
+		<div class="h15"></div>
+	  
+		<label for="bloodtype" >血型</label>
+		<div> {:form_select(get_bloodtype(),$data['bloodtype'],'class="form-control form_check" check-type="Text" name="bloodtype" id="bloodtype"','请选择')} </div>
+		<div class="h15"></div>
+	 
+		<label for="allergies" >过敏史</label>
+		<input id="allergies" name="allergies" type="" class="form-control"  value="{$data.allergies}"/>
+		<div class="h15"></div>
+	 
+		<label for="role" >社会角色</label>
+		<div class="">{:form_select(get_role(),$data['role'],'class="form-control" check-type="Text" name="role" id="role"','请选择')} </div>
+		<div class="h15"></div>
+		<label for="role_description" >角色说明</label>
+		<input id="role_description" name="role_description" type="" class="form-control form_check" check-type="Text"  value="{$data.role_description}" placeholder=""/>
+		<div class="h15"></div>
+		<div class="add_control_btn" style="">	
+		<a type="submit" class="add_control_submit btn btn-primary">提交</a>
+		</div>
+
+  </div>
+</div>
+<!-- /主体 -->
+<!-- 底部 -->
+<include file="Public/footer"/>
+<!-- /底部 -->
+</body>
+<script>
+function dump_obj(myObject) { 
+  var s = ""; 
+  for (var property in myObject) { 
+   s = s + "\n "+property +": " + myObject[property] ; 
+  } 
+  alert(s); 
+}  	
+$(function(){
+/***********************************************************************/
+		/***************************************************/
+		$('#order_submit').click(function(){
+			$.ajaxSetup({
+				async:false
+			});
+			var event_membercontacts = $('#event_membercontacts').val();
+			var event_id = $('#event_id').val();
+			var calendar_id = $('#calendar_id').val();
+			var judge = false;
+			$.post(U('Mobile/Config/get_seats_left'),{event_membercontacts:event_membercontacts,event_id:event_id,calendar_id:calendar_id},function(res){
+				var seats_left = res['seats_left'];
+				if(seats_left == 'continue'){
+					judge = true;
+				}else{	
+					var notice = "您选择的参加者数超额 "+(seats_left)+" 个，如果继续，订单会自动转为预约订单，之后请联系管理员更改状态，是否继续？";
+					if(confirm(notice)){
+						judge = true
+					}else{
+						judge = false
+					}				
+				}
+			},'json')
+			return judge;
+		})
+		/***************************************************/
+		$('.use_info_mobile').hide();
+		$('.use_detail_mobile').click(function(){
+			$('.use_info_mobile').toggle();
+		})
+		$("#order_submit").hide();
+		$('.card_o_total').hide();
+		$('#totalprice').hide();
+		$('#total').val('');
+		$('#fropay').val('');
+		$('.no_use').prop('checked',true);
+		$('.coupon_text').hide();
+		$('.coupon_hand').hide();
+		$("#cardid").val('');
+		$("#cardid1").val('');
+		$("input[name='check_card_use']").change(function(){
+			var total = $('#total').val();
+			var fropay = $('#fropay').val();
+			$('.total').html(total);
+			$('.fropay').html(fropay);
+			$('#cardid').val('');
+			$('#cardid1').val('');
+			$('#card_amount').val('');
+			$('.card_o_total').hide();
+			$('.card_o_amount').html('');
+			$('.card_select_endtime_info').html('')
+			$('.card_endtime_info').html('')
+			getleftpay();
+		})	
+		$('.use_coupon').click(function(){	
+			$('#cardid').empty();
+			$('.coupon_text').show();
+			$('.coupon_hand').hide();
+			$.post(U('Mobile/Config/ajax_card_select/'),function(res){
+				
+				if(res['res'] != ''){
+					$('#cardid').append("<option value=''>请选择代金券</option>")
+					$.each(res['res'],function(i,vo){				
+						$('#cardid').append("<option value="+vo['cardid']+">"+vo['typename']+"("+vo['amount']+"元),券码:"+vo['cardid']+"</option>")
+					})
+				}else{
+					$('#cardid').append("<option value=''>您目前无任何可用代金券</option>")
+				}
+				
+			},'json')
+		})
+		$('.use_hand').click(function(){
+			$('.coupon_hand').show();
+			$('.coupon_text').hide();
+		})
+		$('.no_use').click(function(){			
+			$('.coupon_text').hide();			
+			$('.coupon_hand').hide();
+		})
+		
+		function getleftpay(){
+			var leftpay = $('.total').html() - $('.fropay').html();
+		    var leftpayfloat = parseFloat(leftpay).toFixed(2);	
+			$('.leftpay').html(leftpayfloat);
+		}
+		
+		$('.click_use').click(function(){
+			var total = $('#total').val();
+			var paytype = $('#paytype').val();	
+			var card_input = $('#cardid1').val();
+			var fropay = $('#fropay').val();
+			var member = $('#event_membercontacts').val();
+			var str = '';
+			if(member == '' && card_input != ''){
+				$('#cardid1').val(''); 
+				$('#card_amount').val('');
+			
+				toast.error('请选择参加者后再输入券码！');			
+			}
+			if(member != '' && card_input == ''){
+				$('.total').html(total);
+				$('.fropay').html(fropay);
+				getleftpay();
+				toast.error('亲，券码不能为空！')
+				$('#card_amount').val('')
+			}
+			if(member == '' && card_input == ''){
+				toast.error('亲，请先选择参加者后再输入券码使用！')
+				$('#card_amount').val('')
+			}
+			if(member != '' && card_input != ''){
+				$.post(U('Mobile/Config/ajax_check_card'),{card:card_input},function(res){
+					if(!res['status']){
+						$('#cardid1').val('');	
+						toast.error(res['msg']);
+						$('.total').html(total)
+						$('.fropay').html(fropay)
+						$('.card_o_total').hide();
+						$('.card_o_amount').html('');
+						$('#card_amount').val('')
+						$('.card_endtime_info').html('')
+						getleftpay();						
+					}else{
+						var name = res['name'];
+						var card = res['amount'];
+						var endtime = res['endtime'];						
+						if(paytype == 1){						
+							var fropay = $('#fropay').val();
+							var diff_pay = total - fropay;
+							if(card > diff_pay){
+								str = '当前【'+name+'】金额大于订单后续支付余额，【'+name+'】使用后余额将不退还，是否继续？';	
+								if(confirm(str)){
+								    $('#card_amount').val(card);
+									$('#totalprice').show();									
+									$('.total').html(fropay);																	
+									$('.card_o_total').show();
+								
+									$('.card_o_amount').html(diff_pay);
+									$('.card_endtime_info').show();
+									if(endtime != 0){										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，有效期至 <span style="color:red">'+endtime+'</span>')
+								}else{										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，长期有效')
+								}
+									
+									getleftpay();
+								}else{
+									$('#cardid1').val('');
+									$('#card_amount').val('');
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									$('.card_endtime_info').hide();
+									$('.card_endtime_info').html('')								
+									$('#totalprice').show();									
+									$('.total').html(total);
+									getleftpay();
+								}
+							}else{
+								$('#card_amount').val(card);
+								$('.card_o_total').show();
+								$('.card_o_amount').html(card);
+								$('.card_endtime_info').show();
+								$('.total').html(total - card);
+								if(endtime != 0){										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，有效期至 <span style="color:red">'+endtime+'</span>')
+								}else{										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，长期有效')
+								}
+								getleftpay();
+							}
+						}else{
+							if(parseInt(card) > parseInt(total)){
+								var info = '当前【'+name+'】金额大于订单总额，【'+name+'】使用后余额将不退还，是否继续？';	
+								if(confirm(info)){									
+									$('.total').html('0');
+									$('.card_o_total').show();
+									$('.card_o_amount').html(total);
+									$('#card_amount').val(card);
+									$('.card_endtime_info').show();
+									if(endtime != 0){										
+										$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，有效期至 <span style="color:red">'+endtime+'</span>')
+									}else{										
+										$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，长期有效')
+									}
+								}else{
+									$('#cardid1').val('');
+									$('.total').html(total);
+									$('#card_amount').val('');
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									$('.card_endtime_info').hide();
+									$('.card_endtime_info').html('')
+								}
+							}else{
+								var leftpay = total - card;
+								var leftpayfloat = parseFloat(leftpay).toFixed(2);	
+								$('.total').html(leftpay);
+								$('.card_o_total').show();
+								$('#card_amount').val(card);
+								$('.card_endtime_info').show();
+								$('.card_o_amount').html(card);
+								if(endtime != 0){										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，有效期至 <span style="color:red">'+endtime+'</span>')
+								}else{										
+									$('.card_endtime_info').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>，长期有效')
+								}
+							}
+						}
+					}
+				},'json')
+			}
+		})
+		
+		$("#cardid").change(function(){
+			var paytype = $('#paytype').val();		
+			var member = $('#event_membercontacts').val();
+			var total = $('#total').val();
+			var _this = $(this).val();
+			var fropay = $('#fropay').val();
+			var leftpay = total - fropay;
+			$.post(U('Mobile/Config/ajax_check_card'),{card:_this},function(res){
+				var name = res['name'];
+				var card = res['amount'];
+				var enditme_info = res['endtime'];
+				var str = '';
+				if(enditme_info != '' || enditme_info != 0){
+					card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>有效期至 <span style='color:red'><b>"+enditme_info+"</b></span>";
+				}else{
+					card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>长期有效";
+				}
+				if(member == '' && _this != ''){
+					$('#totalprice').hide();
+					$("#cardid").val('');
+					getleftpay();
+					toast.error('请选择参加者后再使用'+name+'！');
+				}
+				if(member != ''){					
+					if( _this == ''){
+						$('.total').html(total);
+						$('.card_o_total').hide();
+						$('#card_amount').val('')
+						$('.card_select_endtime_info').hide();
+						$('.card_select_endtime_info').html('');
+						getleftpay();
+					}else{
+						if(paytype == 1){
+							if(parseInt(card) > parseInt(leftpay)){									
+								str = '当前【'+name+'】金额大于订单后续支付余额，【'+name+'】使用后余额将不退还，是否继续？';						
+								if(confirm(str)){							
+									$('#totalprice').show();									
+									$('.total').html(fropay);
+									$('.card_o_total').show();
+									$('.card_o_amount').html(leftpay)
+									$('#card_amount').val(card);
+									$('.card_select_endtime_info').show();
+									$('.card_select_endtime_info').html(card_endtime_str)
+									getleftpay();
+								}else{	
+									$('#totalprice').show();									
+									$('.total').html(total);
+									$("#cardid").val('');
+									$('#card_amount').val('');
+									$('.card_select_endtime_info').hide();
+									$('.card_select_endtime_info').html('')
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									getleftpay();
+								}
+							}else{						
+								$('#totalprice').show();									
+								var pay_price = total - card;
+								$('.total').html(pay_price);
+								$('.card_o_total').show();
+								$('.card_o_amount').html(card)
+								$('#card_amount').val(card);
+								$('.card_select_endtime_info').show();
+								$('.card_select_endtime_info').html(card_endtime_str)
+								getleftpay();
+							}
+						}else{
+							if(parseInt(card) > parseInt(total)){
+								str = '当前【'+name+'】金额大于订单总额，【'+name+'】使用后余额将不退还，是否继续？';
+								if(confirm(str)){
+									$('#totalprice').show();
+									$('.total').html('0');
+									$('.card_o_total').show();
+									$('.card_o_amount').html(total);
+									$('#card_amount').val(card);
+									$('.card_select_endtime_info').show();
+									$('.card_select_endtime_info').html(card_endtime_str)
+								}else{
+									$('#cardid').val('')
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									$('#card_amount').val('');
+								}
+							}else{
+								$('#totalprice').show();
+								var left = total - card;
+								$('.total').html(left);
+								$('.card_o_total').show();
+								$('#card_amount').val(card);
+								$('.card_o_amount').html(card)
+								$('.card_select_endtime_info').show();
+								$('.card_select_endtime_info').html(card_endtime_str)
+							}
+						}
+					}
+				}			
+			},'json')
+		})
+/***********************************************************************/
+	$('#event_membercontacts').attr('value',''); 
+     var mobile_get_contacts=$('#mobile_get_contacts'); //点击常用参加者
+	 var mobile_sign_page=$('#mobile_sign_page'); //主层
+	 var mobile_cotacts_page=$('#mobile_cotacts_page');//常用参加者
+	     mobile_get_contacts.click(function(){
+							   
+			mobile_sign_page.hide();				   
+			mobile_cotacts_page.show();
+			
+			$('.mobile_detail_boxs').hide();
+			$('.cotacts_loading').show();
+			var event_membercontacts = $("#event_membercontacts").val();
+			$('.ajax_member_contacts_box div').remove("div[class!=input_ajax_member_contacts]");
+			var event_id = $('#event_id').val();
+			var calendar_id = $('#calendar_id').val();
+			$.getJSON("{:U('Mobile/Config/ajax_get_contacts')}", {event_membercontacts: event_membercontacts,calendar_id:calendar_id,event_id:event_id}, function (data) {	
+				if(data){
+				  $.each(data, function(i,g_data){
+					var ajax_member_contacts_tpl = $('#ajax_member_contacts_tpl div');
+					var ajax_member_contacts_li = ajax_member_contacts_tpl.clone();
+					var ajax_contacts_checkbox = ajax_member_contacts_li.find('[ajax_contacts_checkbox]');
+					var ajax_contacts_for = ajax_member_contacts_li.find('[ajax_contacts_for]');
+					var ajax_contacts_realname = ajax_member_contacts_li.find('[ajax_contacts_realname]');
+					var ajax_contacts_card = ajax_member_contacts_li.find('[ajax_contacts_card]');//-card-
+					var ajax_contacts_telephone = ajax_member_contacts_li.find('[ajax_contacts_telephone]');//mobile
+					ajax_contacts_checkbox.attr("name",'eid');
+					ajax_contacts_checkbox.attr("id",'eid_'+i);
+					ajax_contacts_checkbox.val(g_data['id']);
+					ajax_contacts_for.attr("for",'eid_'+i);
+					ajax_contacts_realname.html('姓名：'+g_data['realname']);
+					ajax_contacts_card.html('身份证：'+g_data['card']);
+					ajax_contacts_telephone.html('手机：'+g_data['telephone']);
+					//ajax_member_contacts_li.prop('id', 'ajax_member_contacts_li_' + g_data['id']).insertBefore('.input_ajax_member_contacts').show();
+					ajax_member_contacts_li.insertBefore('.input_ajax_member_contacts').show();
+				  });
+				}else{
+					toast.error('没有活动参加者');
+				}
+			});
+
+			$('.mobile_detail_boxs').show();
+			$('.cotacts_loading').hide();
+		   
+		 });
+
+	var mobile_event_submit=$('#mobile_event_submit');//submit--确定--
+	    mobile_event_submit.click(function(){															   
+		   GetMembercontacts();		
+		   mobile_cotacts_page.hide();
+		   mobile_sign_page.show();		   	   	
+		});
+    var mobile_cotacts=$('.mobile_cotacts'); //添加常用参加者;
+	var mobile_addcontacts_page=$('.mobile_addcontacts_page');//-add-
+	    mobile_cotacts.click(function(){				  
+		 mobile_cotacts_page.css('display','none');  
+		 mobile_addcontacts_page.css('display','block');
+		});
+		
+		
+		$('.add_control_submit').click(function(){	
+			
+			var post={};
+			post['realname'] = $("#realname").val();
+			post['card'] = $("#card").val();
+			post['telephone'] = $("#telephone").val();
+			post['email'] = $("#email").val();
+			post['emergencycontact'] = $("#emergencycontact").val();
+			post['emergencyphone'] = $("#emergencyphone").val();
+			post['sex'] = $('input[name="sex"]:checked').val();
+			post['qq'] = $("#qq").val();
+			var accpre_value =[];    
+			$('input[name="accpre"]:checked').each(function(){
+				accpre_value.push($(this).val());    
+			}); 
+			post['accpre'] = accpre_value;  
+			post['bloodtype'] = $("#bloodtype option:selected").val();
+			post['allergies'] = $("#allergies").val();
+			post['role'] = $("#role option:selected").val()
+			post['role_description'] = $("#role_description").val();
+
+
+
+			$.post("{:U('Mobile/Config/ajax_doAdd')}", post, function (data) {	
+				if(data['status']==1){
+		 			mobile_addcontacts_page.css('display','none');
+					mobile_get_contacts.trigger("click");
+				}else{
+					toast.error(data['msg']);
+				}
+			}, 'json');
+
+
+
+		});
+			
+		
+
+})
+	function logout_sign()
+	{
+		if (confirm('确定要放弃报名吗？')) {
+			window.history.go(-1);
+		}
+		
+	}
+	function logout_select_contact()
+	{
+		//if (confirm('确定要放弃报名吗？')) {
+
+			$('#mobile_cotacts_page').hide();
+			$('.mobile_addcontacts_page').hide();
+		    $('#mobile_sign_page').show();
+		//}
+		
+	}
+
+	function logout_add_contact()
+	{
+		//if (confirm('确定要放弃报名吗？')) {
+
+			$('#mobile_cotacts_page').show();
+		   $('#mobile_sign_page').hide();
+		   $('.mobile_addcontacts_page').hide();
+		//}
+		
+	}	
+	function check_total_display(){
+		var event_membercontacts = $("#event_membercontacts").val();
+		if(typeof(event_membercontacts) == 'undefined' || event_membercontacts == ''){
+			$('.mobile_total').hide();
+			$('#cardid').val('')
+			$('#cardid1').val('')
+			$('.card_endtime_info').html('')
+			$('.card_select_endtime_info').html('')
+			$('.card_o_total').hide();
+			$('.card_o_amount').html('');
+			$('.no_use').prop('checked',true)
+			$('.coupon_text').hide();			
+			$('.coupon_hand').hide();
+			$('#card_amount').val('')
+		}else{
+			$('.mobile_total').show();
+		}
+	}
+	function GetOrderinfo()
+	{
+		var check = $('#check_id').val();
+		check = check.substring(0,check.length - 1);
+		var event_id = $("#event_id").val();
+		var event_membercontacts = $("#event_membercontacts").val();
+		//var event_insurance = $("#event_insurance").val();
+		var calendar_id = $("#calendar_id").val();
+		var ordertype = $("#ordertype").val();
+		if(event_id && calendar_id){			
+			$.post("{:U('Mobile/Config/ajax_oreder_info')}", {event_id: event_id,check:check,event_membercontacts: event_membercontacts,calendar_id: calendar_id,ordertype: ordertype}, function (res) {
+				if(res['status']){
+					if(res['double'] == 1){
+						toast.error(res['msg']);
+						var str = "";
+						var check = $('#check_id').val();
+						str = res['contacts_id'] + ",";
+						$('#check_id').val(str+check);
+					}
+					$("#order_submit").show();
+					$(".totalprice").show();
+					var card = $('#card_amount').val();
+					var totalprice = res['data']['totalprice'];
+					var payprice = res['data']['payprice'];
+					var contact_count = res['data']['contact_count'];
+					var left = totalprice - payprice;
+					$('.total').html(payprice)
+					$('#total').val(totalprice)
+					$('.fropay').html(payprice)
+					$('#fropay').val(payprice)
+					if(res['data']['paytype'] ==0 || res['data']['paytype'] == 2){
+						if(card > totalprice){						
+							$('.contact_count').html(contact_count)
+							$(".total").html(0);
+							$('.card_o_total').show();
+							$('.card_o_amount').html(totalprice)
+						}else{						
+							if(typeof(card) != 'undefined' && card != ''){							
+								$('.contact_count').html(contact_count)
+								var diff_price = totalprice - card;
+								$(".total").html(diff_price);
+								$('.card_o_total').show();
+								$('.card_o_amount').html(card)
+							}else{
+								$('.contact_count').html(contact_count)
+								$(".total").html(totalprice);
+							}
+						}
+					}else{							
+						if(card > left){
+							$('.total').html(payprice)
+							$('#total').val(totalprice)
+							$('.fropay').html(payprice)
+							$('#fropay').val(payprice)
+							var leftpay = $('.total').val() - $('#fropay').val()
+							$('.card_o_amount').html(left)
+							$('.leftpay').html(0);
+						}else{
+							$('#total').val(totalprice);
+							$('.fropay').html(payprice);
+							$('#fropay').val(payprice);
+							var total = $('#total').val();
+							var fropay = $('#fropay').val()
+							if(typeof(card) != 'undefined' && card != ''){
+								var leftpay = total - fropay - card;
+								var totalprice1 = totalprice - card;
+								$('.total').html(totalprice1)
+								$('.card_o_amount').html(card)
+							}else{
+								$('.total').html(totalprice)
+								var leftpay = total - fropay;
+							}
+							var leftpayfloat = parseFloat(leftpay).toFixed(2);
+							$('.leftpay').html(leftpayfloat);
+						}
+					}
+					check_total_display();
+				 }else{
+					if(res['contacts_id']){
+						$("input[name='eid'][value='"+res['contacts_id']+"']").trigger("click");
+					} 
+				    toast.error(res['msg']);
+				   $("#totalprice").hide();
+				   $("#order_submit").hide();
+				 }
+				}, 'json');
+		}
+		
+		
+	}
+		
+	function is_contacts(m_uid)
+	{
+		var event_membercontacts =  $("#event_membercontacts").val();
+		var str= new Array();
+		str=event_membercontacts.split(",");      
+		for (i=0;i<str.length ;i++ )   
+		{   
+			if(m_uid == str[i]){
+				return true; 
+			}	
+		}
+		return false;
+	}
+	
+	
+	
+	function del_contacts(o)
+	{
+		
+		
+		var del_uid = o.attr("delid");
+		if(del_uid){
+			o.parent().parent().remove();
+			var event_membercontacts =  $("#event_membercontacts").val();
+			var str= new Array();
+			var newstr= "";
+			
+			
+			str=event_membercontacts.split(",");      
+			for (i=0;i<str.length ;i++ )   
+			{
+				if(del_uid != str[i]){
+					newstr += str[i]+","
+				}	
+			}		
+			var new_event_membercontacts = newstr.substring(0,newstr.length - 1);
+			$("#event_membercontacts").attr('value',new_event_membercontacts);
+			GetOrderinfo();
+			
+		}
+	}
+	
+	
+	function GetMembercontacts()
+	{
+		$('#check_id').val("");		
+		$.getJSON("{:U('Mobile/Config/ajax_get_contacts')}",function (member_json) {	
+			if(member_json){
+				var str="";
+				//$(".member_contacts_table div").remove("div[class!=in_contacts]");//
+				$("input[name='eid']:checkbox").each(function(){ 
+					if($(this).is(':checked') && !is_contacts($(this).val())){
+						var m_c_id = $(this).val();	
+						var member_contacts_tpl = $('#member_contacts_tpl');
+						var member_contacts_li = member_contacts_tpl.clone();
+						var contacts_del = member_contacts_li.find('[contacts_del]');
+						var contacts_realname = member_contacts_li.find('[contacts_realname]');
+						var contacts_card = member_contacts_li.find('[contacts_card]');//-card-
+						var contacts_telephone = member_contacts_li.find('[contacts_telephone]');//mobile
+						var contacts_email= member_contacts_li.find('[contacts_email]');//email
+						var contacts_insurance = member_contacts_li.find('[contacts_insurance]');
+						contacts_realname.html('姓名：'+member_json[m_c_id]['realname']);
+						contacts_card.html('身份证：'+member_json[m_c_id]['card']);
+						contacts_card.html('手机：'+member_json[m_c_id]['telephone']);
+						contacts_card.html('邮箱：'+member_json[m_c_id]['email']);
+						contacts_insurance.html('保险：<php> echo $insurance_string</php>');
+						contacts_del.attr("delid",member_json[m_c_id].id);
+						contacts_del.bind("click",function(){							   
+						del_contacts($(this));															
+						});
+						
+						contacts_insurance.find('.insurance_li').attr("name","insurance["+member_json[m_c_id].id+"]");
+						contacts_insurance.find('.insurance_li').bind("change",function(){															
+							GetOrderinfo();															
+						});
+						member_contacts_li.prop('id', 'member_contacts_li_' + member_json[m_c_id].id).insertBefore('.in_contacts').show();
+						str += $(this).val()+","
+					}
+				})
+					
+				if(str){
+					var old_event_membercontacts = $("#event_membercontacts").val();
+					if(old_event_membercontacts){
+						str = old_event_membercontacts+','+str;
+					}
+					var str_contacts = str.substring(0,str.length - 1);
+					$("#event_membercontacts").val(str_contacts);
+				}
+				$("input[name='eid']:checkbox").each(function(){
+				   $(this).attr("checked",false);              
+				});
+				GetOrderinfo();
+			
+			}else{
+				alert('没有数据');
+			}
+		});
+	}
+		
+
+
+
+</script>
+</div>
+</body>
+</html>

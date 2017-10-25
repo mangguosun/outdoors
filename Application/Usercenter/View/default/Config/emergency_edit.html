@@ -1,0 +1,44 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改紧急联系人信息<span class="common-color-red">（带*号为必填）</span></h2>
+  <div class="aline usercenter-common-bm"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Config/do_emergency_edit')}" method="post">
+          <input type="hidden" name='id' value="{$emergency.id}">        
+          <div class="form-group has-feedback">
+            <label for="realname" class="col-md-2 control-label">真实姓名<span class="common-color-red">*</span></label>
+            <div class="col-md-5">
+              <input id="realname" name="contact_name"  type="" class="form-control form_check" check-type="Text"  value="{$emergency.contact_name}" placeholder="请填写真实姓名"/>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="telephone" class="col-md-2 control-label">联系电话<span class="common-color-red">*</span></label>
+            <div class="col-md-5">
+              <input id="telephone" name="contact_telephone" type="" class="form-control form_check" check-type="Phone"  value="{$emergency.contact_telephone}" placeholder="请填写联系电话"/>
+            </div>
+          
+          </div>
+		   <div class="form-group has-feedback">
+		     <label for="email" class="col-md-2 control-label">邮箱<span class="common-color-red">*</span></label>
+            <div class="col-md-5">
+              <input id="email" name="contact_email" type="" class="form-control form_check" check-type="Email"  value="{$emergency.contact_email}" placeholder="请填写Email"/>
+            </div>
+		   </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/do_emergency_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$(function(){
+		
+	
+	})
+</script>

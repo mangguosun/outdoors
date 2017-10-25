@@ -1,0 +1,39 @@
+<extend name="Config/base"/>
+<block name="body">
+<style>
+.info tr td {
+	text-align:center;
+}
+</style>
+<div id="center">
+  <div class="common_block_title">支付记录</div>
+      <div class="row data-table" style="">
+        <table class="info">
+          <thead>
+            <tr>
+              <th>支付流水号</th>
+              <th>时间</th>
+              <th>支付用途</th>
+              <th>支付方式</th>
+              <th>支付金额</th>
+              <th>支付状态</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="pay_account">
+          <volist name="pay_account" id="vo">
+          <tr>
+            <td>{$vo.trade_sn}</td>
+            <td>{:date('Y-m-d H:i:s',$vo[addtime])}</td>
+            <td>{:get_order_type($vo[order_type])}</td>
+            <td>{$vo.payment}</td>
+            <td>{$vo.money}</td>
+            <td>{:get_pay_status($vo['status'])} </td>
+          </tr>
+          </volist>
+           </notempty>
+            </tbody>
+        </table>
+      </div>
+</div>
+</block>

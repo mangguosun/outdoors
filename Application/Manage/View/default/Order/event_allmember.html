@@ -1,0 +1,157 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div id="center">
+	<div class="pull-right">
+		<a class="mbtn btn-primary notice" href="{:U('Manage/Order/sms_notice',array('id'=>I('id'),'eventid'=>I('eventid')))}">短信通知</a>
+		<a class="mbtn btn-primary" href="{:U('Manage/Order/use_excel',array('id'=>I('id'),'eventid'=>I('eventid')))}">导出到excel文件</a>
+		<a href="javascript:history.go(-1)" class="mbtn btn-default">返回</a> 
+  </div>
+  <h2>查看所有活动参加者</h2>  
+  <div class="aline common-margin-bten"></div>
+  <div id="center">
+    <div class="row data-table usercenter-common-table">
+      <table>
+        <!-- 表头 -->
+        <thead>
+          <tr>
+             <th>姓名</th>
+            <th>身份证</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>QQ</th>
+            <th>社会角色</th>
+            <th>紧急人姓名</th>
+            <th>紧急人联系方式</th>
+            <th>报名人</th>
+            <th>订单状态</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="arr_info">
+          <volist name="arr_info" id="vo">		
+				<tr>
+				  <td>{$vo.realname}</td>
+				  <td>{$vo.card}</td>
+				  <td>{$vo.telephone}</td>
+				  <td>{$vo.email}</td>
+				  <td>{$vo.qq}</td>
+				  <if condition="$vo[role] neq 0">
+				  <td>{:get_role($vo[role])}</td>
+				  <else />
+				  <td>未填</td>
+				  </if>
+				  <td>{$vo.emergencycontact}</td>
+				  <td>{$vo.emergencyphone}</td>
+				  <td>{$vo.member_user}</td>
+				  <td>{:get_event_order_status($vo['order_status'])}</td>
+				</tr>		
+          </volist>
+          <else/>
+        <td colspan="10" class="text-center"> aOh! 当前没有任何活动参加者哦</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('.notice').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+
+})
+
+/*
+//锁定全屏
+$(function () {	
+	$('.event_user').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+})
+*/
+
+$('.event_user').click(function (){
+	var id = $(this).attr('userid');
+	var calendarid = $(this).attr('calendarid');
+	
+	$.post(U('Manage/Order/event_member'),{id:id,calendar_id:calendarid},function (data){
+		
+		if(data.status == 1){
+			alert(111);
+		}else{
+			alert(000);
+		}
+
+	}, 'json') 
+
+
+
+})
+
+$('.updataSign').click(function () {
+	if (confirm('确定要操作么？')) {
+		var id = $(this).attr('data-eventID');
+		var status = $(this).attr('data-status');
+		$.post(U('Manage/Order/myevent_detail_upstatus'), {id: id,status: status}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+	}
+});
+</script>
+</div>
+
+    </div>
+	 
+	 <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+	
+</block>

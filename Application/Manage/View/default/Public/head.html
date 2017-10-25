@@ -1,0 +1,71 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $icp=C('WEB_SITE_ICP');
+    $count_code=C('COUNT_CODE');
+</php>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<php>
+    $oneplus_seo_meta = get_seo_meta($vars,$seo);
+</php>
+<if condition="$oneplus_seo_meta['title']">
+    <title>{$oneplus_seo_meta['title']}-{:get_webinfo('webname')}</title>
+    <else/>
+    <title>{:get_webinfo('webname')}</title>
+</if>
+<if condition="$oneplus_seo_meta['keywords']">
+    <meta name="keywords" content="{$oneplus_seo_meta['keywords']}"/>
+</if>
+<if condition="$oneplus_seo_meta['description']">
+    <meta name="description" content="{$oneplus_seo_meta['description']}"/>
+</if>
+
+<link type="text/css" rel="stylesheet" href="/Public/static/bootstrap/css/bootstrap_manage.css?v={:C('WEB_VERSION')}" />
+<link type="text/css" rel="stylesheet" href="__STATIC__/qtip/jquery.qtip.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/toastr/toastr.min.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/magnific/magnific-popup.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/css/manage.css?v={:C('WEB_VERSION')}"/>
+<block name="style"></block>
+<php>$logo_icons = get_webinfo('logo_icons')</php>
+<link rel="shortcut icon" href="{$logo_icons|get_cover='path'}"/>
+<!--[if lt IE 9]>
+<script src="__STATIC__/bootstrap/js/html5shiv.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/bootstrap/js/respond.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!-- jQuery库 -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js?v={:C('WEB_VERSION')}"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="__STATIC__/bootstrap/js/bootstrap.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/qtip/jquery.qtip.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/toastr/toastr.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/slimscroll/jquery.slimscroll.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/magnific/jquery.magnific-popup.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/jquery.iframe-transport.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/default_core.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__JS__/jquery.mousewheel.js"></script>
+<!--合并前的js-->
+
+<script type="text/javascript">
+    var ThinkPHP = window.Think = {
+        "ROOT": "__ROOT__", //当前网站地址
+        "APP": "__APP__", //当前项目地址
+        "PUBLIC": "__PUBLIC__", //项目公共目录地址
+        "DEEP": "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+        "MODEL": ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+        "VAR": ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+        'URL_MODEL': "{:C('URL_MODEL')}",
+        'WEIBO_ID': "{:C('SHARE_WEIBO_ID')}"
+    }
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var initNum = "{:C('WEIBO_WORDS_COUNT')}";
+</script>
+<audio id="music" src="" autoplay="autoplay"></audio>
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->

@@ -1,0 +1,90 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2> <a href="#">商品管理</a> > <a href="{:U('shop_category',array('tab'=>0))}">所有分类</a> > 分类管理</h2>
+</div>
+<div class="cf">
+     <div class="fl">
+	    <a class="w_btn add-btn" href="{:U('add',array('pid'=>I('get.pid',0)))}">新增分类</a><span class='common-color-red'>(目前只支持2级分类,子类启用情况下,父类不直接禁用)</span>
+            
+     </div>
+    
+ </div>
+
+  <div class="data-table table-striped table">
+		<table>
+			<thead>
+				<tr>
+					<th width="220">分类名称</th>
+					<!--th width="120">分类排序</th-->
+				
+					<th width="120">是否禁用</th>
+					
+					<th width="80">操作</th>
+				</tr>
+			</thead>
+		</table>
+	<table id="catTable" class="list_table">                                 
+				<tbody>
+					<?php foreach ($tree as $key => $item): ?>
+					    <tr data-tt-id="<?php echo $item['id']?>" data-tt-parent-id="<?php echo $item['pid']?>">
+							<td align="left" style="cursor: pointer;width: 220px;"><img src="{$item.category_pic|getThumbImageById=55,55}" width='44' height='44' /><?php echo $item['title'] ?></td>
+							<!--td width="120"><input type='text' value='<?php echo $item['sort'] ?>' class='input_shu' onchange='EditSort(this,"<?php echo U('ProductCategory/ajax_sort?id='.$item['id'].'&value='); ?>"+this.value)'></td-->
+							
+							<td width="120">
+							<?php if ($item['status']==1): ?>
+								<span url="<?php echo U('ShopCategory/ajax_status',array('id'=>$item['id'],'status'=>0));?>" class='ajax-get ajax_on' ></span>
+							<?php else: ?>
+								<span url="<?php echo U('ShopCategory/ajax_status',array('id'=>$item['id'],'status'=>1));?>" class='ajax-get ajax_off' ></span>
+							<?php endif ?></td>
+						
+							<td width="80"> 
+							
+								<a title="编辑" href="{:U('edit?id='.$item['id'])}">编辑</a>
+								<?php if (empty($list['_'])): ?>
+									<a url="<?php echo U('ShopCategory/ajax_del?id='.$item['id']);?>" class='ajax-get confirm'>删除</a>
+								  
+							    <?php else: ?>
+										固定
+								<?php endif ?>                                              
+							</td>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+</div>
+ 
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+  <script src="__PUBLIC__/Core/js/jquery.treetable.js"></script>
+	<script type="text/javascript">
+	$("#catTable").treetable({ expandable: true });
+	$("#catTable").treetable('expandAll');
+	</script>
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('People/index')}");
+    </script>
+
+</block>
+

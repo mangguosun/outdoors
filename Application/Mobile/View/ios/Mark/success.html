@@ -1,0 +1,38 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+<div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Mark/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 打卡<!--填写返回打卡-->
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/>
+	<div class="mark-head mark-head1">
+		<div class="mark-div mark-div2">
+			<a href="{:U('Mobile/Mark/mymark',array('userid'=>$user['uid']))}"><img class="mark-img mark-img2 am-circle am-img-thumbnail " src="{$user.avatar128}"/>
+			</a>
+			<div class="mark-name">{$user.nickname}</div>
+		</div>
+		<div class="mark-suc-con">
+			<p class="mark-suc-p">打卡成功！</p>
+			<br>
+		<if condition="$summary.ttlranking neq 1">
+			<span class="mark-suc-span">本次排名<label class="mark-suc-cha">{$summary.ttlranking}</label>，加油哦！</span>
+		<else />
+			<span class="mark-suc-span"><label class="mark-suc-cha ">目前成绩最优 &nbsp;<i class="am-icon-thumbs-o-up"></i></label></span>
+		</if>
+		</div>
+		<div class="mark-sec-button">
+			<a href="{:U('Mobile/Summary/index')}"><button type="submit" class="am-btn am-btn-warning mark-suc-btn mark-suc-btn2">&nbsp;&nbsp;查看排行榜</button></a>
+		</div>
+		</div>
+</body>
+</block>
+<block name="script"></block>

@@ -1,0 +1,33 @@
+<div class="col-md-12 app_head">
+    <div class="app_title">
+        <i class="app_ico_i" ></i><a class="nav-prompt" href="{:U('index')}">{$issue_title}</a><span class="common-color-grey nav-prompt" >>> <a href="{:U('index',array('issue_id'=>$issue['id']))}" >{$issue['title']}</a></span>
+		<div class="pull-right">
+             <if condition="is_login() eq 0">
+                <button class="btn btn-primary nav-prompt btn-primary-star"><i class="glyphicon glyphicon-send"></i>&nbsp;发布故事</button>
+                <else/><a class="btn btn-primary after nav-prompt"  href="{:U('Issue/Index/add_story')}"><span class="pub_s"><i class="glyphicon glyphicon-send"></i>&nbsp;发布故事</span></a>
+            </if>
+            <if condition="($content['uid'] eq is_login()) OR is_administrator(is_login())">
+              <a class="btn btn-info nav-prompt btn-primary-star"  href="{:U('edit_story',array('id'=>$content['id']))}" ><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</a>
+            </if>
+        </div>
+	</div>
+
+
+</div>
+<script>
+    $(function(){
+	   $('.btn-primary-star').click(function(){
+	      if(MID=="0"){
+				toast.error('请登录后再发布故事。','温馨提示')
+				setTimeout(function () {
+				   location.href ="{:U('Home/User/login')}"  
+						}, 1500);
+				return false;
+			   }
+	    })
+	})
+</script>
+
+
+
+

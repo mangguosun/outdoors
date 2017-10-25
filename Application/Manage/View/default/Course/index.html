@@ -1,0 +1,46 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>创建课程</h2>
+</div>
+<div class="cf">
+     <div class="fr">
+            <a class="w_btn add-btn " href="{:U('Course/createcourse')}">
+                创建课程
+            </a> 
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="">全部科目</th>                
+                <th class="">课程信息</th>
+                <th class="">全部</th>
+                <th class="">有效期至</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="data"  id="vo">
+                <tr>
+                    <td>{$vo.sname}</td>
+                    <td>{$vo.cname}</td>
+                    <td>{$vo.target}</td>
+                    <td>{$vo.effect_date}</td>
+                    <td>
+                        <a href="{:U('Manage/Course/editplace',array('id'=>$vo['id']))}" class="mbtn btn-default">编辑</a>
+                        <a class="mbtn btn-default" href="{:U('Manage/Course/deleteplace',array('id'=>$vo['id']))}">删除</a>
+                    </td>
+                </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+     <div class="page">
+        {$page}
+    </div>
+   
+</block>

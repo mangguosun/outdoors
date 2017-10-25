@@ -1,0 +1,38 @@
+<div class="search_right">
+
+  <div class="seniority">
+    <div class="hot"> <span id="hot-sale">热卖排行</span>
+      <!-- <a id="more" href="">更多></a> -->
+    </div>
+    <div class="hotsale-detail">
+      <volist name="documentlist2" id="vo2">
+        <div class="other">
+          <div id="image"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo2['id']))}" target="_blank"><img src="{$vo2.goods_ico|getThumbImageById=300,300}" alt=""></a></div>
+          <div class="hotsale-detail-information">
+            <ul>
+              <li id="name"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo2['id']))}" target="_blank">{$vo2['goods_name']|op_t|getShortSp=8}</a></li>
+              <li id="intro">{$vo2['goods_introduct']|op_t|getShortSp=8}</li>
+              <li id="price">￥{$vo2['market_price']}&nbsp;&nbsp;&nbsp;</li>
+            </ul>
+          </div>
+        </div>
+      </volist>
+    </div>
+  </div>
+  <div class="seniority seniority-other">
+    <div class="hot"> <span id="hot-sale">特价商品</span>
+      <!-- <a id="more" href="">更多></a> -->
+    </div>
+    <div class="goods">
+      <volist name="documentlist3" id="vo3">
+        <ul>
+          <li id="shopgoods_image"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo3['id']))}" target="_blank"><img src="{$vo3.goods_ico|getThumbImageById=300,300}" alt=""></a></li>
+          <li id="name"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo3['id']))}" target="_blank">{$vo3['goods_name']|op_t|getShortSp=8}</a></li>
+          <li id="intro">{$vo3['goods_introduct']}</li>
+          <li id="price">￥{$vo3['market_price']}&nbsp;&nbsp;&nbsp;</li>
+        </ul>
+      </volist>
+    </div>
+  </div>
+
+</div>

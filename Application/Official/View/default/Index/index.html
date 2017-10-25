@@ -1,0 +1,122 @@
+<extend name="Public/base"/>
+<block name="body">
+      
+    <div class="offcial-banner">
+    <div id="carousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel" data-slide-to="1"></li>
+        <li data-target="#carousel" data-slide-to="2"></li>
+    
+      </ol>
+    
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="http://www.mikecrm.com/f.php?t=gixKUh" target="_blank"><img src="__IMG__/banner01.jpg" ></a>
+        </div>
+        <div class="item">
+          <a href="http://www.mikecrm.com/f.php?t=gixKUh" target="_blank"><img src="__IMG__/banner02.jpg" ></a>
+        </div>
+        <div class="item">
+          <a href="http://www.mikecrm.com/f.php?t=gixKUh" target="_blank"><img src="__IMG__/banner03.jpg" ></a>
+        </div>
+    </div>
+    
+      <!-- Controls -->
+      <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">上一页</span>
+      </a>
+      <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">下一页</span>
+      </a>
+    </div>
+    <script>
+    $('.carousel').carousel({
+      interval: 2000
+    })
+    
+    </script>
+    </div>
+    <div class="offcial-modal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                    <div class="offcial-modal-title">
+                        <div class="text-center">
+                            <h2>极致的功能体验，只因我为你想</h2>
+                            <h4 class="text-uppercase help-block">— EXTREME EXPERIENCE —</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row">
+                    
+                        <div class="text-center modal-list"> <div><span class="icon weixin"><i class="fa fa-weixin"></i></span></div><p>PC微信全汇道</p><p class="help-block">电脑手机一个不能少</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon weixin2"><i class="fa fa-database"></i></span></div><p>微信无缝集成</p><p class="help-block">自定义菜单、关注回复</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon run_shop"><i class="fa fa-shopping-cart "></i></span></div><p>移动电商</p><p class="help-block">专业活动装备电商服务</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon link"><i class="fa fa-link"></i></span></div><p>绑定自有域名</p><p class="help-block">独立域名自有品牌</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon pay"><i class="hdlsports iconsport-rectangle390"></i></span></div><p>移动支付</p><p class="help-block">微信支付、支付宝、JD支付</p></div>
+                        
+                        
+                        
+                        <div class="text-center modal-list"> <div><span class="icon distribute"><i class="fa fa-transgender-alt "></i></span></div><p>一键分销</p><p class="help-block">分销商品一键上架</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon runners"><i class="fa fa-hand-o-up "></i></span></div><p>运动打卡</p><p class="help-block">打卡排行PK</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon run"><i class="hdlsports iconsport-paobu2"></i></span></div><p>约跑约骑</p><p class="help-block">小伙伴们约起来</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon change"><i class="fa fa-clipboard "></i></span></div><p>多模板选择</p><p class="help-block">多款模板任你选</p></div>
+                        <div class="text-center modal-list"> <div><span class="icon trval"><i class="fa fa-book "></i></span></div><p>移动游记</p><p class="help-block">俱乐部社区热闹起来</p></div>
+                    </div>
+                </div>    
+            
+            </div>
+        </div>
+    </div>
+    <div class="offcial-case">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                    <div class="offcial-modal-title">
+                        <div class="text-center">
+                            <h2>精彩案例</h2>
+                            <h4 class="text-uppercase help-block">— GREAT SECURITY —</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <ul class="case-list">
+                        	<volist name="cases_datainfo" id="vo">
+                        
+                            <li>
+                                <div class="case-border">
+                                <div class="case-img"><img src="{$vo['cover_id']|getThumbImageById=216,100}" /></div>
+                                </div>
+                                <p class="case-name">{$vo.title}</p>
+                            </li>
+                        </volist>    
+                        </ul>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="offcial-modal-more">
+                    <div class="text-center">
+                        <h5><a href="{:U('Official/Index/cases')}">查看更多</a></h5>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</block>
+<block name="script">
+</block>

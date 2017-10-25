@@ -1,0 +1,279 @@
+<extend name="Public/common_user"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/contacts')}" class=""><i class="am-icon-chevron-left"></i></a>编辑常用参加者</div>
+    <div class="am-header-right am-header-nav"></div>
+  </header>
+  <form class="am-form am-form-horizontal" id="edit-people-form" method="post">
+    <input type="hidden" name="id" value="{$data.id}">
+    <div class="edit-contacts-box" >
+      <ul class="edit-contacts-box-list" >
+        <li>
+          <div class="edit-contacts-box-list-group-title">必填项</div>
+        </li>
+        <li> <span class="edit-contacts-box-list-title">真实姓名</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="realname" name="realname" class="am-form-field" type="text"  value="{$data.realname}" placeholder="请填写真实姓名"/>
+          </div>
+        </li>
+        <input id="sex" name="sex" type="hidden"  value="{$data['sex']}"/>
+        <li>
+          <div class="edit-contacts-box-list-title">性　　别</div>
+          <div class="edit-contacts-box-list-text">
+          <div class="setup-list-sex"> <span data-sex-id="1" class="sex sex-man <if condition="$data['sex'] eq '1'"> chosen
+            </if>
+            "><i class="am-icon-mars"></i></span> <span data-sex-id="2" class="sex sex-women <if condition="$data['sex'] eq '2'"> chosen
+            </if>
+            "><i class="am-icon-venus"></i></span> </div>
+            </div>
+        </li>
+        <li> <span class="edit-contacts-box-list-title">证件号码</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="card" name="card" class="am-form-field" type="text"  value="{$data.card}" placeholder="请填写身份证或护照号"/>
+          </div>
+        </li>
+        <li> <span class="edit-contacts-box-list-title">联系手机</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="telephone" name="telephone" class="am-form-field" type="text"  value="{$data.telephone}" placeholder="请填写联系手机"/>
+          </div>
+        </li>
+
+  <!-------------------------------------->
+        <li {$dataListdis[4][1]}> <span class="edit-contacts-box-list-title">电子邮箱</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="email" name="{$dataListdis[4]['name'][1]}" class="am-form-field" type="text"  value="{$data.email}" placeholder="请填写Email"/>
+          </div>
+        </li>
+        <li {$dataListdis[1][1]}> <span class="edit-contacts-box-list-title">紧急联系</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="emergencycontact" name="{$dataListdis[1]['name'][1]}" class="am-form-field" type="text"  value="{$data.emergencycontact}" placeholder="紧急联系人"/>
+          </div>
+        </li>
+        <li {$dataListdis[2][1]}> <span class="edit-contacts-box-list-title">紧急电话</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="emergencyphone" name="{$dataListdis[2]['name'][1]}" class="am-form-field" type="text"  value="{$data.emergencyphone}" placeholder="紧急联系电话"/>
+          </div>
+        </li>
+        <li  {$dataListdis[3][1]}>
+            <span class="edit-contacts-box-list-title">活动昵称</span>
+            <div class="edit-contacts-box-list-text"> 
+            <input id="nickname" name="{$dataListdis[3]['name'][1]}" class="am-form-field" type="text"  value="{$data.nickname}" placeholder="请填写活动昵称"/></div>
+        </li>
+        <li {$dataListdis[5][1]}> <span class="edit-contacts-box-list-title">ＱＱ号码</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="qq" name="{$dataListdis[5]['name'][1]}" class="am-form-field" type="text"  value="{$data.qq}" placeholder="请填写QQ"/>
+          </div>
+        </li>
+        <li {$dataListdis[6][1]}> <span class="edit-contacts-box-list-title">血　　型</span>
+          <div class="edit-contacts-box-list-text bloodtype-select-box">
+            <select  name="{$dataListdis[6]['name'][1]}" id="bloodtype" class="bloodtype-select" data-placeholder="请选择" >
+              <volist name=":get_bloodtype()" id="bloodtype" key="k">
+                <php>
+              $id = $data['bloodtype'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_bloodtype = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_bloodtype} >{$bloodtype}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[7][1]}> <span class="edit-contacts-box-list-title">住宿偏好</span>
+          <div class="edit-contacts-box-list-text accpre-select-box">
+            <select name="{$dataListdis[7]['name'][1]}[]" id="accpre" multiple data-placeholder="请选择" class="accpre-select">
+              <volist name=":get_accommodation()" id="accommodation" key="k">
+                <php>
+              $id = $data['accpre'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_accpre = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_accpre} >{$accommodation}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[8][1]}> <span class="edit-contacts-box-list-title">过敏史</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="allergies" name="{$dataListdis[8]['name'][1]}" class="am-form-field" type="text"  value="{$data.allergies}" placeholder="无"/>
+          </div>
+        </li>
+        <li {$dataListdis[9][1]}> <span class="edit-contacts-box-list-title">社会角色</span>
+          <div class="edit-contacts-box-list-text role-select-box">
+            <select name="{$dataListdis[9]['name'][1]}" id="role" class="role-select" data-placeholder="请选择" >
+              <volist name=":get_role()" id="role" key="k">
+                <php>
+              $id = $data['role'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_role = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_role}>{$role}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[10][1]}> <span class="edit-contacts-box-list-title">角色说明</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="role_description" name="{$dataListdis[10]['name'][1]}" class="am-form-field" type="text"  value="{$data.role_description}" placeholder="学生/白领"/>
+          </div>
+        </li>
+  
+         <li {$dataListdis[11][1]}>
+              <span class="edit-contacts-box-list-title">年　　龄</span>
+              <div class="edit-contacts-box-list-text"> 
+              <input id="age" name="{$dataListdis[11]['name'][1]}" class="am-form-field" type="text"  value="{$data.age}" placeholder="请填写年龄"/></div>
+          </li>
+              
+           <li {$dataListdis[12][1]}>
+              <span class="edit-contacts-box-list-title">惯用手</span>
+              <div class="edit-contacts-box-list-text role-select-box"> 
+              <select name="{$dataListdis[12]['name'][1]}" id="hand" class="role-select" data-placeholder="请选择" >
+                <option value="" >请选择</option>
+                <option value="1" <if condition=" $data.hand eq 1"> selected </if> >左手</option>
+                <option value="2" <if condition=" $data.hand eq 2"> selected </if> >右手</option>
+              </select>
+            </div>
+          </li>
+
+  <!-------------------------------------->
+
+		  <li>
+        <div class="edit-contacts-box-list-group-title">选填项</div>
+      </li>
+
+
+
+        <li  {$dataListdis[4][0]}> <span class="edit-contacts-box-list-title">电子邮箱</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="email" name="{$dataListdis[4]['name'][0]}" class="am-form-field" type="text"  value="{$data.email}" placeholder="请填写Email"/>
+          </div>
+        </li>
+        <li {$dataListdis[1][0]}> <span class="edit-contacts-box-list-title">紧急联系</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="emergencycontact" name="{$dataListdis[1]['name'][0]}" class="am-form-field" type="text"  value="{$data.emergencycontact}" placeholder="紧急联系人"/>
+          </div>
+        </li>
+        <li {$dataListdis[2][0]}> <span class="edit-contacts-box-list-title">紧急电话</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="emergencyphone" name="{$dataListdis[2]['name'][0]}" class="am-form-field" type="text"  value="{$data.emergencyphone}" placeholder="紧急联系电话"/>
+          </div>
+        </li>
+        <li {$dataListdis[3][0]}>
+            <span class="edit-contacts-box-list-title">活动昵称</span>
+            <div class="edit-contacts-box-list-text"> 
+            <input id="nickname" name="{$dataListdis[3]['name'][0]}" class="am-form-field" type="text"  value="{$data.nickname}" placeholder="请填写活动昵称"/></div>
+        </li>
+        <li {$dataListdis[5][0]}> <span class="edit-contacts-box-list-title">ＱＱ号码</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="qq" name="{$dataListdis[5]['name'][0]}" class="am-form-field" type="text"  value="{$data.qq}" placeholder="请填写QQ"/>
+          </div>
+        </li>
+        <li {$dataListdis[6][0]}> <span class="edit-contacts-box-list-title">血　　型</span>
+          <div class="edit-contacts-box-list-text bloodtype-select-box">
+            <select  name="{$dataListdis[6]['name'][0]}" id="bloodtype" class="bloodtype-select" data-placeholder="请选择" >
+              <volist name=":get_bloodtype()" id="bloodtype" key="k">
+                <php>
+              $id = $data['bloodtype'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_bloodtype = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_bloodtype} >{$bloodtype}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[7][0]}> <span class="edit-contacts-box-list-title">住宿偏好</span>
+          <div class="edit-contacts-box-list-text accpre-select-box">
+            <select name="{$dataListdis[7]['name'][0]}[]" id="accpre" multiple data-placeholder="请选择" class="accpre-select">
+              <volist name=":get_accommodation()" id="accommodation" key="k">
+                <php>
+              $id = $data['accpre'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_accpre = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_accpre} >{$accommodation}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[8][0]}> <span class="edit-contacts-box-list-title">过敏史</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="allergies" name="{$dataListdis[8]['name'][0]}" class="am-form-field" type="text"  value="{$data.allergies}" placeholder="无"/>
+          </div>
+        </li>
+        <li {$dataListdis[9][0]}> <span class="edit-contacts-box-list-title">社会角色</span>
+          <div class="edit-contacts-box-list-text role-select-box">
+            <select name="{$dataListdis[9]['name'][0]}" id="role" class="role-select" data-placeholder="请选择" >
+              <volist name=":get_role()" id="role" key="k">
+                <php>
+              $id = $data['role'];
+              if($id != '') $id = strpos($id, ',') ? explode(',', $id) : array($id);
+              $selected_role = ($id && in_array($key, $id)) ? 'selected' : '';
+              </php>
+                <option value="{$key}" {$selected_role}>{$role}</option>
+              </volist>
+            </select>
+          </div>
+        </li>
+        <li {$dataListdis[10][0]}> <span class="edit-contacts-box-list-title">角色说明</span>
+          <div class="edit-contacts-box-list-text">
+            <input id="role_description" name="{$dataListdis[10]['name'][0]}" class="am-form-field" type="text"  value="{$data.role_description}" placeholder="学生/白领"/>
+          </div>
+        </li>
+
+
+        <li {$dataListdis[11][0]}>
+            <span class="edit-contacts-box-list-title">年　　龄</span>
+            <div class="edit-contacts-box-list-text"> 
+            <input id="age" name="{$dataListdis[11]['name'][0]}" class="am-form-field" type="text"  value="{$data.age}" placeholder="请填写年龄"/></div>
+          </li>
+
+          <li {$dataListdis[12][0]}>
+            <span class="edit-contacts-box-list-title">惯用手</span>
+            <div class="edit-contacts-box-list-text role-select-box"> 
+            <select name="{$dataListdis[12]['name'][0]}" id="hand" class="role-select" data-placeholder="请选择" >
+            <option value="" >请选择</option>
+            <option value="1" <if condition=" $data.hand eq 1"> selected  </if> >左手</option>
+            <option value="2" <if condition=" $data.hand eq 2"> selected  </if> >右手</option>
+           
+          </select></div>
+        </li>       
+
+
+
+      </ul>
+      <button type="button" id="edit-people-btn" class="am-btn am-btn-block am-btn-yellow"> 保存</button>
+    </div>
+  </form>
+  <script>
+
+
+$(function () {	
+    $('.bloodtype-select').chosen({width:"100%",height:"60",disable_search: true});
+	$('.accpre-select').chosen({width:"100%",height:"60",disable_search: true});
+	$('.role-select').chosen({width:"100%",height:"60",disable_search: true});		
+	$('.setup-list-sex .sex').on('click', function() {
+		var sexval =  $(this).attr('data-sex-id');							   
+		$('#sex').val(sexval);
+		if(sexval ==1){
+			$('.sex-man').addClass('chosen');
+			$('.sex-women').removeClass('chosen');
+		}else{
+			$('.sex-man').removeClass('chosen');
+			$('.sex-women').addClass('chosen');
+		}
+	});
+	var $add_people_btn = $('#edit-people-btn');
+	$add_people_btn.on('click', function() {
+		var self = $('#edit-people-form');
+		$.post("{:U('Mobile/Config/ajax_doAdd')}", self.serialize(), function (data) {
+			if(data['status']==1){
+				toasts.success(data.msg,"{:U('Mobile/Config/contacts')}");
+			}else{
+				toasts.error(data.msg);
+			}
+		}, 'json');
+	});
+
+});
+</script>
+</block>

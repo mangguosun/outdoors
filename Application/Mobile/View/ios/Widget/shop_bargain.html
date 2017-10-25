@@ -1,0 +1,46 @@
+<div class="hdl-nav-menu shop-index-discount">
+    <a href="{:U('Mobile/Shop/goods',array('mod'=>'bargain'))}"><h3 class="hdl-nav-title">限时特价</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+</div>
+<script src="__PUBLIC__/Shop/js/jqfnTimeCountDown.js"></script>
+<div class="shop-index-discount"> 
+    <ul class="shop-index-ul">
+    <volist name="shop_discount_data" id="vo">
+	<div class="shop-index-bargain ">	
+		<li>
+			<div class="shop-index-bargain-timedown ">
+                <span id="day-{$vo['id']}" class="am-badge am-radius time_td">00</span>天<span id="hour-{$vo['id']}" class="am-badge am-radius time_td">00</span>:<span id="mini-{$vo['id']}" class="am-badge am-radius time_td">00</span>:<span id="sec-{$vo['id']}" class="am-badge am-radius time_td">00</span><span id="hm-{$vo['id']}" class="am-badge am-radius time_td" style="display:none">0</span>
+			</div>
+			<if condition="$vo">
+				<script type="text/javascript">
+					var zxx = {
+					  obj: function(){
+						return {
+						  hm: $("#hm-{$vo['id']}"),
+						  sec: $("#sec-{$vo['id']}"),
+						  mini: $("#mini-{$vo['id']}"),
+						  hour: $("#hour-{$vo['id']}"),
+						  day: $("#day-{$vo['id']}"),
+						  month: $("#month-{$vo['id']}"),
+						  year: $("#year-{$vo['id']}")
+						}
+					  }
+					};
+					fnTimeCountDown('{$vo.overtime}', zxx.obj());
+				</script>
+			</if>
+        <figure style="background-image:url({$vo.thumb_200_200})">
+          <a href="{$vo.mobile_url}"></a>
+        </figure>
+        <div class="shop-index-messagebox">
+            <div class="shop-lists-goodstitle">{$vo.goods_name|getShortSp=9|parse_comment_content} </div>
+            <div class="shop-lists-price">￥{$vo.bargain_price}</div>
+        </div>       
+      </li>      
+     </volist>
+ 	</ul>
+ </div>
+<script>
+$(function () {
+	//hdl_lazyload('img.event-lists-thumb');
+})
+</script>

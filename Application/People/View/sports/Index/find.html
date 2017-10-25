@@ -1,0 +1,27 @@
+<extend name="sports/common"/>
+
+<block name="body">
+<div class="container">
+<include file="Public/mod_header"/>
+<div class="row people-find">
+  <notempty name="peoples">
+    <div class="col-md-12 ">
+      <div class="row">
+        <volist name="peoples" id="vo"> <include file="Public/item" /> </volist>
+      </div>
+      {$page} </div>
+    <else/>
+    <div class="people-item">没有找到满足条件的会员哦。O(∩_∩)O~</div>
+  </notempty>
+</div>
+<div class="pull-right"> {$lists.html} </div>
+<div></div>
+</div>
+</block>
+<block name="script">
+  <script>
+        $(function () {
+           hdl_lazyload("img.add_loading");
+        })
+    </script>
+</block>

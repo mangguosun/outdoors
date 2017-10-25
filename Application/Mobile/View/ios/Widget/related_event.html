@@ -1,0 +1,18 @@
+<if condition="!empty($event_info)">
+<div class="hdl-panel-hd">
+<h3 class="hdl-panel-title">相关活动</h3>
+</div>
+  <div class=" ">
+    <ul data-am-widget="gallery" class="am-gallery am-avg-sm-1 am-avg-md-3 am-avg-lg-4 am-gallery-overlay">
+      <li>
+        <div class="am-gallery-item">
+          <a href="{:U('Mobile/Event/detail',array('id'=>$event_info['id']))}" class="">
+            <img  class="lazy" src="__PUBLIC__/Core/images/grey.gif" data-original="{$event_info.cover_id|getThumbImageById=300,225}" alt=" {$event_info.title}" />  
+            <h3 class="am-gallery-title"> {$event_info.title}</h3>
+          </a>
+        </div>
+      </li> 
+    </ul>
+  </div>
+
+</if>

@@ -1,0 +1,707 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head"/>
+</head>
+<body>
+<!-- 头部 -->
+<php> D('Home/Member')->need_login();</php>
+    <!-- Loading Container -->
+    <div class="loading-container">
+        <div class="loader"></div>
+    </div>
+    <!--  /Loading Container -->
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-container">
+                <!-- Navbar Barnd -->
+                <div class="navbar-header pull-left">
+                	<php>$logo_pic = get_webinfo('cover_id')</php>
+                    <a href="{:U('Home/index/index')}" class="navbar-brand" target="_blank">
+                        <small>
+                            <img src="{$logo_pic|getThumbImageById=180,65}" alt="{:get_webinfo('webname')}" />
+                        </small>
+                    </a>
+                </div>
+                <!-- /Navbar Barnd -->
+
+                <!-- Sidebar Collapse -->
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="collapse-icon fa fa-bars"></i>
+                </div>
+                <!-- /Sidebar Collapse -->
+                <!-- Account Area and Settings --->
+                <div class="navbar-header pull-right">
+                
+                    <div class="navbar-account">
+                        <ul class="account-area">
+                        	 <li>
+                                <a class=" dropdown-toggle" data-toggle="dropdown" title="手机二唯码" href="#">
+                                    <i class="icon fa fa-qrcode"></i>
+                                </a>
+                                
+                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-qrcode">
+                                    <li>
+                                    	<php>$get_qrcode = D('qrcode')->where(array('types'=>'website','siteid'=>SITEID))->find();</php>
+                                  
+                                            <div class="clearfix">
+                                                <div class="qrcode-body">
+                                                    <div class="qrcode_mobile"><img class="" src="{$get_qrcode.url}"></div>
+                                                </div>
+                                            </div>
+                                    
+                                    </li>
+                                    <li class="dropdown-footer ">
+                                        <span>
+                                            <a href="{:U('Home/Index/index')}" target="_blank"><i class="fa fa-desktop"></i> 仿问电脑版前台</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                               
+                            </li>
+                        
+                            <!--li>
+                                <a class=" dropdown-toggle" data-toggle="dropdown" title="警告" href="#">
+                                    <i class="icon fa fa-warning"></i>
+                                </a>
+                                
+                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-notifications">
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <div class="notification-icon">
+                                                    <i class="fa fa-phone bg-themeprimary white"></i>
+                                                </div>
+                                                <div class="notification-body">
+                                                    <span class="title">Skype meeting with Patty</span>
+                                                    <span class="description">01:00 pm</span>
+                                                </div>
+                                                <div class="notification-extra">
+                                                    <i class="fa fa-clock-o themeprimary"></i>
+                                                    <span class="description">office</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <div class="notification-icon">
+                                                    <i class="fa fa-check bg-darkorange white"></i>
+                                                </div>
+                                                <div class="notification-body">
+                                                    <span class="title">Uncharted break</span>
+                                                    <span class="description">03:30 pm - 05:15 pm</span>
+                                                </div>
+                                                <div class="notification-extra">
+                                                    <i class="fa fa-clock-o darkorange"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <div class="notification-icon">
+                                                    <i class="fa fa-gift bg-warning white"></i>
+                                                </div>
+
+                                                <div class="notification-body">
+                                                    <span class="title">Kate birthday party</span>
+                                                    <span class="description">08:30 pm</span>
+                                                </div>
+                                                <div class="notification-extra">
+                                                    <i class="fa fa-calendar warning"></i>
+                                                    <i class="fa fa-clock-o warning"></i>
+                                                    <span class="description">at home</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <div class="notification-icon">
+                                                    <i class="fa fa-glass bg-success white"></i>
+                                                </div>
+                                                <div class="notification-body">
+                                                    <span class="title">Dinner with friends</span>
+                                                    <span class="description">10:30 pm</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-footer ">
+                                        <span>
+                                            Today, March 28
+                                        </span>
+                                        <span class="pull-right">
+                                            10°c
+                                            <i class="wi wi-cloudy"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                               
+                            </li-->
+                            <php> $unreadMessage=D('Common/Message')->getHaventReadMeassageAndToasted(is_login()); </php>
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" title="消息" href="#">
+                                    <i class="icon fa fa-envelope"></i>
+                                    <span class="badge" id="nav_bandage_count" <if condition="count($unreadMessage) eq 0"> style="display: none"</if>>{:count($unreadMessage)}</span>
+                                </a>
+                                <!--Messages Dropdown-->
+                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
+                                    
+                                    <li class="dropdown-footer" onClick="setAllReaded()">
+                                           <span id="nav_hint_count">{:count($unreadMessage)}</span> 条未读<a href="javascript:" class="btn btn-xs btn-default shiny darkorange icon-only pull-right"><i class="fa fa-check"></i></a>
+                                    </li> 
+                                    <if condition="count($unreadMessage) eq 0">
+                                    <li class="nomessage">
+                                        暂无任何消息! 
+                                    </li>
+                                    <else/>
+                                    <volist name="unreadMessage" id="message">
+                                    <li>
+                                        <a data-url="{$message.url}" onClick="readMessage(this,{$message.id})">
+                                            <div class="message">
+                                                <span class="message-sender">
+                                                    {$message.title}
+                                                </span>
+                                                <span class="message-time">
+                                                    {$message.ctime}
+                                                </span>
+                                                <span class="message-subject">
+                                                  
+                                                </span>
+                                                <span class="message-body">
+                                                    
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                     </volist>
+                                     </if> 
+                                </ul>
+                                <!--/Messages Dropdown-->
+                            </li>
+
+                            <!--li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" title="任务" href="#">
+                                    <i class="icon fa fa-tasks"></i>
+                                    <span class="badge">4</span>
+                                </a>
+                 
+                                <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+                                    <li class="dropdown-header bordered-darkorange">
+                                        <i class="fa fa-tasks"></i>
+                                        4 Tasks In Progress
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <span class="pull-left">Account Creation</span>
+                                                <span class="pull-right">65%</span>
+                                            </div>
+
+                                            <div class="progress progress-xs">
+                                                <div style="width:65%" class="progress-bar"></div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <span class="pull-left">Profile Data</span>
+                                                <span class="pull-right">35%</span>
+                                            </div>
+
+                                            <div class="progress progress-xs">
+                                                <div style="width:35%" class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <span class="pull-left">Updating Resume</span>
+                                                <span class="pull-right">75%</span>
+                                            </div>
+
+                                            <div class="progress progress-xs">
+                                                <div style="width:75%" class="progress-bar progress-bar-darkorange"></div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="clearfix">
+                                                <span class="pull-left">Adding Contacts</span>
+                                                <span class="pull-right">10%</span>
+                                            </div>
+
+                                            <div class="progress progress-xs">
+                                                <div style="width:10%" class="progress-bar progress-bar-warning"></div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-footer">
+                                        <a href="#">
+                                            See All Tasks
+                                        </a>
+                                        <button class="btn btn-xs btn-default shiny darkorange icon-only pull-right"><i class="fa fa-check"></i></button>
+                                    </li>
+                                </ul>
+                               
+                            </li-->
+                            <!--li>
+                                <a class="wave in" id="chat-link" title="Chat" href="#">
+                                    <i class="icon glyphicon glyphicon-comment"></i>
+                                </a>
+                            </li-->
+                            <php> $common_header_user = query_user(array('nickname','email','avatar128')); </php>
+                            <li>
+                                <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                    <div class="avatar" title="">
+                                        <img src="{$common_header_user.avatar128}">
+                                    </div>
+                                    <section>
+                                        <h2><span class="profile"><span>{$common_header_user.nickname}</span></span></h2>
+                                    </section>
+                                </a>
+                                <!--Login Area Dropdown-->
+                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                    <li class="username"><a>{$common_header_user.nickname}</a></li>
+                                    <li class="email"><a>{$common_header_user.email}</a></li>
+                                    <!--Avatar Area-->
+                                    <li>
+                                        <div class="avatar-area">
+                                            <img src="{$common_header_user.avatar128}" class="avatar">
+                                            <!--span class="caption"></span-->
+                                        </div>
+                                    </li>
+                                    <!--Avatar Area-->
+                                    <li class="edit">
+                                        <a href="profile.html" class="pull-left">消息</a>
+                                        <a href="#" class="pull-right">设置</a>
+                                    </li>
+                                    <!--Theme Selector Area-->
+                                    <li class="theme-area">
+                                        <ul class="colorpicker" id="skin-changer">
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#5DB2FF;" rel="/Public/static/bootstrap3.2/css/skins/blue.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#2dc3e8;" rel="/Public/static/bootstrap3.2/css/skins/azure.min.css"></a></li>
+
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#03B3B2;" rel="/Public/static/bootstrap3.2/css/skins/teal.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#53a93f;" rel="/Public/static/bootstrap3.2/css/skins/green.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#FF8F32;" rel="/Public/static/bootstrap3.2/css/skins/orange.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#cc324b;" rel="/Public/static/bootstrap3.2/css/skins/pink.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#AC193D;" rel="/Public/static/bootstrap3.2/css/skins/darkred.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#8C0095;" rel="/Public/static/bootstrap3.2/css/skins/purple.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#0072C6;" rel="/Public/static/bootstrap3.2/css/skins/darkblue.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#585858;" rel="/Public/static/bootstrap3.2/css/skins/gray.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#474544;" rel="/Public/static/bootstrap3.2/css/skins/black.min.css"></a></li>
+                                            <li><a class="colorpick-btn" href="#" style="background-color:#001940;" rel="/Public/static/bootstrap3.2/css/skins/deepblue.min.css"></a></li>
+                                        </ul>
+                                    </li>
+                                    <!--/Theme Selector Area-->
+                                    <li class="dropdown-footer">
+                                        <a event-node="logout">
+                                            注销登录
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!--/Login Area Dropdown-->
+                            </li>
+                            <!-- /Account Area -->
+                            <!--Note: notice that setting div must start right after account area list.
+                            no space must be between these elements-->
+                            <!-- Settings -->
+                        </ul><div class="setting">
+                            <a id="btn-setting" title="设置" href="#">
+                                <i class="icon glyphicon glyphicon-cog"></i>
+                            </a>
+                        </div><div class="setting-container">
+                            <label>
+                                <input type="checkbox" id="checkbox_fixednavbar">
+                                <span class="text">固定导航</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="checkbox_fixedsidebar">
+                                <span class="text">固定侧边栏</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="checkbox_fixedbreadcrumbs">
+                                <span class="text">固定位置</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="checkbox_fixedheader">
+                                <span class="text">固定头</span>
+                            </label>
+                        </div>
+                        <!-- Settings -->
+                    </div>
+                </div>
+                <!-- /Account Area and Settings -->
+            </div>
+        </div>
+    </div>
+    <!-- /Navbar -->
+    <!-- Main Container -->
+    <div class="main-container container-fluid">
+        <!-- Page Container -->
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            <div class="page-sidebar" id="sidebar">
+                <!-- Page Sidebar Header-->
+                <div class="sidebar-header-wrapper">
+                    <!--input type="text" class="searchinput" /-->
+                    <div class="searchhelper">搜索</div>
+                </div>
+                <!-- /Page Sidebar Header -->
+                <!-- Sidebar Menu -->
+                <ul class="nav sidebar-menu">
+                
+                
+                   <volist name="__MENU__.main" id="menu">
+                        
+							<if condition="$menu.is_child eq 0">
+                            	<li class="<if condition="$menu.is_active eq 1"> active </if> <if condition="$menu.is_open eq 1"> open </if>"><a href="{$menu.url|U}"><i class="menu-icon {$menu.icon}"></i><span class="menu-text">{$menu.title}</span></a></li>
+                            <else/>
+                            	<li class="<if condition="$menu.is_active eq 1"> active </if> <if condition="$menu.is_open eq 1"> open </if>">
+                                	<a href="#" class="menu-dropdown">
+                                        <i class="menu-icon {$menu.icon}"></i>
+                                        <span class="menu-text">{$menu.title}</span>
+                                        <i class="menu-expand"></i>
+                                    </a>
+                                
+                                	<ul class="submenu">
+                                    	<volist name="menu.child" id="sub_menu">
+                                        <if condition="$sub_menu.is_child eq 0">
+                                            <li class="<if condition="$sub_menu.is_active eq 1"> active </if> <if condition="$sub_menu.is_open eq 1"> open </if>"><a href="{$sub_menu.url|U}"><span class="menu-text">{$sub_menu.title}</span></a></li>
+                                        <else/>
+                                         <li class="<if condition="$sub_menu.is_active eq 1"> active </if> <if condition="$sub_menu.is_open eq 1"> open </if>">
+                                            <a href="#" class="menu-dropdown">
+                                                <span class="menu-text">{$sub_menu.title}</span>
+                                                <i class="menu-expand"></i>
+                                            </a>
+                                        	<ul class="submenu">
+                                            <volist name="sub_menu.child" id="group_menu">
+                                            	<li class="<if condition="$group_menu.is_active eq 1"> active </if> "><a href="{$group_menu.url|U}"><i class="menu-icon {$group_menu.icon}"></i><span class="menu-text">{$group_menu.title}</span></a></li>
+                                            </volist>
+                                        	</ul>
+                                            
+                                            </li>
+                                        </if>
+                                    	</volist>
+                                    </ul>
+                                
+                                
+                                </li>
+                            </if>
+                   </volist>
+                </ul>
+            </div>
+            <!-- /Page Sidebar -->
+            <!-- Chat Bar -->
+            <!--div id="chatbar" class="page-chatbar">
+                <div class="chatbar-contacts">
+                    <div class="contacts-search">
+                        <input type="text" class="searchinput" placeholder="Search Contacts" />
+                        <i class="searchicon fa fa-search"></i>
+                        <div class="searchhelper">Search Your Contacts and Chat History</div>
+                    </div>
+                    <ul class="contacts-list">
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Divyia Philips</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    last week
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Adam Johnson</div>
+                                <div class="contact-status">
+                                    <div class="offline"></div>
+                                    <div class="status">left 4 mins ago</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    today
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">John Smith</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    1:57 am
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Osvaldus Valutis</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    today
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Javi Jimenez</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    today
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Stephanie Walter</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    yesterday
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Sergey Azovskiy</div>
+                                <div class="contact-status">
+                                    <div class="offline"></div>
+                                    <div class="status">offline since oct 24</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    22 oct
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Lee Munroe</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    today
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact">
+                            <div class="contact-avatar">
+                                <img src="" />
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-name">Divyia Philips</div>
+                                <div class="contact-status">
+                                    <div class="online"></div>
+                                    <div class="status">online</div>
+                                </div>
+                                <div class="last-chat-time">
+                                    last week
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chatbar-messages" style="display: none;">
+                    <div class="messages-contact">
+                        <div class="contact-avatar">
+                            <img src="" />
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name">Divyia Philips</div>
+                            <div class="contact-status">
+                                <div class="online"></div>
+                                <div class="status">online</div>
+                            </div>
+                            <div class="last-chat-time">
+                                a moment ago
+                            </div>
+                            <div class="back">
+                                <i class="fa fa-arrow-circle-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="messages-list">
+                        <li class="message">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Me</div>
+                                <div class="message-time">10:14 AM, Today</div>
+
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                        <li class="message reply">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Divyia</div>
+                                <div class="message-time">10:15 AM, Today</div>
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                        <li class="message">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Me</div>
+                                <div class="message-time">10:14 AM, Today</div>
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                        <li class="message reply">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Divyia</div>
+                                <div class="message-time">10:15 AM, Today</div>
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                        <li class="message">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Me</div>
+                                <div class="message-time">10:14 AM, Today</div>
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                        <li class="message reply">
+                            <div class="message-info">
+                                <div class="bullet"></div>
+                                <div class="contact-name">Divyia</div>
+                                <div class="message-time">10:15 AM, Today</div>
+                            </div>
+                            <div class="message-body">
+                                Hi, Hope all is good. Are we meeting today?
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="send-message">
+                        <span class="input-icon icon-right">
+                            <textarea rows="4" class="form-control" placeholder="Type your message"></textarea>
+                            <i class="fa fa-camera themeprimary"></i>
+                        </span>
+                    </div>
+                </div>
+            </div-->
+            <!-- /Chat Bar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href="{:U('Index/index')}">首页</a>
+                        </li>
+                        <volist name="__MENU__.breadcrumb" id="breadcrumb">
+                        <li>{$breadcrumb.title}</li>
+                    	</volist>
+                    </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+                <!-- Page Header -->
+                <div class="page-header position-relative">
+                    <div class="header-title">
+                        <h1>
+                            {$__MENU__.current.title}
+                        </h1>
+                    </div>
+                    <!--Header Buttons-->
+                    <div class="header-buttons">
+                        <a class="sidebar-toggler" href="#">
+                            <i class="fa fa-arrows-h"></i>
+                        </a>
+                        <a class="refresh" id="refresh-toggler" href="">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </a>
+                        <a class="fullscreen" id="fullscreen-toggler" href="#">
+                            <i class="glyphicon glyphicon-fullscreen"></i>
+                        </a>
+                    </div>
+                    <!--Header Buttons End-->
+                </div>
+                <!-- /Page Header -->
+                <!-- Page Body -->
+                <div class="page-body">
+                   <block name="body"></block>
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>
+        <!-- /Page Container -->
+        <!-- Main Container -->
+
+    </div>
+
+
+<!--Beyond Scripts-->
+<script src="__STATIC__/bootstrap3.2/js/beyond.min.js?v={:C('WEB_VERSION')}"></script>
+<!--Page Related Scripts-->
+<script src="__STATIC__/bootstrap3.2/js/toastr/toastr.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/bootstrap3.2/js/bootbox/bootbox.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/think.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/bootstrap3.2/js/common.js?v={:C('WEB_VERSION')}"></script>
+<block name="script"></block>
+{:hook('pageFooter', 'widget')}
+<div class="hidden">
+  <block name="hidden"></block>
+</div>
+<!-- /底部 -->
+</body>
+</html>

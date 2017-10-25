@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*顶部*/
+.top_bar {background: #ffffff;color:#666;}
+/*导航*/
+.nav_bar_tong{background:#fe5047;}
+.nav_bar .navbar-collapse { clear:both;background:#fe5047;color: fff;}
+.nav_bar .nav > li.active > a,
+.nav_bar .nav > li > a:hover,
+.nav_bar .nav > li > a:focus { color: #FFF; background:#f96a59;}
+
+/*所有商品分类*/
+#nav_bar_main .navbar-nav > li.all_product{ color:#FFF; background:#DB3931;}
+#nav_bar_main .navbar-nav > li.all_product a:hover,
+#nav_bar_main .navbar-nav > li.all_product a:focus{ background:#DB3931;} 
+
+/*搜索框*/
+.header-form .input{ border:1px solid red;}
+.header-form .icon{ background:#E54039; color:#FFF; border-color: #E54039;}
+.header-form .icon:hover{ background:#FE5047; color:#FFF; border-color:#FE5047;}
+
+/*购物车*/
+.nav_shopcard > li{ width:180px;background:#fe5047; } 
+
+/*活动页面 '全部'按钮 */
+.event_screen dd .btn-primary{ background:#fe5047; border-color:#fe5047;color: #fff;}
+.event_screen dd .btn-primary:hover,
+.event_screen dd .btn-primary:focus,
+.event_screen dd .btn-primary:active,
+.event_screen dd .btn-primary.active,
+.event_screen dd .open > .dropdown-toggle.btn-primary {color: #fff; background-color: #fe5047; border-color: #fe5047;}
+
+/*立即抢购*/ 
+.chakan{background:#fe761e;}
+
+/*活动图片 天数*/
+.event_state { color: #fff;background: #fe5047; }
+ 
+/*发布故事按钮*/
+.btnhelf ul li .btn-primary{ background:#F96A59; border-color:#F96A59; }
+.btnhelf ul li .btn-primary:hover{ background:#F05246; border-color:#F05246; }
+
+ 

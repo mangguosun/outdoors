@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head"/>
+
+</head>
+<body>
+<block name="body">
+<div class="container" >
+ 
+
+
+<div class="tab-pane" id="event_tailor">
+
+		<div class="select_order clearfix">
+		
+
+		  <div class="clearbox-ol"></div>
+
+		
+<div class="container clearfix">
+      <div class="shoppay">
+		<div class="detail_box myevent_detail">
+			<include file="_shopstatus"/> 
+		</div>
+        <table >
+          <tr>
+            <th colspan="6"> <div class="title">购物清单<div class="pull-right" ><if condition="$order_info['supplier_id'] eq $siteid  or ($order_info['siteid'] eq $siteid and !$order_info['supplier_id'])">{:get_shop_admin_btn_tow($order_info)}<else/>{:op_t(get_shop_order_status($status))}</if>&nbsp;&nbsp;&nbsp;&nbsp;</div></div> </th>
+          </tr>
+           <tr>
+                <td>商品</td>
+                <td>商品信息</td>
+                <td>单价</td>
+                <td>数量</td>
+				<td>运费</td>
+                <td>商品小计</td>
+           </tr>
+         <volist name="goods_list" id="vo">
+            <tr>
+              <td>
+              <img src="{$vo.goods_ico|getThumbImageById=55,55}" width="55" height="55" /></td>
+              <td>商品名：{$vo.goods_name}<br>商品描述：{$vo.goods_desc}</td>
+              <td>{$vo.goods_price}</td>			 
+              <td>{$vo.goods_num}</td>	
+			  <td>￥{$vo['freight']}</td>				  
+              <td>￥{$vo.total_price}元</td>  
+            </tr>
+            </volist>
+		  <tr>
+			<td colspan=2>
+				买家留言：{$order_info.postscript}
+			</td>
+			<td colspan=4>
+				<table>
+					<tr>
+						<td><span td class="keep_right">应付商品金额：</span></td><td><span td class="keep_left">￥{$order_info.totalcostprice}元</span></td>
+					</tr>
+					<tr>
+						<td><span td class="keep_right">商品数量：</span></td><td><span td class="keep_left">{$order_info.allgoodsnum}</span></td>
+					</tr>
+					<tr>
+						<td><span td class="keep_right">商品运费：</span></td><td><span td class="keep_left">￥{$order_info.allfreight}元</span></td>
+					</tr>
+					<if condition="$order_info['cardid']">
+					<tr   class="card_o_total">
+						<td> <span td class="keep_right">优惠券抵扣：<span style="color:green">【{$order_info.cardname}{$order_info.cardid}】</span></span></td><td><span td class="keep_left"><b><span style="color:red">省￥{$order_info.amount}元</span></b></td>
+					</tr>
+					</if>
+					<tr>
+						<td><span  class="keep_right">应付订单金额：</td><td> <div id="totalprice" class="totalprice"><b><span style="color:red"></span><span style="color:red" class="total">￥{$order_info['itselftotalprice']}元</span></b></div></td>
+					</tr>
+					<tr>
+						<td><span  class="keep_right">实付订单总额：</td><td> <div id="totalprice" class="totalprice"><b><span style="color:red"></span><span style="color:red" class="total">￥{$order_info['alltotalprice']}元</span></b></div></td>
+					</tr>
+					 <if condition="$order_info['status'] eq 20">
+						<tr>
+						<td></td>
+					<if condition="$order_info['supplier_id'] eq $siteid and $order_info['siteid'] eq $siteid or ($order_info['siteid'] eq $siteid and !$order_info['supplier_id'])">
+						<td>
+							  <div class="pull-left"><a class="mbtn btn-info  deliver_goods" href="{:U('Manage/Order/shop_order_editmoney?order_sn='.$order_info['order_sn'])}">修改商品总价</a></div>
+							  
+						</td>
+					</if>
+					</tr>
+					 </if>
+				</table>
+			</td>
+		  </tr>
+        </table>
+        <hr>
+		<table>
+          <tr>
+            <th colspan="8"> <div class="title">退货/退款列表</div> </th>
+          </tr>
+           <tr>
+                <td>商品</td>
+                <td>商品信息</td>
+                <td>申请数量</td>
+				<td>申请时间</td>
+				<td>退款原因</td>
+                <td>退款状态</td>
+				<td>退款金额</td>
+				<td>操作</td>
+           </tr>
+         <volist name="refund_list" id="refund_list">
+            <tr style="color:red">
+              <td>
+              <img src="{$refund_list.goods_ico|getThumbImageById=55,55}" width="55" height="55" /></td>
+              <td>商品名：{$refund_list.goods_name}<br>商品描述：{$refund_list.goods_desc}</td>
+              <td>{$refund_list.refund_num}</td>	
+			  <td>{$refund_list.create_time|date='Y-m-d H:i:s',###}</td>
+              <td>{$refund_list.reason_select}</td>	
+              <td>{:get_shop_refund_status($refund_list['refund_status'])}</td> 
+			  <td>{$refund_list.refund_price}</td>
+              <td><!--<a class="mbtn btn-info  refund_goods" href="{:U('Manage/Order/shop_order_refund_edit?order_sn='.$refund_list['order_sn'].'&id='.$refund_list['id'])}" >审批</a>-->{:get_shop_refund_admin_btn($refund_list)}</td> 
+            </tr>
+            </volist>
+        </table>
+		<hr>
+        <table>
+          <tr>
+            <th> <div class="title">订单收货人信息</div> </th>
+          </tr>
+		  <tr>
+			<td> <div><span class="details_t">收货人姓名：</span>{$order_info.consignee_name}</div></td>
+		  </tr>
+		  <tr>
+			<td> <div><span class="details_t">收货人联系电话：</span>{$order_info.phone}</div></td>
+		  </tr>
+		  <tr>	
+			<td>  <div><span class="details_t">收货地址：</span>{:get_city($begincity['province'])}{:get_city($begincity['city'])}{:get_city($begincity['district'])}{:get_city($begincity['community'])}{$order_info['consignee_address_detailed']}</div></td>
+		  </tr>
+		  <tr>
+			<td> <div><span class="details_t">邮编：</span>{$order_info['zipcode']}</div></td>
+          </tr>
+          
+        </table>
+		<hr>
+		<table>
+			<tr>
+				<th>
+					<div class="title">物流信息</div>
+				</th>
+			</tr>
+			<if condition="$order_info['express_num'] neq ''">
+			<tr>
+				<td>
+					<div><span class="details_t">快递公司：</span>{:get_deliver_com($order_info['express_com'])['name']}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div><span class="details_t">快递单号：</span>{$order_info['express_num']}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div><span class="details_t">快递信息：</span>{$order_info['express_desc']}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <div class="pull-right"><a class="mbtn btn-info  event_sign" href="{:U('Manage/Order/shop_order_editexpress?order_sn='.$order_info['order_sn'])}">编辑物流信息</a></div>
+				</td>
+			</tr>
+			<else />
+			<tr>
+				<td>
+					暂无物流信息
+				</td>
+			</tr>
+			</if>
+		</table>
+		
+      </div>
+</div>		
+</div>
+
+</div>
+<script>
+$('.updateOrder').click(function(){
+		if (confirm('确定要操作么？')) {
+		var id = $(this).attr('data-orderID');
+		var status = $(this).attr('data-status');
+			$.post(U('Manage/Order/do_update_shop_status'), {id: id,status:status}, function (res) {
+				if (res.status == 1) {
+					toast.success(res.m);
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				}else {
+					toast.error(res.m);
+				}
+			}, 'json');
+		}
+	})
+$('.deliver_goods').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+	
+$('.refund_goods').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+</script>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

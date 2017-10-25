@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_usercenter.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<include file="common/header"/>
+<block name="body">
+  <div class="container" >
+  <div class=" usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <include file="_top_menu"/>
+
+            <div class="row uc_content">
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-12 uc_fans" style="margin-left: 10px;">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li><a href="{:U('Usercenter/Index/rank',array('uid'=>$uid))}"
+                                    <eq name="tab" value="rank"> class="uc_current"</eq>
+                                    >
+                                    已拥有头衔</a></li>
+                                <if condition="$uid eq is_login()">
+                                    <li><a href="{:U('Usercenter/Index/rankVerifyWait')}"
+                                        <eq name="tab" value="rankVerifyWait"> class="uc_current"</eq>
+                                        >
+                                        待审核头衔</a></li>
+                                    <li><a href="{:U('Usercenter/Index/rankVerifyFailure')}"
+                                        <eq name="tab" value="rankVerifyFailure"> class="uc_current"</eq>
+                                        >
+                                        申请失败头衔</a></li>
+                                    <li><a href="{:U('Usercenter/Index/rankVerify')}"
+                                        <eq name="tab" value="rankVerify"> class="uc_current"</eq>
+                                        >
+                                        申请头衔</a></li>
+                                </if>
+                            </ul>
+                        </div>
+                    </div>
+                    <if condition="count($rankList) eq 0"><p class="text-muted"
+                                                             style="text-align: center; font-size: 3em;">
+                        <br><br>
+                        暂无该类型头衔哦～
+                        <br><br><br>
+                    </p></if>
+                    <div style="margin: 20px 0 20px 20px;">
+                        <volist name="rankList" id="rank">
+                            <div class="row"
+                                 style="border-bottom: 1px solid #dedede;padding-bottom: 20px;padding-top:20px;margin-left: 0;margin-right: 0">
+                                <div class="col-md-2">
+                                    <img style="width: 18px;margin-top: 30px;margin-left: 25px"
+                                         src="{$rank.logo|get_cover='path'}"/>
+                                </div>
+                                <div class="col-md-8">
+                                    <div>
+                                        头衔名称：{$rank.title}
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        理由：{$rank.reason}
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        申请时间：{$rank.create_time|friendlyDate}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <eq name="tab" value="rankVerifyWait"> <a class="btn btn-primary" href="{:U('Usercenter/Index/rankVerifyCancel',array('rank_id'=>$rank['rank_id']))}">取消申请</a> </eq>
+                                    <eq name="tab" value="rankVerifyFailure"> <a class="btn btn-primary" href="{:U('Usercenter/Index/rankVerify',array('rank_user_id'=>$rank['id']))}">重新申请</a> </eq>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+                <div class="col-md-5 uc_other_link">
+                    <include file="_right_link"/>
+                </div>
+            </div>
+        </div>
+    </div>
+     </div>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

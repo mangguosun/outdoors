@@ -1,0 +1,98 @@
+<extend name="Usercenter/base" />
+<block name="body">
+<div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li><a href="{:U('Official/Distributecategory/index')}">信息管理</a></li>
+      <li class="active">修改信息</li>
+    </ol>
+  </div>
+ <div class="row">
+
+    <div class="widget radius-bordered">
+            <div class="widget-header  bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">修改信息</span>
+            </div>
+            <div class="widget-body">
+                <form id="defaultForm" action="{:U('Official/Documentmanage/document_doadd')}" class="form-horizontal" method="post" >  
+                    <input type="hidden" name="id" value="{$data_info.id}">
+                    <div class="form-group has-feedback">
+                        <label for="cardnum" class="col-md-2 control-label">标题</label>
+                        <div class="col-md-5">
+                            <input id="title" name="title" type="text" class="form-control form_check" check-type="Text"  value="{$data_info.title}" placeholder="请填写标题"/>
+                        </div>
+                    </div>
+                     <div class="form-group has-feedback">
+                      <label for="cardnum" class="col-md-2 control-label">分类</label>
+                      <div class="col-md-5">
+                        {:form_select(array('1'=>'公告','2'=>'常见问题','3'=>'精彩案例','4'=>'操作手册'),$data_info['category_id'],'class="form-control" check-type="Text" name="category_id" id="category_id"',"--请选择分类--")}
+                      </div>
+                    </div>
+                     <div class="form-group">
+                      <label class="col-lg-2 control-label">封面图</label>
+                        <div class="col-lg-10">
+                            {:hook('UploadImagePcsingle', array('find_name'=>'cover_id','value'=>$data_info['cover_id'],'title'=>'上传图片','display_width'=>216,'display_height'=>100,'thumb_width'=>216,'thumb_height'=>100))}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="cardnum" class="col-md-2 control-label">内容</label>
+                      <div class="col-md-10">
+                        {:Hook('Ueditor',array('name'=>'content','value'=>$data_info['content']))}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+</div>
+</block>
+<block name="script">
+  <script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '分销类别不能为空'
+                    }
+                }
+            },
+			category_id: {
+                validators: {
+                    notEmpty: {
+                        message: '排序是必需的，不能是空的'
+                    },
+					digits: {
+                        message: '排序只能为数字'
+                    },
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+
+
+</script>
+</block>
+

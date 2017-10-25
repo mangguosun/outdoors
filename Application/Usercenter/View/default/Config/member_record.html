@@ -1,0 +1,37 @@
+
+<div id="center">
+  <div class="common_block_title ">
+  
+    申请记录</div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>申请时间</th>
+          <th>申请角色</th>
+          <th>状态</th>
+          
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="member_record">
+        <?php foreach($member_record as $key=>$vo):?>
+          <tr>
+            <td><?php echo $key+1;?></td>
+            <td>{$vo.create_time}</td>
+            <td>{:get_upgrading($vo['is_use'])}</td>
+			<td><if condition="$vo.status eq 0">等待审核<elseif condition="$vo.status eq 1"/>审核通过<elseif condition="$vo.status eq -2"/>驳回申请</if></td>
+           </tr>
+        <?php endforeach;?>
+        <else/>
+      <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  
+</div>

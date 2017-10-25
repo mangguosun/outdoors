@@ -1,0 +1,201 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/bootstrap-switch.min.css" rel="stylesheet" />
+</block>
+<block name="body">
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">配置活动筛选分类显示</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="defaultForm" action="{:U('Apply/doevent_websit')}" class="form-horizontal form-bordered" method="post" >
+                    	<input type="hidden" name="id" value="{$id}" />
+                        <div class="form-title">
+                            列表筛选分类显示
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">活动月份 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['starttime'] == 1 or $datainfo['starttime'] == ''){
+                                            $datainfo['starttime'] = 1;
+                                       }else{
+                                            $datainfo['starttime'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['starttime'],'name="starttime" id="starttime"')} 
+                            </div>
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">目 的 地 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['finalcity'] == 1 or $datainfo['finalcity'] == ''){
+                                            $datainfo['finalcity'] = 1;
+                                       }else{
+                                            $datainfo['finalcity'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['finalcity'],'name="finalcity" id="finalcity"')} 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">假日出行 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['holiday'] == 1 or $datainfo['holiday'] == ''){
+                                            $datainfo['holiday'] = 1;
+                                       }else{
+                                            $datainfo['holiday'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['holiday'],'name="holiday" id="holiday"')} 
+                            </div>
+
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">活动特色 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['tag'] == 1 or $datainfo['tag'] == ''){
+                                            $datainfo['tag'] = 1;
+                                       }else{
+                                            $datainfo['tag'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['tag'],'name="tag" id="tag"')} 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">价格范围 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['price'] == 1 or $datainfo['price'] == ''){
+                                            $datainfo['price'] = 1;
+                                       }else{
+                                            $datainfo['price'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['price'],'name="price" id="price"')} 
+                            </div>
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">活动天数 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['days'] == 1 or $datainfo['days'] == ''){
+                                            $datainfo['days'] = 1;
+                                       }else{
+                                            $datainfo['days'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['days'],'name="days" id="days"')} 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">近期出行 </label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                                    <php>
+                                       if($datainfo['recent'] == 1 or $datainfo['recent'] == ''){
+                                            $datainfo['recent'] = 1;
+                                       }else{
+                                            $datainfo['recent'] = 0;
+                                       }
+                                    </php>
+                            		{:form_switche_manage($datainfo['recent'],'name="recent" id="recent"')} 
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            自定义标签修改
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">标签名称</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+                                    <input type="text" class="form-control" placeholder="标签名称" name="custom_event[name]" value="{$datainfo['custom_event']['name']}"  /> 
+                                     
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">标签属性</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+                                  <textarea name="custom_event[attribute]" id="custom_eventtextare"  class="form-control">{$datainfo['custom_event']['attribute']}</textarea>   
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            赛事日历数据绑定
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-5 control-label">赛事日历</label>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-7">
+                            	<select id="match_category" style="width:100%;" name="match_category">
+                                     <option value="" data="">请选择绑定数据栏目</option>
+                                 	 <volist name="eventcategory" key="k" id="vo">
+                                   	 <option value="{$vo['id']}" <if condition="$vo['id'] eq $datainfo['match_category']">selected</if> />{$vo.title}
+                                     </volist>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10  col-sm-offset-3 col-sm-9 ">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                        
+                    </form>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+<script src="/Public/static/bootstrap3.2/js/switch/bootstrap-switch.min.js"></script>
+
+<!--Jquery Autosize-->
+<script src="/Public/static/bootstrap3.2/js/textarea/jquery.autosize.js"></script>
+
+<script type="text/javascript">
+
+//--JQuery Autosize--
+$('#custom_eventtextare').autosize({ append: "\n" });
+
+$("[name='starttime']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='finalcity']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='holiday']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='tag']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='price']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='days']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+$("[name='recent']").bootstrapSwitch({ size: '',onText: "显示",offText: "隐藏",handleWidth: "60",});
+
+
+
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+</block>

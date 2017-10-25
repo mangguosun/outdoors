@@ -1,0 +1,45 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $icp=C('WEB_SITE_ICP');
+    $count_code=C('COUNT_CODE');
+</php>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta property="qc:admins" content="17516645666057476741636" />
+<include file="Public/seo"/>
+<!-- 为了让html5shiv生效，请将所有的CSS都添加到此处 -->
+<link type="text/css" rel="stylesheet" href="/Public/static/bootstrap/css/bootstrap.css?v={:C('WEB_VERSION')}" />
+<link type="text/css" rel="stylesheet" href="__STATIC__/qtip/jquery.qtip.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/toastr/toastr.min.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/css/oneplus_official.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/magnific/magnific-popup.css?v={:C('WEB_VERSION')}"/>
+<link rel="shortcut icon" href="__PUBLIC__/Core/images/favicon.ico?v={:C('WEB_VERSION')}"/>
+<block name="style"></block>
+<!--[if lt IE 9]>
+<script src="__STATIC__/bootstrap/js/html5shiv.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/bootstrap/js/respond.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!-- jQuery库 -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js?v={:C('WEB_VERSION')}"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="__STATIC__/bootstrap/js/bootstrap.min.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/qtip/jquery.qtip.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/toastr/toastr.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/slimscroll/jquery.slimscroll.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/jquery.iframe-transport.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/core.js?v={:C('WEB_VERSION')}"></script>
+<include file="Public/var"/>
+<script>
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var initNum = "{:C('WEIBO_WORDS_COUNT')}";
+</script>
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->
+<audio id="music" src="" autoplay="autoplay"></audio>

@@ -1,0 +1,40 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>科目类别名称</h2>
+</div>
+<div class="cf">
+     <div class="fr">
+            <a class="w_btn add-btn " href="{:U('Course/createsubjectclass')}">
+                创建科目类别
+            </a> 
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="">科目类别名称</th>                
+                <th class="">操作</th>
+            </tr>
+            <volist name="data" id="vo">
+
+                <tr>
+                    <th class="">{$vo.name}</th>
+                    <th>
+                         <input type="hidden" name="id" value='<{$vo.id}>'>
+                         <a href="{:U('Manage/Course/editsubclass',array('id'=>$vo['id']))}" class="mbtn btn-default">编辑</a>
+                         <a class="mbtn btn-default" href="{:U('Manage/Course/deletesubclass',array('id'=>$vo['id']))}">删除</a>
+                    </th>
+                </tr>
+            </volist>
+            </thead>
+        </table>
+    </div>
+     <div class="page">
+        {$page}
+    </div>
+   
+</block>

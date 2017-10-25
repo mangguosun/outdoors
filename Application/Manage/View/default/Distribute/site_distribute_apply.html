@@ -1,0 +1,104 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="all">
+<form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Distribute/site_distribute_apply')}" method="post">
+    <div class="all-top">
+        	<h3>活动力分销集市入驻申请单</h3>            
+            <div class="all-box">
+            	<div class="shenqing-left">
+                	<!--div><span>类别：</span> 商品集市入住 </div-->
+					 <div><span>申请单号：</span></div>   
+                	<div><span>申请单状态：</span><strong>提交申请</strong></div>
+                </div>
+          	    <div class="shenqing-right">
+                	<div><span>申请日期：</span>{$time|date="Y-m-d",###}</div> 
+                                
+                </div>
+            </div>    
+     </div>        
+	<div class="h15"></div>
+	<div class="all-top-name"><span>商家信息</span></div>
+	<div class="h15"></div>
+	<div class="shenqing-business-mess">
+		<div class="shenqing-business-mess-top">
+			<div class="shenqing-business-mess-l">
+				<p></p>
+				<p><span>商品名称：</span>{$webinfo.webname}</p>
+				<p><span>所在城市：</span>{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</p>           
+			</div>
+			<div class="shenqing-business-mess-r">
+				<p></p>
+				<p><span>服务特色：</span>{$webinfo.slogan}</p>
+				<p><span>网   址：</span>{$webinfo.domain}</p>                          	              
+			</div>           
+		</div>
+		<div class="biaodan">
+			<div class="biaodan-input">
+				<div><h4>以下信息请填写真实有效的信息</h4></div>
+				<div><span>服务资质：</span>上传有效的许可证照</div>
+				<div><span>开户行：</span>{$bank.open_bank}</div>
+				<div><span>开户名称：</span>{$bank.name}</div>
+				<div><span>银行账号：</span>{$bank.card}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('Manage/Revenue/index')}" class="w_btn add-btn" >修改银行信息</a></div>               
+			</div>
+			<div class="biaodan-img">
+				
+				<div>
+				<p></p>
+				{:hook('UploadImage', array('find_name'=>'license_photo','value'=>$arr['license_photo'],'buttontext'=>'上传许可证照','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600','width'=>600,'height'=>600))}</div>
+				<div class="imgdesc">jpg,gif,png或bmp格式,单张图片不超过2MB</div>
+			</div>
+		</div>
+		<div class="biaodan2">
+			<div class="biaodan2-input">
+				<div><span class="title">联系人姓名：</span><input type='text' name="name" value="" class="input-text-width" placeholder="请填写联系人姓名"><span class="fujian">附件证明:</span></div>
+				<div><span class="title">证件类型：</span><select name="idcard"><option value="0" selected>身份证</option></select><span>（必填）</span></div>
+				<div><span class="title">证件号码：</span><input type='text' name="idcardnumber" value="" class="input-text-width" placeholder="请填写证件号码"><span>（必填）</span></div>
+				<div><span class="title">手机号码：</span><input type='text' name="phone" value="" class="input-text-width" placeholder="请填写联系电话"><span>（必填）</span></div>  
+				<div><span class="title">QQ  号码：</span><input type='text' name="qq" value="" class="input-text-width" placeholder="请填写联系QQ"><span>（必填）</span> </div>                
+			</div>
+			<div class="biaodan2-img">
+				<div>
+				{:hook('UploadImage', array('find_name'=>'idcard_photo','value'=>$arr['idcard_photo'],'buttontext'=>'上传证件照','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600','width'=>600,'height'=>600))}</div>
+				<div class="imgdesc">jpg,gif,png或bmp格式,单张图片不超过2MB</div>
+			</div>
+			<div class="clear"></div>  
+		</div>                   
+	</div>
+	
+	<div class="h15"></div>   
+	<div class="shenqing-business-profile">
+		<div class="kuang">协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		</div>
+		<div class="shuomingzi"> 
+			<input type="checkbox" name="agreement" class="agreement">同意协议
+		<span>备注：活动力网站抽取佣金比例为2%，协议有效期一年，自动续约</span></div>
+		 
+			
+		<div class="button1">
+			<button type="submit" class="w_btn submit-btn" href="{:U('Manage/Distribute/site_distribute_apply')}" disabled="disabled" >提交</button>
+			<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	   </div>
+
+	</div> 
+</form>	
+</div>
+<script>
+$(function(){
+	$(".agreement").click(function () {
+		if(this.checked){
+		    $(".submit-btn").attr({"disabled":false});
+		 }else{
+		    $(".submit-btn").attr({"disabled":true}) 
+		  }
+	})
+})
+</script>
+</block>
+

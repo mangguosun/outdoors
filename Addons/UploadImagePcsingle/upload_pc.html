@@ -1,0 +1,77 @@
+<?php
+if(!defined('UPLOADIMAGEPCSINGLE_INIT_PC')){
+?>
+<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js??v={:C('WEB_VERSION')}"></script>
+<link rel="stylesheet" href="__ADDONROOT__/style/UploadImage.css">
+<?php
+define('UPLOADIMAGEPCSINGLE_INIT_PC', 1);
+}
+?>
+<div class="pc_uploadfile_single" style="width:{$infos['display_width']}px; height:{$infos['display_height']}px;">
+	
+    <input type="file" class="uploadfile_input" id="upload_picture_{$infos['find_name']}">
+    <input type="hidden" name="{$infos['find_name']}" value="{$infos['value']}" class="icon {$infos['find_name']}" />
+    
+    <div class="upload-img-box-home" id="upload_{$infos['find_name']}">
+        <notempty name="thumb_picture">
+             <volist name="thumb_picture" id="v">
+                <div class="upload-pre-item-home" style="width:{$infos['display_width']}px; height:{$infos['display_height']}px;">
+                    <img src="{$v.url_thumb}" data-id="{$v.id}"/>
+                    <span class='btn-edit fa fa-edit' title='修改图片'></span>
+                </div>
+             </volist>
+        </notempty>
+    </div>
+</div>  
+    
+<script type="text/javascript">
+    //上传图片
+    $(function(){
+        /* 初始化上传插件*/
+        $("#upload_picture_{$infos['find_name']}").uploadify({
+            "height"          : {$infos['display_height']},
+            "swf"             : "__STATIC__/uploadify/uploadify.swf",
+            "fileObjName"     : "download",
+			<if condition="$infos['title'] eq ''">
+				"buttonText"      : "<i class='fa fa-plus'></i>",
+			<else/>
+				"buttonText"      : "<span>{$infos['title']}</span>",
+			</if>
+			"buttonClass"	  : "upload-img-btn",
+            "uploader"        : "{:U('Home/File/uploadPicture',array('session_id'=>session_id()))}",
+            "width"           : {$infos['display_width']},
+            'removeTimeout'   : 1,
+			'multi'   : false,
+            //'fileTypeExts'    : '*.jpg; *.png; *.gif; *.ico;',
+			'fileTypeExts'    : '{$infos["picture_type"]};',
+            //"onUploadSuccess" : uploadPicture{$infos['find_name']},
+			"onUploadSuccess" : function(file, data) {
+				var data = $.parseJSON(data);
+				var src = '';
+		
+				if(data.status){	
+					var param ={};
+					
+					param['id'] = data.id;
+					param['display_width'] = "{$infos['display_width']}";
+					param['display_height'] = "{$infos['display_height']}";
+					param['thumb_width'] = "{$infos['thumb_width']}";
+					param['thumb_height'] = "{$infos['thumb_height']}";
+					$.getJSON("{:U('Home/index/get_uploadthumb_pc_singie')}",param,  function (res) {
+						upload_img = "<div class='upload-pre-item-home' style='width:{$infos['display_width']}px; height:{$infos['display_height']}px;' ><img src=" + res.url_thumb +" data-id="+data.id+"> <span class='btn-edit fa fa-edit' title='修改图片'></span></div>";
+						picsbox = $("#upload_picture_{$infos['find_name']}").siblings('.upload-img-box-home');
+						picsbox.html(upload_img);
+						$('.icon.{$infos['find_name']}').val(data.id);
+					});	
+				} else {
+				}
+			},
+            'onFallback' : function() {
+                alert('未检测到兼容版本的Flash.');
+            }
+        });
+        
+    })
+	
+
+</script>

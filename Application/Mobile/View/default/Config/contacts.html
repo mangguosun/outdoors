@@ -1,0 +1,54 @@
+<extend name="Public/common_user"/>
+<block name="body">
+
+<div class="top_bar_mobile"><span class="mobile_crumbs"><a onClick="history.go(-1);" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn">常用的参加者</div>
+    </div>
+    </span> </div>
+    <div class="h40"></div>
+    <div class="mobile_user_center_body">
+    
+    <div class="mobile_contacts_lists">
+	  <?php if(!empty($contacts_arr)):?>
+	  <volist name="contacts_arr" id="vo">
+	  <ul class="contacts_list">
+		<li ><a href="{:U('Mobile/Config/contacts_edit',array('id'=>$vo[id]))}"><span class="contacts_edit glyphicon glyphicon-edit"></span></a><span class="contacts_name">{$vo.realname}</span></li>
+		<li ><span>性别：<if condition="$vo.sex eq 1">男<else />女</if></span><span>手机号：18588464814</span></li>
+		<li ><span>身份证：{$vo.card}</span></li>
+		<li ><span>Q Q：{$vo.qq}</span></li>
+		<li ><span>邮 箱：{$vo.email}</span></li>
+	  </ul>
+	  </volist>
+	<?php else:?>
+	<div class="text-center"> aOh! 暂时还没有内容!</div>
+	<?php endif;?>
+	</div>
+    <a class="btn contacts_add_btn" href="{:U('Mobile/Config/contacts_add')}">+添加常用参加者</a>
+	</div>
+ <script>
+        $(function () {			
+			
+			//删除--
+			$('.contacts_del').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid= $(this).attr('data-ID');
+				 $.post(U('Mobile/Config/contacts_delete'), {id: uid}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+			
+			
+        })
+    </script>
+
+</block>

@@ -1,0 +1,140 @@
+<div class="row">
+        <form id="defaultForm" action="{:U('Official/Usercenter/index')}" class="form-horizontal" method="post" >
+          <div class="form-group">
+            <label class="col-md-2 control-label">登录邮箱</label>
+            <div class="col-md-5">
+              <div class="form-control-static">{$user['email']|op_t}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nickname" class="col-md-2 control-label">昵称</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="nickname" name="nickname" value="{$user.nickname|op_t}" placeholder="昵称">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">性别</label>
+            <div class="col-md-9">
+              <label class="radio-inline"> <input name="sex" type="radio" value="1" <eq name="user.sex" value="1"> checked</eq> > 男 </label>
+              <label class="radio-inline"> <input name="sex" type="radio" value="2" <eq name="user.sex" value="2"> checked</eq> > 女 </label>
+            </div>
+          </div>
+          <div class="form-group position">
+            <label for="email" class="col-md-2 control-label">所在地</label>
+            <div class="col-md-9">
+              <div class="form-inline"> {:hook('Citylinkage',array('find'=>'address','level'=>4,'linkageid'=>$user['address']))} </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="constellation" class="col-md-2 control-label">星座</label>
+            <div class="col-md-5"> {:form_select(get_constellation(),$user['constellation'],'class="form-control" check-type="Text" name="constellation" id="constellation"')} </div>
+          </div>
+          <div class="form-group">
+            <label for="qq" class="col-md-2 control-label">QQ</label>
+            <div class="col-md-5">
+              <input type="qq" class="form-control" id="qq" placeholder="QQ" name="qq" value="{$user.qq|htmlspecialchars}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="real_name" class="col-md-2 control-label">姓名</label>
+            <div class="col-md-5">
+              <input type="real_name" class="form-control" id="real_name" placeholder="姓名" name="real_name" value="{$user.real_name|htmlspecialchars}">
+            </div>
+          </div>
+          <!--telphone-->
+          <div class="form-group">
+            <label for="mobile" class="col-md-2 control-label">联系电话</label>
+            <div class="col-md-5">
+              <input type="mobile" class="form-control" id="mobile" placeholder="请输入电话号码" name="mobile" value="{$user.mobile|htmlspecialchars}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="self_introduction" class="col-md-2 control-label">自我介绍</label>
+            <div class="col-md-9">
+              <input type="self_introduction" class="form-control" id="self_introduction" placeholder="自我介绍" name="self_introduction"
+                                       value="{$user.self_introduction|htmlspecialchars}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="signature" class="col-md-2 control-label">个性签名</label>
+            <div class="col-md-9">
+              <textarea id="signature" name="signature" class="form-control"
+                                          style="width: 100%; height: 6em;resize: none">{$user.signature|htmlspecialchars}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+<block name="script">
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            nickname: {
+                validators: {
+                    notEmpty: {
+                        message: '昵称不能为空'
+                    }
+                }
+            },
+			qq: {
+                validators: {
+                    regexp: {
+                        regexp: /^[1-9]*[1-9][0-9]*$/,
+                        message: '请输入正确的QQ号'
+                    },
+                }
+            },
+            constellation: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择星座'
+                    }
+                }
+            },
+            real_name: {
+                validators: {
+                    notEmpty: {
+                        message: '真实姓名不能为空'
+                    }
+                }
+                 
+            },
+            mobile: {
+                validators: {
+                    notEmpty: {
+                        message: '联系电话不能为空'
+                    }
+                }
+                 
+            },
+            self_introduction: {
+                validators: {
+                    notEmpty: {
+                        message: '自我介绍不能为空'
+                    }
+                }
+                 
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

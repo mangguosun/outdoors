@@ -1,0 +1,198 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+	  <a href="javascript:history.back(-1)" class="">
+	  	<i class="am-icon-chevron-left"></i>
+	  </a> 打卡
+  </div>
+  <div class="am-header-right am-header-nav">
+	      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+	  <i class="am-header-icon am-icon-bars"></i>
+	  </a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/>
+	<div class="mark-head">
+		<div class="mark-div">
+			<a href=""><img class="mark-img am-circle am-img-thumbnail" src="{$user.avatar128}"/></a>
+		</div>
+		<div class="mark-name">{$user.nickname}</div>
+	</div>
+<form action="" id="mark-index-dis";>
+<div class="mark-box">
+	<!-- 距离 -->
+	<div class="mark-distance" id="markRange">
+		<div class="mark-distance-font2">KM</div>
+		<div class="mark-distance-font1"><input id="distance_outs" type="text" maxlength="3" name="distance" placeholder="0.0" value=""></div>
+	</div>
+	<!-- 时间 -->	
+	<div class="mark-time">
+		<div class="mark-time-1"><a  href="javascript:" class="the-day" the-day="-2">前天</a></div>
+		<div class="mark-time-1"><a  href="javascript:" class="the-day" the-day="-1">昨天</a></div>
+		<div class="mark-time-1 mark-time-3"><a  href="javascript:"  class="the-day hover" the-day="0">今天</a></div>
+		<div class="clear"></div>
+		<input type="hidden" name="day" id="the-day" value="0">
+	</div>
+	<!-- 时间 -->
+	<div class="mark-en">
+			<div class="mark-entime-1"><input  type="text" class="inputtype" maxlength="2"  name="hour" value="" id="mark_hour"  placeholder="时"></div>
+			<div class="mark-entime-2">:</div>
+			<div class="mark-entime-1"><input type="text" class="inputtype" maxlength="2"  name="minute" value="" id="mark_minute" maxlength="2" placeholder="分"></div>
+			<div class="mark-entime-2">:</div>
+			<div class="mark-entime-1"><input type="text" class="inputtype" maxlength="2"  name="second" value="" id="mark_second" maxlength="2" placeholder="秒"></div>
+			<div class="clear"></div>
+	</div>
+	<!-- 上传图片 -->
+    <div class="issue-upload mark-images">
+        {:hook('UploadImageMobile', array('find_name'=>'imgids','value'=>'','multi'=>true,'thumb_width'=>200,'thumb_height'=>200,'width'=>500,'height'=>375))}
+        <div class="mark-upload-font">上传运动路线 , 运动靓照</div>
+        <div class="clear"></div>
+		
+	</div>
+	<!-- 打卡类型 -->
+	<div class="mark-type">
+		<div class="mark-type-font"><span class="mark-type-i">l</span>&nbsp;&nbsp;打卡类型</div>
+
+	<div class="mark-type-icon">
+		<div>
+			<div  class="am-circle mark-type-img hdlsports iconsport-paobu2 mark-day" mark-day="1"></div>
+		</div>
+		<div>	
+			<div  class="am-circle mark-type-img hdlsports iconsport-tubu mark-day" mark-day="2"></div>
+		</div>
+		<div>
+			<div  class="am-circle mark-type-img hdlsports iconsport-598kuaizhuangqixing mark-day" mark-day="3"></div>
+		</div>
+		<div>	
+			<div  class="am-circle mark-type-img hdlsports iconsport-huilvyouyongchi mark-day" mark-day="4"></div>
+		</div>	
+		<input type="hidden" name="typecode" id="mark-day" value="">
+		<input type="hidden" name="yuebanmasterid" id="yuebanmasterid" class="yuebanmasterid" value="">
+	</div>
+
+		<div class="mark-type-fonts">
+			<li>跑步</li>
+			<li>徒步</li>
+			<li>骑行</li>
+			<li>游泳</li>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 关联活动 -->
+		<div class="mark-event mark-event2">
+			<span class="am-icon-plus" data-am-modal="{target: '#my-popup'}"><a href="javascript:">&nbsp;选择你要关联的活动</a></span>
+		</div>
+		<div class=" mark-event3 mark-event2"  data-am-modal="{target: '#my-popup'}" style="display:none">
+			<ul>
+				<li></li>
+			</ul>
+		</div>
+		<!-- 活动隐藏层 meizi -->
+		<div class="am-popup" id="my-popup">
+		  <div class="am-popup-inner">
+		     <header class="am-header am-header-default am-header-fixed">
+		     <div class="am-header-left am-header-nav mark-event-cancel"><a href="javascript:" class="" data-am-modal-close><i class="am-icon-chevron-left"></i></a>关联活动</div>
+		    </header>
+		    <div class="event-from-seek">
+	            <input type="text" name='eventname' id='eventname'>
+	            <a class="am-icon-search event-submit-seek ajax_seek_event" href="javascript:"></a>
+	            <div class="clear"></div>
+		    </div>
+		     <div id='event-font-box'>
+		    <volist name="partner_list" id="partner">
+				  <div class="event-font">
+				      <span class="event-font-seek"><a  class="a-button"   href="javascript:" event-id="{$partner.id}" event-name="{$partner.title}" data-am-modal-close>
+				      {$partner.title}</a></span>
+				  </div>
+		   </volist>
+		   </div>
+		  </div>
+		</div>
+		<div class="mark-button mark-ind-button">
+		<a href="{:U('Mobile/Index/index')}" class="am-btn mark-cancel">取消</a>
+		<button type="button" class="am-btn am-btn-danger mark-preservation ">保存</button>
+		</div>
+	</div>
+</form>
+<script>
+		
+		  /*活动*/
+		 $("body").on("click",".a-button", function(e){
+		   		var eventid=$(this).attr('event-id');	 //获取event-id的属性值
+		   		var eventname=$(this).attr('event-name');//获取event-name的属性值
+		   		$('.yuebanmasterid').val(eventid);		 //修改约伴的ID
+		   		$('.mark-event3 li').html(eventname); //修改约伴的名字
+				$('.mark-event').hide();
+				$('.mark-event3').show();
+		    });
+		$('#distance_outs,#mark_hour,#mark_minute,#mark_second').bind('input propertychange',function(){
+			var distance = $(this).val();
+			if(isNaN(distance)){
+				$(this).val('');
+			}
+		});
+		 // 上传图片说明文字显示于隐藏
+		$('#upload_picture_imgids').on('change',function(){	
+			$('.mark-upload-font').hide(); 			
+		});
+		$(document).on('click', '.am-icon-times', function(){
+			var iconnum = $('.icon').val();
+			var iconarr = iconnum.split(",");
+	 		if(iconarr[1] == undefined){
+		 		$('.mark-upload-font').show();
+	 		} 		
+		});
+	//时间点击变色
+	$(".the-day").click(function(){
+	 	var day=$(this).attr('the-day');
+
+	 	$('#the-day').val(day);
+	 	 $('.the-day').removeClass('hover');
+	 	 $(this).addClass('hover');
+	})
+	$(".mark-day").click(function(){
+		var mark=$(this).attr('mark-day');
+		$('#mark-day').val(mark);
+		$('.mark-day').removeClass('hover');
+		$(this).addClass('hover');
+	})
+		/*搜索ajax*/
+	$(".event-submit-seek").click(function(){
+		var eventnames= $('#eventname').val();
+		$.post("{:U('Mobile/Mark/partner_list')}", {partner_name:eventnames}, function (res) {
+			if(res['status'] == 1){
+				var datainfo	=	res['info'];
+				var str	=	'';
+				for(val in datainfo){
+					str	=	str+"<div class='event-font'><span class='event-font-seek' data-am-modal=\"{target: '#my-popup'}\"><a class='a-button' href='javascript:' event-id='"+datainfo[val]['id']+"' event-name='"+datainfo[val]['title']+"'>"+datainfo[val]['title']+"</a></span></div>"
+					}
+				}else{
+					var str	=	'';
+					str	=	str+"<div class='event-font'><span class='event-font-seek'><a href='javascript:'>暂无约伴活动</a></span></div>" 
+				}
+				$('#event-font-box').html(str);
+		}, 'json');})
+	//ajax提交form表单
+        $(".mark-preservation").click(function(){
+	        $.ajax({
+	           cache: true,
+			   type: "POST",
+			   dataType: "json",
+			   url: "{:U('Mobile/Mark/set_mark')}",
+			   data: $('#mark-index-dis').serialize(),
+			   success: function(data){
+			   	if(data['status'] == 1){
+			 		window.location="{:U('Mobile/Mark/success')}";
+			   		}else{
+			   		toasts.info(data.info);
+			   		}
+			 	}
+			});
+	    });
+</script>
+<block name="script">
+</block>
+</body>
+</block>

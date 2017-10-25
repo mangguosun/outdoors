@@ -1,0 +1,132 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/bootstrap-switch.min.css" rel="stylesheet" />
+</block>
+<block name="body">
+
+<form id="defaultForm" action="{:U('Manage/WebsitSystem/system')}" class="form-horizontal form-bordered ajax-form" method="post" > 
+
+
+
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-home themeprimary"></i>
+                    <span class="widget-caption">首页版块</span>
+                </div>
+                <div class="widget-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-12 control-label">首页推荐活动</label>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <div class="">
+                                {:form_switche_manage($index_event_recommend,'name="index_event_recommend" id="index_event_new"')} 
+                                </div>
+                            </div>
+             
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-12 control-label">首页最新活动</label>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <div class="">
+                                {:form_switche_manage($index_event_new,'name="index_event_new" id="index_event_new"')} 
+                                </div>
+                            </div>
+                        </div>   
+                </div>
+            </div>
+            
+       		<div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon typcn typcn-location-outline themeprimary"></i>
+                    <span class="widget-caption">地区配置</span>
+                </div>
+                <div class="widget-body">
+                     	<div class="form-title">
+                            以下选中的地区才会显示在活动发布以及前台活动筛选项中，会员发布故事地区选择不影响
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            	<div class="" style="width:100%">
+                                {:form_checkbox_manage(get_province(),$feature_province,'name="province[]" id="province"',0,'100')} 
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tags themeprimary"></i>
+                    <span class="widget-caption">标签配置</span>
+                </div>
+                <div class="widget-body">
+                     	<div class="form-title">
+                            以下选中的内容才会显示在活动、商品、公告发布以及前台活动筛选项中，会员发布故事标签不影响；如需增加新标签，请联系客服
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            	<div class="" style="width:100%">
+                                {:form_checkbox_manage(get_event_tag(),$feature_tags,'name="tag[]" id="tag"',0,'100')} 
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">品牌配置</span>
+                </div>
+                <div class="widget-body">
+                     	<div class="form-title">
+                           以下选中的内容才会显示在商品发布以及商品筛选项中；如需增加新品牌，请联系客服
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            	<div class="" style="width:100%">
+                                {:form_checkbox_manage(get_shop_brand(),$feature_shop_brand,'name="shop_brand[]" id="shop_brand"',0,'100')} 
+                                </div>
+                            </div>
+                        </div>
+                        
+                </div>
+            </div>
+            <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-user themeprimary"></i>
+                    <span class="widget-caption">常用参加者填写信息设置</span>
+                </div>
+                <div class="widget-body">
+                     	<div class="form-title">
+                            以下选中勾选项为用户增加常用参加者必填项
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            	<div class="" style="width:100%">
+                                {:form_checkbox_manage(get_participant(),$participant,'name="participant[]" id="participant"',0,'120')} 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+</form>
+
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/switch/bootstrap-switch.min.js"></script>
+<script type="text/javascript">
+$("[name='index_event_new']").bootstrapSwitch({ size: '',onText: "开",offText: "关",handleWidth: "50",});
+$("[name='index_event_recommend']").bootstrapSwitch({ size: '',onText: "开",offText: "关",handleWidth: "50",});
+
+</script>
+
+</block>

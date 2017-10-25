@@ -1,0 +1,17 @@
+<if condition="!empty($rec_event)">
+  <div class="common_block_border">
+    <div class="common_block_title_right">推荐线路</div>
+    <div class="common_block_title_right_common">
+      <volist name="rec_event" id="vo">
+        <div> <a href="{:U('Event/Index/detail',array('id'=>$vo['id']))}"> <img class="recommend  add_loading add_loading_issuerecommend"  src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=338,254}"/></a> <span><strong><a href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" class="text-more hundred">{$vo.title}</a></strong>
+          <div class="font_grey"> 集合地：{:get_city($vo['begincity'])} 目的地：{:get_city($vo['finalcity'])}</div>
+          <span class="font_grey"></span> </div>
+      </volist>
+    </div>
+  </div>
+  <script>
+  $(function () {
+hdl_lazyload("img.add_loading_issuerecommend");
+  })
+</script>
+</if>

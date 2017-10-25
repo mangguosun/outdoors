@@ -1,0 +1,517 @@
+<extend name="default/common"/>
+<block name="style">
+
+  <link href="__STATIC__/datetimepickerV3/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+
+</block>
+<block name="body">
+<div class="container">
+<div id="frm-post-popup " class="white-popup1 boxShadowBorder col-md-12">
+  <h2>发布线路_填写基本活动信息</h2>
+  <span class="event-prompt">备注：以下选项除（队员上限）外，其他均为必填项</span>
+  <div class="aline"></div>
+  <div>
+    <div class="row">
+    	<form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Event/doPost')}" method="post">
+      <div class="col-md-8">
+			<input type="hidden" name="event_price_text" id="event_price_text" value="{$content.price_text}"/>
+            <input type="hidden" name="id" id="id" value="{$content.id}"/>
+          <div class="form-group has-feedback">
+            <label for="title" class="col-md-2 extra control-label">标题<span class="event-prompt">*</span></label>
+            <div class="col-md-6">
+              <input id="title" name="title" maxlength="24" class="form-control form_check" check-type="Text" value="{$content.title}" placeholder="" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="title" class="col-md-2 extra control-label">摘要<span class="event-prompt">*</span></label>
+            <div class="col-md-6">
+              <textarea name="description" cols="6" rows="5" class="form-control form_check" check-type="Text" placeholder="" required />{$content.description}</textarea>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label for="type_id" class="col-md-2 extra control-label">分类<span class="event-prompt">*</span></label>
+            <div class="col-md-5">
+              
+                <volist name="tree" id="top">
+                  <input value="{$top.id}" name="type_id" type="radio" <?php if($top['id'] == $content['type_id']) echo 'checked'?>>&nbsp;{$top.title}&nbsp; 
+                </volist>
+              
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="tag" class="col-md-2 extra control-label">特色<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+            {:form_checkbox(get_event_tag(),$content[tag],'name="tag[]" id="tag"',0,'100')}
+            </div>
+          </div>
+
+          <?php $list = get_custom_eventtag(); $event_tag = $list['custom_event']['attribute']; ?>
+
+			<if condition="($list['custom_event']['name'] neq '') AND ($event_tag neq '') ">
+
+				<div class="form-group">
+					<label for="tag" class="col-md-2 extra control-label"><?php echo $list['custom_event']['name'];?><span class="event-prompt">*</span></label>
+					<div class="controls">
+						<volist name="event_tag" id="vo" key="k">
+							<input type="radio" name="custom" value="{$k}" <?php if( $k == $content['custom']) echo 'checked'?>     >&nbsp;{$vo}&nbsp;&nbsp;&nbsp;
+						</volist> 
+					</div>
+				</div>
+			</if>
+
+          <div class="form-group  position">
+            <label for="begincity" class="col-md-2 control-label">集合地<span class="event-prompt">*</span></label>
+            <div class="col-md-9"> {:hook('J_China_City',array('find'=>'begincity','level'=>3,'province'=>$content['begincity']['province'],'city'=>$content['begincity']['city'],'district'=>$content['begincity']['district']))} </div>
+          </div>
+		  <div class="form-group position">
+            <label for="detailadd" class="col-md-2 control-label">具体地址<span class="event-prompt">*</span></label>
+            <div class="col-md-5 ">
+               <input id="detailadd" name="detailadd" class="form-control form_check" check-type="Text"  value="{$content['detailadd']}" placeholder="" required />		  
+            </div>
+          </div>
+          <div class="form-group  position">
+            <label for="finalcity" class="col-md-2 control-label">目的地<span class="event-prompt">*</span></label>
+            <div class="col-md-9"> {:hook('J_China_City',array('find'=>'finalcity','level'=>3,'province'=>$content['finalcity']['province'],'city'=>$content['finalcity']['city'],'district'=>$content['finalcity']['district']))} </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="minpeople" class="col-md-2 control-label">最低人数<span class="event-prompt">*</span></label>
+            <div class="col-md-3">
+              <input id="limitCount" name="minpeople" class="form-control form_check" check-type="Num"  value="{$content.minpeople}" placeholder="最低人数" required />
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="maxpeople" class="col-md-2 control-label">队员上限<span class="event-prompt">(选填)</span></label>
+            <div class="col-md-3">
+              <input id="maxpeople" name="maxpeople" class="form-control" value="{$content.maxpeople}" placeholder="人员上限">
+            </div>
+          </div>
+         
+          <div class="form-group  has-feedback">
+            <label for="traveldays" class="col-md-2 control-label">活动天数<span class="event-prompt">*</span></label>
+            <div class="col-md-3">
+              <input id="traveldays" name="traveldays" class="form-control form_check" check-type="Num"  value="{$content.traveldays}" placeholder="活动天数" required />
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="price" class="col-md-2 control-label">活动起价<span class="event-prompt">*</span></label>
+				<div class="col-md-5">
+              <input type="radio" id="price_text_choose" name="price_type" value="1">
+              输入文本
+              <input type="radio" id="price_num_choose" name="price_type" value="2">
+              输入金额
+			  </div>           
+          </div>
+		   <div class="form-group price_text  has-feedback">
+			 <label for="price_text" class="col-md-2 control-label">输入文本</label>
+            <div class="col-md-3">
+			 <input id="price_text" name="price_text" maxlength="6" class="form-control price_text_input form_check" check-type="Text"  value="{$event_arr.price_text}" placeholder="限6个字">
+            </div>
+		   </div>
+		    <div class="form-group price_num  has-feedback">
+			 <label for="price" class="col-md-2 control-label">输入金额</label>
+			<div class="col-md-3">
+              <input id="price" name="price" class="form-control price_num_input form_check" check-type="Num"  value="{$content.price}" placeholder="" required />
+            </div>
+          </div>
+          <?php if($content['paytype'] == 0):?>
+          <div class="form-group  has-feedback">
+            <label for="traveldays" class="col-md-2 control-label">支付方式<span class="event-prompt">*</span></label>
+            <div class="col-md-5">
+              <input type="radio" id="dj1" name="paytype" value="0" checked>
+              全额支付
+              <input type="radio" id="dj" name="paytype" value="1">
+              定金支付 
+			  <input type="radio" id="dj2" name="paytype" value="2">
+			  免费活动
+			  </div>
+          </div>
+          <div id="jd" class="form-group dj has-feedback">
+            <label for="frontmoney" class="col-md-2 control-label">定金<span class="event-prompt">*</span></label>
+            <div class="col-md-4">
+              <input id="frontmoney" name="frontmoney" class="form-control form_check" check-type="Num" value="0" placeholder="活动定金" required/>
+            </div>
+          </div>
+          <?php elseif($content['paytype'] == 1):?>
+          <div class="form-group  has-feedback">
+            <label for="traveldays" class="col-md-2 control-label">支付方式<span class="event-prompt">*</span></label>
+            <div class="col-md-5">
+              <input type="radio" id="dj1" name="paytype" value="0">
+              全额支付
+              <input type="radio" id="dj" name="paytype" value="1" checked>
+              定金支付
+			  <input type="radio" id="dj2" name="paytype" value="2">
+			  免费活动
+			  </div>
+          </div>
+          <div id="jd" class="form-group has-feedback">
+            <label for="frontmoney" class="col-md-2 control-label">定金</label>
+            <div class="col-md-4">
+              <input id="frontmoney" name="frontmoney" class="form-control form_check" check-type="Num" value="{$content.frontmoney}" placeholder="活动定金" required/>
+            </div>
+          </div>
+		  <?php elseif($content['paytype'] == 2):?>
+		   <div class="form-group  has-feedback">
+            <label for="traveldays" class="col-md-2 control-label">支付方式<span class="event-prompt">*</span></label>
+            <div class="col-md-5">
+              <input type="radio" id="dj1" name="paytype" value="0">
+              全额支付
+              <input type="radio" id="dj" name="paytype" value="1">
+              定金支付
+			  <input type="radio" id="dj2" name="paytype" value="2" checked>
+			  免费活动
+			  </div>
+          </div>
+          <div id="jd" class="form-group has-feedback">
+            <label for="frontmoney" class="col-md-2 control-label">定金</label>
+            <div class="col-md-4">
+              <input id="frontmoney" name="frontmoney" class="form-control form_check" check-type="Num" value="{$content.frontmoney}" placeholder="活动定金" required/>
+            </div>
+          </div>
+          <?php endif;?>
+		  <div class="form-group  has-feedback">
+            <label for="traveldays" class="col-md-2 control-label">选择保险<span class="event-prompt">*</span></label>
+            <div class="col-md-5">
+			<span class="event_insurace">
+             <if condition="$insurance_string neq ''">
+			  {:get_insurance_select($content['insurance'])}
+			 <else />
+				暂无保险&nbsp;&nbsp;<a class="mbtn insurance_sign btn-info">点击添加</a>
+			 </if>
+			 </span>
+			  </div>
+          </div>
+		   <!-------------------------------------------->
+		  <style>
+			.insurance_event{border:1px solid red;width:450px;height:200px;margin-left:30px;display:none}
+			.insurance_inner{margin-top:20px;margin-left:30px;}
+			.insurance_form{width:600px;}
+		  </style>	  
+		  <div class="insurance_event">
+			<div class="insurance_inner">
+				<div class="form-group insurance_form has-feedback">
+					<label for="name" class="col-md-2 control-label">保险名称</label>
+					<div class="col-md-4">
+						<input id="name" type="text" class="form-control insurance_name form_check" check-type="Text"  value="" placeholder="请填写保险名称"/>
+					</div>
+				</div>
+				<div class="form-group insurance_form position">
+					<label for="sum_insured" class="col-md-2 control-label">保额</label>
+					<div class="col-md-4"> 
+						<input id="sum_insured" type='text'  class="form-control insurance_insured form_check" placeholder="请填写保额"/>
+					</div>
+				</div>
+				<div class="form-group insurance_form position">
+					<label for="price" class="col-md-2 control-label">保险价格</label>
+					<div class="col-md-4"> 
+						<input id="price" type='text'  class="form-control insurance_price form_check" placeholder="请填写保险购买价格"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-3 col-md-10">
+						<a class="btn btn-primary insurance_sure_add">提交</a>
+					</div>
+				</div>			
+			</div>
+		  </div>
+		  <!---------------------------------------------->
+          <div class="form-group position">
+            <label for="strength_level" class="col-md-2 control-label">强度指数<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+			{:form_radio(get_zhishu(),$content['strength_level'],'name="strength_level" class="strength_level"','60','strength_level')} 
+            </div>
+          </div>
+		  <div class="form-group position">
+           <label for="scene_level" class="col-md-2 control-label">景致指数<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+			{:form_radio(get_zhishu(),$content['scene_level'],'name="scene_level" class="scene_level"','60','scene_level')} 
+            </div>          
+          </div>		  
+          <div class="form-group position">
+            <label for="fun_level" class="col-md-2 control-label">趣味指数<span class="event-prompt">*</span></label>
+            <div class="col-md-10">             
+			  {:form_radio(get_zhishu(),$content['fun_level'],'name="fun_level" class="fun_level"','60','fun_level')} 
+            </div>
+			</div>
+			<div class="form-group position">
+             <label for="human_level" class="col-md-2 control-label">人文指数<span class="event-prompt">*</span></label>
+            <div class="col-md-10">             
+			 	{:form_radio(get_zhishu(),$content['human_level'],'name="human_level" class="human_level"','60','human_level')} 
+            </div>
+          </div>
+          <div class="form-group position">
+            <label for="money_level" class="col-md-2 control-label">腐败指数<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+			 {:form_radio(get_zhishu(),$content['money_level'],'name="money_level" class="money_level"','60','money_level')} 
+            </div>
+			</div>                 
+          
+		  <div class="form-group">
+            <label for="travel_point" class="col-md-2 control-label">线路亮点<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'travel_point','value'=>$content['travel_point']))}
+              </div>
+          </div>
+		  <div class="form-group">
+            <label for="explain" class="col-md-2 control-label">行程安排<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'explain','value'=>$content['explain']))}
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="pay_info" class="col-md-2 control-label">费用说明<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'pay_info','value'=>$content['pay_info']))}
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="attention" class="col-md-2 control-label">注意事项<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+              {:Hook('Ueditor',array('name'=>'attention','value'=>$content['attention']))}
+              </div>
+          </div>
+		  <div class="form-group">
+            <label for="attention" class="col-md-2 control-label">排期管理</label>
+            <div class="col-md-12">
+             <!---------------------------------------------------------------------------------->
+				
+			<div class="common_block_title ">
+			  <div class="pull-right"><a href="{:U('Websit/Event/event_schedule_add',array('eventid'=>$content['id']))}" class="mbtn btn-info schedule_add">增加排期</a></div>
+			 </div>
+			<div class="row data-table usercenter-common-table">
+			  <table class="info">
+				<!-- 表头 -->
+				<thead>
+				  <tr>
+					<th>ID</th>
+					<th>领队</th>
+					<th>出发时间</th>
+					<th>价格</th>
+					<th width="60">交通</th>
+					<th width="60">住宿</th>           
+					<th>报名人数</th>
+					<th>预约人数</th>
+					<th>未付款</th>
+					<th>定金已付</th>
+					<th>全额已付</th>
+					<th>状态</th>
+					<th>操作</th>
+				  </tr>
+				</thead>
+				<!-- 列表 -->
+				<tbody>
+				  <notempty name="content_arr">
+				  <volist name="content_arr" id="vo">
+					<tr>
+					  <td>{$vo.id}</td>
+					  <td><if condition="$vo[leader] neq ''">{$vo.leader}<else />暂无</if></td>
+					  <td>{$vo.starttime}</td>
+					  <td>￥{$vo.price}</td>
+					  <td>{$vo.vehicle}</td>
+					  <td>{$vo.accommodation}</td>
+						<?php if(get_status_num($vo['id']) > 0):?>
+					  <td><a class="mbtn btn-info" href="{:U('Websit/Order/open_event_dayinfo',array('id'=>$vo['id'],'eventid'=>$content['id']))}" >共{:get_status_num($vo['id'])}人</a></td>
+					   <?php else:?>
+					   <td><a class="mbtn btn-danger" href="{:U('Websit/Order/open_event_dayinfo',array('id'=>$vo['id'],'eventid'=>$content['id']))}" >暂无</a></td>
+					   <?php endif;?>
+					  <td>{:get_status_num($vo['id'],'1')}</td>
+					  <td>{:get_pay_num($vo['id'],0)}</td>
+					  <td>{:get_pay_num($vo['id'],1)}</td>
+					  <td>{:get_pay_num($vo['id'],2)}</td>
+					  <td>{$vo.info}</td>
+					  <td>
+					  <?php if($vo[status] != -1):?>
+						<a href="{:U('Websit/Event/event_schedule_edit',array('id'=>$vo['id'],'eventid'=>$content['id']))}" class="mbtn btn-default schedule_edit">编辑</a>
+
+						<if condition="$vo[display] eq 0">
+						<a class="mbtn btn-primary display schedule_display" data-ID="{$vo['id']}" display="1">显示</a>
+						<else />
+						<a class="mbtn btn-danger none schedule_display" data-ID="{$vo['id']}" display="0">隐藏</a>
+						</if>
+					  <?php else:?>
+					  <?php endif;?>
+					   </td>
+					</tr>
+				  </volist>
+				  <else/>
+				<td colspan="13" class="text-center"> aOh! 您还没有发布任何排期哦!</td>
+				  </notempty>
+				  </tbody>
+			  </table>
+			</div>
+ 
+			 <!------------------------------------------------------------------------------------->
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Event/Index/doPost')}">确定</button>
+            </div>
+            <div class="col-md-8">
+              <button onclick="history.go(-1);" class="btn btn-default " href="{:U('Event/Index/doPost')}">取消</button>
+            </div>
+          </div>
+        
+      </div>
+      
+      <div class="col-md-4">
+     		<div class="form-group postion">
+				<label for="cover_id" class="col-md-12 control-label">列表页封面图</label>
+				<div class="col-md-12">
+					{:hook('UploadImage', array('find_name'=>'cover_id','value'=>$content['cover_id'],'buttontext'=>'列表页封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'400*300'))}
+				</div>
+			</div>
+      		<div class="form-group postion">
+				<label for="cover_id" class="col-md-12 control-label">详情页轮播图</label>
+				<div class="col-md-12">
+					{:hook('UploadImage', array('find_name'=>'pictures_id','value'=>$content['pictures_id'],'buttontext'=>'详情页轮播图','buttonwidth'=>200,'multi'=>true,'ds'=>'400*300'))}
+				</div>
+			</div>
+      </div></form>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="__JS__/form_check.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepickerV3/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script>
+	$(function () {
+	/******************************************/
+		$('.insurance_sign').click(function(){
+		do_zero();
+		$('.insurance_event').toggle();
+		if($(this).html() == '点击添加'){
+			$(this).html('取消添加')
+		}else{
+			$(this).html('点击添加')
+		}
+	})
+	function do_zero(){
+		$('.insurance_name').val('');
+		$('.insurance_insured').val('');
+		$('.insurance_price').val('');
+	}
+	$('.insurance_sure_add').click(function(){
+		var name = $('.insurance_name').val();
+		var sum_insured = $('.insurance_insured').val();
+		var price = $('.insurance_price').val();
+		$.post(U('Websit/Event/insurance_doAdd'),{name:name,sum_insured:sum_insured,price:price},function(res){
+			if(res['status']){
+				$('.event_insurace').html(res['string'])
+				$('.insurance_event').hide();
+				do_zero();
+			}else{
+				toast.error(res['msg']);
+			}
+		},'json')
+	})
+	/******************************************/
+	<?php 
+		$insure_info = D('insurance')->where(array('siteid'=>SITEID,'status'=>1))->count();
+		if($insure_info != 0){
+	?>
+		$('.schedule_add').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});		
+		<?php }else{?>	
+		$('.schedule_add').click(function(){
+			toast.error('请先添加网站保险');
+			return false
+		})
+			
+		<?php }?>
+		$('.schedule_display').click(function(){
+			var schedule_id  = $(this).attr("data-ID");
+			var display = $(this).attr("display");
+			$.post(U('Websit/Event/schedule_display'),{schedule_id:schedule_id,display:display},function(res){
+					if(res['status']){
+						toast.success(res['msg']);
+						setTimeout(function(){
+							window.location.reload();
+						},1500)
+						
+					}else{
+						toast.error(res['msg']);
+					}
+			},'json')
+		})
+		
+		$('.schedule_edit').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+		
+	})
+	var event_price_text = $('#event_price_text').val();	
+	if(event_price_text != ''){
+		$('.price_text').show();
+		$('.price_num').hide();
+		$('.price_text_input').val(event_price_text)
+		$('#price_text_choose').prop('checked',true)
+	}else{
+		$('.price_num').show();
+		$('.price_text').hide();
+		$('#price_num_choose').prop('checked',true)
+	}
+	
+	$('#price_text_choose').click(function(){
+		$('.price_text').show();
+		$('.price_num').hide();
+		$('.price_text_input').val(event_price_text)
+		$('.price_num_input').val(0);
+	})
+	$('#price_num_choose').click(function(){
+		$('.price_num').show();
+		$('.price_text').hide();
+		$('.price_text_input').val('');
+	})
+		$('#dj1').click(function(){
+			$('#jd').hide();
+			$('#frontmoney').val('0');
+		})
+		$('#dj').click(function(){
+			$('#jd').show();
+		})
+		$('#dj2').click(function(){
+			$('#jd').hide();
+			$('#frontmoney').val('0');
+		})
+        $('.time').datetimepicker({
+            language:'zh-CN',
+            weekStart:1,
+            todayBtn:1,
+            autoclose:1,
+            todayHighlight:1,
+            startView:2,
+            minView:0,
+            forceParse:0,
+            format: 'yyyy-mm-dd hh:ii'
+        });
+
+        $('.time_d').datetimepicker({
+            language:'zh-CN',
+            weekStart:1,
+            todayBtn:1,
+            autoclose:1,
+            todayHighlight:1,
+            startView:2,
+            minView:2,
+            forceParse:0,
+            format: 'yyyy-mm-dd'
+        });
+
+    </script>
+</block>

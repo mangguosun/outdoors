@@ -1,0 +1,49 @@
+<if condition="!empty($rs_issue)">
+<div class="common_block_border issue_title">
+  <div class="common_block_title_right">推荐品牌</div>
+  <div class="callbacks_container" style=" padding:0 10px" >
+        <style>
+        /* 本例子css */
+		.brandissue{ width:338px; height:295px; overflow:hidden; position:relative;  }
+		.brandissue .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1; margin-bottom:45px; }
+		.brandissue .hd ul{ overflow:hidden; zoom:1; float:left;}
+		.brandissue .hd ul li{ float:left; margin-right:2px;width:20px; height:20px; line-height:19px; text-align:center; background:#fff; cursor:pointer; font-size:12px}
+		.brandissue .hd ul li.on{ background:#000; color:#fff; }
+		.brandissue .bd{ position:relative; height:100%; z-index:0;   }
+		.brandissue .bd li{ zoom:1; vertical-align:middle; }
+		.brandissue .bd img{ width:338px; height:254px; display:block; }
+
+		/* 下面是前/后按钮代码，如果不需要删除即可 */		
+        </style>        
+        <div id="brandissue" class="brandissue">
+			<div class="hd">
+				<ul>
+                <foreach name="rs_issue" item="images" key="k">
+                <li>{$k+1}</li>
+                 </foreach>
+                </ul>
+			</div>
+			<div class="bd">
+				<ul>
+                <volist name="rs_issue"  key="k" id="vo">
+            
+					<li><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" title="{$vo.title}" target="_blank"><img src="__PUBLIC__/Core/images/blank.png" _src="{$vo.cover_id|getThumbImageById=338,254}" alt="{$vo.title}" class="add_loading common_issue"/></a>
+                     <div class="issue_title"><span>{$vo.title}</span><span class="pull-right"><i class="glyphicon glyphicon-stats"></i> {$vo.view_count}</span></div>
+                    </li> 
+				 </volist>	
+				</ul>
+			</div>
+			<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+			<a class="prev" href="javascript:void(0)"></a>
+			<a class="next" href="javascript:void(0)"></a>
+		</div>
+		<script type="text/javascript">
+		$(function () {
+			jQuery(".brandissue").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,easing:"swing",switchLoad:"_src",interTime:5000});
+		});
+		</script>
+  
+</div>
+
+</div>
+</if>

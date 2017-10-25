@@ -1,0 +1,84 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">全站分销申请表单详情</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Websit/index')}" class="form-horizontal form-bordered" method="post" >
+				<div class="form-title">
+					活动力分销集市入驻申请单
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请商家名称：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><a target="_blank" href="{:U('Distribute/company_detail',array('siteid'=>$webinfo['siteid']))}">{$webinfo.webname}</a></div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请单号：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.relation_a_apply}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">审批日期：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><if condition="$apply_detail['examine_time']">{$apply_detail.examine_time|date="Y-m-d",###}</if></div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请日期：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.apply_time|date="Y-m-d",###}</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请状态：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><if condition="$apply_detail.examine_status eq 1">待审核<elseif condition="$apply_detail.examine_status eq 2" />已通过<elseif condition="$apply_detail.examine_status eq 0" />已驳回<elseif condition="$apply_detail.examine_status eq 3" />已到期<elseif condition="$apply_detail.examine_status eq -1" />已取消</if></div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">网站管理员：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.club_name}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">所在城市：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">网   址：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.domain}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">联系电话：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.club_mobile}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">服务特色：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.slogan}</div>
+					</div>
+				</div>
+						
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <if condition="$apply_detail['examine_status'] eq 1" ><a href="{:U('Distribute/relation_a_apply_update',array('id'=>$apply_detail['id'],'action'=>'throgh'))}" class="btn btn-palegreen ajax-get"> 确认合作<a/>
+								<a class="btn btn-palegreen ajax-get" href="{:U('Distribute/relation_a_apply_update',array('id'=>$apply_detail['id'],'action'=>'reject'))}">驳回申请</a></if>
+								<button onclick="javascript:history.back(-1);return false;" class="btn btn-palegreen ajax-get">返回</button>
+                            </div>
+                        </div>
+						
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+

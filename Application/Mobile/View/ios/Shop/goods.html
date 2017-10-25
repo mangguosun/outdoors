@@ -1,0 +1,144 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Shop/index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>{$model_info['name']}列表
+  </div>
+  <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Shopcart/shopcartitem')}" class="">
+  <i class="am-header-icon am-icon-shopping-cart"></i>
+  </a>
+  <a href="javascript:" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+  <i class="am-header-icon am-icon-bars"></i>
+  </a>
+  </div>
+</header>
+<include file="Public/topnavbar"/>
+<include file="Public/navbar"/> 
+<div class="hdl-menu">
+ 
+    <nav data-am-widget="menu" class="am-menu  am-menu-one">
+    <a href="javascript: void(0)" class="am-menu-toggle">
+      <i class="am-menu-toggle-icon am-icon-bars"></i>
+    </a>
+    <ul class="am-menu-nav am-avg-sm-3">
+      <li>
+        <a href="{:U('Mobile/Shop/goods')}" class="">所有商品</a>
+      </li>
+
+     <volist name="navigation" id="navigation">  
+     <if condition="$navigation['list']">
+      <li class="am-parent">
+        <a href="javascript:" class="">{$navigation.title}</a>
+        
+       <if condition="$navigation['list']">
+            <ul class="am-menu-sub am-collapse  am-avg-sm-3 ">
+			  <li class="">
+                <a href="{:U('Mobile/Shop/goods',array('category_id'=>$navigation['id']))}" class="">{$navigation.title}</a>
+              </li>
+            <volist name="navigation['list']" id="list">
+              <li class="">
+                <a href="{:U('Mobile/Shop/goods',array('category_id'=>$list['id']))}" class="">{$list.title}</a>
+              </li>
+
+            </volist>
+            </ul>
+        <else />
+               <li>
+               <a href="{:U('Mobile/Shop/goods',array('category_id'=>$navigation['id']))}" class="">{$navigation.title}</a>
+              </li>
+        </if>
+      
+    </li>
+			</if>
+                </volist>
+            </ul>
+        </nav>
+    </div>
+
+
+        <div class="am-panel-default">
+            <div class="goods-list-tpl">
+                <li>
+                    <figure src="__PUBLIC__/Core/images/grey.gif" data-original="" alt="" title="" data-thumb>
+                    <a href="" data-href></a>
+                    </figure>
+                    <div class="shop-lists-goodstitle" data-title>标题</div>
+                    <div class="shop-lists-price" data-price>价格</div>
+                </li>
+            </div>
+            <div class="shop-lists">
+                    <ul class="shop-lists-ul">
+                    </ul>
+                    <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon
+                                                 style=" display:none"></i> <span loading-text>加载更多</span></div>
+            </div>
+                    <script>
+                        $(function () {
+                            var loading_i = 0;
+                            var get_url = {};
+                            var gget_url = {$get_url};
+                            if (!$.isEmptyObject(gget_url)) {
+                                get_url = gget_url;
+                            }
+                            function get_goods(is_del) {
+                                if (is_del == true) {
+                                    $(".shop-lists-ul ul li").remove();
+                                }
+                                var loading_more = $(".loading-more");
+                                var loading_text = loading_more.find('[loading-text]');
+                                var loading_icon = loading_more.find('[loading-icon]');
+                                loading_text.html('奋力加载中');
+                                loading_icon.show();
+                                get_url['page'] = loading_i;
+                                $.getJSON("{:U('Mobile/Shop/get_goods')}", get_url, function (json) {
+                                    if (json) {
+                                        $.each(json, function (index, array) {
+                                            var goods_list_tpl = $('.goods-list-tpl li');
+                                            var goods_list_li = goods_list_tpl.clone();
+                                            var goods_list_href = goods_list_li.find('[data-href]');//url
+                                            var goods_list_thumb = goods_list_li.find('[data-thumb]');//图片
+                                            var goods_event_list_title = goods_list_li.find('[data-title]');
+                                            var goods_list_price = goods_list_li.find('[ data-price]');
+                                            goods_list_href.attr("href", array['mobile_url']);
+                                            goods_list_thumb.attr("alt", array['thumb_200_200']);
+                                            goods_list_thumb.attr("title", array['goods_name']);
+                                            goods_list_thumb.attr("data-original", array['thumb_200_200']);
+                                            goods_event_list_title.html(array['goods_name']);
+                                            goods_list_price.html('￥' + array['market_price']);
+                                            goods_list_thumb.lazyload({effect: "fadeIn", threshold: 100});
+                                            $(".shop-lists ul").append(goods_list_li);
+                                        });
+                                        $(".shop-lists").trigger("scroll");
+                                        loading_text.html('加载更多');
+                                        loading_icon.hide();
+                                        loading_i++;
+                                        $('.loading-more').scrollspy({});
+                                    } else {
+                                        $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+                                        loading_text.html('已经没有了');
+                                        loading_icon.hide();
+                                    }
+                                });
+
+                            }
+
+                            get_goods();
+
+
+                            $('.loading-more').on('inview.scrollspy.amui', function () {
+                                timeout = setTimeout(function () {
+                                    get_goods();
+                                }, 1000);
+                            }).on('outview.scrollspy.amui', function () {
+                                clearTimeout(timeout)
+                            });
+
+                        })
+
+                    </script>
+
+   </div>
+</block>

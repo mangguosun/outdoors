@@ -1,0 +1,90 @@
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right"><a class="mbtn  btn-info  customer_sign common-color-white"  href="{:U('Websit/Index/product_config_add')}">添加导航</a></div>左侧导航</div>
+	<p class="common-color-red" >(最多可添加5个哦)</p>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>标题</th>
+          <th>描述</th>
+		  <th>地区</th>
+		  <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="product_config">
+        <volist name="product_config" id="vo">
+          <tr>
+            <td>{$vo.title}</td>
+            <td>{$vo.description}</td>
+			<td><a href="{$vo['address']}" target="_blank">链接</a></td>
+			<td><if condition="$vo.status eq 1">启用<elseif condition="$vo.status eq 0"/>禁用</if></td>
+		    <td>
+			<a class="mbtn btn-info customer_sign1 common-color-white"  href="{:U('Websit/Index/product_config_edit?id='.$vo['id'])}">编辑</a>
+			 <if condition="$vo.status eq 0">
+			  <a href="javascript:" data-ID="{$vo.id}" data-Status="1" class="mbtn btn-info product_config_disable" >启用</a>
+		    <elseif condition="$vo.status eq 1"/> 
+			  <a href="javascript:" data-ID="{$vo.id}" data-Status="0" class="mbtn btn-danger product_config_disable">禁用</a>
+		    </if>
+			</td>
+          </tr>
+        </volist>
+        <else/>
+      <td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+			$('.customer_sign').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+			
+			//更新
+			$('.customer_sign1').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        console.log(this.content);
+                    }
+                }
+            });
+		   //是否禁用
+			$('.product_config_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var status	=$(this).attr('data-Status');
+				
+				$.post(U('Websit/Index/product_config_disable'), {id: id,status:status}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		 });  
+       
+		
+	  })
+    </script>
+</div>

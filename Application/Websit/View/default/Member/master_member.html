@@ -1,0 +1,59 @@
+<div id="center">
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>用户(UID)</th>
+          <th>会员昵称</th>
+		  <th>角色</th>
+		  <th>状态</th>
+		  <th>操作</th>
+        </tr>
+	 </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="master">
+        <volist name="master" id="vo">
+          <tr>
+		    <td>{$vo.uid}</td>
+			<td>{$vo.nickname}</td>
+			<td>{:get_upgrading($vo['is_use'])}</td>
+			<td><if condition="$vo.status eq 0">禁用<elseif condition="$vo.status eq 1"/>已启用</if></td>
+			<td>
+				<a href="javascript:" data-ID="{$vo.uid}" class="mbtn btn-danger master_disable"  title="踢出达人">踢出达人</a>
+			</td>
+		 </tr>
+        </volist>
+			<td colspan="5">{$page}</td>
+        <else/>
+			<td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {	
+          
+		  //--禁止--退出达人--
+			$('.master_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid= $(this).attr('data-ID');
+				
+				$.post(U('Websit/Member/manage_team_disable'), {uid: uid}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+		})
+    </script>
+</div>

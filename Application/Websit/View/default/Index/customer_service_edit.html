@@ -1,0 +1,31 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add" >
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改QQ客服</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/customer_service_doEdit')}" method="post">
+          <div class="form-group has-feedback">
+            <label for="qq" class="col-md-2 control-label">QQ客服</label>
+            <div class="col-md-4">
+              <input id="qq" name="qq" type="" class="form-control form_check" check-type="Text"  value="{$customer.qq}" placeholder="QQ客服/数字"/>
+            </div>
+          </div>
+          <div class="form-group position">
+            <label for="nickname" class="col-md-2 control-label">昵称</label>
+            <div class="col-md-9"> 
+              <input id="nickname" type='text'  class="form-control form_check" name='nickname' value="{$customer.nickname}" placeholder="请填写正确的昵称"/>
+			  <input type="hidden" name="id" value="{$customer.id}">
+			</div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/customer_service_doEdit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

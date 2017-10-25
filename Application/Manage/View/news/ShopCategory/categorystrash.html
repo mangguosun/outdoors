@@ -1,0 +1,64 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2> <a href="#">商品管理</a> > 商品分类回收站</h2>
+</div>
+<div class="cf">
+     <div class="fl">
+	    <button class="w_btn ajax-post" url="{:U('ShopCategory/changeStatus',array('method'=>'backcategory'))}"
+	            target-form="ids">还原
+	    </button>
+	    
+            
+     </div>
+    
+ </div>
+
+  <div class="data-table table-striped table">
+		<table>
+			<thead>
+				<tr>
+				<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+					<th >ID</th>
+					<th>标题</th>
+					<th>上级标题</th>
+					<th>创建时间</th>
+					<th>状态</th>					
+					
+				</tr>
+			</thead>
+		<tbody>
+		<notempty name="strash_list">
+                <volist name="strash_list" id="vo">
+                    <tr class="tailor_leave">
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                       <td>{$vo.id}</td>
+                       <td>{$vo.title}</td>
+                       <td>{$vo.fathertitle}</td>
+                       <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                       <td>
+                       	<if condition="$vo.status eq -1">
+                        	<a href="{:U('ShopCategory/changeStatus?method=backcategory&id='.$vo['id'])}"
+                           class="ajax-get">删除</a>
+                   		 <else />
+                        	<a href="{:U('ShopCategory/changeStatus?method=resumecategory&id='.$vo['id'])}"
+                           class="ajax-get">启用</a>
+                     	</if>
+                       </td>
+                   </tr>     
+                </volist>
+                <else/>
+                <td colspan="13" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+		
+</div>
+<div class="page">
+        {$page}
+ </div>
+ 
+ 
+
+</block>
+

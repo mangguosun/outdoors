@@ -1,0 +1,44 @@
+
+#center h4 { font-size: 16px; cursor: pointer; }
+#center h4 a { font-weight: normal; }
+.position select { width: auto; float: left; max-width: 120px; margin-right: 10px; }
+.center_arrow_right,
+.center_arrow_bottom { padding-left: 5px; padding-top: 3px; vertical-align: middle; background: url('../images/info_arrow.png'); display: inline-block; width: 16px; height: 16px; }
+.center_arrow_bottom { background-position: 18px 0px; }
+.center_info input[type=text], #center_password input[type=text], .center_info input[type=email], #center_password input[type=email], .center_info [type=password], #center_password [type=password] { max-width: 200px; }
+.usercenter-verify-icon-list img { width: 18px; height: 18px; vertical-align: middle; }
+.expandinfo-noticeinfo { margin-left: 30px; color: #A59F9F; }
+.expandinfo-dt { float: left; width: 16.6666666%; margin-right: 10px; text-align: right; }
+.expandinfo-dd { float: left; width: 50%; }
+.expandinfo-sumbit { margin-left: 20%; }
+.expandinfo-ul { list-style-type: none; }
+.expandinfo-li { float: left; margin-right: 10px; }
+.expandinfo-list { margin: 20px 5px 20px 5px; padding: 0; }
+.expandinfo-list .alert { display: none; padding: 3px 8px; text-align: center; }
+.input-tips { color: #BBB3B5; font-weight: 200; margin-left: 10px; }
+/*修改头像*/
+#uploaded_image_div{display:none;}
+ #uploaded_image{width:100%;}
+/*添加常用报名人*/
+.event_schedule{max-width: 768px; max-height:1000px;}
+.usercenter-set-pd{padding-top:15px;}
+#mytab .hover {border-left:1px solid #ccc;border-top:1px solid #ccc;border-right:1px solid #ccc;background:#f4f4f4;}
+#tabs_box{ list-style:none; padding:0; margin:0}
+.usercenter-common-bm{margin-bottom: 10px;background:#ccc;}
+.clearbox-ol{clear:both; overflow:hidden; height:5px;}
+.tab-pane .event-height{line-height:2em;}
+.info .text-align{text-align:center;}
+.info .usercenter-event-max{max-width:150px;min-width:150px;}
+#self_introduction{width: 100%; height: 6em;resize: none;}
+.usercenter-contacts-add{max-width: 740px;}
+.contacts-pad{padding-top:5px;}
+/*2014-11-3*/
+.form-horizontal #type3 .type-three{display:none;background:#ccc;}
+#type3, #type4, #type5{display:none;}
+.tab-content .navbar-form{margin:0px;padding:0px;}
+.tab-content .navbar-form .text-left .form-control{margin-top:1px;}
+.tab-content .navbar-form .text-left .glyphicon-search{border-left: none;border-top-left-radius: 0;border-bottom-left-radius: 0;}
+.form-horizontal .form-group .frozen{margin:0px;padding:0px;}
+#center .common_block_title{font-size:12px;}
+#center .data-table .usercenter-control-thmax{max-width:150px;}
+.data-table .usercenter-wibsit-picture{height:120px; width:150px;}

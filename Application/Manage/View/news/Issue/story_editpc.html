@@ -1,0 +1,161 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">编辑旅行故事</span>
+                </div>
+                <div class="widget-body">
+                    <form id="storyForm" action="{:U('Manage/Issue/story_edit')}" class="form-horizontal form-bordered" method="post" > 
+                    	<input type="hidden" name="id" id="id" value="{$content.id}"/>
+						<input type="hidden" name="url" id="id" value="<?php echo $_SERVER['HTTP_REFERER']?>"/> 
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">标题</label>
+                            <div class="col-lg-10">
+                               <input id="title" name="title" class="form-control"  value="{$content.title}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">封面图片</label>
+                            <div class="col-lg-10">
+                                    {:hook('UploadImagePc', array('find_name'=>'cover_id','value'=>$content['cover_id'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'1140','height'=>'400','ds'=>'400*300'))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">分类</label>
+                            <div class="col-lg-10">
+								<volist name="tree" id="top">          
+									<label><input value="{$top.id}" name="issue"  class="rdchange" type="radio" <?php if($top['id'] == $content['issue_id']) echo 'checked'?>><span class="text">{$top.title}</span></label>
+								</volist>       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">特色</label>
+                            <div class="col-lg-10">
+                              {:form_checkbox_manage(get_event_tag('','selected') ,$content['tag'],'name="tag[]" id="tag"',0,'100')}  
+
+                        
+                            </div>
+                        </div>
+                       	<div class="form-group">
+                            <label class="col-lg-2 control-label">目的地</label>
+                            <div class="col-lg-10">
+                              {:hook('J_China_City', array('find'=>'final','level'=>2,'province'=>$citys['province'],'city'=>$citys['city'],'district'=>$citys['district'],'community'=>$citys['community']))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">详情</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                  {:Hook('Ueditor',array('name'=>'content','value'=>$content['content']))}
+                                </div>
+                            </div>
+                        </div>
+
+						 <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定" href="{:U('Manage/Issue/story_edit')}"/>
+                                <input class="btn btn-palegreen" type="submit" value="返回" onclick="javascript:history.back(-1);return false;"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#storyForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+		
+		/*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#storyForm').slideUp('fast');
+					
+				validator.defaultSubmit();
+					
+				}
+			})
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '标题是必需的，不能是空的'
+                    }
+                }
+            },
+
+            cover_id: {
+                validators: {
+                    notEmpty: {
+                        message: '封面图片是必需的，不能是空的'
+                    }
+                }
+            },
+
+            issue: {
+                validators: {
+                    notEmpty: {
+                        message: '分类是必需的，不能是空的'
+                    }
+                }
+            },
+
+            issue: {
+                validators: {
+                    notEmpty: {
+                        message: '特色是必需的，不能是空的'
+                    }
+                }
+            },
+
+            issue: {
+                validators: {
+                    notEmpty: {
+                        message: '目的地是必需的，不能是空的'
+                    }
+                }
+            },
+
+             content: {
+                validators: {
+                    notEmpty: {
+                        message: '详情是必需的，不能是空的'
+                    }
+                }
+            },
+          
+            
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

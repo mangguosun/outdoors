@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width = device-width, initial-scale = 1.0" />
+<title>royalslider 一款支持触屏的响应式焦点图插件</title>
+
+<link href="css/reset.css" rel="stylesheet">
+<link href="css/royalslider.css" rel="stylesheet">
+<link href="css/skin-white.css" rel="stylesheet">
+
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/jquery.royalslider.min.js?v=9.3.6"></script>
+
+<style>
+#full-width-slider {
+	width: 100%;
+	color: #000;
+}
+.coloredBlock {
+	padding: 12px;
+	background: rgba(255,0,0,0.6);
+	color: #FFF;
+	width: 200px;
+	left: 20%;
+	top: 5%;
+}
+.infoBlock {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	left: auto;
+	max-width: 25%;
+	padding-bottom: 0;
+	background: #FFF;
+	background: rgba(255, 255, 255, 0.8);
+	overflow: hidden;
+	padding: 20px;
+}
+.infoBlockLeftBlack {
+	color: #FFF;
+	background: #000;
+	background: rgba(0,0,0,0.75);
+	left: 30px;
+	right: auto;
+}
+.infoBlock h4 {
+	font-size: 20px;
+	line-height: 1.2;
+	margin: 0;
+	padding-bottom: 3px;
+}
+.infoBlock p {
+	font-size: 14px;
+	margin: 4px 0 0;
+}
+.infoBlock a {
+	color: #FFF;
+	text-decoration: underline;
+}
+.fullWidth {
+	max-width: 1400px;
+	margin: 0 auto 24px;
+}
+ @media screen and (min-width:960px) and (min-height:660px) {
+	.heroSlider .rsOverflow,  .royalSlider.heroSlider {
+		height: 520px !important;
+	}
+}
+ @media screen and (min-width:960px) and (min-height:1000px) {
+	.heroSlider .rsOverflow,  .royalSlider.heroSlider {
+		height: 660px !important;
+	}
+}
+@media screen and (min-width: 0px) and (max-width: 800px) {
+	.royalSlider.heroSlider,  .royalSlider.heroSlider .rsOverflow {
+		height: 300px !important;
+	}
+	.infoBlock {
+		padding: 10px;
+		height: auto;
+		max-height: 100%;
+		min-width: 40%;
+		left: 5px;
+		top: 5px;
+		right: auto;
+		font-size: 12px;
+	}
+	.infoBlock h3 {
+		font-size: 14px;
+		line-height: 17px;
+	}
+}
+</style>
+</head>
+<body>
+
+<div class="sliderContainer fullWidth clearfix">
+	<div id="full-width-slider" class="royalSlider heroSlider rsMinW">
+		<div class="rsContent">
+			<img class="rsImg" src="img/1.jpg" alt="" />
+			<div class="infoBlock infoBlockLeftBlack rsABlock" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
+				<h4>脚本之家</h4>
+				<p>http://www.jb51.net/</p>
+			</div>
+		</div>
+		<div class="rsContent">
+			<img class="rsImg" src="img/2.jpg" alt="" />
+			<div class="infoBlock rsABlock infoBlockLeftBlack" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
+				<h4>脚本之家</h4>
+				<p>http://www.jb51.net/</p>
+			</div>
+		</div>
+		<div class="rsContent">
+			<img class="rsImg" src="img/3.jpg" alt="" />
+			<div class="infoBlock rsABlock infoBlockLeftBlack" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
+				<h4>脚本之家</h4>
+				<p>http://www.jb51.net/</p>
+			</div>
+		</div>
+		<div class="rsContent">
+			<img class="rsImg" src="img/4.jpg" alt="" />
+			<div class="infoBlock rsABlock infoBlockLeftBlack" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
+				<h4>脚本之家</h4>
+				<p>http://www.jb51.net/</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function($){
+
+	$('#full-width-slider').royalSlider({
+		arrowsNav: true,
+		loop: false,
+		keyboardNavEnabled: true,
+		controlsInside: false,
+		imageScaleMode: 'fill',
+		arrowsNavAutoHide: false,
+		autoScaleSlider: true, 
+		autoScaleSliderWidth: 960,     
+		autoScaleSliderHeight: 350,
+		controlNavigation: 'bullets',
+		thumbsFitInViewport: false,
+		navigateByClick: true,
+		startSlideId: 0,
+		autoPlay: false,
+		transitionType:'move',
+		globalCaption: true,
+		deeplinking: {
+			enabled: true,
+			change: false
+		},
+		imgWidth: 1400,
+		imgHeight: 680
+	});
+	
+});
+</script>
+</body>
+</html>

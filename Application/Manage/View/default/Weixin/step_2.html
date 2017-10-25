@@ -1,0 +1,54 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>公众号管理</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+</div> 
+<div class="setting_step app_setting">
+         <a class="step " href="{:U('Manage/Weixin/public_add',array('id'=>$id))}">1.增加基本信息</a>
+         <a class="step step_cur" href="{:U('Manage/Weixin/step_1',array('id'=>$id))}">2.配置公众平台</a>
+         <a class="step step_cur_1" href="{:U('Manage/Weixin/step_2',array('id'=>$id))}">3.保存接口配置</a>
+  </div> 
+<form action="{:U('Manage/Weixin/do_step_2')}" method="post" class="form-horizontal">
+		<input name="id" type="hidden" value="{$id}" />
+    	<label class="item-label">AppID :<span class="check-tips">(应用ID,必填)</span></label>
+		<div class="controls">
+          <input id="appid" name="appid" type="text" class="text input-large" check-type="Text"  value="{$public_info.appid}" />
+        </div> 
+        <label class="item-label">AppSecret  :<span class="check-tips">(应用密钥)</span></label>
+		<div class="controls">
+          <input id="appsecret" name="appsecret" type="text" class="text input-large" check-type="Text"  value="{$public_info.appsecret}" />
+        </div> 
+         <label class="item-label">EncodingAESKey  :<span class="check-tips">(安全模式下必填)</span></label>
+		<div class="controls">
+          <input id="encodingaeskey" name="encodingaeskey" type="text" class="text input-large" check-type="Text" style="width:450px;" value="{$public_info.encodingaeskey}" />
+        </div>
+        
+		<br/>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" target-ls="a">保存</button>
+           
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>  
+     <div class="main-title">
+	    <h2>帮助消息</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+	   
+	</div>
+	<h6>以上消息可以从公众平台里找到，如下图</h6>
+    <img src="__PUBLIC__/Manage/images/weixin/help04.png">
+    <br>
+    <br>
+<style type="text/css">
+	.setting_step{ height:46px; border:1px solid #eee; margin:30px 0px;width:1000px;background:white;}
+	.setting_step .step{ background:#ffffff url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right 0; float:left; text-align:center; line-height:44px; color:#666; width:160px; height:44px;}
+	.app_setting .step{ width:145px;}
+	.setting_step .step_cur_1{ background:#44b549 url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right -88px; float:left; color:#fff}
+	.setting_step .step_cur{ background:#fff url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right -44px; float:left;color:#666}
+
+
+
+
+</style>
+</block>

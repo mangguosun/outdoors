@@ -1,0 +1,65 @@
+<if condition="$rec_event neq false">
+<div class="forum_module">
+<div class="row">
+    <div class="col-md-12 common-margin-bfif">
+      <div class="event_header_title">
+        <div class="pull-left"><i class="app_ico_i glyphicon glyphicon-th-large"> </i> 推荐活动</div>
+      </div>
+    </div>
+  </div>
+  <volist name="rec_event" id="vo">
+    <div class="clearfix event_list">
+      <div class="col-md-6 common-padding-zero">
+        <div class="event_state common-back-red">{$vo.traveldays}天</div>
+        <a title="{$vo.title|strip_tags}" class="thumbnail" href="{:U('Event/Index/detail',array('id'=>$vo['id']))}"> <img class="event-maxheight add_loading_recommendevent" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=346,260}"/></a> </div>
+      <div class="col-md-6 calendar_div">
+        <div class="event_title_index"><a title="{$vo.title|strip_tags}" href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" class="hundred">{$vo.title}</a></div>
+        <div class="event_tag">
+          <volist name="vo.tags" id="tag"><a title="{$tag.name}" href="{:U('Event/Index/index',array('tag'=>$tag['id']))}" class="btn btn-grey">{$tag.name}</a> </volist>
+          </div>
+          <php>
+          $begincity = get_citys($vo['begincity']);
+          $finalcity = get_citys($vo['finalcity']);
+          </php>
+          
+        <div class="event_icon"><span class="glyphicon glyphicon-map-marker"></span>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}</div>
+        <div class="event_icon"><span class="glyphicon glyphicon-map-marker"></span>目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</div>
+        <div class="event_icon calendar_text"><span class="glyphicon glyphicon-time"></span>活动天数：{$vo.traveldays}天<span class="pull-right price"><if condition="$vo.price_text neq ''"><span style="color:#FD9B00">{$vo.price_text}</span><else /><if condition="$vo.price eq 0"><font style="color:#FD9B00">免费活动</font><else />￥<font style="color:#FD9B00">{$vo.price}</font>元/人</if></if></span></span></div>
+        <div class="event_icon "><span class="glyphicon glyphicon-calendar"></span>出发日期：<if condition="$vo['lasted_time'] neq ''">{$vo.lasted_time} 更多<span title="点击查看更多出发日期" data-id={$vo.id} class="calendar_box glyphicon glyphicon-collapse-down"></span><else />敬请期待</if></div>
+        <!------------------------------------------------------------------------------>		
+        <div class="schedule_time" >
+        <?php foreach($vo['schedule_arr'] as $key => $val):?>
+            <div class="select_schedule">
+                <hr style="height:1px;border:none;border-top:1px solid #ccc;">
+                    <span class='schedule_css'><?php echo $val['team_name'] ;?></span>
+                    <span class='schedule_css'><?php echo $val['starttime'].'~'.$val['overtime']?></span><span class="schedule_css schedule-price schedule-offset"><?php echo $val['price']?></span><a <?php if($val['text'] == '马上报名'):?>style="background:#20AB34"<?php else:?>style="background:#428BCA"<?php endif;?> class="schedule_css mbtn btn-primary schedule-offset-pos" href="{:U('Event/Index/detail',array('id'=>$vo['id'],'type_id'=>I('type_id')))}"><?php echo $val['text']?></a>
+                <hr style="height:1px;border:none;border-top:1px solid #ccc;">
+            </div>
+        <?php endforeach;?>
+        </div>
+        <!------------------------------------------------------------------------------>		
+        <div class=" event_title_description">{$vo.description|op_t|getShortSp=60}</div>
+        <div class="event_fq_count calendar_div_box"></div>
+        <div class="event_icon "><span class="pull-right"><a title="点击查看详情" href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" class="">查看详情>></a></span></div>
+      </div>
+    </div>
+  </volist>
+  
+</div>
+ 
+ 
+ 
+ 
+ 
+ 
+<script>
+$(function () {
+hdl_lazyload("img.add_loading_recommendevent");
+})
+</script>
+  
+</if>
+
+
+                    
+                   

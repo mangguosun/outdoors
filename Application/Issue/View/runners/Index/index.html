@@ -1,0 +1,75 @@
+<extend name="runners/common"/>
+<block name="style">
+</block>
+<block name="body">
+<div class="container">
+{:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))}
+
+<div class="issue_list">
+  <volist name="contents" id="vo">
+  <div class="item_inner" <if condition="$i % 4 eq 0">style="margin-right:0"</if> >
+  <div class="item_core">
+    <div class="item_type">{$vo.issue.title}</div>
+    <a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}"><img class="cover_listimg add_loading" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=275,210}"/></a>
+	<h3><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" class="text-more hundred" >{$vo.title}</a></h3>
+    <div class="common-margin-bten"><a class="author" href="{$vo.user.space_url}"> <img src="{$vo.user.avatar128}" ucard="{$vo.user.id}" class="avatar-img" >{$vo.user.nickname} </a>
+      <div class="pull-right ctime">{$vo.discreate_time}</div>
+    </div>
+	<div class="spliter"></div>
+      <ul class="operation">
+        <li><i class="glyphicon glyphicon-eye-open"></i>{$vo.view_count}</li>
+        <li>{:Hook('support',array('table'=>'issue_content','row'=>$vo['id'],'app'=>'Issue','uid'=>$vo['uid'],'jump'=>'no'))}</li> 
+        <li><i class="glyphicon glyphicon-comment"></i>{$vo.comment_count}</li>
+      </ul>
+
+  </div>
+</div>
+</volist>
+<if condition="count($contents) eq 0">
+  <div class="websit_prompt">此分类下暂无内容哦。O(∩_∩)O~</div>
+</if>
+</div>
+<div>
+  <div class="pull-right"> {:getPagination($totalPageCount,16)} </div>
+</div>
+</div>
+  <script>
+	var SUPPORT_URL="{:addons_url('Support://Support/doSupport')}";
+	bindSupport();
+	
+	$(function () {
+		hdl_lazyload("img.add_loading");		
+		 $('.btn-primary-star').click(function(){
+              if(MID=="0"){
+				toast.error('请登录后再发布故事。','温馨提示')
+				setTimeout(function () {
+				   location.href ="{:U('Home/User/login')}"  
+						}, 1500);
+				return false;
+			   }
+									   
+			 })
+	
+		$('.i_detail').click(function(){			
+			var issue_id = "{$content['id']}";
+			if(MID=="0"){
+				toast.error('请在登录后再收藏。','温馨提示');
+				setTimeout(function () {
+				   location.href ="{:U('Home/User/login')}"  
+						}, 1500);
+				return false;
+			}else{
+				$.post("{:U('Issue/Index/issue_collection')}", {id: issue_id}, function (res) {
+				 if(res=='1'){
+				   toast.error('你已收藏过。');
+				 }else{
+				   toast.success('收藏成功。');
+				 }
+				}, 'json');
+			}
+		});
+		
+	})
+
+</script>
+</block>

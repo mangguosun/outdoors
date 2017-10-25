@@ -1,0 +1,137 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>商品列表</h2><span class='common-color-red'>(最多推荐10条,商品禁用不能推荐)</span>
+</div>
+<div class="cf">
+     <div class="fl">
+	        <a class="w_btn add-btn w_btn" href="{:U('Shop/shop_add')}">发布商品</a>
+            <button class="w_btn ajax-post" url="{:U('Websit/changeStatus',array('method'=>'resumeshop'))}"
+                    target-form="ids">上架
+            </button>
+            <button class="w_btn ajax-post" url="{:U('Websit/changeStatus',array('status'=>0,'method'=>'forbidshop'))}"
+                    target-form="ids">下架
+            </button>
+            <button class="w_btn ajax-post confirm" url="{:U('Websit/changeStatus',array('status'=>'-1','method'=>'deleteshop'))}"
+                    target-form="ids">删 除
+            </button>
+			<!--
+			 <button class="w_btn ajax-post" url="{:U('Shop/shop_recommend',array('is_recommend'=>1))}"
+                    target-form="ids">设为推荐
+            </button>
+            <button class="w_btn ajax-post" url="{:U('Shop/shop_recommend',array('is_recommend'=>0))}"
+                    target-form="ids">取消推荐
+            </button>-->
+     </div>
+     <!-- 高级搜索 -->
+        <div class="search-form pull-right">
+            <div class="sleft">
+                <input type="text" name="goods_name" class="search-input" value="{:I('goods_name')}"
+                       placeholder="请输入商品名称或者ID">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+ </div>
+  <div class="data-table table-striped">
+        <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		  <th>编号</th>
+		  <th>商品名称</th>
+		  <th>商品分类</th>
+		  <th>市场价</th>
+		  <th>销售价</th>
+		  <th>库存</th>
+		  <th>销售量</th>
+		  <th>新品</th>
+		  <th>推荐</th>
+		  <th>特价</th>
+		  <th>上架</th>
+		  <!--<th>是否出售</th>
+		  <th>更新时间</th>-->
+		  <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="shop_list">
+        <volist name="shop_list" id="vo">
+          <tr>
+		    <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+		    <td>{$vo.id}</td>
+			<td><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+			<td>{:get_shop_categrory_title($vo['category_id'])}</td>
+			<td>{$vo.tox_money_need}元</td>
+		    <td>{$vo.market_price}元</td>
+			<td>{$vo.goods_num}</td>
+			<td>{$vo.sell_num}</td>
+			<td><if condition="$vo.is_new eq 1">是<elseif condition="$vo.is_new eq 0"/>否</if></td>
+			<td><if condition="$vo.is_recommend eq 1">是<elseif condition="$vo.is_recommend eq 0"/>否</if></td>
+			<td><if condition="$vo.is_bargains eq 1">是<elseif condition="$vo.is_bargains eq 0"/>否</if></td>
+			<td><if condition="$vo.status eq 0"><font color="red">下架</font><elseif condition="$vo.status eq 1"/><font color="green">正常</font></if></td>
+			<!--<td><if condition="$vo.purchase_status eq 0"><font color="red">否</font><elseif condition="$vo.purchase_status eq 1"/><font color="green">是</font></if></td>
+			<td>{$vo.changetime|date="Y-m-d",###}</td>-->
+			<td>{$vo.createtime|date="Y-m-d",###}</td>
+            <td>
+			    <a href="{:U('Manage/Shop/shop_edit?id='.$vo['id'])}">编辑</a>
+				<eq name="vo.status" value="1">
+				<a href="{:U('Websit/changeStatus?method=forbidShop&id='.$vo['id'])}"  class="ajax-get">下架</a>
+				<else/>
+				<a href="{:U('Websit/changeStatus?method=resumeShop&id='.$vo['id'])}" class="ajax-get">上架</a>
+			    </eq>
+				<!--
+				<eq name="vo.is_recommend" value="1">
+				
+				<a href="{:U('Shop/shop_recommend',array('is_recommend'=>0,id=>$vo['id']))}"
+				class="ajax-get">取消推荐</a>
+				<else/>
+				<a href="{:U('Shop/shop_recommend',array('is_recommend'=>1,id=>$vo['id']))}"
+				class="ajax-get">商品推荐</a>
+				
+				</eq>-->
+				<a href="{:U('Manage/Shop/goods_list',array('goods_id'=>$vo['id']))}">查看商品订单</a>
+			    <a href="{:U('Websit/changeStatus?method=deleteShop&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="16">{$page}</td>
+        <else/>
+			<td colspan="16" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+  
+  
+  
+</block>
+

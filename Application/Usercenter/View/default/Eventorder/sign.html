@@ -1,0 +1,740 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<!-- 头部 -->
+<include file="common/header"/>
+<block name="body">
+<style>
+	.use_info{
+		z-index:9999;
+		border:1px solid #ccc;
+		background:white;
+		width:486px;
+		position:absolute;
+		margin-top:-9px;
+		margin-left:614px;
+	}
+	.left_info{
+		margin-left:20px;
+	}
+</style>
+<div class="container" >
+    <div class="detail_box myevent_detail">
+      <div class="row usercenter-event-order">
+        <h4 class="col-md-12 event_detail_title">订单详情：<if condition="$ordertype eq 1">确认报名 <else/>预约报名</if>
+        </h4>
+      </div>
+      <if condition="$content['paytype'] eq 1">
+      <if condition="$ordertype eq 1">
+        <div class="flowstep">
+        <ol class="flowstep-4">
+          <li class="step-first">
+            <div class="step-done">
+              <div class="step-name">预约</div>
+              <div class="step-no"></div>
+            </div>
+          </li>
+          <li>
+            <div class="step-cur">
+              <div class="step-name">下单</div>
+              <div class="step-no">2</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-name">定金支付</div>
+            <div class="step-no">3</div>
+          </li>
+          <li>
+            <div class="step-name">确认出行</div>
+            <div class="step-no">4</div>
+          </li>
+          <li class="step-last">
+            <div class="step-name">余款支付</div>
+            <div class="step-no">5</div>
+          </li>
+          <!--li>
+            <div class="step-name">出行签到</div>
+            <div class="step-no">6</div>
+          </li>
+            <li class="step-last">
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li-->
+        </ol>
+      </div>
+       <else/>
+       <div class="flowstep">
+        <ol class="flowstep-4">
+          <li class="step-first">
+            <div class="step-cur">
+              <div class="step-name">预约</div>
+              <div class="step-no">1</div>
+            </div>
+          </li>
+          <li>
+              <div class="step-name">下单</div>
+              <div class="step-no">2</div>
+          </li>
+          <li>
+            <div class="step-name">定金支付</div>
+            <div class="step-no">3</div>
+          </li>
+          <li>
+            <div class="step-name">确认出行</div>
+            <div class="step-no">4</div>
+          </li>
+          <li class="step-last">
+            <div class="step-name">余款支付</div>
+            <div class="step-no">5</div>
+          </li>
+          <!--li>
+            <div class="step-name">出行签到</div>
+            <div class="step-no">6</div>
+          </li>
+            <li class="step-last">
+              <div class="step-name">点评</div>
+              <div class="step-no">7</div>
+            </li-->
+            
+        </ol>
+      </div>
+       </if>
+      <elseif  condition="$content['paytype'] eq 0"/>
+        <if condition="$ordertype eq 1">
+          <div class="flowstep">
+              <ol class="flowstep-all">
+                <li class="step-first">
+                  <div class="step-done">
+                    <div class="step-name">预约</div>
+                    <div class="step-no"></div>
+                  </div>
+                </li>
+                <li><div class="step-cur">
+                    <div class="step-name">下单</div>
+                    <div class="step-no">2</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-name">全款支付</div>
+                    <div class="step-no">3</div>
+                </li>
+                <li class="step-last">
+                  <div class="step-name">确认出行</div>
+                  <div class="step-no">4</div>
+                </li>
+                <!--li>
+                  <div class="step-name">出行签到</div>
+                  <div class="step-no">5</div>
+                </li>
+                <li class="step-last">
+                  <div class="step-name">点评</div>
+                  <div class="step-no">6</div>
+                </li-->
+               
+              </ol>
+            </div>
+        <else/>
+          <div class="flowstep">
+              <ol class="flowstep-all">
+                <li class="step-first">
+                  <div class="step-cur">
+                    <div class="step-name">预约</div>
+                    <div class="step-no">1</div>
+                  </div>
+                </li>
+                <li>
+                    <div class="step-name">下单</div>
+                    <div class="step-no">2</div>
+                </li>
+                <li>
+                    <div class="step-name">全款支付</div>
+                    <div class="step-no">3</div>
+                </li>
+                <li class="step-last">
+                  <div class="step-name">确认出行</div>
+                  <div class="step-no">4</div>
+                </li>
+                <!--li>
+                  <div class="step-name">出行签到</div>
+                  <div class="step-no">5</div>
+                </li>
+                <li class="step-last">
+                  <div class="step-name">点评</div>
+                  <div class="step-no">6</div>
+                </li-->               
+              </ol>
+            </div>
+        </if>
+      </if>
+      <php>$begincity = get_citys($event_content['begincity']);$finalcity = get_citys($event_content['finalcity']); </php>
+      <div class="row data-table data-table-order">
+	  <div class="event_info">
+<form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Eventorder/doSign')}" method="post">
+	  <if condition="get_webinfo('sign_notice')">
+		<h4>报名须知：</h4>
+		<div class="sign_text" style='color:#F90;'>{:nl2br(get_webinfo('sign_notice'))}
+		</div>
+		<div class="sign_text" >
+		<input type="hidden" name="sign_notice" value="1">
+		<label style="color:#000; float:right"><input type="checkbox" id="user_agreement" name="user_agreement" value='1' checked>&nbsp;&nbsp;&nbsp;同意活动须知</label> 
+		<div style="clear:both;"></div>
+		</div>
+	  </if>
+		<h4>活动信息：</h4>		
+        <table>
+          <thead>
+            <tr>
+              <th>活动名称</th>
+              <th>出发/返程</th>
+              <th>集合地/目的地</th>
+              <th>交通/住宿</th>
+              <th>截止报名时间</th>
+              <th>活动单价</th>
+              <th>活动定金</th>
+              <th>支付方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="data-table-td-sm" ><img src="{$event_content.cover_id|getThumbImageById=40,40,1}" alt="" >{$event_content.title} </td>
+              <td>{$content.starttime}<br />
+                {$content.overtime}</td>
+              <php> $begincity = !empty($content['begincity']) ? get_citys($content['begincity']) : get_citys($event_content['begincity']);
+                $finalcity = get_citys($event_content['finalcity']); </php>
+              <td>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}<br />
+                目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</td>
+              <td>交通：{:get_box($content['vehicle'],"checkbox",get_vehicle())}<br />
+                住宿：{:get_box($content['accommodation'],"checkbox",get_accommodation())}</td>
+              <td>{$content.endtime}<br /></td>
+              <td>¥{$content.price}/人</td>
+              <td>¥{$content.deposit}/人</td>
+              <td><span class="data-table-td-span"> <?php switch($content['paytype']){case 0;echo '全款支付';break;case 1;echo '定金支付';break;case 2;echo '免费活动';break;}?>
+                </span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pay_text"> 定金支付：<br />
+          定金用途：用于购买保险、租用交通工具、住宿等<br />
+          退款条件：因人为原因的退单，已经花费到个人的费用不再退还（如：保险、交通工具）<br />
+        </div>
+          <h4>活动参加者：
+            <div class="pull-right"><a class="mbtn btn-info contacts_add" href="{:U('Usercenter/Config/contacts_add')}">+添加参加者</a></div>
+          </h4>
+          
+            <input id="event_id" name="event_id" type="hidden" class="" value="{$event_content.id}"/>
+            <input id="calendar_id" name="calendar_id" type="hidden" class="" value="{$content.id}"/>
+            <input id="event_membercontacts" name="event_membercontacts" type="hidden" class="" value=""/>         
+            <input id="total" name="total" type="hidden" class="" value=""/>
+            <input id="fropay" name="fropay" type="hidden" class="" value=""/>          
+            <input id="check_id" name="check_id" type="hidden" class="" value=""/>
+			<input id="paytype" name="paytype" type="hidden" value="{$content.paytype}">
+			<input id="card_amount" name="card_amount" type="hidden" value=""><!--代金券金额-->
+            <input id="card_membercontacts" name="card_membercontacts" type="hidden" class="" value=""/>
+            
+            <div class="form-group">
+              <div class="col-md-12" >
+                <?php if(!empty($member)):?>
+                <foreach name="member" item="vo"> <span class="event-sign-member">
+                  <input class="event-sign-check"  type="checkbox" name="eid" value="{$vo.id}">
+                  {$vo.realname}</span> </foreach>
+                <?php else:?>
+                <p class="none">~ 亲，您还没有添加任何参加者哦！~</p>
+                <?php endif;?>
+              </div>
+            </div>
+            <div class="member_contacts">
+              <div class="row data-table">
+                <table class="member_contacts_table">
+                  <tr id="member_contacts_tpl">
+                    <td contacts_realname>姓名</td>
+                    <td contacts_card>身份证</td>
+                    <td contacts_telephone>手机</td>
+                    <td contacts_email>邮箱</td>
+                    <td contacts_insurance>保险</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <h4>订单联系人信息：<span>（请准确填写联系人信息，以便我们与您联系）</span></h4>
+            <div class="row event-contacts">
+              <div class="form-group has-feedback">
+                <label for="contact_name" class="col-md-1 control-label">姓名 <span class="event-sign-prompt">*</span></label>
+                <div class="col-md-3">
+                  <input id="contact_name" name="contact_name" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.real_name}" placeholder="请填写真实姓名"/>
+                </div>
+                <label for="contact_telephone" class="col-md-1 control-label">手机 <span class="event-sign-prompt">*</span></label>
+                <div class="col-md-3">
+                  <input id="contact_telephone" name="contact_telephone" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.mobile}" placeholder="请填写手机"/>
+                </div>
+                <label for="contact_email" class="col-md-1 control-label">邮箱 <span class="event-sign-prompt">*</span></label>
+                <div class="col-md-3">
+                  <input id="contact_email" name="contact_email" type="" class="form-control form_check" check-type="Text"  value="{$mem_info.email}" placeholder="请填写邮箱"/>
+                </div>
+              </div>
+            </div>
+            <h4>订单备注：</h4>
+            <div class="sign_text ">
+              <textarea name="remarks" rows="4" class="form-control form_check" ></textarea>
+            </div>
+			<!---------------------------------------------------->
+			<h4>优惠信息：<a class="use_detail pull-right" style="color:#008CC9;position:relative;">代金券使用说明<img width="20" height="20" src="__PUBLIC__/Core/images/sign_info.png"></a></h4>	
+			<div class="form-group ">
+				<div class="col-md-2"> 									
+					<div class="use_info"><span class="left_info"><b>代金券使用说明</b></span><br>
+					<span class="left_info">1. 定金支付时，代金券无法抵用定金，但在余额支付里扣除相应金额</span><br>
+					<span class="left_info">2. 代金券金额大于需支付余额，余额不做退还</span><br>
+					<span class="left_info">3. 每订单仅限使用一张代金券，抵用金额以订单页面说明为准</span><br>
+					<span class="left_info">4. 每张代金券只能使用一次，使用后自动作废</span><br>
+					<span class="left_info">5. 使用代金券的订单，代金券部分金额不能开具发票</span>
+					</div>
+				</div>
+			</div>	
+			<if condition="$content['card_use'] eq 1">
+			<div class="form-group ">
+				<div class="col-md-2">          
+					<input type="radio" class="no_use" name="check_card_use" value="1"/>
+					<span>不使用任何优惠</span>
+				</div>
+				<div class="col-md-2"  style="position:relative;"> 
+					<input type="radio" class="use_coupon" name="check_card_use" value="2"/>
+					<span class="crad_title_con" >选择代金券</span>
+					<div class="col-md-5">
+						<li class="crad_title_con_t"  style="width:400px; border:1px solid #ccc; height:25px;  line-height:25px; margin-top:0px; margin-left:80px; display:none; text-align:center;" ><a>请选择代金券</a></li><ul id="cardid" name="cardid" style="width:400px;height:100px;border:1px solid #ccc; margin-left:80px; overflow-y:auto;" class="coupon_text_card "  ></ul>			
+					</div>
+				</div>
+
+			</div>
+			<!------------------------------------------------------>
+		<div class="form-group has-feedback coupon_text">  
+        <div class="col-md-12 " id="card_content"  >
+		
+        </div>
+		</div>
+
+		<else />
+		该排期暂时无法使用优惠！
+		</if>
+		<!---------------------------------------------------------------------------------------------------->
+		<h4>汇总信息：</h4>		
+		<if condition="$content[paytype] eq 1">	
+			<!---------------------余额支付---------------------------------------->	
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total"></span></b> =	
+			定金支付 <b><span style="color:red">¥</span><span style="color:red" class="fropay"></span></b> + 
+			余额支付 <b><span style="color:red">¥</span><span style="color:red" class="leftpay"></span></b>
+			<span class="card_o_total" style="color:green"> (代金券省 <b><span style="color:red">¥</span><span class="card_o_amount" style="color:red"></span></b>)</span>	
+			</div>
+			<!----------------------余额支付-------------------------------------->
+		<else />
+			<!------------------------全款支付------------------------------------>
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total"></span></b> =	
+			人数[<span style="color:red" class="contact_count"></span>] x <b><span style="color:red">¥{$content.price}</span></b>
+			<span class="card_o_total"> - 优惠信息 <span style="color:green">(代金券省 <b><span style="color:red">¥</span><span class="card_o_amount" style="color:red"></span></b>)</span></span>
+			</div>
+			<!------------------------全款支付------------------------------------>		
+		</if>
+			<!---------------------------------------------------------------------------------------------------->
+			<div class="form-group "></div>
+		 <div class="data-table-order-con">
+		  <button type="submit" class="btn sub btn-primary " id="order_submit"><if condition="$ordertype eq 1">确认报名
+		<else/>
+		预约报名</if></button>
+		</div>					       
+	  </form>
+	</div>
+  </div>
+  <script>
+	$(function(){		 
+		$('#order_submit').click(function(){
+			$.ajaxSetup({
+				async:false
+			});
+			var event_membercontacts = $('#event_membercontacts').val();
+			var event_id = $('#event_id').val();
+			var calendar_id = $('#calendar_id').val();
+			var judge = false;
+			$.post(U('Usercenter/Eventorder/get_seats_left'),{event_membercontacts:event_membercontacts,event_id:event_id,calendar_id:calendar_id},function(res){
+				var seats_left = res['seats_left'];
+				if(seats_left == 'continue'){
+					judge = true;
+				}else{	
+					var notice = "您选择的参加者数超额 "+(seats_left)+" 个，如果继续，订单会自动转为预约订单，之后请联系管理员更改状态，是否继续？";
+					if(confirm(notice)){
+						judge = true
+					}else{
+						judge = false
+					}				
+				}
+			},'json')
+			return judge;
+		})
+		$('.use_info').hide();
+		$('.use_detail').mouseover(function(){
+			$('.use_info').show();
+		})
+		$('.use_detail').mouseout(function(){
+			$('.use_info').hide();
+		})
+	})
+
+	$(function(){		
+		$("#order_submit").hide();
+		$('.card_o_total').hide();
+		$('#totalprice').hide();
+		$('#total').val('');
+		$('#fropay').val('');
+		$('.no_use').prop('checked',true);
+		$('.coupon_text').hide();
+		$('.coupon_text_card').hide();
+		$('.coupon_hand').hide();
+		$("#cardid").val('');
+		$("#cardid1").val('');
+		//选择是否使用优惠券		
+		$("input[name='check_card_use']").change(function(){
+			var total = $('#total').val();
+			var fropay = $('#fropay').val();
+			$('.total').html(total);
+			$('.fropay').html(fropay);
+			$('#cardid').val('');
+			$('#cardid1').val('');
+			$('#card_amount').val('');
+			$('#card_membercontacts').val('');
+			$('.card_o_total').hide();
+			$('.card_o_amount').html('');
+			$('.card_select_endtime_info').html('')
+			$('.card_endtime_info').html('')
+			
+			getleftpay();
+		})	
+
+	
+		//获取优惠券的信息
+		$('.use_coupon').click(function(){	
+			$('#cardid').empty();
+			$('.coupon_text_card').show();
+			$('.coupon_text').show();
+			$('.coupon_hand').hide();
+			$(".crad_title_con").hide();
+			$(".crad_title_con_t").show();
+			$('#cardid_btn').empty();
+			var card_membercontacts = $("#card_membercontacts").val();
+      var server_condition=<?php  echo $content['price'];?>
+
+			$.post(U('Usercenter/Config/ajax_card_select'),{card_membercontacts: card_membercontacts,server_condition:server_condition},function(res){				
+				if(res['res'] != ''){
+					$.each(res['res'],function(i,vo){				
+						$('#cardid').append("<li style='border-bottom:1px solid #ccc;cursor:pointer;margin:5px auto; height:20px;line-height20px;text-align:center;' name='cardeid' typename="+vo['typename']+" amount="+vo['amount']+" class="+vo['cardid']+" value="+vo['cardid']+">"+vo['typename']+"("+vo['amount']+"元)【券码："+vo['cardid']+"】</li>")
+					})
+
+					$("li[name='cardeid']").click(function(){
+						var card_eid = $(this).attr('value');
+						$('.card_o_total').show();
+						var typename = $(this).attr('typename');
+						var amount = $(this).attr('amount')
+						var classcard=$("."+card_eid).val()
+						var event_membercontacts = $("#event_membercontacts").val();
+						if(!event_membercontacts) toast.error('选择参加者');
+						if(!event_membercontacts) return false;
+						var card_membercontacts = $("#card_membercontacts").val();
+						if(card_membercontacts){
+							var event_membercontacts_array = Array();
+							var card_membercontacts_array = Array();
+							event_membercontacts_array = event_membercontacts.split(",");
+							card_membercontacts_array = card_membercontacts.split(",");
+							var event_membercontacts_leng = event_membercontacts_array.length;
+							var card_membercontacts_leng = card_membercontacts_array.length;
+							if(card_membercontacts_leng >= event_membercontacts_leng) toast.error('不能再选优惠券');
+							if(card_membercontacts_leng >= event_membercontacts_leng) return false;
+						}
+						
+						if($(this)){ 
+							$('#card_content').append("<tr id="+card_eid+"><td><li  cardnum="+card_eid+" amount="+amount+"  class='cardeid_str'>"+typename+"("+amount+"元)【券码："+card_eid+"】</li></td><td><span class='mbtn del_card' delcardnum="+card_eid+" >取消</span></td></tr>");
+							$(this).hide();
+							$('.del_card').click(function (){ 
+								var delcard = $(this).attr('delcardnum')
+								$("#"+delcard).remove();
+								GetCardcontacts()//拼接字符串
+                				$('.'+delcard).show();
+                				//$('.use_coupon').trigger("click");
+							})
+
+						}
+						GetCardcontacts()//拼接字符串
+						
+					})
+					/**********************************************************/
+				}else{
+					$('#cardid').append("<li  style='border-bottom:1px solid #ccc;cursor:pointer;margin:5px auto; height:20px;line-height20px;text-align:center;'>您目前无任何可用代金券</li>")
+         // $('.crad_title_con_t').attr('id','crad_title_con_w');
+         // $(".crad_title_con_t").removeAttr("class");
+          //$('#crad_title_con_w').click(function(){ 
+              //$('#cardid').slideUp("slow");
+          //})
+				}
+				
+			},'json')
+
+    
+		})
+    
+    $('.crad_title_con_t').click(function(){ 
+      $('#cardid').slideToggle("slow");
+    })
+		/**********************************************************/
+		$('.no_use').click(function(){
+			$('#card_content').empty();	
+			$(".crad_title_con").show();	
+			$('.coupon_text').hide();			
+			$('.coupon_hand').hide();
+			$(".crad_title_con_t").hide();
+			$('.coupon_text_card').hide();
+		})
+		
+		function getleftpay(){
+			var leftpay = $('.total').html() - $('.fropay').html()
+			var leftpayfloat = parseFloat(leftpay).toFixed(2);	
+			$('.leftpay').html(leftpayfloat);
+		}
+	
+	})
+
+	//优惠券使用数量与参加者数比较
+	function CardnumOrder(){ 
+		var event_membercontacts = $("#event_membercontacts").val();
+		var card_membercontacts = $("#card_membercontacts").val();
+		$.post("{:U('Usercenter/Config/ajax_card_info')}",{event_membercontacts: event_membercontacts,card_membercontacts: card_membercontacts},function (res){
+			if(res['status']==1){		
+				toast.error(res['msg']);
+			}
+		},'json');
+
+	} 
+
+	//修改 获取订单的总价
+	function GetOrderinfo()
+	{	
+		var check = $('#check_id').val();
+		check = check.substring(0,check.length - 1);
+		var event_id = $("#event_id").val();
+		var event_membercontacts = $("#event_membercontacts").val();
+		var card_membercontacts = $("#card_membercontacts").val();
+		var card_amount_num = $('#card_amount').val();
+		var calendar_id = $("#calendar_id").val();
+		if(!event_membercontacts) return false;		
+		if(event_id && event_membercontacts && calendar_id){			
+			$.post("{:U('Usercenter/Config/ajax_oreder_info')}", {event_id: event_id,check:check,event_membercontacts: event_membercontacts,calendar_id: calendar_id,card_membercontacts: card_membercontacts,card_amount_num:card_amount_num}, function (res) {	
+				 if(res['status']){
+					if(res['double'] == 1){
+						toast.error(res['msg']);
+						var str = "";
+						var check = $('#check_id').val();
+						str = res['contacts_id'] + ",";
+						$('#check_id').val(str+check);
+					}
+					$("#order_submit").show();
+					$(".totalprice").show();
+					var card =res['data']['card'];
+					
+					var totalprice = res['data']['totalprice'];//
+					var payprice = res['data']['payprice'];
+					var contact_count = res['data']['contact_count'];
+					var left = totalprice - payprice;
+					$('.total').html(payprice)
+					$('#total').val(totalprice)
+					$('.fropay').html(payprice)
+					$('#fropay').val(payprice)
+					if(res['data']['paytype'] ==0 || res['data']['paytype'] == 2){
+						if(card > totalprice){						
+							$('.contact_count').html(contact_count)
+							$(".total").html(0);
+							$('.card_o_total').show();
+							$('.card_o_amount').html(totalprice)
+						}else{						
+							if(typeof(card) != 'undefined' && card != ''){							
+								$('.contact_count').html(contact_count)
+								var diff_price = totalprice - card;
+								$(".total").html(diff_price);
+								$('.card_o_total').show();
+								$('.card_o_amount').html(card)
+							}else{
+								$('.contact_count').html(contact_count)
+								$(".total").html(totalprice);
+								$('.card_o_total').hide();
+							}
+						}
+					}else{							
+						if(card > left){
+							$('.total').html(payprice)
+							$('#total').val(totalprice)
+							$('.fropay').html(payprice)
+							$('#fropay').val(payprice)
+							var leftpay = $('.total').val() - $('#fropay').val()
+							$('.card_o_amount').html(left)
+							$('.leftpay').html(0);
+						}else{
+							$('#total').val(totalprice);
+							$('.fropay').html(payprice);
+							$('#fropay').val(payprice);
+							var total = $('#total').val();
+							var fropay = $('#fropay').val()
+							if(typeof(card) != 'undefined' && card != ''){	
+								var leftpay = total - fropay - card;
+								var totalprice1 = totalprice - card;
+								$('.total').html(totalprice1)
+								$('.card_o_amount').html(card)
+
+							}else{
+								$('.total').html(totalprice)
+								var leftpay = total - fropay;
+								$('.card_o_total').hide();
+
+							}
+							
+							var leftpayfloat = parseFloat(leftpay).toFixed(2);	
+							$('.leftpay').html(leftpayfloat);
+						}
+					}
+				 }else{
+					if(res['contacts_id']){
+						$("input[name='eid'][value='"+res['contacts_id']+"']").trigger("click");
+					} 
+				    toast.error(res['msg']);
+				   $("#totalprice").hide();
+				   $("#order_submit").hide();
+				 }
+				}, 'json');
+		}
+				
+	}
+
+
+	//优惠券卡号拼接成字符串
+	function GetCardcontacts(){ 
+		var strcard = "";
+		var num_card = '';
+		$(".cardeid_str").each(function(){ 
+			if($(this)){ 
+				strcard += $(this).attr('cardnum')+",";
+				num_card += $(this).attr('amount')+',';
+			}
+		})
+		strcard = strcard.substring(0,strcard.length - 1);
+		num_card = num_card.substring(0,num_card.length - 1);
+		$("#card_membercontacts").val(strcard);
+		$("#card_amount").val(num_card);
+		GetOrderinfo();
+	}
+
+
+	//赋值参加者的id拼接成字符串
+	function GetMembercontacts()
+	{	
+		var str="";
+        $("input[name='eid']:checkbox").each(function(){ 
+            if($(this).is(':checked')){
+                str += $(this).val()+",";
+            }
+        })
+		str = str.substring(0,str.length - 1);
+		if(str.length == 0){
+			$('.member_contacts').hide();
+			$('#cardid').val('')
+			$('#cardid1').val('')
+			$('.card_endtime_info').html('')
+			$('.card_select_endtime_info').html('')
+			$('.card_o_total').hide();
+			$('.card_o_amount').html('');
+			$('.no_use').prop('checked',true)
+			$('.coupon_text').hide();			
+			$('.coupon_hand').hide();
+			$('#card_amount').val('')
+		}
+		$("#event_membercontacts").val(str);
+		
+		GetOrderinfo();
+	}
+/***********************参加者的信息显示**************************************************************************/
+	$(function () {
+		$("input[name='eid']").attr('checked',false)
+		$('#check_id').val("");		
+		$('#event_membercontacts').val("");		
+		<?php if(!empty($member)):?>	
+		var member_json = {$member_json};
+		<?php else:?>
+		var member_json = {};
+		<?php endif;?>
+		
+		$("input[name='eid']:checkbox").click(function(){
+			var m_c_id = $(this).val();	
+			if(member_json){
+				if($(this).is(':checked')){
+					var member_contacts_tpl = $('#member_contacts_tpl');
+					var member_contacts_li = member_contacts_tpl.clone();
+					var contacts_realname = member_contacts_li.find('[contacts_realname]');
+					var contacts_card = member_contacts_li.find('[contacts_card]');
+					var contacts_telephone = member_contacts_li.find('[contacts_telephone]');
+					var contacts_qq = member_contacts_li.find('[contacts_qq]');
+					var contacts_email = member_contacts_li.find('[contacts_email]');
+					var contacts_insurance = member_contacts_li.find('[contacts_insurance]');
+					
+					contacts_realname.html('姓名：'+member_json[m_c_id]['realname']);
+					contacts_card.html('身份证：'+member_json[m_c_id]['card']);
+					contacts_telephone.html('手机：'+member_json[m_c_id]['telephone']);
+					contacts_qq.html('QQ：'+member_json[m_c_id]['qq']);
+					contacts_email.html('邮箱：'+member_json[m_c_id]['email']);
+					contacts_insurance.html('保险：<php> echo $insurance_string</php>');
+					contacts_insurance.find('.insurance_li').attr("name","insurance["+member_json[m_c_id].id+"]");
+					contacts_insurance.find('.insurance_li').bind("change",function(){
+																					
+					GetMembercontacts();															
+					  //alert($(this).val());
+					});
+
+					member_contacts_li.prop('id', 'member_contacts_li_' + member_json[m_c_id].id).insertBefore(member_contacts_tpl).show();
+					$('.member_contacts').show();
+				}else{
+					   $(".member_contacts tr#member_contacts_li_"+m_c_id).remove();
+					   $("#totalprice").hide();
+					   $("#order_submit").hide();
+				}
+				GetMembercontacts();
+			}
+			
+		});
+
+	})
+
+
+</script>
+    </div>
+ 
+</div>
+</block>
+<block name="script">
+  <script>
+	$(function () {
+		$('#top_nav >li >a ').mouseenter(function () {
+			$('.children_nav').hide();
+			$('#children_' + $(this).attr('data')).show();
+		});
+		$('.contacts_add').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+
+	})
+
+</script>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

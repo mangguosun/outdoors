@@ -1,0 +1,63 @@
+	  <div class="tab-pane">
+		  <div class="clearbox-ol"></div>
+	      <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+              <th>ID</th>
+                <th>名称</th>
+                <th>标识</th>
+                <th>描述</th>
+                <th>启用时间</th>
+                <th>状态</th>
+                <th>操作</th>             
+              </tr>
+            </thead>
+            <tbody>
+			<tr>
+              <td>{$apply_event.id}</td>
+              <td>{$apply_event.app_name}</td>
+              <td>{$apply_event.app_model}</td>			  
+			  <td>{$apply_event.describe}</td>			
+			  <td></td>			
+              <td>默认开启</td>
+			  <td>默认开启</td>			 
+            </tr>
+              <volist name="apply" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td>{$vo.app_name}</td>
+              <td>{$vo.app_model}</td>			  
+			  <td>{$vo.describe}</td>			
+			  <td>{$vo.install_time|date="Y-m-d H:i:s",###}</td>			
+              <td>{:get_primary_app_status($vo[id])}</td>
+			  <td>{:get_my_app_btn($vo[id])}</td>			 
+            </tr>
+            </volist>
+            <tr><td colspan="7">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+        
+        </div>
+	  </div>
+<script>
+$(function(){
+	$('.unstall_app').click(function(){
+		if(confirm('确定禁用？')){
+			var id = $(this).attr('data-ID');			
+			$.post(U('Manage/Apply/unstall_app'),{id:id,type:0},function(res){
+				if(res['status'] == 1){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+})	
+</script>

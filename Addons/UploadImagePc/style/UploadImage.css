@@ -1,0 +1,46 @@
+
+
+.uploadify_pc{ clear:both; display:block}
+
+.uploadify_pc .uploadfile_input{ display:none}
+.uploadify_pc .uploadify{ float:left;}
+
+.uploadify_pc .uploadify-queue{ display:none}
+.uploadify_pc .uploadify-button{ background:#FFF}
+
+.uploadify_pc .uploadify_ds{ clear:both; overflow:hidden; padding-left:5px}
+
+
+
+
+.uploadify_pc .upload-img-btn{ line-height:80px;border:3px #CCC dashed; padding:0; color:#CCC; cursor:pointer; text-align:center; font-size:28px}
+.uploadify_pc .upload-img-btn:hover{ color:#999}
+
+.uploadify_pc .uploadify_pc .upload-img-btn i{ font-size:36px}
+
+
+.uploadify_pc .upload-img-box-home{ float:left;}
+.uploadify_pc .upload-img-box-home .upload-pre-item-home{position: relative;margin-bottom: 8px;margin-right: 8px; width:80px; height:80px;  float:left; text-align:center; border:1px #ccc solid; background:#ccc; padding:1px;}
+.uploadify_pc .upload-pre-item-home img{ width:80px; height:80px;cursor:pointer}
+.uploadify_pc .upload-pre-item-home .btn-close{position: absolute;top: -8px;right: -8px;width: 17px;height: 17px;background: url('../images/bg_icon.png') no-repeat -25px 0;cursor: pointer;}
+.uploadify_pc .upload-pre-item-home .btn-close:hover {text-decoration: none;border-bottom: 0 none;}
+
+
+
+
+/* 上传图片点击弹出层 */
+.uploadback {z-index: 99999;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.8);}
+.upload-img-popup {position: fixed;z-index: 9999;padding: 3px;border: 1px solid #c3c3c3;background-color: #fff;box-shadow: 0 0 4px rgba(0,0,0,.5); text-align:center}
+.upload-img-popup img{display: inline-block;max-height: 500px;max-width: 500px;cursor: pointer; margin:0 auto}
+.upload-img-popup .close-pop {position: absolute;top: -8px;right: -8px;width: 17px;height: 17px;background: url('../images/bg_icon.png') no-repeat -25px 0;}
+.upload-img-popup .close-pop:hover {text-decoration: none;border-bottom: 0 none;}
+.upload-img-popup img {display: block;}
+.upload_icon_all {width: 15px;height: 15px;background: url('../images/attachment_1.png');display: inline-block;vertical-align: middle;margin-right: 5px}
+
+
+
+.uploadify_pc .uploadcover_home{ background:#060; text-align:center; color:#FFF}
+.uploadify_pc .uploadcover_home .uploadify-button-text span{font-size:12px; text-align:center; color:#F00; padding-left:10px}
+
+.uploadify_pc .uploadify{ float:left}
+

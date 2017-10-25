@@ -1,0 +1,8 @@
+User-agent: * 
+Disallow:/caches
+Disallow:/*?*
+Disallow:/Public
+Disallow:/event/index/index/starttime/
+Disallow:/event/index/index/tag/
+Disallow:/event/index/index/price
+Disallow:/event/index/index/days

@@ -1,0 +1,57 @@
+<div id="agree_col" class="col-md-8">
+  <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Usercenter/Config/doExpand')}" method="post">
+    <div class="form-group">
+      <label for="realname" class="col-md-3 control-label">认证类型</label>
+	   <div class="col-md-5">
+		{:form_select(get_upgrading(),$member['is_use'],'class="form-control form_check" check-type="Text" name="is_use" id="is_use"')}
+       </div>
+    </div>
+   
+    <div class="form-group">
+      <label for="realname" class="col-md-3 control-label">真实姓名</label>
+      <div class="col-md-5">
+        <input type="realname" class="form-control" id="realname" placeholder="请输入真实姓名" name="realname"
+                                       value="{$list.realname|htmlspecialchars}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="mobile" class="col-md-3 control-label">联系电话</label>
+      <div class="col-md-5">
+        <input type="mobile" class="form-control" id="mobile" placeholder="请输入电话号码" name="mobile"
+                                       value="{$list.mobile|htmlspecialchars}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">性别</label>
+      <div class="col-md-9">
+        <label class="radio-inline"> <input name="sex" type="radio" value="1"
+                                    
+          <eq name="list.sex" value="1"> checked</eq>
+          > 男 </label>
+        <label class="radio-inline"> <input name="sex" type="radio" value="2"
+                                    
+          <eq name="list.sex" value="2"> checked</eq>
+          > 女 </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="qq" class="col-md-3 control-label">QQ</label>
+      <div class="col-md-5">
+        <input type="qq" class="form-control" id="qq" placeholder="请填写QQ" name="qq"
+                                       value="{$list.qq|htmlspecialchars}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email" class="col-md-3 control-label">邮箱</label>
+      <div class="col-md-9">
+        <input type="email" class="form-control" id="email" placeholder="邮箱" name="email"
+                                       value="{$list['email']|htmlspecialchars}">
+      </div>
+    </div>
+     <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <button type="submit" class="btn btn-primary">提交申请</button>
+      </div>
+    </div>
+  </form>
+</div>

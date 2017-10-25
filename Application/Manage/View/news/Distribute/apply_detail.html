@@ -1,0 +1,170 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">活动力分销集市入驻申请单详情</span>
+			</div>
+			<div class="widget-body form-horizontal">
+				<div class="form-title">
+					活动力分销集市入驻申请单
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请单号：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.distribute_apply_sn}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请单状态：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><if condition="$apply_detail.distribute_status eq 2">已入驻<elseif condition="$apply_detail.distribute_status eq 0"/>已驳回<else/>审核中</if></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">审批日期：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><if condition="$apply_detail['examine_time']">{$apply_detail.examine_time|date="Y-m-d",###}</if></div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">申请日期：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static"><if condition="$apply_detail['apply_time']">{$apply_detail.apply_time|date="Y-m-d",###}</if></div>
+					</div>
+				</div>
+				
+				<if condition="$apply_detail.distribute_status eq 2">
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">过期日期：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+                    	<div class="form-control-static">{$apply_detail.overtime|date='Y-m-d',###}</div>
+						
+					</div>
+				</div>
+				</if>
+				<div class="form-title">
+					商家信息
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">商家名称：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.webname}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">所在城市：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">服务特色：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.slogan}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">网   址：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$webinfo.domain}</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">服务资质：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+							<img src="{$apply_detail['license_photo']|getThumbImageById=400,400}" width="100%">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">开户行：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$bank.open_bank}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">开户名称：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$bank.name}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">银行账号：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$bank.card}</div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">许可证照</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+							<img src="{$apply_detail['idcard_photo']|getThumbImageById=400,400}" width="100%">
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">联系人姓名：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.name}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">证件类型：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">身份证</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">证件号码：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.idcardnumber}</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">手机号码：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.phone}</div>
+					</div>
+					<label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 control-label">QQ  号码：</label>
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-9">
+						<div class="form-control-static">{$apply_detail.qq}</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-2 control-label">注册协议</label>
+					<div class="col-lg-10">
+							<div class="widget"> 
+                                {$supplier_agreement}
+                            </div><!--Widget-->
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 control-label">审核结果</label>
+					<div class="col-lg-10">
+						<div class="form-control-static"><if condition="$apply_detail.distribute_status eq 2">同意入驻<elseif condition="$apply_detail.distribute_status eq 0"/>驳回申请<else/>审核中</if></div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-lg-2 control-label">审核说明：</label>
+					<div class="col-lg-10">
+						 <textarea class="form-control" rows='5' readonly>{$apply_detail.reply}</textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10">
+						<button onclick="javascript:history.back(-1);return false;" class="btn btn-palegreen ajax-get">返回</button>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+</block>
+

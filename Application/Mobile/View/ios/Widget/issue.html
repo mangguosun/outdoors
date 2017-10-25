@@ -1,0 +1,53 @@
+<if condition="!empty($issue_data)">
+<ul>
+  <li>
+  <volist name="issue_data" id="vo">
+    <a href="{:U('Mobile/Issue/issuecontentdetail',array('id'=>$vo['id']))}"  >
+       <div class="am-g index-issue-lists-box">
+          <div class="am-u-sm-5 issue-img-box"> 
+            <img data-original="{$vo.thumb}" src="__PUBLIC__/Core/images/blank.png" alt="" class="index-issue-img"/>
+          </div>
+      
+          <div class="am-u-sm-7 issue-text-box">
+            <div class="am-g"> 
+                <div class="am-u-sm-3 ">
+                <img class="lazy index-issue-lists-thumb"  src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.user.avatar128}" alt="" title="" data-thumb/>
+                </div>
+                <div class="am-u-sm-9 issue_text">
+                  <div class="index-issue-lists-title"  data-title>{$vo.title}</div>
+                  <div class="index-issue-lists-location"><span data-location>{$vo.finalcity_province}{$vo.finalcity_city}</span></div>
+                </div>
+            </div>
+            <div class="index-issue-smallicon am-g"> 
+                <span class="am-u-sm-4"><b class="am-icon-eye"></b>&nbsp;{$vo.view_count}</span> 
+                <span class="am-u-sm-4"><b class="am-icon-heart"></b>&nbsp;{$vo.collect_count}</span> 
+                <span class="am-u-sm-4"><b class="am-icon-comment"></b>&nbsp;{$vo.comment_count}</span> 
+            </div>
+         </div>	   
+       </div>
+    </a>
+  </volist>
+  </li>
+  
+  
+</ul> 
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+$(function () {
+	$('img.index-issue-img,img.lazy').lazyload({effect: "fadeIn",threshold : 100});
+})
+</script>
+
+
+</if>

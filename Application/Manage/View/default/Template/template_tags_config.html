@@ -1,0 +1,32 @@
+<div class="col-md-12">
+	<span class="common-color-red" >(最多可选5个哦)</span>
+	<div class="row data-table">
+		<table>
+		<!-- 表头 -->
+			<thead>
+				<tr>
+					<th>标签</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+		<!-- 列表 -->
+		</table>
+	</div>
+	<form class="form-horizontal center_info template_tags_config" role="form" action="{:U('Template/template_tags_config',array('tabs'=>$tabs))}" method="post">
+		<div class="form-group">
+			<div class="col-md-12">
+				{:form_checkbox($system_tags,$mytags,'name="tag[]" id="tag"',0,'100')} 
+			</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-0 col-md-10">
+                <button type="submit" class="btn submit-btn ajax-post" target-form="template_tags_config">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+    

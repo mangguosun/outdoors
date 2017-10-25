@@ -1,0 +1,362 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">{$title}</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+        
+            <div class="widget-body">
+                     <form id="defaultForm" action="{:U('/Manage/Order/seekevent')}" method="get">
+                        <input name="url" type="hidden" value="Manage/Order/index" />
+                        <div class="form-inline" style="clear:both; overflow:hidden">
+                          <div class="input-group"> <span class="input-group-addon">状态</span>
+                            <select class="sl_check" name="ord_status">
+                                <?php $ord_status=I('ord_status');?>
+                                <option  value="all" <?php if($ord_status=='all' || $ord_status=='' ) echo "selected" ?>>全部订单</option>
+                                <option  value="inuse" <?php if($ord_status=='inuse') echo "selected" ?>>有效订单</option>
+                                <option  value="unpay" <?php if($ord_status=='unpay') echo "selected" ?>>未支付</option>
+                                <option  value="halfpay" <?php if($ord_status=='halfpay') echo "selected" ?>>订金已支付</option>
+                                <option  value="succ" <?php if($ord_status=='succ') echo "selected" ?>>全额已支付</option>
+                                
+                            </select>
+                          </div>
+                          
+                          <div class="input-group ">
+                             <span class="input-group-addon">搜订单</span>
+                                <select class="sl_check" name="ord_type">
+                                    <?php $ord_type=I('ord_type');
+                                         if($ord_type == 3){ $order_type_content = urlsafe_b64decode(I('order_type_con')); }else{  $order_type_content = I('order_type_con'); }
+                                    ?>
+                                  
+                                    <option  value="2" <?php if($ord_type== 2 || $ord_type== '') echo "selected" ?>>订单编号</option>
+                                    <option  value="3" <?php if($ord_type== 3) echo "selected" ?>>订单联系人</option>
+                                    <option  value="4" <?php if($ord_type== 4) echo "selected" ?>>联系人电话</option>
+                                </select>                     
+                          </div>
+                          
+                          <div class="input-group ">
+                              <input type="text" class="form-control col-xs-3" name="order_type_con" value="{$order_type_content}"  placeholder="" /> 
+                          </div>                        
+                          
+                          <div class="input-group ">
+                             <span class="input-group-addon">搜活动</span>
+                                <select class="sl_check" name="ord_event">
+                                    <?php $ord_event=I('ord_event');   
+                                        if($ord_event == 3){ $ord_event_con = urlsafe_b64decode(I('ord_event_con')); }else{  $ord_event_con = I('ord_event_con'); }
+                                     ?>
+                                   
+                                    <option  value="2" <?php if($ord_event== 2) echo "selected" ?>>排期编号</option>
+                                    <option  value="3" <?php if($ord_event== 3  || $ord_event=='') echo "selected" ?>>活动名称</option>
+                                </select>                      
+                          </div>                      
+
+                          <div class="input-group ">
+                              <input type="text" class="form-control col-xs-3" name="ord_event_con" value="{$ord_event_con}" placeholder="" /> 
+                          </div>                          
+
+                          <div class="input-group ">
+                            <input class="btn btn-default" id="search" type="submit" value="搜索" url="{:U('index')}">
+                            <input class="btn btn-default"  id="reset" type="reset" value="重置" >
+                          </div>
+                        </div>
+                     </form>
+             </div>
+
+
+
+            <div class="widget-body">
+                <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+                    <thead>
+                        <tr>
+                            <th>订单编号/活动信息</th>
+                            <th>排期人数</th>
+                            <th>下单时间</th>
+                            <th>出行人数</th>
+                            <th>订单总价</th>
+                            <th>支付金额</th>
+                            <th>订单状态</th>
+                            <th>支付状态</th>
+                            <th>订单来源</th>
+                            <th>使用优惠</th>
+                            <th>排期</th>
+                            <th>操作</th>                    
+                        </tr>
+                    </thead>
+                  <tbody>
+                    <notempty name="dateinfo">
+                    <volist name="dateinfo" id="vo">
+                        <tr>
+                            
+                            <td>
+                                <div  class="commons-bottom-five">{$vo.trade_sn}</div><a title="{$vo.title}" href="{:U('Event/Index/detail',array('id'=>$vo['event_id']))}" target="_blank"><img src="{$vo.cover_id|getThumbImageById=40,40,1}" alt="" style="width:40px; height:40px; float:left; margin-right:5px">{$vo.title|op_t|getShortSp=10} <i class="glyphicon glyphicon-link"></i></a>
+                            </td>
+    					   
+                            <td>
+                                共{$vo.calendar_num}人
+                                
+                            </td> 
+
+                            <td>{$vo.create_time}</td> 
+
+                            <td>共{$vo.sign_num}人
+                             
+                            </td>
+
+                            <td>￥{$vo.totalprice}</td> 
+
+                            <if condition="$vo.pay_status neq 2">
+                                <td>￥{$vo.payprice}</td>
+                                  <else />
+                                <td>￥{$vo.totalprice}</td>
+                            </if>
+
+                            <td>{:get_event_order_status($vo['status'])}</td> 
+                            <td>{:get_event_order_pay_status($vo['pay_status'])}</td>    
+                            <td>{$vo.order_source}</td>
+                            <if condition="$vo.cardid neq ''">
+                                <td style="position:relative;">
+                                      
+                                        <volist name='vo.cardid' id='v' >
+                                            {$key}元代金券 {$v}张<br>
+                                        </volist>
+                                        <volist name='vo.cardid' id='v' >
+                                            {$key}元代金券 {$v}张<br>
+                                        </volist>
+                                        <volist name='vo.cardid' id='v' >
+                                            {$key}元代金券 {$v}张
+                                        </volist>
+                                      
+
+                                  </td>
+                                <else />
+                               <td>否</td>
+                             </if>
+                            <td>{$vo.start_time}</td>
+                            <td>
+                                <div class="btn-group">        
+                                  <div class="btn-group">
+                                        <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                            操作 <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                               {:admin_get_event_detail_btn($vo,1)}
+                                            </li>    
+                                            <li>
+                                                <a class="" href="{:U('Manage/Order/event_detail',array('trade_sn'=>$vo['trade_sn']))}">订单详情</a>
+                                            </li>
+                                            <li><a class="" href="{:U('Manage/Order/event_allmember',array('id'=>$vo['calendar_id'],'eventid'=>$vo['event_id']))}">排期人数详情</a></li>
+                                            <li><a class="" href="{:U('Manage/Order/order_allmember',array('order_id'=>$vo['id'],'calendar_id'=>$vo['calendar_id']))}">订单人数详情</a></li>
+                                            <li><a class='' href="{:U('Manage/Order/order_source',array('trade_sn'=>$vo['trade_sn']))}">订单来源编辑</a></li>
+                                        </ul>
+                                    </div>  
+                                </div>
+                            </td>
+                        </tr>
+                          
+                    </volist>
+                    </notempty>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="widget-body"> 
+               <div  style="text-align:right">{$page}</div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div> 
+
+</block>
+
+
+<block name="script">
+<!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/datatables-init.js"></script>
+    <script>
+
+        var InitiateSimpleDataTable = function () {
+            return {
+                init: function () {
+                    /* Formatting function for row details */
+                    function fnFormatDetails(oTable, nTr) {
+                        var aData = oTable.fnGetData(nTr);
+                        var sOut = '<table>';
+
+                        sOut += '<tr><td style="padding-left:30px">排期:</td><td>' + aData[11] + '</td></tr>';
+                        sOut += '<tr><td style="padding-left:30px">排期人数:</td><td>' + aData[2] + '</td></tr>';
+                        sOut += '<tr><td style="padding-left:30px">订单来源:</td><td>' + aData[9] + '</td></tr>';
+                        sOut += '<tr><td style="padding-left:30px">使用优惠:</td><td>' + aData[10] + '</td></tr>';
+                        
+                        sOut += '</table>';
+                        return sOut;
+                    }
+
+                    /*
+                     * Insert a 'details' column to the table
+                     */
+                    var nCloneTh = document.createElement('th');
+                    var nCloneTd = document.createElement('td');
+                    nCloneTd.innerHTML = '<i class="fa fa-plus-square-o row-details"></i>';
+
+                    $('#simpledatatable thead tr').each(function () {
+                        this.insertBefore(nCloneTh, this.childNodes[0]);
+                    });
+
+                    $('#simpledatatable tbody tr').each(function () {
+                        this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+                    });
+
+                    /*
+                     * Initialize DataTables, with no sorting on the 'details' column
+                     */
+                    var oTable = $('#simpledatatable').dataTable({
+                        "sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+                        "aoColumnDefs": [
+                            { "bSortable": false, "aTargets": [0] },
+                            { "bVisible": false, "aTargets": [10] },
+                            { "bVisible": false, "aTargets": [9] },
+                            { "bVisible": false, "aTargets": [11] },
+                            { "bVisible": false, "aTargets": [2] }
+                        ],
+                        "aaSorting": [],
+                        "aLengthMenu": [
+                           [5, 15, 20, -1],
+                           [5, 15, 20, "All"]
+                        ],
+                        "iDisplayLength": 5,
+                        "oTableTools": {
+                                "aButtons": [],
+                                "sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+                            },
+                        "language": {
+                            "search": "",
+                            "sLengthMenu": "_MENU_",
+                            "oPaginate": {
+                                "sPrevious": "Prev",
+                                "sNext": "Next"
+                            }
+                        },"bFilter": false, //搜索栏
+                            "bPaginate": false, //翻页
+                            "bLengthChange": false, ////每页显示的记录数
+                            "bInfo": false, //显示表格信息
+                            "bAutoWidth": true, //自适应宽度
+                            "aoColumns": [
+                              { "bSortable": false },
+                              { "bSortable": true },
+                              { "bSortable": false },
+                              { "bSortable": false },
+                              { "bSortable": true },
+                              { "bSortable": false },                     
+                              { "bSortable": true },
+                              { "bSortable": true },
+                              { "bSortable": true },
+                              { "bSortable": true },
+                              { "bSortable": true },
+                              { "bSortable": false },
+                              { "bSortable": false }
+                            ],
+                    });
+
+
+                    $('#simpledatatable').on('click', ' tbody td .row-details', function () {
+                        var nTr = $(this).parents('tr')[0];
+                        if (oTable.fnIsOpen(nTr)) {
+                            /* This row is already open - close it */
+                            $(this).addClass("fa-plus-square-o").removeClass("fa-minus-square-o");
+                            oTable.fnClose(nTr);
+                        }
+                        else {
+                            /* Open this row */
+                            $(this).addClass("fa-minus-square-o").removeClass("fa-plus-square-o");;
+                            oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+                        }
+                    });
+
+                    $('#simpledatatable input[type="checkbox"]').change(function () {
+                        var iCol = parseInt($(this).attr("data-column"));
+                        var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+                        oTable.fnSetColumnVis(iCol, (bVis ? false : true));
+                    });
+
+                    $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
+                        e.stopPropagation();
+                    })
+                }
+            };
+        }();
+          InitiateSimpleDataTable.init();
+    </script>
+
+    <script type="text/javascript"> 
+        $(function(){   
+           $('.updataSign').click(function(e){                         
+                e.preventDefault();
+                var _this = this;
+                
+                 bootbox.confirm("确定要操作么？", function (result) {
+                    if (result) {
+                        var  id = $(_this).attr('data-eventID');
+                        var status = $(_this).attr('data-status');
+                        $.post(U('Manage/Order/myevent_detail_upstatus'),{id: id,status: status},function(res){
+                            if(res['status'] == 1){
+                                toast.success(res['m'])
+                                setTimeout(function(){
+                                    window.location.reload();
+                                },1500)
+                            }else{
+                                toast.error(res['m'])
+                            }
+                        },'json')
+                    }
+                }); 
+            })
+            $('.updataRefund').click(function(e){
+                                             
+                e.preventDefault();
+                var _this = this;       
+                
+                bootbox.confirm("该订单已支付,点击确认则需退款,继续操作吗？", function (result) {
+                    if (result) {   
+                        var id = $(_this).attr('data-eventID');
+                        var status = $(_this).attr('data-status');
+                        
+                        $.post(U('Manage/Order/myevent_detail_upstatus'), {id: id,status: status},function(res){
+                            if(res['status'] == 1){
+                                toast.success(res['m'])
+                                setTimeout(function(){
+                                    window.location.reload();
+                                },1500)
+                            }else{
+                                toast.error(res['m'])
+                            }
+                        },'json')
+                    }
+                }); 
+            })
+        })  
+
+    </script>>
+    
+   
+</block>

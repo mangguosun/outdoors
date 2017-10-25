@@ -1,0 +1,63 @@
+<div class="shop-mall-module">
+  <div class="shop-mall-module-title">
+	<span class="title-name"><b> 商品列表 </b></span> 
+	<if condition="$brand_title">
+    <span class="secreen-name">{$brand_title['title']}&nbsp;<a href="{$brand_title['href']}" class="glyphicon glyphicon-remove-circle"></a></span>
+	</if>
+	<if condition="$tag_title">
+    <span class="secreen-name">{$tag_title['title']}&nbsp;<a href="{$tag_title['href']}" class="glyphicon glyphicon-remove-circle"></a></span>
+	</if>
+	<if condition="$action_title">
+    <span class="secreen-name">{$action_title['title']}&nbsp;<a href="{$action_title['href']}" class="glyphicon glyphicon-remove-circle"></a></span>
+	</if>
+	<if condition="$category_title">
+    <span class="secreen-name">{$category_title['title']}&nbsp;<a href="{$category_title['href']}" class="glyphicon glyphicon-remove-circle"></a></span>
+	</if>
+	<if condition="$brand_title or $tag_title or $category_title or $action_title"><span class="secreen-clear"><a href="{:U('Shop/Index/goods')}">清空筛选项</a></span>
+	</if>
+	
+  </div>
+  <div class="clear"></div>
+  <div class="shop-mall-module-list">
+  <if condition="$goods_list">
+    <ul>
+		<volist name="goods_list" id="goods_list">
+		<a href="{:U('Shop/Index/goodsDetail',array('id'=>$goods_list['id']))}">
+			<li>
+			  <div class="shop-list-items"> <img class="add_loading_shop_recommend" src="{$goods_list.goods_ico|getThumbImageById=600,600}" data-original="{$goods_list.goods_ico|getThumbImageById=300,300}"  title="{$goods_list.goods_name}"/>
+				<p class="shop-list-item-brand">{$goods_list.custom_brand_name}</p>
+				<p class="shop-list-item-name">{$goods_list.goods_name|op_t|getShortSp=12}</p>
+				<p class="shop-list-item-price"><b>￥{$goods_list.market_price}</b> <del>￥{$goods_list.tox_money_need}</del></p>
+			  </div>
+			  <div class="shop-list-item-mask"  title="{$goods_list.goods_name}"><span>查看详情 ></span></div>
+			</li>
+        </a>
+		</volist>
+		
+    </ul>
+	<div class="clear"></div>
+	
+	<else /> 
+	<div class="shop-box-prompt">该条件下现在还没有商品哦。O(∩_∩)O~
+	</div>
+	
+	</if>
+	<div class="clear"></div>
+  </div>
+  <div class="container">
+	<div class="pull-right">
+		{:getPagination($totalPageCount,20)}
+	</div>
+  </div>
+</div>
+<script>
+$(function () {
+	 $(".shop-mall-module-list ul a li .shop-list-item-mask").hide();
+    $(".shop-mall-module-list ul a li").find(".shop-list-item-mask").stop().fadeTo(200,0)
+    $(".shop-mall-module-list ul a li").hover(function(){
+        $(this).find(".shop-list-item-mask").stop().fadeTo(200,0.7)
+    },function(){
+        $(this).find(".shop-list-item-mask").stop().fadeTo(200,0)
+    });
+})
+</script>

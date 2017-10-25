@@ -1,0 +1,23 @@
+<extend name="Public/base"/>
+<block name="body">
+<div class="container">
+	<div class="row">
+      <div class="col-lg-12">
+        <div class="offcial-model">
+		<div class="offcial-model-title">常见问题</div>
+		<div class="team-list">
+			<ul>
+            	<volist name="data_info" id="vo">
+                <li><a href="{:U('Official/index/detail',array('id'=>$vo['id']))}">{$vo.title|op_t|getShortSp=40}</a><span class="date">{$vo.create_time|date="Y-m-d",###}</span> </li>
+                </volist>
+			</ul>
+            <div class="pages pull-right">{$page}</div>
+		</div>
+		</div></div>
+	</div>
+</div>	
+
+		  
+</block>
+<block name="script">
+</block>

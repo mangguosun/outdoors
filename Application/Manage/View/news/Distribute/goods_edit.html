@@ -1,0 +1,206 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">分销信息设置</span>
+			</div>
+			<div class="widget-body">
+				<form id="defaultForm" action="{:U('Manage/Distribute/goods_edit')}" class="form-horizontal form-bordered" method="post" >  
+					<input type='hidden' name='id' value="{$_GET['id']}">
+					<div class="form-title">
+						必填项
+					</div>
+					<div class="form-group">
+						<label class="col-lg-2 control-label">商品名称</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" name="webname" value="{$shop_list.goods_name}" readonly />
+						</div>
+					</div>
+					<div class="form-group">	
+						<label class="col-lg-2 control-label">销售价</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" name="slogan" value="{$shop_list.market_price}" readonly />
+						</div>
+					</div>
+
+					
+				<!-- 添加规格 -->
+				<?php if(!empty($shop_detail)):?>
+				<div class='form-group'>
+					<label class="col-lg-2 control-label">商品规格：</label>
+					<div class='col-lg-10'>
+						<div class="form-item shops_attr">
+						  <?php foreach($shop_detail as $key=>$val):?>
+							<div class="input-group shop_sku_del">
+							   <?php foreach($val['sku_title'] as $v):?>
+							   <span class="input-group-addon">规格：</span>
+							   <input type="hidden" name="oldgoods[attribute_id][]" value="{$v}">
+							   <input type="text" name="oldgoods[attribute_name][]" value="{:get_shop_sku_types_attribute($v)}" class='form-control' readonly />
+							   <?php endforeach;?>
+							   <span class="input-group-addon">价格：</span> 
+							  <input type="text" name="oldgoods[price][]" value="{$val['price']}" class='form-control oldprice' readonly />
+							  <span class="input-group-addon">库存：</span>
+							  <input type="text" name="oldgoods[stock][]" value="{$val['stock']}"  class='form-control oldgoods_stock' readonly />
+							</div>
+						  <?php endforeach;?>
+						</div>
+					</div>  
+				</div> 
+				<?php endif;?>
+					
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label">分销方式选项</label>
+						<div class="col-lg-10">
+							<div class="checkbox">
+								<label><input type="checkbox" name="distribute_type[]" value="0" <if condition="$shop_distribute_item.distribute_type_b eq 1"> checked</if> ><span class="text">单品分销</span></label>
+								<label><input type="checkbox" name="distribute_type[]" value="1" <if condition="$shop_distribute_item.distribute_type_a eq 1"> checked</if> ><span class="text">全站分销</span></label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-2 control-label">分销佣金(%)</label>
+						<div class="col-lg-10">
+							<input type="text" name="seller_price" value="{$shop_distribute_item['seller_price']}" class="form-control">     
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-2 control-label">请选择分类集市</label>
+						<div class="col-lg-10">
+						{:form_select(get_distribute_category(),$shop_distribute_item['distribute_category_id'],'class="select input-large shop_cates_select form-control" check-type="Text" name="distribute_category_id" id="distribute_category_id"',"--请选择集市分类--")}
+						</div>
+					</div>
+					
+					
+					<div class="form-group">
+						<span class="col-lg-2 control-label">是否上架：</span>
+						<div class="control-group">
+							<div class="radio">
+								<label><input name="is_distribute" type="radio" value="1" <eq name="shop_distribute_item.is_distribute" value="1"> checked</eq>><span class="text">是</span></label>
+								<label><input name="is_distribute" type="radio" value="0" <eq name="shop_distribute_item.is_distribute" value="0"> checked</eq>><span class="text">否</span></label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-2 control-label">分销说明</label>
+						<div class="col-lg-10">
+							{:Hook('Ueditor',array('name'=>'distribute_desc','value'=>$shop_distribute_item['distribute_desc']))}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<button type="submit" class="btn btn-palegreen" href="{:U('Manage/Distribute/goods_edit')}">确定</button>
+							<button onclick="javascript:history.back(-1);return false;" class="btn btn-palegreen">返回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+</block>
+
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+
+<!--Bootstrap Date Picker-->
+<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script type="text/javascript">
+/*minView
+0 or 'hour' for the hour view
+1 or 'day' for the day view
+2 or 'month' for month view (the default)
+3 or 'year' for the 12-month overview
+4 or 'decade' for the 10-year overview. Useful for date-of-birth datetimepickers.*/
+$(function(){
+$("#distribute_category_id").select2({language:"zh-CN"});
+})
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+			seller_price: {
+                validators: {
+                    notEmpty: {
+                        message: '分销佣金不能为空'
+                    },
+                    regexp: {
+                        regexp: /^(?:[1-9][0-9]?|100)$/,
+                        message: '请输入0-100的正整数'
+                    }
+                }
+            },
+			distribute_category_id: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择商品分销分类'
+                    }
+                }
+            },
+			distribute_desc: {
+                validators: {
+					notEmpty: {
+                        message: '分销说明 不能为空'
+                    },
+                }
+            },
+            'distribute_type[]': {
+                validators: {
+					notEmpty: {
+                        message: '请选择分销方式'
+                    }
+                }
+            },
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+
+
+
+seller_price.blur(function(){
+	    if(seller_price.val()<=0){
+		   toast.error('请输入正确的佣金百分比哦!');
+		   return;
+		}
+		if(seller_price.val().match(/^(([1-9]\d*)|0)(\.\d{2})?$/)==null){
+		   toast.error('佣金百分比最多两位小数点哦');
+		   tox_money_need
+		  // return;
+		}
+		seller_price.val(seller_price.val());
+	})	
+</script>
+
+</block>

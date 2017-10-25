@@ -1,0 +1,17 @@
+<div class="search_shop">
+  <div class="conten">
+    <volist name="documentlist" id="vo">
+      <ul>
+        <li><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank"><img class="img" src="{$vo.goods_ico|getThumbImageById=300,300}" alt=""></a></li>
+        <li class="goods_name"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo['goods_name']|op_t|getShortSp=10}</a></li>
+        <li class="goods_introduct">{$vo['goods_introduct']|op_t|getShortSp=20}</li>
+        <li class="market_price">￥{$vo['market_price']}&nbsp;&nbsp;&nbsp;<!--<del class="tox_money_need">￥{$vo['tox_money_need']}</del>--></li>
+      </ul>
+    </volist>
+    <div class="clear"></div>
+    <div> {:getPagination($totalCount,16)}</div>
+    <if condition="!$documentlist">
+      <div class="shop-box-prompt">该分类下现在还没有商品哦。O(∩_∩)O~ </div>
+    </if>
+  </div>
+</div>

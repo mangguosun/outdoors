@@ -1,0 +1,54 @@
+<extend name="Public/common_user"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default">
+<div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/Index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>是否绑定原有账号
+  </div>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/User/login')}" class="am-btn login-button am-radius">登录</a>
+  </div>
+</header>
+ <form action="{:U('Passports/Index/weixin_bind')}" class="am-form ajax-form" id="form_weixin_bind" method="post">
+<div class="register-all">
+    <input type="hidden" name="siteid" value="{$siteid}"/>
+    <input type="hidden" name="access_token" value="{$access_token['access_token']}"/>
+    <input type="hidden" name="expires_in" value="{$access_token['expires_in']}"/>
+    <input type="hidden" name="refresh_token" value="{$access_token['refresh_token']}"/>
+    <input type="hidden" name="openid" value="{$access_token['openid']}"/>
+    <input type="hidden" name="scope" value="{$access_token['scope']}"/>
+    <input type="hidden" name="unionid" value="{$access_token['unionid']}"/>
+    <input type="hidden" name="website_url" value="{$website_url}"/>
+    <input type="hidden" name="type" value="1"/>
+    <p class="am-form-group"><input type="text" name="username" class="js-pattern-MobileOrEmail" placeholder="手机号码/邮箱" data-foolish-msg="请输入正确手机号或邮箱" value="" required /></p>
+    <p class="am-form-group"><input type="password" name="password" class="" minlength="3" placeholder="请输入密码" data-foolish-msg="请输入密码" value="" /></p>   
+    <button type="submit" id="reg_btn" class="am-btn am-btn-block am-btn-green">立即绑定</button>
+</div>
+</form>
+
+<form action="{:U('Passports/Index/weixin_bind')}" class="am-form ajax-form" id="form_weixin_bind" method="post">
+<div class="register-all">
+    <input type="hidden" name="siteid" value="{$siteid}"/>
+    <input type="hidden" name="access_token" value="{$access_token['access_token']}"/>
+    <input type="hidden" name="expires_in" value="{$access_token['expires_in']}"/>
+    <input type="hidden" name="refresh_token" value="{$access_token['refresh_token']}"/>
+    <input type="hidden" name="openid" value="{$access_token['openid']}"/>
+    <input type="hidden" name="scope" value="{$access_token['scope']}"/>
+    <input type="hidden" name="unionid" value="{$access_token['unionid']}"/>
+    <input type="hidden" name="website_url" value="{$website_url}"/>
+    <input type="hidden" name="type" value="2"/>
+    <div class="form-group am-form">
+      没有原有账号或不绑定：<input class="btn btn-default weixin_bind_next" type="submit" value="直接登录" />
+    </div> 
+</div>
+</form>
+
+<script>
+
+$(function () { 
+  get_validator($('#form_weixin_bind'));
+
+})
+</script>
+</block>

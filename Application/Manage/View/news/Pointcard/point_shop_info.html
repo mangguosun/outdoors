@@ -1,0 +1,168 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">卡券:{$cardid}适用的商品</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+			<div class="widget-body">
+				<table class="table table-striped table-bordered table-hover" id="simpledatatable">
+      <!-- 表头 -->
+					<thead>
+						<tr>
+						  
+						  <th>名称</th>
+						  <th>分类</th>
+						  <th>售价</th>
+						  <th>余量</th>
+						  <th>已售</th>
+						  <th>新品</th>
+						  <th>推荐</th>
+						  <th>特价</th>
+						  <th>热卖</th>
+						  <th>排序</th>
+						  <th>状态</th>
+						  <!--<th>是否出售</th>
+						  <th>更新时间</th>-->
+						  <th>创建时间</th>
+						</tr>
+					</thead>
+					<!-- 列表 -->
+					<tbody>
+
+						<volist name="datainfo" id="vo">
+							<tr>
+								
+								<td style="width:250px;"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name}</a></td>
+								<td>{:get_shop_categrory_title($vo['category_id'])}</td>
+								<td>{$vo.market_price}元</td>
+								<td>{$vo.goods_num}</td>
+								<td>{$vo.sell_num}</td>
+								<td><if condition="$vo.is_new eq 1">是<elseif condition="$vo.is_new eq 0"/>否</if></td>
+								<td><if condition="$vo.is_recommend eq 1">是<elseif condition="$vo.is_recommend eq 0"/>否</if></td>
+								<td><if condition="$vo.is_bargains eq 1">是<elseif condition="$vo.is_bargains eq 0"/>否</if></td>
+								<td><if condition="$vo.is_firey eq 1">是<elseif condition="$vo.is_firey eq 0"/>否</if></td>
+								<td>{$vo.sort}</td>
+								<td><if condition="$vo.status eq 0"><font color="red">禁用</font><elseif condition="$vo.status eq 1"/><font color="#2DC3E8">正常</font></if></td>
+								<!--<td><if condition="$vo.purchase_status eq 0"><font color="red">否</font><elseif condition="$vo.purchase_status eq 1"/><font color="#2DC3E8">是</font></if></td>
+								<td>{$vo.changetime|date="Y-m-d",###}</td>-->
+								<td>{$vo.createtime|date="Y-m-d",###}</td>
+								
+							</tr>
+						</volist>
+					</tbody>	
+				</table>
+				
+			</div>
+		</div>
+	<div>
+</div>
+</block>
+
+<block name="script">
+<!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script>
+	var InitiateSimpleDataTable = function () {
+		return {
+			init: function () {
+				//Datatable Initiating
+				var oTable = $('#simpledatatable').dataTable({
+					"sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+					"iDisplayLength": 10,
+	
+					"oTableTools": {
+						"aButtons": [],
+						"sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+					},
+					"language": {
+						"search": "",
+						"sLengthMenu": "_MENU_",
+						"sZeroRecords": "对不起，查询不到任何相关数据",
+						"sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+						"sInfoEmpty": "共查询到 _TOTAL_ 条记录",
+
+						"sInfoEmtpy": "找不到相关数据",
+						"sInfoFiltered": "(数据表中共为 _MAX_ 条记录)",
+				 		"sProcessing": "正在加载中...",
+						"oPaginate": {
+							"sFirst":    "首页",
+							"sPrevious": "上页",
+							"sNext":     "下页",
+							"sLast":     "末尾"
+						}
+					},
+					
+					"bFilter": true, //搜索栏
+                    "bPaginate": true, //翻页
+                    "bLengthChange": false, ////每页显示的记录数
+                    "bInfo": false, //显示表格信息
+                    "bAutoWidth": true, //自适应宽度
+                    "aoColumns": [
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": true },
+					  { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": false },
+                      { "bSortable": false },
+                      { "bSortable": true },
+                      { "bSortable": true },					  
+					  { "bSortable": true },
+					],
+					"aaSorting": []
+				});
+
+	
+			}
+	
+		};
+	
+	}();
+	InitiateSimpleDataTable.init();
+    </script>
+
+<!--搜索-->
+<script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+  
+
+</block>

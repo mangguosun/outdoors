@@ -1,0 +1,88 @@
+<div id="center">
+  <div class="row data-table">
+  <span style="color:green"><b>温馨提示：</b></span><span style="color:red">请在订单中使用代金券</span>
+  <div class="pull-right">
+	<a class="mbtn btn-primary bindcard" href="{:U('bindcard')}" >领取优惠</a>
+  </div>
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>券码/密钥/面值</th>
+		  <th>类型/名称</th>
+		  <th>相关时间</th>
+		  <th>状态</th>
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="cardlist">
+        <volist name="cardlist" id="vo">
+          <tr>
+			<td>券码：{$vo.cardid}<br><if condition="$vo['card_info']['cardtype'] eq 1">密钥：{$vo['card_info']['cardkey']}<br><else /></if>面值：{$vo['card_info']['amount']}元</td>
+			<td>{:cardtype_cipher($vo['card_info']['cardtype'])}/{$vo['cardname']}</td>
+			<td>领取时间：{$vo.bindtime|date="Y-m-d H:i:s",###}<br>
+				<if condition="$vo['card_info']['endtime'] neq 0">到期时间：{$vo['card_info']['endtime']|date="Y-m-d H:i:s",###}<br></if>
+				<if condition="$vo['card_info']['starttime'] neq 0">生效时间：{$vo['card_info']['starttime']|date="Y-m-d H:i:s",###}<br><else />生效时间：{$vo['card_info']['createtime']|date="Y-m-d H:i:s",###}<br></if>
+				<if condition="$vo[usetime] neq 0">使用时间：{$vo.usetime|date="Y-m-d H:i:s",###}<br></if>
+				<if condition="$vo[gettime] neq 0">
+					<if condition="$vo[from_uid] eq json_decode(WEBSITEINFO,true)['uid']">
+					派发时间：{$vo.gettime|date="Y-m-d H:i:s",###}<br>
+					<else />
+					获赠时间：{$vo.gettime|date="Y-m-d H:i:s",###}<br>
+					</if>
+				</if>
+				<if condition="$vo[givetime] neq 0">赠送时间：{$vo.givetime|date="Y-m-d H:i:s",###}<br></if>				
+			</td>
+			<td>				
+				<?php if((!empty($vo['to_uid']) || !empty($vo['from_uid'])) && !empty($vo['givetime'])):?>
+				已赠送
+				<?php else:?>
+				{:get_pointcard($vo[cardid])}
+				<?php endif;?>
+			</td>
+			<td>
+				<?php if(D('Common/Pointcard')->check_card($vo['cardid'],true)['status'] && $vo['card_info']['mobile']==0):?>
+
+					<a class="mbtn btn-primary bindcard" href="{:U('donate',array('cardid'=>$vo['cardid']))}" >赠送</a>
+				<?php else:?>
+				<?php endif;?>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="5">{$page}</td>
+        <else/>
+			<td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+  <div class=""></div>
+</div>
+<script type="text/javascript">
+$(function(){
+		$('.bindcard').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+						//console.log(this.content);
+					}
+				}
+			});
+			$('.donate').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+						//console.log(this.content);
+					}
+				}
+			});
+
+})
+	
+</script>

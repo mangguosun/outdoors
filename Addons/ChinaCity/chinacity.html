@@ -1,0 +1,105 @@
+<if condition="$param.level egt '1'">
+<select class="form-control" name="{$param.find}_province" id="{$param.find}_J_province"></select>
+</if>
+
+<if condition="$param.level egt '2'">
+<select class="form-control" name="{$param.find}_city" id="{$param.find}_J_city"></select>
+</if>
+
+<if condition="$param.level egt '3'">
+<select class="form-control" name="{$param.find}_district" id="{$param.find}_J_district"></select>
+</if>
+<if condition="$param.level egt '4'">
+<select class="form-control" name="{$param.find}_community" id="{$param.find}_J_community"></select>
+</if>
+
+<script type="text/javascript">
+
+
+$(function(){
+	var finds = "{$param.find}_";
+
+	var pid=<if condition="$param.province neq ''">{$param.province}<else />0</if>;  //默认省份id
+	var cid=<if condition="$param.city neq ''">{$param.city}<else />0</if>;  //默认城市id
+	var did=<if condition="$param.district neq ''">{$param.district}<else />0</if>;  //默认区县市id
+	var coid=<if condition="$param.community neq ''">{$param.community}<else />0</if>;  //默认乡镇id
+
+    /*修复联动不及时的bug，陈一枭*/
+	function change_province(pid){
+		$.post("{:addons_url('ChinaCity://ChinaCity/getProvince')}", {pid: pid}, function(result){
+			$("#"+finds+"J_province").html(result);
+		});
+	}
+	
+	function change_city(p_pid,p_cid){
+		
+		
+		$.post('{:addons_url("ChinaCity://ChinaCity/getCity")}', {pid: p_pid, cid: p_cid}, function(result){																	
+			$("#"+finds+"J_city").html(result);
+		});
+		
+		<if condition="$param.level egt '3'">
+			var cid_g=$(this).children('option:selected').val();
+			change_district(cid_g)
+		</if>
+
+	}
+	function change_district(p_cid,p_did){
+		$.post('{:addons_url("ChinaCity://ChinaCity/getDistrict")}', {cid: p_cid, did: p_did}, function(result){
+			$("#"+finds+"J_district").html(result);
+		});
+		var did_g=$(this).children('option:selected').val();
+		//change_community(did_g)
+	}
+	function change_community(p_did,p_coid){
+        $.post('{:addons_url("ChinaCity://ChinaCity/getCommunity")}', {did: p_did, coid: p_coid}, function(result){
+            $("#"+finds+"J_community").html(result);
+        });
+    }
+
+<if condition="$param.level egt '1'">
+   change_province(pid);
+</if>
+
+<if condition="$param.level egt '2'">
+ change_city(pid,cid);
+</if>
+
+<if condition="$param.level egt '3'">
+change_district(cid,did);
+</if>
+
+<if condition="$param.level egt '4'">
+   change_community(did,coid);
+</if>
+
+ 
+<if condition="$param.level egt '2'">
+	$('#'+finds+'J_province').change(function(){
+		var pid_g=$(this).children('option:selected').val();
+		change_city(pid_g)
+	});
+</if>
+
+<if condition="$param.level egt '3'">
+	$('#'+finds+'J_city').change(function(){
+		var cid_g=$(this).children('option:selected').val();
+		change_district(cid_g)
+	});
+</if>
+
+<if condition="$param.level egt '4'">
+	$('#'+finds+'J_district').change(function(){
+		var did_g=$(this).children('option:selected').val();
+		change_community(did_g)
+	});
+</if>
+
+
+	
+
+	
+
+
+});
+</script>

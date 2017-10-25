@@ -1,0 +1,691 @@
+<extend name="sports/common"/>
+<block name="body">
+  <div class="container clearfix"> {:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))} </div>
+  <div class="container">
+    <div class="shop_box_fix">
+      <div class="shop_detail_bd">
+		<div class="shop-box">
+			<h2 class="title_content"><a href="{:U('goods')}">所有分类</a> 
+			<if condition="$content['up_category_id'] neq ''" >
+			&nbsp;->&nbsp;<a href="{:U('goods',array('category_id'=>$content['up_category_id']))}">{$content.up_category_title}</a>
+			</if>
+			&nbsp;->&nbsp;<a href="{:U('goods',array('category_id'=>$content['category_id']))}">{$content.category_title}</a>
+			&nbsp;->&nbsp;{$content.goods_name}
+			</h2>
+		</div>
+        <div class="shop_summary">
+          <div class="shop_item_info">
+            <div class="shop-item-info-l">
+              <div class="shop-gallery">
+                <div id="vertical" class="bigImg"> <img src="{$content.goods_ico|getThumbImageById=600,600}" width="400" height="400" alt="" id="midimg" />
+                  <div style="display:none;" id="winSelector"></div>
+                </div>
+                <!--bigImg end-->
+                <div class="smallImg">
+                  <div class="scrollbutton smallImgUp disabled"><i class="fa fa-caret-left"></i></div>
+                  <div id="imageMenu">
+                    <ul>
+							<li id="onlickImg"><img class="img-responsive" src="{$content.goods_ico|getThumbImageById=400,400}"/></li>
+						<foreach name="pictures" item="images" key="k">
+							<li> <img class="img-responsive" src="{$images.id|getThumbImageById=400,400}"></li>
+						</foreach>
+                    </ul>
+                  </div>
+                  <div class="scrollbutton smallImgDown"><i class="fa fa-caret-right"></i></div>
+                </div>
+                <!--smallImg end-->
+                <div id="bigView" style="display:none;"><img width="800" height="800" alt="" src="" /></div>
+              </div>
+              <script type="text/javascript">
+$(document).ready(function(){
+	// 图片上下滚动
+	var count = $("#imageMenu li").length - 5; /* 显示 6 个 li标签内容 */
+	var interval = $("#imageMenu li:first").width();
+	var curIndex = 0;
+	
+	$('.scrollbutton').click(function(){
+		if( $(this).hasClass('disabled') ) return false;
+		
+		if ($(this).hasClass('smallImgUp')) --curIndex;
+		else ++curIndex;
+		
+		$('.scrollbutton').removeClass('disabled');
+		if (curIndex == 0) $('.smallImgUp').addClass('disabled');
+		if (curIndex == count-1) $('.smallImgDown').addClass('disabled');
+		
+		$("#imageMenu ul").stop(false, true).animate({"marginLeft" : -curIndex*interval + "px"}, 600);
+	});
+	
+	// 解决 ie6 select框 问题
+	$.fn.decorateIframe = function(options) {
+       /* if ($.browser.msie && $.browser.version < 7) {
+            var opts = $.extend({}, $.fn.decorateIframe.defaults, options);
+            $(this).each(function() {
+                var $myThis = $(this);
+                //创建一个IFRAME
+                var divIframe = $("<iframe />");
+                divIframe.attr("id", opts.iframeId);
+                divIframe.css("position", "absolute");
+                divIframe.css("display", "none");
+                divIframe.css("display", "block");
+                divIframe.css("z-index", opts.iframeZIndex);
+                divIframe.css("border");
+                divIframe.css("top", "0");
+                divIframe.css("left", "0");
+                if (opts.width == 0) {
+                    divIframe.css("width", $myThis.width() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                if (opts.height == 0) {
+                    divIframe.css("height", $myThis.height() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                divIframe.css("filter", "mask(color=#fff)");
+                $myThis.append(divIframe);
+            });
+       // }*/
+    }
+    $.fn.decorateIframe.defaults = {
+        iframeId: "decorateIframe1",
+        iframeZIndex: -1,
+        width: 0,
+        height: 0
+    }
+    //放大镜视窗
+
+   // $("#bigView").decorateIframe();
+
+    //点击到中图
+    var midChangeHandler = null;
+	
+    $("#imageMenu li img").bind("click", function(){
+		if ($(this).attr("id") != "onlickImg") {
+			midChange($(this).attr("src").replace("small", "mid"));
+			$("#imageMenu li").removeAttr("id");
+			$(this).parent().attr("id", "onlickImg");
+		}
+	}).bind("mouseover", function(){
+		$("#imageMenu li").removeAttr("id");
+		$(this).parent().attr("id", "onlickImg");
+			
+		if ($(this).attr("id") != "onlickImg") {
+			window.clearTimeout(midChangeHandler);
+			midChange($(this).attr("src").replace("small", "mid"));
+			//$(this).css({ "border": "2px solid #000" });
+		}
+	}).bind("mouseout", function(){
+		if($(this).attr("id") != "onlickImg"){
+			//$(this).removeAttr("style");
+			midChangeHandler = window.setTimeout(function(){
+				midChange($("#onlickImg img").attr("src").replace("small", "mid"));
+			}, 1000);
+		}
+	});
+
+    function midChange(src) {
+        $("#midimg").attr("src", src).load(function() {
+            changeViewImg();
+        });
+    }
+
+    //大视窗看图
+    function mouseover(e) {
+        if ($("#winSelector").css("display") == "none") {
+            $("#winSelector,#bigView").show();
+        }
+
+        $("#winSelector").css(fixedPosition(e));
+        e.stopPropagation();
+    }
+
+
+    function mouseOut(e) {
+        if ($("#winSelector").css("display") != "none") {
+            $("#winSelector,#bigView").hide();
+        }
+        e.stopPropagation();
+    }
+
+
+    $("#midimg").mouseover(mouseover); //中图事件
+    $("#midimg,#winSelector").mousemove(mouseover).mouseout(mouseOut); //选择器事件
+
+    var $divWidth = $("#winSelector").width(); //选择器宽度
+    var $divHeight = $("#winSelector").height(); //选择器高度
+    var $imgWidth = $("#midimg").width(); //中图宽度
+    var $imgHeight = $("#midimg").height(); //中图高度
+    var $viewImgWidth = $viewImgHeight = $height = null; //IE加载后才能得到 大图宽度 大图高度 大图视窗高度
+
+    function changeViewImg() {
+        $("#bigView img").attr("src", $("#midimg").attr("src").replace("mid", "big"));
+    }
+
+    changeViewImg();
+
+    $("#bigView").scrollLeft(0).scrollTop(0);
+    function fixedPosition(e) {
+        if (e == null) {
+            return;
+        }
+        var $imgLeft = $("#midimg").offset().left; //中图左边距
+        var $imgTop = $("#midimg").offset().top; //中图上边距
+        X = e.pageX - $imgLeft - $divWidth / 2; //selector顶点坐标 X
+        Y = e.pageY - $imgTop - $divHeight / 2; //selector顶点坐标 Y
+        X = X < 0 ? 0 : X;
+        Y = Y < 0 ? 0 : Y;
+        X = X + $divWidth > $imgWidth ? $imgWidth - $divWidth : X;
+        Y = Y + $divHeight > $imgHeight ? $imgHeight - $divHeight : Y;
+
+        if ($viewImgWidth == null) {
+            $viewImgWidth = $("#bigView img").outerWidth();
+            $viewImgHeight = $("#bigView img").height();
+            if ($viewImgWidth < 200 || $viewImgHeight < 200) {
+                $viewImgWidth = $viewImgHeight = 800;
+            }
+            $height = $divHeight * $viewImgHeight / $imgHeight;
+            $("#bigView").width($divWidth * $viewImgWidth / $imgWidth);
+            $("#bigView").height($height);
+        }
+
+        var scrollX = X * $viewImgWidth / $imgWidth;
+        var scrollY = Y * $viewImgHeight / $imgHeight;
+        $("#bigView img").css({ "left": scrollX * -1, "top": scrollY * -1 });
+        $("#bigView").css({ "top": 0, "left":420 });
+		
+		 //$("#bigView").css({ "top": 75, "left": $(".shop-gallery").offset().left + $(".shop-gallery").width() + 15 });
+
+        return { left: X, top: Y };
+    }
+
+});
+</script>
+            </div>
+            <div class="shop-item-info-r">
+              <div class="shop-detail-hd">
+                <h1>{$content.goods_name}</h1>
+              </div>
+			  <div class="shop-detail-hd">
+                <a href="#detail"><font color=red>{$content.goods_introduct}</font></a>
+              </div>
+              <div class="shop-fcs-panel">
+        <if condition="$content['bargain_price']">
+        <dl class="tm-price-panel">
+                  <dt class="tb-metatit">销售价</dt>
+                  <dd><em class="tm-yen">¥</em><span class="tm-price">{$content.market_price}</span></dd>
+                </dl>
+                <dl class="tm-promo-panel tm-promo-cur">
+                  <dt class="tb-metatit">特价</dt>
+                  <dd>
+                    <div class="tm-promo-price"> <em class="tm-yen">¥</em><span class="tm-price" id="get-tm-price1">{$content.bargain_price}</span><em class="tm-promo-type"></em>
+          
+            <span id="timejs" style="font-size: 12px" >
+              <span>还剩:</span>
+              <span id="day" class="day time_td">00</span>天
+              <span id="hour" class="hour time_td">00</span>时
+              <span id="mini" class="time_td mini ml5">00</span>分
+              <span id="sec" class="sec time_td">00</span>秒
+              <span id="hm" class="hm time_td">0</span>
+            </span>
+          </div>
+                  </dd>
+                </dl>
+        <else/>
+        <dl class="tm-promo-panel tm-promo-cur">
+                  <dt class="tb-metatit">销售价</dt>
+                  <dd>
+                    <div class="tm-promo-price"> <em class="tm-yen">¥</em><span class="tm-price" id="get-tm-price">{$content.market_price}</span><em class="tm-promo-type"></em>
+          </div>
+                  </dd>
+                </dl>
+        
+        </if>
+        
+      
+                <dl class="tm-price-panel">
+                  <dt class="tb-metatit">市场价</dt>
+                  <dd><em class="tm-yen">¥</em><span class="tm-price">{$content.tox_money_need}</span><em class="tm-promo-type"></em><em class="tm-promo-price" style="margin-left:25px" ><if condition="(!$content['fr_id']) and ($content['fr_freight'])">
+          此商品运费是：￥{$content.fr_freight} 元
+          <else/>
+          此商品是：包邮
+          </if></em></dd>
+                </dl>
+              </div>
+              <div class="tb-key">
+                <div class="tb-skin">
+                <if condition="$shop_brand['name']">
+                    <div class="">
+                      <dl>
+                        <dt class="tb-metatit">品牌</dt>
+                        <dd> <span class="tb-amount-widget">{$shop_brand.name}<if condition="$shop_brand['englist_name']">({$shop_brand.englist_name})</if></span></dd></dt></dl>
+                    </div>
+                 </if>
+                <if condition="$tags">
+                    <div class="">
+                      <dl>
+                        <dt class="tb-metatit">标签</dt>
+                        <dd> <volist name="tags" id="tag"><span class="tb-amount-widget"><a title="{$tag.name}" href="{:U('Shop/Index/goods',array('tag'=>$tag['id']))}" class="">{$tag.name}</a>&nbsp;&nbsp;</span></volist></dd></dt></dl>
+                    </div>
+                 </if>
+                
+                  <div class="tb-sku">
+                    <volist name="sku_type_detailed" id="val">
+                      <dl class="tb-prop tm-sale-prop <if condition="$val['is_color'] eq 1">
+                        tm-img-prop
+                        </if>
+                        " id="sku_type_{$val['type_id']}" data-type-id="{$val['type_id']}">
+                        <dt class="tb-metatit">{$val['type_name']}</dt>
+                        <dd>
+                          <ul class=" <if condition="$val['is_color'] eq 1">
+                            tb-img
+                            </if>
+                            ">
+                            <volist name="val.data" id="v">
+                              <li class="" data-aid="{$v['attribute_id']}" data-key="{$val['type_id']}" data-goodsid="{$content.id}"><a  href="javascript:" 
+                                <if condition="$val['is_color'] eq 1"> title="{$v['attribute_name']}" style="background:{$v['attribute_color']}" </if>
+                                ><span>{$v['attribute_name']}</span></a><i>已经选中</i></li>
+                            </volist>
+                          </ul>
+                        </dd>
+                      </dl>
+                    </volist>
+                  </div>
+				  <form action="{:U('Shop/Order/getorderinfo')}" method="post" >
+				  <if condition="$content['purchase_status'] eq 1">
+                  <div>
+                    <dl class="tb-amount ">
+                      <dt class="tb-metatit">数量</dt>
+                      <dd> <span class="tb-amount-widget">
+                        <input id="goods_num" name="goods_num" type="text" value="1" class="tb-text mui-amount-input" />
+                        <input id="goods_id" name="goods_id" type="hidden" value="{$content.id}" class="" />
+                        <input id="goods_sku" name="goods_sku" type="hidden" value="" class="" />
+                        <input id="is_sku" name="is_sku" type="hidden" value="{$is_sku}" class="" />
+                        <span class="mui-amount-btn"> <span id="goods_num_plus" class="mui-amount-increase">+</span> <span id="goods_num_minus" class="mui-amount-decrease">-</span> </span> <span class="mui-amount-unit">件</span> </span> <em>库存<span id="get-tm-stock">{$content.goods_num}</span>件</em> </dd>
+                    </dl>
+                  </div>
+                  <div class="tb-action">
+                    <div class="tb-btn-buy tb-btn-sku"><a href="javascript:" class="addcart">加入购物车</a></div>
+                    <div class="tb-btn-basket tb-btn-sku"><button type="submit" class="fastbuy" name="fastbuy" >立即购买</button></div>
+					<div class="clear"></div>
+					<br>
+					<div id="testDiv" style="width:300px; border:1px #ddd solid; display:none ">
+						<div style="background:#ddd; padding:5px"><a class='continue_shopping keep_right' >×</a>
+						<b>成功加入购物车</b></div>
+						<div style=" margin:10px auto; font-size:12px; text-align:center;">目前选购商品共 <font color='red'><b id="item_num"> </b></font> 种 <font color='red'><b id="cart_num"> </b></font>  件&nbsp;&nbsp;合计: <font color='red'><b id='cart_price'> </b></font> </div>
+						<div style="padding:0px 26px 10px 51px"><a href="{:U('Shop/Shopcart/shopcartitem')}" class="btn btn-primary" >进入购物车</a>&nbsp;<a href="{:U('Shop/Index/index')}" class='continue_shopping btn btn-primary' >返回商城</a></div>
+					</div>
+                  </div>
+				  <else/>
+				  <div class="tb-action">
+                    <div style="font-size: 16px; font-weight:900; padding:2em 0;color: red;"> 该商品暂不支持在线购买，请联系客服了解详情O(∩_∩)O~  </div>
+                  </div>
+				  </if>
+				  </form>
+                  <div class="msg_text"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item-sidebar">
+          <h3>同类商品 </h3>
+          <div class="goods_sameshop">
+            <ul>
+              <volist name="contents_same_category" id="vo">
+                <li class="items">
+                	<div class="items_same">
+                        <div class="samepic"><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}"><img class="add_loading" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.goods_ico|getThumbImageById=135,135}"></a></div>
+                        <div class="money"><i class="ico_to_money"></i>&nbsp;{$vo.tox_money_need}</div>
+                         <h3><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}">{$vo.goods_name}</a></h3>
+                	</div>
+                   
+                </li>
+              </volist>
+            </ul>
+          </div>
+          <if condition="count($contents_same_category) eq 0">
+            <div style="font-size: 16px;padding:2em 0;color: #ccc;text-align: center"> 该商品没有同类商品哦。O(∩_∩)O~ </div>
+          </if>
+        </div>
+        <div class="shop_detailcontent" id="detail">
+          <h3>商品详情</h3>
+          <div class="details"> {$content.goods_detail} </div>
+          <div style="padding: 5px 20px 50px 20px;"> {:hook('localComment', array('path'=>"Shop/index/$content[id]", 'uid'=>$content['uid']))} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+	  $(function(){
+		//加入购物车		 
+		$(".addcart").click(function(){
+			var is_sku = $("#is_sku").val();
+			var goods_id = $("#goods_id").val();
+			var goods_num = $("#goods_num").val();
+			if(is_sku){
+				var goods_sku = $("#goods_sku");
+				var goods_sku_id = 		goods_sku.val();		
+				if(!goods_sku_id){
+					$(".tb-skin").addClass("msg_border");	
+					$(".msg_text").html('请选择相关配置').show();
+					return false;
+				}
+			}else{
+				var goods_sku_id = '';
+			}
+			
+			$.post(U('Shop/Shopcart/additem'),{goods_id:goods_id,goods_num:goods_num,sku_id:goods_sku_id},function(res){
+				if(res['status'] == false){
+					toast.error(res['info']);
+				}else{
+					//toast.success('成功加入购物车');
+					$("#testDiv").show();
+					$('#cart').html("我的购物车("+res['datainfo']['allnum']+")");
+
+					$('#item_num').html(res['datainfo']['item_num']);
+					$('#cart_num').html(res['datainfo']['allnum']);
+					$('#cart_price').html("￥"+res['datainfo']['cart_price']);
+					$('#shopping-cart-num').html(res['datainfo']['allnum']); 					
+				}
+			},'json')
+		});
+		$(".continue_shopping").click(function(){
+			$("#testDiv").hide();
+		});
+		
+		$(".fastbuy").click(function(){
+			var is_sku = $("#is_sku").val();
+			var goods_id = $("#goods_id").val();
+			var goods_num = $("#goods_num").val();
+			if(is_sku){
+				var goods_sku = $("#goods_sku");
+				var goods_sku_id = 		goods_sku.val();			
+				if(!goods_sku_id){
+					$(".tb-skin").addClass("msg_border");	
+					$(".msg_text").html('请选择相关配置').show();
+					return false;
+				}
+			}else{
+				var goods_sku_id = '';
+			}
+		});
+		
+		
+		
+		var sys_item={$sku_info};
+	    //商品规格选择
+		//$(".sys_item_specpara").each(function(){
+											
+	
+		    $(".tb-sku").find("ul li").click(function(){
+			 	
+			
+				if($(this).hasClass("tb-selected")) {
+					return false;
+				}
+				
+				
+				if($(this).hasClass("tb-out-of-stock")) {
+					return false;
+				}
+				
+				$(".tb-skin").removeClass("msg_border");
+				$(".msg_text").html('').hide();
+				
+			 
+			 	detail_aid = $(this).attr("data-aid");
+				detail_type = $(this).attr("data-key");
+				
+				
+				$("#sku_type_"+detail_type+" ul li").removeClass("tb-selected");
+				$(this).addClass("tb-selected");
+				$("#sku_type_"+detail_type).attr("selected-data-aid",$(this).attr("data-aid"));
+				
+				if(detail_aid){
+					get_goods_start();
+				}
+		
+				if(detail_aid){
+					var shop_detail_infos={$shop_detail_infos}; //all
+					
+					
+					var shop_detail_infos_detail = shop_detail_infos[detail_aid];
+					if(shop_detail_infos_detail){
+						$.each(shop_detail_infos_detail,function(i,vo){
+							if(vo){
+								get_type_data(i,vo);
+							}
+						 })
+					}
+				}
+	           getattrprice(); //输出价格
+			});
+		//})
+		
+	   
+		//获取对应属性的价格
+		function getattrprice(){
+	
+			var defaultstats=true;
+			var _val='';
+			var _resp={price:"#get-tm-price",stock:"#get-tm-stock"}  //输出对应的class
+			$(".tb-prop").each(function(i){
+												  
+	           var v=$(this).attr("selected-data-aid");
+			    if(!v){
+					defaultstats=false;
+				}else{
+					_val+=_val!=""?",":"";
+					_val+=v;
+				}
+			})
+			if(!!defaultstats){ //--都点击--
+			   if(sys_item[_val]){   //--存在--	
+					_price=sys_item[_val]['price'];
+					_stock=sys_item[_val]['stock'];
+				}
+				$("#goods_sku").val(sys_item[_val]['sku_id']);
+				$(".msg_text").html('').hide();
+				
+			}else{ //-点击单个--
+				_stock=sys_item['stock'];
+				_price=sys_item['price'];
+				$("#goods_sku").val('');
+				$(".msg_text").html('请选择商品相关其它配置').show();
+			}
+			//输出价格-和-库存
+			
+			$(_resp.price).text(_price);
+			if(_stock==0){
+			  $(_resp.stock).html("<u style='color:red;'>缺货中</u>");
+			}else{
+			  $(_resp.stock).text(_stock);
+			}
+			
+		}
+		
+		function get_type_data(types_id,types_data){
+			var var2  = [];
+			$.each(types_data,function(i,vo){    
+				var2[i]=i;
+
+			 })	
+			getattrname(types_id,var2);
+		}		
+		
+		
+		
+		//---比较---
+		function getattrname(typeid,vo){
+			$("#sku_type_"+typeid+" ul li").each(function(){		
+					var get_id = $(this).attr("data-aid");		
+					if($.inArray(get_id, vo)==-1){
+							var selected_type_aid = $("#sku_type_"+typeid).attr("selected-data-aid");
+							if(selected_type_aid && selected_type_aid == get_id){
+								$("#sku_type_"+typeid).removeAttr("selected-data-aid");
+								$(this).removeClass("tb-selected");
+							}
+						$(this).addClass('tb-out-of-stock');
+					}
+               })
+	    }
+		///---初始化----
+		function get_goods_start(){
+				var tb_stock = $('.tb-sku .tb-out-of-stock');
+				if(tb_stock){
+					tb_stock.removeClass('tb-out-of-stock');
+				}
+		}
+	    
+		//--数量-加减法--
+		var t = $("#goods_num");
+		$("#goods_num_plus").click(function () {
+			t.val(parseInt(t.val()) + 1)
+			setTotal(); 
+			//GetCount();
+		})
+		
+		//--失去焦点--
+		t.blur(function(){
+			if(t.val()<=0){
+			  //toast.error("购买数量不能小于1");
+			  t.val(1);
+			}
+		
+		})
+		$("#goods_num_minus").click(function () {
+		    if((t.val() - 1)<=0){
+				
+				//toast.error("购买数量不能小于1");
+				
+			}else{
+				t.val(parseInt(t.val()) - 1)
+				
+				setTotal(); 
+			
+			}
+			
+			//GetCount();
+		})
+		function setTotal() {
+
+			$("#total1").html((parseInt(t.val()) * 9).toFixed(2));
+			$("#newslist-1").val(parseInt(t.val()) * 9);
+		}
+		setTotal();
+                         
+  })
+
+  
+  
+  
+</script>
+<script type="text/javascript">
+
+var fnTimeCountDown = function(d, o){
+  
+
+  var f = {
+    haomiao: function(n){
+      if(n < 10)return "00" + n.toString();
+      if(n < 100)return "0" + n.toString();
+      return n.toString();
+    },
+    zero: function(n){
+      var n = parseInt(n, 10);//解析字符串,返回整数
+      if(n > 0){
+        if(n <= 9){
+          n = "0" + n;  
+        }
+        return String(n);
+      }else{
+        return "00";  
+      }
+    },
+    dv: function(){
+      
+      //d = d || Date.UTC(2050, 0, 1); //如果未定义时间，设定倒计时日期是2050年1月1日
+      var now = new Date();
+      //现在将来秒差值
+      //alert(future.getTimezoneOffset());
+      var dur = (d - now.getTime()) / 1000 , mss = d - now.getTime() ,pms = {
+        hm:"000",
+        sec: "00",
+        mini: "00",
+        hour: "00",
+        day: "00",
+        month: "00",
+        year: "0"
+      };
+      if(mss > 0){
+        pms.hm = parseInt(f.haomiao(mss % 1000)/100);   //pms.hm = f.haomiao(mss % 1000);
+        pms.sec = f.zero(dur % 60);
+        pms.mini = Math.floor((dur / 60)) > 0? f.zero(Math.floor((dur / 60)) % 60) : "00";
+        pms.hour = Math.floor((dur / 3600)) > 0? f.zero(Math.floor((dur / 3600)) % 24) : "00";
+		pms.day = Math.floor((dur / 86400)) > 0? f.zero(Math.floor((dur / 86400))) : "00";
+       // pms.day = Math.floor((dur / 86400)) > 0? f.zero(Math.floor((dur / 86400)) % 30) : "00";
+        //月份，以实际平均每月秒数计算
+        pms.month = Math.floor((dur / 2629744)) > 0? f.zero(Math.floor((dur / 2629744)) % 12) : "00";
+      
+        pms.year = Math.floor((dur / 31556926)) > 0? Math.floor((dur / 31556926)) : "0";
+      }else{
+        pms.year=pms.month=pms.day=pms.hour=pms.mini=pms.sec="00";
+        pms.hm = "000";
+        location.reload();  //倒计时到0，刷新页面
+        return;
+      }
+      return pms;
+    },
+    ui: function(){
+      
+      
+      if(o.hm){
+        o.hm.html(f.dv().hm);
+      }
+      if(o.sec){
+        o.sec.html(f.dv().sec);
+      }
+      if(o.mini){
+        o.mini.html(f.dv().mini);
+      }
+      if(o.hour){
+        o.hour.html(f.dv().hour);
+      }
+      if(o.day){
+        o.day.html(f.dv().day);
+      }
+      if(o.month){
+        o.month.html(f.dv().month);
+      }
+      if(o.year){
+        o.year.html(f.dv().year);
+      }     
+      setTimeout(f.ui, 1);      
+    }
+  };  
+f.ui();
+};
+
+
+var zxx = {
+  obj: function(){
+    return {
+      hm: $("#hm"),
+      sec: $("#sec"),
+      mini: $("#mini"),
+      hour: $("#hour"),
+      day: $("#day"),
+      month: $("#month"),
+      year: $("#year")
+    }
+  }
+};
+<if condition="$content['bargain_price']">
+fnTimeCountDown('{$content.overtime}', zxx.obj());
+</if>
+</script>
+</block>
+<block name="script">
+<script> 
+	$(function () {
+		hdl_lazyload("img.add_loading");
+	 })
+</script>
+</block>

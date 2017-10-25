@@ -1,0 +1,143 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>卡券清单</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+</div>
+<div class="cf">
+     <div class="fl">
+     		<a class="w_btn add-btn " href="{:U('Pointcard/pointcard_add')}">生成卡券
+     		</a>
+            
+            <button class="w_btn ajax-post" url="{:U('Pointcard/changeStatus',array('method'=>'forbidpoint'))}"
+                    target-form="ids">启 用
+            </button>
+            <button class="w_btn ajax-post" url="{:U('Pointcard/changeStatus',array('method'=>'resumepoint'))}"
+                    target-form="ids">禁 用
+            </button>
+            <!--<button class="w_btn ajax-post confirm" url="{:U('Pointcard/changeStatus',array('method'=>'deletepoint'))}"
+                    target-form="ids">删 除
+            </button>-->
+
+        </div>
+        <div class="search-form pull-right">
+            <div class="sleft">
+                <input type="text" name="cardid" class="search-input" value="{:I('cardid')}"
+                       placeholder="请输入统一码或者券码">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+
+      
+    </div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">母券/券码/密钥/面值</th>                
+                <th class="">类型/名称</th>
+                <th class="">相关时间</th>
+                <th class="">领取者</th>
+                <th class="">状态</th>
+                <th class="">优惠日志</th>
+                <!--<th class="">赠送活动</th>-->
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="pointInfo">
+                <volist name="pointInfo" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                        <td><if condition="$vo[unifiedcardid] neq '' "><?php if($vo['stamp']==2):?>母券：{$vo.unifiedcardid}<br><?php endif;?></if>券码：{$vo.cardid}<br><if condition="$vo[cardtype] eq 1">密钥：{$vo.cardkey}<br><else /></if>面值：{$vo.amount}元</td>
+						<td>
+							类型: <if condition="$vo['cardtype'] eq 2">代金券<br><else/>活动卡<br></if>
+							名称:&nbsp;{$vo.typename}
+						</td>
+                        <td>
+							发放时间：{$vo.createtime|date="Y-m-d H:i:s",###}<br>
+							<if condition="$vo[starttime] neq 0">生效时间：{$vo.starttime|date="Y-m-d H:i:s",###}<br><else />生效时间：{$vo.createtime|date="Y-m-d H:i:s",###}<br></if>
+							<if condition="$vo[endtime] neq 0">到期时间：{$vo.endtime|date="Y-m-d H:i:s",###}<br><else /></if>
+							<if condition="$vo[bindtime] neq 0">领取时间：{$vo.bindtime|date="Y-m-d H:i:s",###}<br><else /></if>
+							<if condition="$vo[usetime] neq 0">使用时间：{$vo.usetime|date="Y-m-d H:i:s",###}<br><else /></if>
+						</td>
+						<td>{$vo.usernickname}</td>
+						<td>{:get_pointcard($vo[cardid])}</td>
+						<?php
+						$card_log = D('pointcard_log')->where(array('siteid'=>SITEID,'cardid'=>$vo[cardid]))->select();
+						?>
+						<if condition="$card_log">
+						<td><a  href="{:U('Manage/Pointcard/card_log',array('cardid'=>$vo[cardid]))}" class="aseek">点击查看</a></td>
+						<else />
+						<td>暂无</td>
+                       	
+                       	</if>
+                       	<!--<td>
+                       		<a href="{:U('Pointcard/sendtosb?id='.$vo['id'])}">点击</a>
+                       	</td>-->
+
+
+
+
+                       	<td>
+                      	<?php if($vo['status'] < 2 && $vo['status'] >= 0 && $vo['show_send']==1):?>
+                      	<if condition="$vo.status eq 0">
+                            <a href="{:U('Pointcard/changeStatus?method=forbidpoint&id='.$vo['id'])}"
+                               class="ajax-get mbtn btn-info">启用</a>
+                            <else />
+                            <a href="{:U('Pointcard/changeStatus?method=resumepoint&id='.$vo['id'])}"
+                               class="ajax-get mbtn btn-danger">禁用</a>
+                        </if>
+                        &nbsp;|&nbsp;&nbsp;<a class="mbtn btn-info" href="{:U('Manage/Pointcard/pointcard_edit',array('cardid'=>$vo['cardid']))}">补发</a>
+                        <?php if($vo['status'] == 1 && empty($vo['userid']) && empty($vo['mobile'])):?>&nbsp;|&nbsp;&nbsp;<a class="mbtn btn-info" href="{:U('Manage/Pointcard/send_to_user',array('cardid'=>$vo['cardid']))}">派发</a>
+							<?php endif;?>
+                        <?php else:?>
+							{:get_pointcard($vo['cardid'])}
+						<?php endif;?></a>
+						
+                        </td>
+                        
+
+                      
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+
+	
+</block>

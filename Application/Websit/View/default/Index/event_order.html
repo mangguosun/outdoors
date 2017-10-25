@@ -1,0 +1,95 @@
+    <div class="tab-content">
+      <div class="tab-pane active">
+      	<div class="select_order clearfix">
+        <div class="pull-left event-height">订单状态: 
+			<a href="{:U('Websit/Index/web_event',array('status'=>1,'ord_status'=>'inuse'))}">有效订单</a> |
+			<a href="{:U('Websit/Index/web_event',array('status'=>1,'ord_status'=>'unpay'))}">未支付</a> | 
+			<a href="{:U('Websit/Index/web_event',array('status'=>1,'ord_status'=>'halfpay'))}">订金已支付</a> |
+			<a href="{:U('Websit/Index/web_event',array('status'=>1,'ord_status'=>'succ'))}">全额已支付</a> |
+			<a href="{:U('Websit/Index/web_event',array('status'=>1,'ord_status'=>'all'))}">全部订单</a> 		
+	   </div>
+        <div class="pull-right" >
+            <form action="{:U('Websit/Index/web_event',array('status'=>1))}" method="post" class="navbar-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn text-left">
+                    <input type="text" name="event_trade_sn" class="form-control" placeholder="请输入订单号">
+                    <button type="submit" value="" class="btn btn-default glyphicon glyphicon-search"></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="clearbox-ol"></div>
+        <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+                <th>订单号/活动信息</th>
+                <th>排期/人数</th>
+                <th>下单时间</th>
+                <th>出行人数</th>
+                <th>订单总价</th>
+                <th>支付金额</th>
+                <th class="text-align">订单状态</th>
+                <th class="text-align">支付状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <volist name="event" id="vo">
+            <tr>
+              <td class="usercenter-event-max"><div  class="commons-bottom-five">{$vo.trade_sn}</div><a title="{$vo.title}" href="{:U('Event/Index/detail',array('id'=>$vo['event_id']))}" target="_blank"><img src="{$vo.cover_id|getThumbImageById=40,40,1}" alt="" style="width:40px; height:40px; float:left; margin-right:5px">{$vo.title|op_t|getShortSp=15} <i class="glyphicon glyphicon-link"></i></a></td>
+              <td>{$vo.start_time}<br /><a class="mbtn btn-info" href="{:U('Websit/Index/event_allmember',array('id'=>$vo['calendar_id'],'eventid'=>$vo['event_id']))}">共{:get_status_num($vo['calendar_id'])}人</a></td></td>
+              <td>{$vo.create_time}<br /></td>
+              <td><a class="mbtn btn-info event_user " href="{:U('Websit/Index/event_member',array('id'=>$vo['id'],'calendar_id'=>$vo['calendar_id']))}">共{:get_signnum($vo['id'])}人</a></td>
+              <td>￥{$vo.totalprice}</td>
+              <td>￥{$vo.payprice}</td>
+              <td class="text-center">{:get_event_order_status($vo['status'])}<br>
+			   </td>
+              <td class="text-center">{:get_event_order_pay_status($vo['pay_status'])}</td>
+			  <td class="text-center">            
+				{:admin_get_event_detail_btn($vo,1)}         
+				<div><a class="" href="{:U('Websit/Index/event_detail',array('trade_sn'=>$vo['trade_sn']))}">订单详情</a></div>               
+             </td>
+            </tr>
+            </volist>
+            <tr><td colspan="9">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+<script>
+$(function () {	
+	$('.event_user').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+})
+$('.updataSign').click(function () {
+	if (confirm('确定要操作么？')) {
+		var id = $(this).attr('data-eventID');
+		var status = $(this).attr('data-status');
+		$.post(U('Usercenter/Config/myevent_detail_upstatus'), {id: id,status: status}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+	}
+});
+</script>
+</div>

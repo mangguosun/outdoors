@@ -1,0 +1,46 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>系统配置</h2>
+</div>
+<!-- 数据列表 -->
+<div id="auth_groups">
+	<form class="form-horizontal center_info ajax-form" role="form" action="{:U('Manage/WebsitSystem/system')}" method="post">
+		<div class="form-item">
+			<label for="index_event_recommend" class="item-label">首页推荐活动<span></span></label>
+			<div class="">
+            {:form_radio(array('1'=>'显示','0'=>'隐藏'),$index_event_recommend,'name="index_event_recommend" class="index_event_recommend"','60','index_event_recommend')}
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="index_event_new" class="item-label">首页最新活动<span></span></label>
+			<div class="">
+            {:form_radio(array('1'=>'显示','0'=>'隐藏'),$index_event_new,'name="index_event_new" class="index_event_new"','60','index_event_new')}
+			</div>
+		</div>
+        
+        
+        <div class="form-item">
+			<label for="province" class="item-label">地区配置<span>(以下选中的地区才会显示在活动发布以及前台活动筛选项中，会员发布故事地区选择不影响)</span></label>
+			<div class="">
+			{:form_checkbox(get_province(),$feature_province,'name="province[]" id="province"',0,'100')} 
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="tag" class="item-label">标签配置<span>&nbsp;(以下选中的内容才会显示在活动、商品、公告发布以及前台活动筛选项中，会员发布故事标签不影响；如需增加新标签，请联系客服)</span></label>
+			<div class="">
+				{:form_checkbox(get_event_tag(),$feature_tags,'name="tag[]" id="tag"',0,'100')} 
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="shop_brand" class="item-label">品牌配置<span>(以下选中的内容才会显示在商品发布以及商品筛选项中；如需增加新品牌，请联系客服)</span></label>
+			<div class="">
+			{:form_checkbox(get_shop_brand(),$feature_shop_brand,'name="shop_brand[]" id="shop_brand"',0,'100')} 
+			</div>
+		</div>
+		<div class="form-item">
+			<button type="submit" class="w_btn submit-btn">保存</button>
+		</div>
+	</form>
+</div>
+</block>

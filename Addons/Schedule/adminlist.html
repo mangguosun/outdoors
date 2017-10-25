@@ -1,0 +1,27 @@
+
+<div class="tools">
+	<a onclick="return confirm('确定要删除选中的记录么？')" class="btn ajax-post" target-form="ids" href="{:addons_url('Schedule://Schedule/del')}">删除计划</a>
+	<a class="btn" target-form="ids" href="{:addons_url('Schedule://Schedule/add')}">新增计划</a>
+</div>
+<div class="data-table">
+	<table>
+		<thead>
+			<tr>
+			<th></th>
+			<volist name="listKey" id="vo">
+				<th>{$vo}</th>
+			</volist>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="_list" id="lv" key="vo">
+			<tr>
+				<td><input class="ids" type="checkbox" name="id[]" value="{$lv.id}"></td>
+				<volist name="listKey" id="lk">
+					<td>{$lv.$key}</td>
+				</volist>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>

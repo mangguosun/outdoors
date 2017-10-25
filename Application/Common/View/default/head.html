@@ -1,0 +1,64 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $icp=C('WEB_SITE_ICP');
+    $count_code=C('COUNT_CODE');
+</php>
+<meta charset="UTF-8"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<include file="default/seo"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/bootstrap/css/bootstrap.css?v={:C('WEB_VERSION')}" />
+<link type="text/css" rel="stylesheet" href="__STATIC__/qtip/jquery.qtip.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/toastr/toastr.min.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/magnific/magnific-popup.css?v={:C('WEB_VERSION')}"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/css/default_oneplus.css?v={:C('WEB_VERSION')}"/>
+<block name="style"></block>
+<php>$logo_icons = get_webinfo('logo_icons')</php>
+<link rel="shortcut icon" href="{$logo_icons|get_cover='path'}"/>
+<!--[if lt IE 9]>
+<script src="__STATIC__/bootstrap/js/html5shiv.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/bootstrap/js/respond.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!-- jQuery库 -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js?v={:C('WEB_VERSION')}"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js?v={:C('WEB_VERSION')}"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="__STATIC__/bootstrap/js/bootstrap.min.js?v={:C('WEB_VERSION')}"></script>
+<script src="__STATIC__/qtip/jquery.qtip.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/toastr/toastr.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/slimscroll/jquery.slimscroll.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/magnific/jquery.magnific-popup.min.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/jquery.iframe-transport.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/jquery.lazyload.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__STATIC__/superslide/jquery.superslide.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/default_core.js?v={:C('WEB_VERSION')}"></script>
+<!--合并前的js-->
+<include file="default/var"/>
+<script>
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var initNum = "{:C('WEIBO_WORDS_COUNT')}";
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm2 = document.createElement("script");
+  hm2.src = "//hm.baidu.com/hm.js?4d50ce3a941ca6d0598fc4d1b2b88ccf";
+  var s2 = document.getElementsByTagName("script")[0]; 
+  s2.parentNode.insertBefore(hm2, s2);
+	 
+})();
+</script>
+
+<audio id="music" src="" autoplay="autoplay"></audio>
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->
+<!--登录注册弹层-->
+<div class="ajax_loading_mask"></div>
+<div class="ajax_loading_msg" style="display:none">系统执行中，请稍等。。。</div>

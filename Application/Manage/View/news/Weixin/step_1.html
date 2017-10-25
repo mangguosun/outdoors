@@ -1,0 +1,75 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+ <style>
+      .popover{ max-width:750px;z-index: 10001;}
+      .weixin_out_underline:hover {text-decoration:none;}
+ </style>
+</block>
+<block name="body">
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="widget radius-bordered">
+         <div class="widget-header  bordered-bottom bordered-sky">
+              <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">公众号管理&nbsp;&nbsp;                          
+                
+            </div>
+            <div id="simplewizardinwidget" class="wizard" data-target="#simplewizardinwidget-steps">
+	            <ul class="steps">
+	                <li class="active"><a href="{:U('Manage/Weixin/public_add',array('id'=>$id))}" class="step_picture_width"><span class="step">1</span>增加基本信息<span class="chevron"></span></a></li>
+	                <li class="active"><a href="<empty name='id'>###<else /> {:U('Manage/Weixin/step_1',array('id'=>$id))}</empty>" class="step_picture_width"><span class="step">2</span>配置公众平台<span class="chevron"></span></a></li>
+	                <li ><a href="<empty name="id">###<else /> {:U('Manage/Weixin/step_2',array('id'=>$id))}</empty>" class="step_picture_width"><span class="step">3</span>保存接口配置<span class="chevron"></span></a></li>
+	            </ul>
+    		</div>                        
+        <div class="widget-body">
+          <form id="defaultForm" action="###" class="form-horizontal form-bordered" method="post" >
+            <div class="form-title">
+                必填项&nbsp;&nbsp;
+                <a href="javascript:void(0);" class="label label-darkorange" data-container="body" data-titleclass="bordered-purple" data-class="dark aaa" sty data-toggle="popover" data-placement="right-bottom" data-title="帮助信息" data-content="<img src='__PUBLIC__/Manage/images/weixin/help05.jpg' width=700>" data-original-title="" title="">帮助</a></span> 
+                &nbsp;&nbsp;(请在公众平台开发者中心里的服务器配置录入以下参数)
+            </div>  
+            <div class="form-group">
+              <label class="col-lg-3 control-label">URL(服务器地址)：</label>
+              <div class="col-lg-9">
+                  <input type="text" class="form-control" value="<?php echo $url;?>" readonly/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-3 control-label">Token(令牌)：</label>
+              <div class="col-lg-9">
+                  <input type="text" class="form-control" value="huodongli"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-3 control-label">EncodingAESKey(消息加解密密钥)：</label>
+              <div class="col-lg-9">
+                <input type="text" class="form-control"  value="点击随机生成得到密钥,不需要自己填写" disabled/> 
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-3 control-label"> 消息加解密方式：</label>
+                <div class="col-lg-9">
+                  <input type="text" class="form-control"  value="根据自己的需要选择其中一种" disabled/> 
+                </div>
+            </div>
+             <div class="form-group">
+              <div class="col-lg-offset-3 col-lg-10">
+                <a class="btn btn-palegreen" href="{:U('Manage/Weixin/step_2',array('id'=>$id))}">下一步</a>
+              </div>
+            </div>  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>
+
+
+
+
+
+
+
+ 
+

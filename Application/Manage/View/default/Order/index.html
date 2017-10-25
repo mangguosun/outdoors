@@ -1,0 +1,352 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>{$title}</h2>
+</div>
+<style> 
+		.search-title{ 
+			margin-bottom: 50px;
+		}
+		.search-form span{ 
+			color: #666;
+		    font:20px;
+		    margin-right: 5px;
+		    margin-left: 5px;
+		}
+		.search-form .sl_start{ 
+			margin-left: 0px;
+		}
+		.search-form .sl_user{ 
+			margin-left: 20px;
+		}
+		.search-form .sl_check{ 
+			margin-right:3px; 
+		}
+		.search-form input{ 
+			border: 0 none;
+		}
+		.search-form .sl_input{ 
+			width:180px;
+			height:25px;
+		}
+		.search-form  .search-submit{ 
+			margin-left:14px;
+			width: 60px;
+			height: 30px;
+		}
+	</style>
+	<div class="cf">
+	<form action="{:U('/Manage/Event/seekUrl')}" method="get">
+		<div class="search-form ">
+			<input name="url" type="hidden" value="Manage/Order/index" />
+			<span class="sl_user">订单状态 :</span>
+			<select class="sl_check" name="ord_status">
+				<?php $ord_status=I('ord_status');?>
+				<option  value="all" <?php if($ord_status=='all' || $ord_status=='' ) echo "selected" ?>>全部订单</option>
+				<option  value="inuse" <?php if($ord_status=='inuse') echo "selected" ?>>有效订单</option>
+				<option  value="unpay" <?php if($ord_status=='unpay') echo "selected" ?>>未支付</option>
+				<option  value="halfpay" <?php if($ord_status=='halfpay') echo "selected" ?>>订金已支付</option>
+				<option  value="succ" <?php if($ord_status=='succ') echo "selected" ?>>全额已支付</option>
+				
+			</select>
+
+
+			<span class="sl_user">订单搜索 :</span>
+			<select class="sl_check" name="ord_type">
+				<?php $ord_type=I('ord_type');
+					 if($ord_type == 3){ $order_type_content = urlsafe_b64decode(I('order_type_con')); }else{  $order_type_con1 = I('order_type_con'); }
+					 ?>
+				<option  value="1" <?php if($ord_type== 1 || $ord_type== '') echo "selected" ?>>所有订单</option>
+				<option  value="2" <?php if($ord_type== 2) echo "selected" ?>>订单编号</option>
+				<option  value="3" <?php if($ord_type== 3) echo "selected" ?>>订单联系人</option>
+				<option  value="4" <?php if($ord_type== 4) echo "selected" ?>>联系人电话</option>
+			</select>
+		    <input class="sl_input"type="text" name="order_type_con" value="{$order_type_content}" />
+				
+			
+			<span class="sl_user">活动搜索 :</span>
+			<select class="sl_check" name="ord_event">
+				<?php $ord_event=I('ord_event'); ?>
+				<option  value="1" <?php if($ord_event== 1 || $ord_event=='') echo "selected" ?>>所有活动</option>
+				<option  value="2" <?php if($ord_event== 2) echo "selected" ?>>排期编号</option>
+				<option  value="3" <?php if($ord_event== 3) echo "selected" ?>>活动编号</option>
+				
+			</select>
+		    <input class="sl_input"type="text" name="ord_event_con" value="{:I('ord_event_con')}" />
+			
+ 
+		   <input class="search-submit w_btn" id="search" type="submit" value="搜索" url="{:U('index')}">
+		   <input class="search-submit w_btn" id="reset" type="reset" value="重置">           
+		            
+		</div>
+	</form>
+	
+	</div>
+ 	
+<div class="cf">
+     
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+           <div class="tab-content">
+      <div class="tab-pane active">
+     
+        <div class="clearbox-ol"></div>
+         <div  class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+              
+                <th>订单编号/活动信息</th>
+                <th>排期/人数</th>
+                <th>下单时间</th>
+                <th>出行人数</th>
+                <th>订单总价</th>
+                <th>支付金额</th>
+                <th class="text-align">订单状态</th>
+                <th class="text-align">支付状态</th>
+                <th class="text-align">订单来源</th>
+				<th class="text-align">使用优惠</th>
+                <th class="text-align">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <volist name="event" id="vo">
+            <tr>
+            
+              <td class="usercenter-event-max"><div  class="commons-bottom-five">{$vo.trade_sn}</div><a title="{$vo.title}" href="{:U('Event/Index/detail',array('id'=>$vo['event_id']))}" target="_blank"><img src="{$vo.cover_id|getThumbImageById=40,40,1}" alt="" style="width:40px; height:40px; float:left; margin-right:5px">{$vo.title|op_t|getShortSp=15} <i class="glyphicon glyphicon-link"></i></a></td>
+              <td>{$vo.start_time}<br /><a class="mbtn btn-info" href="{:U('Manage/Order/event_allmember',array('id'=>$vo['calendar_id'],'eventid'=>$vo['event_id']))}">共{:get_status_num($vo['calendar_id'])}人</a></td>
+              <td>{$vo.create_time}<br /></td>
+              <td><a class="mbtn btn-info event_user" userid = "{$vo.id}"  calendarid = "{$vo.calendar_id}" >共{:get_signnum($vo['id'])}人</a>
+              </td>
+              <td>￥{$vo.totalprice}</td>
+
+              <if condition="$vo.pay_status neq 2">
+              <td>￥{$vo.payprice}</td>
+              <else />
+              <td>￥{$vo.totalprice}</td>
+              </if>
+
+              <td class="text-center">{:get_event_order_status($vo['status'])}<br>
+			   </td>
+              <td class="text-center">{:get_event_order_pay_status($vo['pay_status'])}</td>
+              <td class="text-center"><a class='mbtn btn-info order_source aa' href="{:U('Manage/Order/order_source',array('trade_sn'=>$vo['trade_sn']))}">查看</a></td>
+			   <if condition="$vo.cardid neq ''">
+             	  <td style="position:relative;">
+	                  <span class="card_info"><a>查看</a></span>
+
+	                  <div  class="card_content"  style="display:none; width:120px;  border:0px solid #f00; z-index:999;  position:absolute;   background:#428BCA;">
+
+	                 	<volist name='vo.cardid' id='v' >
+	                   		<li style=" margin-left:5px; color:#fff; padding:5px;" >{$key}元代金券 {$v}张</li>
+	                  	</volist>
+	                  </div>
+
+	              </td>
+	            <else />
+	             <td>否</td>
+                </if>
+			 
+			 
+			  <td class="text-center">            
+				{:admin_get_event_detail_btn($vo,1)}
+
+				<div><a class="" target="_blank" href="{:U('Manage/Order/event_detail',array('trade_sn'=>$vo['trade_sn']))}">订单详情</a></div>               
+             </td>
+            </tr>
+
+           <tr class="userinfo"  style="display:none; background:#269ABC;">
+          
+            	<td colspan="11"  style="padding:2px;">
+            		 <table >
+					        <!-- 表头 -->
+					          <tr>
+					          	
+					            <td>姓名</td>
+					            <td>身份证</td>
+					            <td>电话</td>
+					            <td>邮箱</td>
+					            <td>QQ <div style="float:right; " class="close-info" style="margin:4px; width:14px; hight:14px;"><img style="width:12px; hight:12px;" src="__PUBLIC__/Install/img/error.png" /></div></td>
+
+					          </tr>
+					       
+					        <!-- 列表 -->
+					        
+					          <notempty name="vo.userinfo">
+					          <volist name="vo.userinfo" id="v">
+					            <tr>
+								<if condition="$v['nickname'] neq ''">
+					              <td>{$v.realname}({$v.nickname})</td>
+								<else />
+								  <td>{$v.realname}</td>
+								</if>
+					              <td>{$v.card}</td>
+					              <td>{$v.telephone}</td>
+					              <td>{$v.email}</td>
+					              <td>{$v.qq}</td>
+					            </tr>
+					          </volist>
+					          <else/>
+					        	<td colspan="10" class="text-center"> aOh! 您还没有报名任何信息哦!</td>
+					        	</else>
+					          </notempty>				          
+					      </table>
+            	</td>
+            	
+			</tr>
+
+            </volist>
+           <td colspan="11">{$page}</td>
+       
+            </tbody>
+          </table>
+        </div>
+        
+</div>
+
+    </div>
+    </div>
+
+   </div>
+<style type="text/css">
+
+	#punch_mask{ position:fixed; display:none; top:0px; left:0px;  background:#000;  opacity:0.5; width:100%; z-index:99998;}
+	.punch_con{   position:fixed;display:none; left:40%;top:25%; padding:2px; width:300px;border: 1px solid #ccc;height:150px;background:#fff;z-index:99999;
+    }
+	.punch_con_html{ width:300;line-height: 35px; text-align: center; margin-top: 20px;margin-bottom: 30px;}
+	.punch_click_t{margin-left: 90px; width: 40px; line-height: 25px;}
+	.punch_click_f{margin-left: 40px; width: 40px; line-height: 25px;}
+</style>
+<div id = "punch_mask"></div>
+<div class = "punch_con">
+	<div class="punch_con_html"></div>
+	<div ><a class="mbtn btn-default punch_click_t">确定</a><a class="mbtn btn-default punch_click_f">取消</a></div>
+</div>
+	
+
+<script>
+
+//锁定全屏
+$(function () {	
+	$('.order_source').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				//console.log(this.content);
+			}
+		}
+	});
+})
+$('.card_info').mouseover(function (){ 
+	$(this).next('.card_content').show();
+})
+$('.card_info').mouseleave(function (){ 
+	$(this).next('.card_content').hide();
+})
+
+$('.card_info').click(function (){ 
+	$(this).next('.card_content').toggle();
+})
+
+$(".event_user").click( function (){
+	$(this).parent().parent().next('.userinfo').toggle();
+})
+$(".close-info").click( function(){ 
+	$(this).parents('.userinfo').hide();
+})
+
+$('.updataSign').click(function () {
+	 id = $(this).attr('data-eventID');
+	 status = $(this).attr('data-status');
+	$("#punch_mask").animate({height:"100vh"}).show();
+	$(".punch_con").show();
+	$(".punch_con_html").html("确定要操作么？");
+	$(".punch_click_f").click(function(){
+		$("#punch_mask").hide();
+		$(".punch_con").hide();			
+	});
+
+	$(".punch_click_t").click(function (){
+		var ids = id;
+		var status_t = status;
+		$.post(U('Manage/Order/myevent_detail_upstatus'), {id: ids,status: status_t}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+
+	})
+
+});
+
+$('.updataRefund').click(function () {
+	 id = $(this).attr('data-eventID');
+	 status = $(this).attr('data-status');
+	$("#punch_mask").animate({height:"100vh"}).show();
+	$(".punch_con").show();
+	$(".punch_con_html").html("该订单已支付,点击确认则需退款,继续操作吗？");
+	$(".punch_click_f").click(function(){
+		$("#punch_mask").hide();
+		$(".punch_con").hide();			
+	});
+	$(".punch_click_t").click(function (){
+		var ids = id;
+		var status_t = status;
+		$.post(U('Manage/Order/myevent_detail_upstatus'), {id: ids,status: status_t}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+
+	})
+});
+
+
+
+
+</script>
+
+	 
+	 <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+    </script>
+	
+</block>

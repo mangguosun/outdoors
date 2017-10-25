@@ -1,0 +1,16 @@
+<extend name="runners/common"/>
+<block name="header">
+  <div id="main-container" class="container"> 
+{:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))}
+    <div class="container ">
+    <div class="common_block_border clearfix">
+        <div id="usercenter-content-td">
+          <div class="websit-about">
+             {$list['content']}
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</block>
+<block name="body"> </block>

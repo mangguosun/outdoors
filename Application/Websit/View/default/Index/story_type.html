@@ -1,0 +1,77 @@
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right"> <a class="mbtn  btn-info common-color-white"  href="{:U('Websit/Index/content',array('status'=>4))}">返回上级</a> <a class="mbtn  btn-info  event_sign common-color-white"  href="{:U('story_type_add')}">新增类型</a></div>
+    故事类型</div>
+  <div class="row data-table" >
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>分类名称</th>
+          <th>排序</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="tree">
+        
+        <volist name="tree" id="vo">
+          <tr>
+            <td>{$vo.title}&nbsp;&nbsp; </td>
+            <td>{$vo.sort}</td>
+            <td><a class="mbtn btn-info  event_sign1 common-color-white"  href="{:U('Websit/Index/story_type_edit?id='.$vo['id'])}">编辑</a> <a href="javascript:" data-ID="{$vo.id}" class="mbtn btn-danger story_type_del" title="禁用分类">禁用</a></td>
+          </tr>
+        </volist>
+        <else/>
+      <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+			$('.event_sign').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			
+				//更新
+			$('.event_sign1').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			//删除
+			$('.story_type_del').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				$.post(U('Websit/Index/story_type_delete'), {id: id}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+           
+	  })
+    </script>
+</div>

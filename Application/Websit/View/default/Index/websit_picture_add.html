@@ -1,0 +1,119 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>添加广告</h2>
+  
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/websit_picture_add')}" method="post">
+        <div class="col-md-12">
+        <div class="form-group  has-feedback">
+            <label for="title" class="col-md-2 control-label">广告名称</label><span class="common-color-red" >*必填</span>
+            <div class="col-md-4">
+              <input type="text" name="title" class="form-control form_check " value="{$info.title}" />
+            </div>
+          </div>
+          <div class="form-group  has-feedback" >
+            <label for="position" class="col-md-2 control-label">广告位置</label><span class="common-color-red">*必填</span>
+            <div class="col-md-4">
+             <select name="position" id="mySelect" class="form-control">
+		                  <option value="" data="">请选择位置</option>
+		                  <volist name="positions" id="so">
+		                  	<option value="{$so.id}" data="{$so.type}" <if condition="$so['id'] eq $info['position']">selected</if> >{$so.title}({$so.width}*{$so.height})</option>
+		                  </volist>
+		            </select>
+            </div>
+          </div>
+			<div class="form-group  has-feedback" id="type1" <if condition="($info['type'] neq 1) && ($info['type'] neq 2) && ($info['type'] neq 5)"></if>>
+				<label class="col-md-2 control-label">广告图片</label><span class="common-color-red">*必填</span>
+	            <div class="col-md-4">
+					{:hook('UploadImage', array('find_name'=>'advspic','value'=>$info[advspic],'buttontext'=>'上传广告图','buttonwidth'=>100,'multi'=>false,'ds'=>''))}
+				</div>
+			</div>	
+			<div class="form-group  has-feedback" id="type3" <if condition="$info['type'] neq 3"></if>>
+				<label class="col-md-2 control-label">广告文字<span class="check-tips">（请填写广告文字）</span></label>
+	            <div class="col-md-6">
+					<textarea rows="3" cols="54" name="advstext">{$info.advstext}</textarea>
+				</div>
+			</div>
+			<div class="form-group  has-feedback" id="type4" <if condition="$info['type'] neq 4"></if>>
+				<label class="col-md-2 control-label">广告代码<span class="check-tips">（请填写广告代码html、js）</span></label>
+	            <div class="col-md-6">
+                    <label class="textarea">
+                    <textarea name="advshtml">{$info.advshtml}</textarea>
+                    </label>
+				</div>
+			</div>
+           <div class="form-group  has-feedback">
+				<label for="link"  class="col-md-2 control-label">广告地址(电脑)</label><span class="check-tips">（请填写带http://的全路径）</span>
+				<div class="col-md-6">
+					<input type="text" class="form-control form_check" name="link" value="{$info.link}">
+				</div>
+			</div>
+            <div class="form-group  has-feedback">
+				<label for="link_mobile"  class="col-md-2 control-label">广告地址(手机)</label><span class="check-tips">（请填写带http://的全路径）</span>
+				<div class="col-md-6">
+					<input type="text" class="form-control form_check" name="link_mobile" value="{$info.link_mobile}">
+				</div>
+			</div>
+          <div class="form-group  has-feedback">
+            <label for="create_time" class="col-md-2 control-label">开始时间</label><span class="common-color-red">*必填</span>
+            <div class="col-md-4">
+              <input type="text" name="create_time" class="form-control form_check time" value="{$info.create_time}" placeholder="请选择时间" />
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="end_time" class="col-md-2 control-label">结束时间</label>
+            <div class="col-md-4">
+              <input type="text" name="end_time" class="form-control form_check time" value="{$info.end_time}" placeholder="请选择时间" />
+            </div>
+          </div>
+          <div class="form-group  has-feedback">
+            <label for="level" class="col-md-2 control-label">优先级</label>
+            <div class="col-md-4">
+              <input type="text" name="level" class="form-control form_check " value="{$info.level}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+            <input type="hidden" name="id" value="{$info.id}"/>
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+$(function(){
+
+	$('#mySelect').change(function(){					   
+		$type = $('#mySelect').find("option:selected").attr("data");
+		if($type == 1 || $type == 2 || $type == 5){
+			$('#type1').css('display','block');
+		}else if($type == 3){
+			$('#type3').css('display','block');
+		}else if($type == 4){
+			$('#type4').css('display','block');
+		}else{
+			$('#type1').css('display','none');
+			$('#type3').css('display','none');
+			$('#type4').css('display','none');
+		}
+	});
+	
+	    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+
+});
+</script>

@@ -1,0 +1,59 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>编辑旅行故事</h2>
+</div>
+
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Issue/story_edit')}" method="post">
+		<input type="hidden" name="id" id="id" value="{$content.id}"/>
+		<input type="hidden" name="url" id="id" value="<?php echo $_SERVER['HTTP_REFERER']?>"/>
+	    <div class="form-item">
+			<label for="title"  class="item-label">标题<a>(必填)</a></label>
+			 <div class="controls">
+				<input id="title" name="title" class="text input-large"  value="{$content.title}" placeholder="" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="cover_id" class="item-label">封面图片<a>(必填)</a></label>
+			<div class="controls"> {:hook('UploadImage', array('find_name'=>'cover_id','value'=>$content['cover_id'],'buttontext'=>'封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'400*300','width'=>400,'height'=>300))} </div>
+		</div>
+		<div class="form-item">
+			<label for="type_id" class="item-label">分类<a>(必填)</a></label>
+			<div class="controls">          
+			<volist name="tree" id="top">          
+				<input value="{$top.id}" name="issue" type="radio" <?php if($top['id'] == $content['issue_id']) echo 'checked'?>>&nbsp;{$top.title}&nbsp;
+			</volist>            
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="tag" class="item-label">特色<a>(必填)</a></label>
+			<div class="">
+				{:form_checkbox(get_event_tag(),$content['tag'],'name="tag[]" id="tag"',0,'100')} 
+			</div>
+		</div>
+	   <div class="form-item">
+			<label for="finalcity" class="item-label">目的地<a>(必填)</a></label>
+			<div class="controls position">
+					{:hook('J_China_City', array('find'=>'final','level'=>2,'province'=>$citys['province'],'city'=>$citys['city'],'district'=>$citys['district'],'community'=>$citys['community']))}
+			</div>
+		</div> 
+		<div class="form-item">
+			<label for="travel_point" class="item-label">详情<a>(上传的图片宽度建议小于700像素)</a></label>
+			<div class="controls">
+				{:Hook('Ueditor',array('name'=>'content','value'=>$content['content']))}
+			</div>
+		</div>
+		 <if condition="app_isopen('Event')">
+		  <div class="form-item form-item-margin">
+			<label for="related_event" class="item-label">相关活动</label>
+			<div class="controls"> {:form_select($related_event_list,$content['related_event'],'class="text" check-type="Text" name="related_event" id="related_event"','请选择')} </div>
+		  </div>
+		   </if>
+		<div class="form-item">
+			    <button type="submit" class="w_btn submit-btn ajax-post" target-ls="a" target-form="form-horizontal" href="{:U('Manage/Issue/story_edit')}">确定</button>
+				<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+		</div>
+	</form>
+</div>
+</block>

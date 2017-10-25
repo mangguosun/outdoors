@@ -1,0 +1,206 @@
+<extend name="default/common"/>
+<block name="body">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+  <div class="container">
+  <div class="tailor_from_box">
+  
+  	<div class="tailor_from_title">请填写以下需求单，<span class="event-prompt">*</span>为必填项，掌柜将会尽快联系您为您服务。 国内团队人数较少时，包团产品价格相对较高，建议您查找预订网上散客活动产品</div>
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Tailor/index/doPost')}" method="post">
+           <h3>定制表单:</h3>
+          <div class="form-group">
+            <label for="title" class="col-md-2 extra control-label">活动预算<span class="event-prompt">*</span></label>
+            <div class="col-md-10 form-inline">
+              <input id="minprice" name="minprice" maxlength="24" class="form-control" check-type="Num" value="" placeholder="最低预算" required /> ~
+              <input id="maxprice" name="maxprice" maxlength="24" class="form-control" check-type="Num" value="" placeholder="最高预算" required /> 元/人
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="totalnum" class="col-md-2 extra control-label">参加人数<span class="event-prompt">*</span></label>
+            <div class="col-md-10 form-inline">
+               <input id="totalnum" name="totalnum" class="form-control" check-type="Num" value="" placeholder="请填写参加人数" required /> 人左右 
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="totalnum" class="col-md-2 extra control-label"></label>
+            <div class="col-md-10 form-inline">
+              其&nbsp;&nbsp;中：小孩 <input id="childnum" name="childnum" class="form-control" check-type="Num" value="" placeholder=""> 个，年龄段：
+			   <select name="minage" class="form-control">
+			   <?php for($i=1;$i<=16;$i++):?>
+					<option value="<?php echo $i?>">
+					<?php if($i <= 9 && $i > 0){
+						echo '0'.$i;
+					}else{
+						echo $i;
+					} ?>
+					</option>
+					<?php endfor;?>
+			   </select> 岁~ 
+			   <select name="maxage" class="form-control">
+			   <?php for($i=1;$i<=16;$i++):?>
+					<option value="<?php echo $i?>">
+					<?php if($i <= 9 && $i > 0){
+						echo '0'.$i;
+					}else{
+						echo $i;
+					} ?>
+					</option>
+					<?php endfor;?>
+			   </select> 岁
+            </div>
+          </div>
+          
+          
+          
+          
+          <div class="form-group ">
+            <label for="desty" class="col-md-2 control-label">目的地<span class="event-prompt">*</span></label>
+            <div class="col-md-10">国内 
+				<input type="radio" class="desty_in_choose" name="desty_type" value="1">&nbsp;&nbsp;
+                <volist name="desty_in" id="top">
+                   <input class="desty_in " type="checkbox" name="desty[]" value="{$top.id}">&nbsp;{$top.name}&nbsp;
+                </volist>            
+            </div>
+			
+			<div class="col-md-10">国际 
+				<input type="radio" class="desty_out_choose" name="desty_type" value="2">&nbsp;&nbsp;
+                <volist name="desty_out" id="top">
+                   <input class="desty_out" type="checkbox" name="desty[]" value="{$top.id}">&nbsp;{$top.name}&nbsp;
+                </volist>            
+            </div>
+          </div>
+		  <div class="form-group form-inline">
+            <label for="tag" class="col-md-2 control-label">出发日期</label>
+            <div class="col-md-10">
+				<input id="earlytime" name="earlytime" class="form-control time" check-type="Text" value="" placeholder="最早出发" required />~
+				<input id="latetime" name="latetime" class="form-control time" check-type="Text" value="" placeholder="最晚出发" required /> <input name="unsure" class="unsure" type="checkbox" value="unsure"> 尚未确定
+            </div>			
+			
+          </div>
+		   <div class="form-group form-inline">
+            <label for="traveldays" class="col-md-2 extra control-label">行程天数</label>          
+			<div class="col-md-10">
+				<input id="traveldays" name="traveldays" class="form-control" check-type="Num" value="" placeholder="行程天数"> 天左右
+            </div>			
+          </div>
+          <div class="form-group form-inline">
+            <label for="tag" class="col-md-2 extra control-label">特色需求<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+             {:form_checkbox(get_event_tag(),$event_arr[tag],'name="tag[]" id="tag"',0,'100')} 
+            </div>
+          </div>
+          <div class="form-group form-inline">
+            <label for="reference" class="col-md-2 extra control-label">参考线路</label>          
+			<div class="col-md-10">
+				<textarea maxlength="100" placeholder="请复制你希望参考的线路行程的网址或内容" id="reference"  class="input-lg" cols="75" rows="5" name="reference"></textarea>您还可以输入<span style="color:red" id="refe">100</span>个字
+            </div>			
+          </div>
+		  <div class="form-group  form-inline">
+            <label for="other" class="col-md-2 control-label">其他需求</label>
+            <div class="col-md-10">
+              <textarea maxlength="100" placeholder="限100字以内" id="other"  class="input-lg" cols="75" rows="5" name="other"></textarea>您还可以输入<span style="color:red" id="need">100</span>个字
+            </div>
+          </div>
+          
+          <h3>联系信息:</h3>
+
+		<div class="form-group form-inline">
+            <label for="contact_name" class="col-md-2 control-label">联系人<span class="event-prompt">*</span></label>
+            <div class="col-md-10">
+               <input id="contact_name" name="contact_name" class="form-control" check-type="Text" value="" placeholder="请填写联系人姓名" required />
+			   <input type="radio" name="sex" value="1" checked>先生 <input type="radio" name="sex" value="0">女士
+            </div>
+          </div>
+          <div class="form-group form-inline">
+            <label for="contact_telephone" class="col-md-2 control-label">联系手机<span class="event-prompt">*</span></label>
+            <div class="col-md-3">
+              <input id="contact_telephone" name="contact_telephone" class="form-control form_check" check-type="Num"  value="" placeholder="请填写联系手机" required />
+            </div>
+          </div>
+          <div class="form-group form-inline">
+            <label for="contact_email" class="col-md-2 control-label">联系Email<span class="event-prompt">*</span></label>
+            <div class="col-md-3">
+              <input id="contact_email" name="contact_email" class="form-control" value="" placeholder="请填写联系Email" >
+            </div>
+          </div>
+         
+         
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary ">提交</button>
+            </div>
+            <div class="col-md-8">
+              <button onclick="history.go(-1);" class="btn btn-default">取消</button>
+            </div>
+          </div>
+   
+     </form>
+
+    
+  </div>
+  </div>
+</block>
+<block name="script">
+<script>
+$(function(){
+	$('#other').val('');
+	$('#other').keyup(function(){
+		var need_length = $(this).val().length;
+		var html = 100 - need_length;
+		$('#need').html(html)
+		
+	})
+	$('#reference').val('');
+	$('#reference').keyup(function(){
+		var refe_length = $(this).val().length;
+		var html = 100 - refe_length;
+		$('#refe').html(html)
+		
+	})
+	$('.desty_in_choose').attr('checked',false);
+	$('.desty_out_choose').attr('checked',false);
+	$('.desty_out').attr('checked',false);
+	$('.desty_in').attr('checked',false);
+	if($('.desty_in_choose').attr('checked',false) || $('.desty_out_choose').attr('checked',false)){
+		$('.desty_out').attr('disabled',true)	
+		$('.desty_in').attr('disabled',true)	
+		$('#earlytime').attr('disabled',true)
+		$('#latetime').attr('disabled',true)
+	}
+	$('.time').datetimepicker({
+		format: 'yyyy-mm-dd',
+		language:"zh-CN",
+		minView:2,
+		autoclose:true
+	});
+	$('.desty_in_choose').click(function(){
+		$('.desty_out').attr('disabled',true)	
+		$('.desty_in').attr('disabled',false)
+		if(!$('.unsure').is(':checked')){
+			$('#earlytime').attr('disabled',false)
+			$('#latetime').attr('disabled',false)
+		}
+	})
+	$('.desty_out_choose').click(function(){
+		$('.desty_in').attr('disabled',true)	
+		$('.desty_out').attr('disabled',false)
+		if(!$('.unsure').is(':checked')){
+			$('#earlytime').attr('disabled',false)
+			$('#latetime').attr('disabled',false)
+		}
+	})
+	$('.unsure').click(function(){
+		if($(this).is(':checked')){
+			$('#earlytime').attr('disabled',true)
+			$('#latetime').attr('disabled',true)
+		}else{
+			if($('.desty_in_choose').is(':checked') || $('.desty_out_choose').is(':checked')){
+				$('#earlytime').attr('disabled',false)
+				$('#latetime').attr('disabled',false)
+			}
+		}
+	})
+})
+</script>
+</block>

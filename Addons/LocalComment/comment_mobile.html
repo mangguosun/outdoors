@@ -1,0 +1,167 @@
+ 
+<div class="discuss">
+    <div class="hdl-panel-hd  am-g">
+      <h3 class="hdl-panel-title am-u-sm-7"> 评论（{$content['reply_count']}） </h3>
+  	  <span class="fabiao_btn am-u-sm-4">      
+            <a href="javascript:" class="" id="comment-btn"><button class="am-btn am-btn-primary "  id=" " data-url="" style="width:74px;height:34px;color:#3bb4f2;"> <span style="font-size:16px;color:#ffffff;margin-left:-12px;">发表评论</span> </button></a>         
+      </span>
+ 
+ 
+<!--跳过去的页--> 
+ 
+<div class="am-popup" id="comment-page">
+    <header class="am-header am-header-default am-header-fixed">
+       <div class="am-header-left am-header-nav"><a href="javascript:" class="" data-am-modal-close ><i class="am-icon-chevron-left"></i></a>发表评论</div>
+    </header>
+    
+<div class="am-popup-inner">
+	<div class="comment-box"> 	
+        <div class="comment-event-box">
+         <if condition="$cover_id neq ''">
+           <div class="comment-event-img">
+            <img class="recommend add_loading add_loading_recommend" src="__PUBLIC__/Core/images/blank.png" data-original="{$cover_id|getThumbImageById=400,300}" style="display: inline; width:90px; height:90px;"/>
+           </div>
+        </if>
+           <div class="comment-event-title " data-goodsname="">{$title|op_t|getShortSp=20}</div> 
+        </div>
+        <div class="comment-textarea-box">   
+            <textarea id="comment-content" class="textarea_style" placeholder="添加评论...."></textarea>
+            <div id="emot_content" class="emot_content"></div>        
+        	<div data-am-widget="navbar" class="am-navbar am-navbar-default address_btn">  
+            	<button type="button" id="submit-comment"  data-url="{:tox_addons_url('LocalComment/Index/addComment', array('app'=>$app,'mod'=>$mods, 'row_id'=>$row_id,'uid'=>$uid))}" class="am-btn am-btn-block am-btn-through">提交</button>
+        	</div>    
+        </div>         
+     </div>
+</div>
+<script>
+  $(function () {
+      hdl_lazyload("img.add_loading_recommend");
+  })
+
+	function setFocus(obj){
+	   if(obj.setSelectionRange){
+		   setTimeout(function(){
+			obj.setSelectionRange(0,0);
+			obj.focus();
+		},100);
+	   }else{
+		  if(obj.createTextRange){
+			var range=obj.createTextRange();
+			range.collapse(true);
+			range.moveEnd("character",0);
+			range.moveStart("character",0);
+			range.select();
+		  }
+		  try{obj.focus();}catch(e){}
+		}   
+	}
+
+
+	var $comment_btn = $('#comment-btn');
+	var $comment_page = $('#comment-page');	
+
+	$comment_btn.on('click', function(e) {						   
+		$comment_page.modal({closeViaDimmer:0,relatedTarget: this});	
+
+	});
+ 
+  $comment_page.on('opened.modal.amui', function() {
+    
+    $("#comment-page").trigger("scroll");
+    //$("#comment-content").focus( function(){ 
+      setFocus($("#comment-content"));
+    //});
+
+  })
+</script>
+
+  </div>
+</div>
+ 
+
+<if condition="!$list">
+  <p class="text-muted" style="text-align:center;padding-top:2em;padding-bottom:2em;font-size:2em;"> 暂时没有评论～ </p>
+</if>
+
+<div class="hdl-comments-list weibo_post_box">
+<ul class="am-comments-list am-comments-list-flip">
+
+<volist name="list" id="comment">
+  <li class="am-comment ">
+    <eq name="comment.uid" value="0"> <a class="pull-left"> <img src="{:getRootUrl()}Addons/Avatar/default_64_64.jpg" alt="" class="am-comment-avatar" width="30" height="30"/> </a>
+      <else/>
+      <a href="{$comment.user.mobile_space_url}" class="pull-left"> <img src="{$comment.user.avatar64}" alt="" class="am-comment-avatar" width="30" height="30"/> </a> </eq>
+    <div class="am-comment-main">
+      <header class="am-comment-hd">
+        <!--h3 class="am-comment-title">评论标题</h3-->
+        <div class="am-comment-meta">
+          <eq name="comment.uid" value="0"> <a href="#link-to-user" class="am-comment-author">游客</a>
+            <else/>
+            <a href="{$comment.user.mobile_space_url}" class="am-comment-author">{$comment.user.nickname|op_t}</a></eq>
+        </div>
+      </header>
+      <div class="am-comment-bd am_comment_content}" style="color:#000000;font-size:12px;background:#ffffff;"> {$comment.content|parse_comment_content} </div>
+      <div class="am-comment-footer" style="background:#ffffff;">
+<!--        <div class="am-comment-actions"> <a class="local-comment-reply" data-uid="{$comment.uid}" data-username="{$comment.user.nickname|op_t}">回复</a> </div>-->
+	 	<div class="am-comment-actions">
+		
+			<span class="event_create_time">{$comment.create_time|date="Y-m-d",###}</span>
+			
+			<a  href="javascript:" class="local-comment-reply comment-huifu comment_operate" data-uid="{$comment.uid}" data-username="{$comment.user.nickname|op_t}" id="comment-huifu"><i class="am-icon-reply am_event_status"></i>回复</a>
+			
+			<if condition="check_auth('deleteLocalComment') OR is_administrator() OR ( ($comment['uid'] eq is_login()) AND (is_login() neq 0)) "><a class="local-comment-delete comment_operate" data-cid="{$comment.id}"><i class="am-icon-trash am_event_status"></i>删除</a></if>
+			 
+		</div>
+          
+      </div>
+    </div>
+  </li>
+</volist>
+
+</ul>
+
+<div class="comment_page_li">
+	{:getPagination($total_count, $count)} 
+</div>
+<div style="clear:both;"></div>
+ 
+</div>
+<script>
+	var $comment_huifu = $('.comment-huifu');
+	$comment_huifu.on('click', function(e) {						   
+		$comment_page.modal({closeViaDimmer:0,relatedTarget: this});		
+	});	
+    $(function () {
+        $('#submit-comment').click(function (e) {
+            e.preventDefault();
+            var url = $('#submit-comment').attr('data-url');
+            var content = $('#comment-content').val();
+            $('#submit-comment').attr('disabled','disabled');
+            $.post(url, {content: content}, function (a) {
+                if(!a.status){
+                    $('#submit-comment').removeAttr('disabled');
+                }
+                handleAjax(a);
+            });
+        });
+    })
+</script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/atwho/atwho.js"></script>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/atwho/atwho.css"/>
+<script>
+    $(function () {
+        $('.local-comment-reply').click(function (e) {
+            var $textarea = $('#comment-content');
+            var nickname = $(this).attr('data-username');
+            $textarea.focus();
+            $textarea.append('回复 @' + nickname + ' ：');
+        });
+
+        $('.local-comment-delete').click(function (e) {
+            $.post("{:tox_addons_url('LocalComment/Index/deleteComment')}", {id: $(this).attr('data-cid')}, function (msg) {
+                handleAjax(msg);
+            })
+        });
+    })
+
+</script>

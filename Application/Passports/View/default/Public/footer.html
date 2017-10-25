@@ -1,0 +1,223 @@
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed"> <a href="#top" title="回到顶部" class=""> <span class="am-gotop-title">回到顶部</span> <i class="am-gotop-icon am-icon-chevron-up"></i> </a> </div>
+<div class="am-popup" id="user-login">
+  <header data-am-widget="header" class="am-header am-header-default">
+    <div class="am-header-left am-header-nav"> <a href="###" class="closeMessage"  data-am-modal-close> <i class="am-icon-chevron-left"></i> </a>账号登录 </div>
+    <div class="am-header-right am-header-nav"><a href="{:U('Mobile/User/register')}" class="am-btn am-btn-default am-radius">注册</a></div>
+  </header>
+  <php>$referer_url= 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']</php>
+  <div class="login-all">
+    <div data-am-widget="tabs" class="am-tabs am-tabs-default" data-am-tabs="{noSwipe: 1}">
+      <ul class="am-tabs-nav am-cf" style="border:1px solid #54b2e5;background:#54b2e5;" >
+        <li class="am-active left"><a href="[data-tab-panel-0]">快速登录</a></li>
+        <li class=""><a href="[data-tab-panel-1]">账号登录</a> </li>
+      </ul>
+      <div class="am-tabs-bd" style="border:none">
+        <!--快速登录-->
+         <div data-tab-panel-0 class="am-tab-panel am-active" >
+         <form action="{:U('Mobile/User/ajax_login')}" class="am-form ajax-form" id="form_fast_login" method="post"> 
+         	<input type="hidden" name='referer_url' value="{$referer_url}">
+            <input type="hidden" name='login_type' value=0>
+            <p class="am-form-group"><input type="text" name="username" class="js-pattern-mobile" placeholder="请输入手机号码" data-foolish-msg="请输入正确手机号码" value="" required /></p>
+        
+         	<div class="am-form-group login-alidation user_verify_think" >
+	            <div class="alidationinput">
+	                <input type="text" id="verifyCode_login" placeholder="请输入图片验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verifyCode_login"> 
+	            </div>      
+	            <div class="alidationbut">
+	               <div class="user_verify_img user_register_verify"> <img class="verifyimg reloadverify user_varified_img" alt="点击切换" src="{:U('Public/verify')}" > </div>
+	          	</div>
+            </div>
+            <div class="am-form-group login-alidation register-width">
+            <div class="alidationinput">
+                <input type="text" name="mobileverify" class="js-pattern-number"  minlength="6" maxlength="6"  placeholder="请输入验证码" data-foolish-msg="请输入6位数字验证码" value="" />  
+            </div>      
+            <div class="alidationbut">
+                <div href="" id="login_mobile_btn" class="am-btn am-btn-block am-btn-danger">获取验证码</div>
+            </div>
+            </div>    
+            <button type="submit" id="" class="am-btn am-btn-block am-btn-through">快速登录</button>
+        </form>
+        </div>  
+        <div data-tab-panel-1 class="am-tab-panel"> 
+        <form action="{:U('Mobile/User/ajax_login')}" class="am-form ajax-form" id="form_user_login" method="post"> 
+            <input type="hidden" name='referer_url' value="{$referer_url}">
+            <input type="hidden" name='login_type' value=1>
+         	<!--账号登录-->  
+             <p class="am-form-group"><input type="text" name="username" class="js-pattern-MobileOrEmail" placeholder="手机号码/邮箱" data-foolish-msg="请输入正确手机号或邮箱" value="" required /></p>
+             <p class="am-form-group"><input type="password" name="password" class="" minlength="3" placeholder="请输入密码" data-foolish-msg="请输入密码" value="" /></p>   
+             <div class="forget"><a href="{:U('Mobile/User/mi')}">忘记密码？</a></div>
+             <button type="submit" id=" " class="am-btn am-btn-block am-btn-danger am-btn-through">登录</button>
+         </form>
+         </div> 
+      </div>
+    </div>
+    <php>$qq_jointLogin = getWebsitConfig('qq_jointLogin',2);</php>
+    <php>$wx_jointLogin = getWebsitConfig('wx_jointLogin',2);</php>
+    <if condition="$qq_jointLogin eq 1 or $wx_jointLogin eq 1">
+    <div class="login-bottom">
+      <div class="login-bottom-box">
+        <div class="wenzi">你也可以通过以下途径登录</div>	
+        <div class="img"> 
+          <if condition="$qq_jointLogin eq 1"><a href="__APP__/Mobile/User/qqlogin/type/qq.html" class="am-icon-btn am-icon-qq"></a></if><if condition="$wx_jointLogin eq 1"><a href="{:U('User/redirect_uri')}" class="am-icon-btn am-icon-weixin"></a></if></div>	
+      </div>
+    </div>
+    </if>
+  </div>
+</div>
+<if condition="is_login()">
+
+  <div class="am-popup" id="session_panel">
+    <header class="am-header am-header-default am-header-fixed">
+      <div class="am-header-left am-header-nav"> <a href="javascript:" data-am-modal-close class="closeMessage"> <i class="am-icon-chevron-left"></i></a>消息中心</div>
+    </header>
+    <div class="am-popup-inner">
+      <div id="session_panel_main_box">
+        <div style="color: white;line-height:200px;font-size: 16px;padding:10px; text-align:center"> <i href="" class="am-icon-btn am-icon-spinner am-icon-spin"></i> </div>
+      </div>
+    </div>
+  </div>
+  <div class="am-popup chat_panel" id="chat_box">
+    <header class="am-header am-header-default am-header-fixed">
+      <div class="am-header-left am-header-nav am-text-truncate" id="chat_text"><a href="javascript:" data-am-modal-close class=""><i class="am-icon-chevron-left"></i></a><span id="chat_title"></span></div>
+    </header>
+    <div class="send_box">
+      <div class="am-cf">
+        <div class="am-u-sm-1" style=" display:none;padding:0; margin:0; text-align:center; line-height:40px"><a href="javascript:" onclick="insertFace($(this))" class="am-icon-qq am-icon-sm"></a></div>
+        <div class="am-u-sm-9" style="padding:0; margin:0">
+          <input id="chat_content" class=""></input>
+        </div>
+        <input id="chat_id" type="hidden" value="0">
+        <php>$talk_self=query_user(array('avatar128'));</php>
+        <script>var myhead = "{$talk_self.avatar128}";</script>
+        <div class="am-u-sm-3" style="padding:0; margin:0">
+          <button class="am-btn am-btn-block am-btn-green" onclick="mobiletalker.post_message()" style="">发送</button>
+        </div>
+      </div>
+    </div>
+    <div class="am-g talk-body">
+      <div id="scrollArea_chat" class="">
+        <div id="scrollContainer_chat"> </div>
+      </div>
+    </div>
+    <div id="emot_content" class="emot_content" style="margin-top: -165px;margin-left: -415px;"></div>
+  </div>
+</if>
+
+<div id="punch_card" >
+<div class="index-twopage-close"></div>
+    <div class="index-twopage">
+    
+    
+    <if condition="is_login()">
+        <div>
+            <a href="{:U('Mobile/Issue/publishstory')}" class="am-icon-btn am-secondary  am-icon-edit"></a>
+            <div>发表</div>      
+        </div>
+    <else />    
+        <div>
+            <a href="javascript:" class="am-icon-btn am-secondary  am-icon-edit" onclick="user_login()"></a>
+            <div>发表</div>      
+        </div>
+     </if>
+     <php>$model_info = get_appinfo('Mark');</php>
+     <if condition="$model_info">
+         <if condition="is_login()">
+            <div>
+                <a href="{:U('Mobile/Mark/index')}" class="am-icon-btn am-danger am-icon-calendar"></a>
+                <div>打卡</div>
+            </div>
+            <else />
+             <div>
+                <a href="javascript:" class="am-icon-btn am-danger am-icon-calendar" onclick="user_login()"></a>
+                <div>打卡</div>
+            </div>
+         </if>
+    <else />
+    </if>
+     <php>$model_info = get_appinfo('Partner');</php>
+     <if condition="$model_info">
+        <div>
+              <a href="{:U('Mobile/Partner/index')}" class="am-icon-btn am-warning am-icon-group"></a>
+              <div>约伴</div>
+        </div> 
+     <else />
+     </if>
+        <!--div>
+            <a href="" class="am-icon-btn am-warning am-icon-group"></a>
+            <div>约伴</div>
+        </div>        
+        <div>
+            <a href="" class="am-icon-btn am-success am-icon-map-marker"></a>
+            <div>签到</div>
+        </div>
+        <div>
+            <a href="" class="am-icon-btn am-primary am-icon-puzzle-piece"></a>
+            <div>二手</div>
+        </div-->    
+     </div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function()
+	  {
+      $("body").on("click",'.butt-plus',function(e){
+		$('.am-actions').addClass("am-actions1"); 										 
+		$('.am-actions').removeClass("am-actions"); 
+		 $(this).addClass("am-actions"); 
+		$("#punch_card").animate({height:"90vh"}).show();
+		 $(".punch_open").find("i").addClass("am-icon-times"); 
+		 $(".punch_open").find("i").removeClass("am-icon-plus"); 
+		 $(".punch_open").find("a").addClass("butt-times"); 
+		 $(".punch_open").find("a").removeClass("butt-plus"); 
+		
+	  });
+	  $("body").on("click",".butt-times,.index-twopage-close",function(e){	
+		 $('.am-actions1').addClass("am-actions"); 										 
+		$('.am-actions1').removeClass("am-actions1"); 
+		 $(this).removeClass("am-actions"); 
+		$("#punch_card").hide();	
+	    $(".punch_open").find("i").addClass("am-icon-plus"); 
+		$(".punch_open").find("i").removeClass("am-icon-times");	
+		 $(".punch_open").find("a").addClass("butt-plus"); 
+		 $(".punch_open").find("a").removeClass("butt-times");
+	  });	  
+
+	 var pos_w = document.documentElement.clientWidth;
+	 if(pos_w<=640){
+		 var text_w = pos_w-10;
+		 $("#chat_text").css({ "width":text_w+"px"});
+		 $("#chat_title").addClass("am-text-truncate");
+		 }
+	});
+</script>
+
+ 
+
+<div class="am-modal am-modal-alert" tabindex="-1" id="my-modal-alert">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd" alert_title>提示信息</div>
+    <div class="am-modal-bd">
+      <div class="modal_alert_content">
+        <div alert_content></div>
+      </div>
+    </div>
+    <div class="am-modal-footer" alert_btn> <span class="am-modal-btn">确定</span> </div>
+  </div>
+</div>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="my-modal-confirm">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd" alert_title>提示信息</div>
+    <div class="am-modal-bd">
+      <div class="modal_alert_content">
+        <div alert_content></div>
+      </div>
+    </div>
+    <div class="am-modal-footer"> <span class="am-modal-btn" data-am-modal-cancel>取消</span> <span class="am-modal-btn" data-am-modal-confirm>确定</span> </div>
+  </div>
+</div>
+<script src="__STATIC__/amaze/js/app.js?v={:C('WEB_VERSION')}"></script>
+<include file="Public/js"/>
+<block name="script"></block>
+{:hook('pageFooter', 'widget')}
+<div class="hidden">
+  <block name="hidden"></block>
+</div>

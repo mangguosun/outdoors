@@ -1,0 +1,23 @@
+<extend name="Config/base"/>
+<block name="body">
+
+<div class="usercenter-set-pd">&nbsp;</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>0))}">账号设置</a></li>
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>1))}">角色认证</a></li>
+  <li <if condition="$status eq 6"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>6))}">申请记录</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>2))}">修改头像</a></li>
+  <li <if condition="$status eq 3"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>3))}">修改密码</a></li>
+  <li <if condition="$status eq 4"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>4))}">常用参加者</a></li>
+  <li <if condition="$status eq 5"> class="hover" </if> ><a href="{:U('Usercenter/Config/index',array('status'=>5))}">常用收货地址</a></li>
+  </ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li class="usercenter-set-pd" ><include file="Config/setup"/></li></if>
+  <if condition="$status eq 1"><li class="usercenter-set-pd" ><include file="Config/look_team"/></li></if>
+  <if condition="$status eq 2"><li class="usercenter-set-pd" ><include file="Config/changeavatar"/></li></if>
+  <if condition="$status eq 3"><li class="usercenter-set-pd" ><include file="Config/changepassword"/></li></if>
+  <if condition="$status eq 4"><li class="usercenter-set-pd" ><include file="Config/contacts"/></li></if>
+  <if condition="$status eq 5"><li class="usercenter-set-pd" ><include file="Config/address"/></li></if>
+  <if condition="$status eq 6"><li class="usercenter-set-pd" ><include file="Config/member_record"/></li></if>
+</ul>
+</block>

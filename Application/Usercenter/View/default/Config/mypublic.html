@@ -1,0 +1,121 @@
+<extend name="Config/base"/>
+<block name="body">
+
+  <div id="center">
+    <div class="common_block_title ">
+      <div class="pull-right">
+        <if condition="is_login() eq 0">
+          <button class="mbtn btn-primary btn-large event_btn" onclick="toast.error('请登录后再发布。','温馨提示')">发布新线路</button>
+          <else/>
+          <a class="mbtn btn-info event_sign" href="{:U('Event/Index/add')}">发布新线路</a> </if>
+      </div>
+      我发布的线路</div>
+    <div class="row data-table usercenter-common-table">
+      <table class="info">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>活动标题</th>
+            <th>状态</th>
+            <th>排期</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="list">
+          
+          <volist name="list" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><a href="{:U('Event/Index/detail',array('id'=>$vo['id']))}" target="_blank">{$vo.title}</a></td>
+              <td><?php if($vo['status'] == -1):?>
+                已删除
+                <?php elseif($vo['status'] == 0):?>
+                已禁用
+                <?php elseif($vo['status'] == 1):?>
+                正常
+                <?php endif;?></td>
+				<php>
+					$uid = is_login();
+					$eventid = $vo[id];
+					/*查看当前有无排期*/
+					$where = "siteid = ".SITEID." and uid = $uid and  status >= 1 and eventid = $eventid"; 
+					$rs = D('event_calendar_time')->where($where)->select();
+					//dump($rs);
+				</php>
+			  <?php if(empty($rs)):?>
+              <td><a href="{:U('Usercenter/Config/event_schedule',array('id'=>$vo['id']))}" class="mbtn btn-default event-schedu-no">暂无排期</a></td>
+			  <?php else:?>
+			  <td><a href="{:U('Usercenter/Config/event_schedule',array('id'=>$vo['id']))}"  class="mbtn btn-default event-schedu-detail">查看排期</a></td>
+			  <?php endif;?>
+              <td><?php if($vo['status'] != -1):?>
+                <a href="{:U('Event/Index/edit',array('id'=>$vo['id']))}" class="mbtn btn-default">编辑</a>
+				<a class="mbtn btn-default delEvent" onclick="return del()" href="{:U('Usercenter/Config/del_event',array('id'=>$vo['id'],'page'=>I('page')))}">删除</a>
+				<a class="mbtn btn-default delEvent" onclick="return copy()" href="{:U('Usercenter/Config/copy_event',array('id'=>$vo['id'],'page'=>I('page')))}">复制</a>
+                <?php endif;?>
+                <?php if($vo['status'] == 1):?>
+               <!-- <a class="mbtn btn-danger delEvent" onclick="return del_event()" href="{:U('Usercenter/Config/up_event',array('id'=>$vo['id'],'status'=>0,'page'=>I('page')))}">禁用</a>-->
+				 <a class="mbtn btn-danger event_use" data-ID="{$vo.id}" data-Status="0" href="javascript:">禁用</a>
+                <?php elseif($vo['status'] == 0):?>
+                <!--<a class="mbtn btn-danger delEvent" onclick="return up_event()" href="{:U('Usercenter/Config/up_event',array('id'=>$vo['id'],'status'=>1,'page'=>I('page')))}">启用</a>-->
+				 <a class="mbtn btn-info event_use" data-ID="{$vo.id}" data-Status="1" href="javascript:">启用</a>
+                <?php endif;?></td>
+            </tr>
+          </volist>
+		  <tr><td colspan="5">{$page}</td></tr>
+          <else/>
+        <td colspan="5" class="text-center"> aOh! 您还没有发布任何活动哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+	//是否禁用
+			$('.event_use').click(function () {
+			if (confirm('确定要操作么？')) {
+				var id = $(this).attr('data-ID');
+				var status=$(this).attr('data-Status');
+				$.post(U('Usercenter/Config/up_event'), {id: id,status:status}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});    
+	$(function () {			
+		$('.event_open').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					console.log(this.content);
+				}
+			}
+		});
+		
+	})
+	function del(){
+		return confirm("您确定删除该活动吗？")
+	}
+	function copy(){
+		return confirm("您确定复制该活动吗？")
+	}
+	function del_event(){
+		return confirm("您确定禁用该活动吗？")
+	}
+	function up_event(){
+		return confirm("您确定启用该活动吗？")
+	}
+</script>
+</block>
+<block name="userleft"> dsfsdf </block>

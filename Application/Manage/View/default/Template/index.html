@@ -1,0 +1,28 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="main-title">
+    <h2>模板设置</h2>
+  </div>
+  <div class="tab-wrap">
+    <ul class="tab-nav manage_nav">
+      <li <eq name="tabs" value="0">class="current"</eq> ><a href="{:U('?tabs=0')}">色系设置</a></li>
+      
+      
+      <if condition="websit_trave()"><li <eq name="tabs" value="1">class="current"</eq> ><a href="{:U('?tabs=1')}">左侧导航设置</a></li></if>
+      <if condition="websit_trave()"><li <eq name="tabs" value="2">class="current"</eq> ><a href="{:U('?tabs=2')}">推荐主题设置</a></li></if>
+      
+     <if condition="websit_runners()"><li <eq name="tabs" value="3">class="current"</eq> ><a href="{:U('?tabs=3')}">导航管理</a></li></if>
+     <if condition="websit_runners()"><li <eq name="tabs" value="4">class="current"</eq> ><a href="{:U('?tabs=4')}">品牌管理</a></li></if>
+     
+      </ul>
+    <div class="tab-content">
+      <div id="tab0" class="tab-pane <eq name="tabs" value="0">in</eq> tab0"> <include file="Template/template_color"/> </div>
+      <if condition="websit_trave()"><div id="tab1" class="tab-pane <eq name="tabs" value="1">in</eq> tab1"> <include file="Template/template_left_nav"/> </div></if>
+      <if condition="websit_trave()"><div id="tab2" class="tab-pane <eq name="tabs" value="2">in</eq> tab2"> <include file="Template/template_tags_config"/></div></if>
+     
+      <if condition="websit_runners()"><div id="tab3" class="tab-pane <eq name="tabs" value="3">in</eq> tab3"> <include file="Template/template_tags_classification"/></div></if>
+      <if condition="websit_runners()"><div id="tab4" class="tab-pane <eq name="tabs" value="4">in</eq> tab4"> <include file="Template/template_tags_brand"/></div></if>
+      
+    </div>
+  </div>
+</block>

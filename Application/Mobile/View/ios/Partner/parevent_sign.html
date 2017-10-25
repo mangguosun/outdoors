@@ -1,0 +1,187 @@
+<extend name="Public/common"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+  <div class="am-header-left am-header-nav">
+  <a href="javascript:history.back(-1)" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 约伴活动<!--填写返回打卡-->
+  </div>
+  <div class="am-header-right am-header-nav">
+  	<a href="{:U('Mobile/Index/index')}" class="am-fr" data-am-offcanvas="{target: '#home_all_bar'}"> <i class="am-header-icon am-icon-bars"></i> </a> 
+	<a href="javascript:" class="am-icon-share-square-o am-icon-sm" id="evevt-search-btn" data-am-toggle="share">
+	</a>
+  </div>
+</header>
+<body>
+	<include file="Public/topnavbar"/> <!-- 右侧菜单 -->
+	<!--好友信息弹层-->
+	<div class="par-create-header" style="display:none;">
+	  <div class="par-index-near">
+	    <div class="par-ind-near">
+	      <div class="par-ind-nearcon">
+	          <span>提醒</span>
+	      </div>
+	      <div class="par-ind-nearcon3">
+	          <p>报名之后才可以查看小伙伴的资料卡，赶紧报名认识他们吧</p>
+	      </div>
+
+	      <div class="par-ind-nearcon2">
+	          <div class="am-fl par-ind-true">
+	              <a href="{:U('Mobile/Partner/parevent_user',array('partner_id'=>$parevent['id']))}"><button type="button" class="am-btn am-fl am-btn-secondary par-ind-true2">报名</button></a>
+	          </div>
+	          <button type="button" class="am-btn am-fr am-btn-default par-ind-cancel">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<img class="lazy am-img-responsive" id="mypar-images" src="__PUBLIC__/Core/images/grey.gif" data-original="{$parevent.picture_id|getThumbImageById=640,320}"/>
+	<div class="parsign-imgbac">
+	</div>
+	<div class="parsign-imgword">{$parevent.title}
+		<div class="parsign-imglabel">
+			<label class="parsign-man"><i class="am-icon-mars"> {$parevent.man}</i></label>
+			<label class="parsign-woman"><i class="am-icon-venus"> {$parevent.woman}</i></label>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+	<!-- 签到活动具体详情 -->
+	<div class="parsian-con">
+		<i class="am-icon-map-marker parsian-tub"></i>
+		{$parevent.address}
+	</div>
+	<div class="parsian-con">
+		<i class="am-icon-clock-o parsian-tub"></i>
+		{$parevent.week} {$parevent.start_time|date='m-d H:i',###}
+	</div>
+	<div class="parsian-con">
+		<i class="am-icon-user parsian-tub"></i>
+		{$parevent.participate_number}人参加
+	</div>
+    <a class="parsian-con" href="javascript:" data-am-modal="{target: '#parevent-qrcode-box'}" style="display:block">
+    <i class="am-icon-qrcode parsian-tub"></i>
+        二维码
+    </a>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="parevent-qrcode-box">
+      <div class="am-modal-dialog">
+      <div class="am-modal-hd">扫一扫
+	      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+	    </div>
+        <div class="am-modal-bd">
+            <div class="UI-code"></div>
+        
+        <script>
+            var qrnode = new jQuery.AMUI.qrcode({
+            render: 'canvas',
+            correctLevel: 0,
+            text: "{$website_info}{:U('Mobile/Partner/parevent_sign',array('id'=>$parevent['id']))}",
+            width: 120,
+            height: 120,
+            background: '#fff',
+            foreground: '#000'
+            });
+            
+            $('.UI-code').append(qrnode);
+        </script>
+        </div>
+      </div>
+    </div>
+
+
+	<if condition="$parevent.event_status eq 2">
+			<div class="parsian-con parsian-conend">
+				<i class="am-icon-times-circle parsian-tub"></i>
+				报名已结束
+			</div>
+	</if>
+	<!-- 参加报名 -->
+		   <if condition="($parevent.user eq '') AND ($parevent.event_status eq 1)"><!--发布者不展示 -->
+				<if condition="$parevent.apply eq ''"><!--没有报名-->
+					<div class="parsian-cona-sign">
+						<a href="{:U('Mobile/Partner/parevent_user',array('partner_id'=>$parevent['id']))}"><button type="button" class="am-icon-graduation-cap am-btn am-btn-block am-btn-success ">&nbsp; 参加报名</button></a>
+					</div>
+				</if>
+				<if condition="($parevent.event_status eq 1) and ($parevent.apply neq '')"><!-- 取消报名 -->
+					<div class="parsian-con">
+					<i class="am-icon-pencil-square parsian-tub"></i>
+					已报名
+					</div>
+					<div class="mypar-button">
+					<button type="submit" class="am-btn am-btn-default mypar_btn_cancel" parevent_id="{$parevent.id}">取消报名</button>
+					</div>
+				</if>
+		</if>											
+	<!-- 活动介绍 -->
+	<div class="par-create-font parsign-conb"><span class="mark-type-i">l</span>&nbsp;&nbsp;活动介绍</div>
+	<div class="parsign-conc">
+		<div class="parsign-concb">
+			{$parevent.details}
+		</div>
+	</div>
+	<!-- 报名活动用户 -->
+	<volist name="user" id="user">
+	<div class="parsign-cond">
+		<div class="am-u-sm-3 parsign-condleft">
+			<if condition="($parevent.user neq '') OR ($parevent.apply neq '')">
+		<a href="{:U('Mobile/Partner/par_mubdet',array('id'=>$_GET['id'],'uid'=>$user['uid']))}">
+ 		<img class="am-circle am-img-thumbnail parsign-pic" src="{$user.avatar128}" />
+	 	</a>
+	 		<else />
+	 	<img class="am-circle am-img-thumbnail parsign-pic parsign_apply" src="{$user.avatar128}" />
+	 		</if>
+		</div>
+		<div class="am-u-sm-9 parsign-condright">
+			<div class="am-u-sm-12 parsign-conra">
+				<div class="parsign-condname">
+					{$user.nickname}
+				</div>
+				<div class="parsign-condtime">
+					{$user.registration_time}
+				</div>
+				<div class="parsign-conddel">
+					{$user.details}
+				</div>
+
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	</volist>
+</body>
+<script>
+	//加载图片
+	$(function () {
+		hdl_lazyload('img.lazy');
+		//获取图片的高度和蒙层同步
+		$("#mypar-images").load(function() {
+		    var heightimg = this.height;
+			var heightimg2 = heightimg-80;
+			$(".parsign-imgbac").css('height',heightimg+'px');
+			$(".parsign-imglabel").css('top',heightimg2+'px');
+        });
+	});
+	//取消报名
+	$(function () {
+		$('.mypar_btn_cancel').click(function (){
+			var parevent_id=$(this).attr('parevent_id');
+			$.post("{:U('Mobile/Partner/set_cancel')}", {id:parevent_id},function(data){
+				if(data['status'] == 1){
+			 		toasts.info(data.info);
+			 		location.reload()
+			   		}else{
+			   		toasts.info(data.info);
+			   	}
+			},'json');
+		})
+	});
+	$(function () {
+		$('.parsign_apply').click(function(){
+		 $(".par-create-header").css("display","block");
+		})
+		$('.par-ind-cancel').click(function(){
+		$(".par-create-header").css("display","none");
+		})
+	})
+</script>
+</block>

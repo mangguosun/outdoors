@@ -1,0 +1,35 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>添 加 Social账号</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-8">
+        <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Index/share_doAdd')}" method="post">
+          <div class="form-group postion">
+            <label for="cover_logo" class="col-md-3 control-label">Social账 号</label>
+            <div class="col-md-5">
+             {:form_select(get_share(),'','class="form-control form_check" check-type="Text" name="cover_logo" id="cover_logo"')}
+            </div>
+          </div>
+          <!--div class="form-group postion">
+            <label for="cover_logo" class="col-md-3 control-label">Social图标</label>
+            <div class="col-md-5"> {:hook('UploadImage', array('find_name'=>'cover_logo','value'=>'','buttontext'=>'上传图标','buttonwidth'=>150,'multi'=>false,'ds'=>'45*45'))} </div>
+          </div-->
+          <div class="form-group position">
+            <label for="url" class="col-md-3 control-label">链接地址</label>
+            <div class="col-md-9">
+              <input type="url" class="form-control" id="url" placeholder="请输入正确的url" name="url"
+						   value="">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

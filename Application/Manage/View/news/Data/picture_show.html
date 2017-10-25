@@ -1,0 +1,288 @@
+<extend name="Public/base1" />
+<block name="style">
+<style>
+.data_ul{ clear:both; overflow:hidden}
+.data_li{ float:left; margin-right:20px; width:400px; height:300px}
+</style>
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">汇总数据(饼图展示)</span>
+                </div>
+                <div class="widget-body">
+                    
+						<div class="row">
+                                
+                                
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">注册会员统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_reg_member" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">活动统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_event" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">排期统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_event_schedule" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">故事统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_issue" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">活动订单</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_event_order" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">评论统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_comment" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">定制订单</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_tailororder" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="widget">
+                                        <div class="widget-header ">
+                                            <span class="widget-caption">商品统计</span>
+                                            <div class="widget-buttons">
+                                                <a href="#" data-toggle="maximize">
+                                                    <i class="fa fa-expand"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div id="website_shop" class="chart chart-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                            </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+ <!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/charts/morris/raphael-2.0.2.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/charts/morris/morris.js"></script>
+
+    <script type="text/javascript">
+        $(window).bind("load", function () {
+
+            /*Sets Themed Colors Based on Themes*/
+            themeprimary = getThemeColorFromCss('themeprimary');
+            themesecondary = getThemeColorFromCss('themesecondary');
+            themethirdcolor = getThemeColorFromCss('themethirdcolor');
+            themefourthcolor = getThemeColorFromCss('themefourthcolor');
+            themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+			var InitiateDonutChart = function () {
+				return {
+					regmember: function () {
+						Morris.Donut({
+							element: 'website_reg_member',
+							data: [
+							  { label: '今日注册', value: {$daymember}  },
+							  { label: '当月注册', value: {$monthmember} },
+							  { label: '以前注册', value: {$othermember} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "人" }
+						});
+					},
+					events: function () {
+						Morris.Donut({
+							element: 'website_event',
+							data: [
+							  { label: '新增线路', value: {$dayevent}  },
+							  { label: '当月线路', value: {$monthevent} },
+							  { label: '以前线路', value: {$otherevent} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "条" }
+						});
+					},
+					schedule: function () {
+						Morris.Donut({
+							element: 'website_event_schedule',
+							data: [
+							  { label: '今日排期', value: {$dayschedule}  },
+							  { label: '当月排期', value: {$monthschedule} },
+							  { label: '以前排期', value: {$otherschedule} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "个" }
+						});
+					},
+					
+					
+					
+					issues: function () {
+						Morris.Donut({
+							element: 'website_issue',
+							data: [
+							  { label: '今日新增', value: {$daystory}  },
+							  { label: '当月故事', value: {$monthstory} },
+							  { label: '以前故事', value: {$otherstory} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "篇" }
+						});
+					},
+					eventorder: function () {
+						Morris.Donut({
+							element: 'website_event_order',
+							data: [
+							  { label: '今日新增', value: {$dayorder}  },
+							  { label: '当月订单', value: {$monthorder} },
+							  { label: '以前订单', value: {$otherorder} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "个" }
+						});
+					},
+					comment: function () {
+						Morris.Donut({
+							element: 'website_comment',
+							data: [
+							  { label: '今日新增', value: {$daycomment}  },
+							  { label: '当月评论', value: {$monthcomment} },
+							  { label: '以前评论', value: {$othercomment} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "个" }
+						});
+					},
+					tailororder: function () {
+						Morris.Donut({
+							element: 'website_tailororder',
+							data: [
+							  { label: '今日新增', value: {$daycustom}  },
+							  { label: '当月定制订单', value: {$monthcustom} },
+							  { label: '以前定制订单', value: {$othercustom} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "个" }
+						});
+					},
+					shop: function () {
+						Morris.Donut({
+							element: 'website_shop',
+							data: [
+							  { label: '上架商品', value: {$ongoods}  },
+							  { label: '下架商品', value: {$offgoods} },
+							],
+							colors: [themeprimary, themesecondary, themethirdcolor, themefourthcolor],
+							formatter: function (y) { return y + "个" }
+						});
+					},
+					
+				};
+			}();
+            InitiateDonutChart.regmember();
+			InitiateDonutChart.events();
+			InitiateDonutChart.schedule();
+			
+			InitiateDonutChart.issues();
+			InitiateDonutChart.eventorder();
+			InitiateDonutChart.comment();
+          	InitiateDonutChart.tailororder();
+			InitiateDonutChart.shop();
+			
+        });
+    </script>
+
+</block>

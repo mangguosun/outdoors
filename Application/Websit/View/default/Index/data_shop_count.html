@@ -1,0 +1,54 @@
+<div id="center">
+<div class="common_block_title ">商品概述</div>
+  <div class="row data-table usercenter-data-count-table">
+    <table class="info">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+			<th>共计商品总数</th>
+			<th>上架商品总数</th>
+			<th>下架商品总数</th>
+			<th>禁用商品总数</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+          <tr>
+			<td>{$allgoods}</td>
+            <td>{$ongoods}</td>
+            <td>{$outgoods}</td>
+            <td>{$offgoods}</td>			
+            <!--td></td-->
+
+            <!--td></td-->
+          </tr>
+        </tbody>
+    </table>
+  </div>
+  <div class="common_block_title ">今日商城统计概括</div>
+  <div class="row data-table usercenter-data-count-table">
+    <table class="info">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+			<th>共计商品</th>
+			<th>订单总额</th>
+			<th>订单总数</th>
+			<th>平均客单价</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+          <tr>
+			<td>{$allgoods}</td>
+            <td>￥{$todayprice}</td>
+            <td>{$todayorder}</td>
+            <td>￥{$guest_unit_price}</td>			
+            <!--td></td-->
+
+            <!--td></td-->
+          </tr>
+        </tbody>
+    </table>
+  </div>
+ </div>

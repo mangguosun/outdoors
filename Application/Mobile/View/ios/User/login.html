@@ -1,0 +1,80 @@
+<extend name="Public/common"/>
+<block name="body">
+
+<header data-am-widget="header" class="am-header am-header-default">
+<div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/Index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a>账号登录
+  </div>
+  <div class="am-header-right am-header-nav">
+  <a href="{:U('Mobile/User/register')}" class="am-btn am-radius login-button">注册</a>
+  </div>
+</header>
+<div class="login-all">
+    <div data-am-widget="tabs" class="am-tabs am-tabs-default" data-am-tabs="{noSwipe: 1}">
+      <ul class="am-tabs-nav am-cf" style="border:1px solid #54b2e5; background:#54b2e5;" >
+        <li class="am-active left"><a href="[data-tab-panel-0]">快速登录</a></li>
+        <li class=""><a href="[data-tab-panel-1]">账号登录</a> </li>     
+      </ul>
+      <div class="am-tabs-bd" style="border:none">
+        <!--快速登录-->
+         <div data-tab-panel-0 class="am-tab-panel am-active" >
+         <form action="{:U('Mobile/User/ajax_login')}" class="am-form ajax-form" id="form_fast_login_v" method="post"> 
+         	<input type="hidden" name='referer_url' value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+            <input type="hidden" name='login_type' value=0>
+            <p class="am-form-group"><input type="text" name="username" class="js-pattern-mobile" placeholder="请输入手机号码" data-foolish-msg="请输入正确手机号码" value="" required /></p>
+            <div class="am-form-group login-alidation user_verify_think login_yzm">
+	            <div class="alidationinput">
+	                <input type="text" id="verifyCode_login" placeholder="请输入图片验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verifyCode_login"> 
+	            </div>      
+	            <div class="alidationbut">
+	               <div class="user_verify_img user_register_verify"> <img class="verifyimg reloadverify user_varified_img" alt="点击切换" src="{:U('Public/verify')}" > </div>
+	          	</div>
+            </div>
+            <div class="am-form-group login-alidation ">
+            <div class="alidationinput">
+                <input type="text" name="mobileverify" class="js-pattern-number"  minlength="6" maxlength="6"  placeholder="请输入手机验证码" data-foolish-msg="请输入6位数字验证码" value="" />  
+            </div>      
+            <div class="alidationbut">
+                <div href="" id="login_mobile_btn" class="am-btn am-btn-block am-btn-danger">获取验证码</div>
+            </div>
+            </div>    
+            <button type="submit" id="" class="am-btn am-btn-block am-btn-through">快速登录</button>
+        </form>
+        </div>  
+        <div data-tab-panel-1 class="am-tab-panel"> 
+        <form action="{:U('Mobile/User/ajax_login')}" class="am-form ajax-form" id="form_user_login_v" method="post"> 
+            <input type="hidden" name='referer_url' value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+            <input type="hidden" name='login_type' value=1>
+         	<!--账号登录-->  
+             <p class="am-form-group"><input type="text" name="username" class="js-pattern-MobileOrEmail" placeholder="手机号码/邮箱" data-foolish-msg="请输入正确手机号或邮箱" value="" required /></p>
+             <p class="am-form-group"><input type="password" name="password" class="" minlength="3" placeholder="请输入密码" data-foolish-msg="请输入密码" value="" /></p>   
+             <div class="forget"><a href="{:U('Mobile/User/mi')}">忘记密码？</a></div>
+             <button type="submit" id=" " class="am-btn am-btn-block am-btn-danger am-btn-through">登录</button>
+         </form>
+         </div> 
+      </div>
+    </div>
+   <php>$qq_jointLogin = getWebsitConfig('qq_jointLogin',2);</php>
+    <php>$wx_jointLogin = getWebsitConfig('wx_jointLogin',2);</php>
+    <if condition="$qq_jointLogin eq 1 or $wx_jointLogin eq 1">
+    <div class="login-bottom">
+      <div class="login-bottom-box">
+        <div class="wenzi">你也可以通过以下途径登录</div> 
+        <div class="img"> 
+          <if condition="$qq_jointLogin eq 1"><a href="__APP__/Mobile/User/qqlogin/type/qq.html" class="am-icon-btn am-icon-qq"></a></if><if condition="$wx_jointLogin eq 1"><a href="{:U('User/redirect_uri')}" class="am-icon-btn am-icon-weixin"></a></if></div> 
+      </div>
+    </div>
+    </if>
+</div>
+</block>
+<block name="script">
+<script>
+$(function () {	
+	get_validator($('#form_fast_login_v'));
+	get_validator($('#form_user_login_v'));
+})
+</script>
+
+</block>

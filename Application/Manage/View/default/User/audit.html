@@ -1,0 +1,76 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>会员审核</h2>
+</div>
+
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th>用户(UID)</th>
+				<th>角色申请</th>
+				<th>状态</th>
+				<th>申请时间</th>
+				<th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="role_member">
+                <volist name="role_member" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.uid}"/></td>
+                        <td><a href="{:U('Usercenter/Index/index?uid='.$vo['uid'])}">[{$vo.uid}]{$vo.nickname}</a></td>
+						<td>{:get_upgrading($vo['is_use'])}</td>
+                        <td><if condition="$vo.status eq 0">未审核<elseif condition="$vo.status eq 1"/>审核通过<elseif condition="$vo.status eq -2"/>驳回申请</if></td>
+						<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                        <td>
+							<if condition="$vo.status eq 0">
+								<a href="javascript:" data-ID="{$vo.id}"	data-UID="{$vo.uid}" data-Use="{$vo.is_use}" data-Status="1" class=" role_status">通过审核</a> |
+								<a href="javascript:" data-ID="{$vo.id}" 	data-UID="{$vo.uid}" data-Use="{$vo.is_use}" data-Status="-2" class=" role_status">驳回申请</a>
+							</if>
+						</td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+	 <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+      
+		$(function () {	
+           //改变状态
+			$('.role_status').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  id= $(this).attr('data-ID');
+				var  uid=$(this).attr('data-UID');
+				var status=$(this).attr('data-Status');
+				var is_use=$(this).attr('data-Use');
+				$.post(U('Manage/User/member_manage_role'), {id: id,uid:uid,status: status,is_use:is_use}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+		})
+		
+		
+    </script>
+	
+</block>

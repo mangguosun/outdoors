@@ -1,0 +1,93 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div id="center">
+  <div class="common_block_title ">
+    <div class="pull-right">  <a class="mbtn  btn-info  event_type common-color-white"  href="{:U('line_type_add')}">添加类型</a>  <a class="mbtn btn-info" href="javascript:history.go(-1)" >返回</a></div></div>
+  <div class="row data-table">
+   
+    <table>
+      <!-- 表头 -->
+	   <label class="common-color-red" >亲!最多可以添加3条数据喔</label>
+      <thead>
+        <tr>
+          <th width=120>线路类别</th>
+          <th>排序</th>
+          <!--<th>状态</th>-->
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="line_type">
+        <volist name="line_type" id="vo">
+          
+            <tr>
+              <td>{$vo.title}</td>
+              <td>{$vo.sort}</td>
+              <!--<td><if condition="$vo.status eq 0">禁用
+                  <elseif condition="$vo.status eq 1"/>
+                  启用 </if></td>-->
+              <td>
+			    <a class="mbtn btn-info  event_sign1 common-color-white"  href="{:U('Websit/Event/line_type_edit?id='.$vo['id'])}">编辑</a>
+			   
+                  <a href="javascript:" data-ID="{$vo.id}"  class="mbtn btn-danger line_type_del" title="">删除</a>
+                
+				</td>
+              <!--<td><a class="mbtn btn-info  event_sign1 common-color-white"  href="{:U('Websit/Index/about_edit?id='.$vo['id'])}">编辑</a> <a id="delInfo"  class="mbtn btn-danger" href="{:U('Websit/Index/about_delete?id='.$vo['id'])}" >删除</a></td>-->
+            </tr>
+        
+        </volist>
+        <else/>
+        <td colspan="3" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+			$('.event_type').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			
+				//更新
+			$('.event_sign1').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                       // console.log(this.content);
+                    }
+                }
+            });
+			
+			//是否禁用
+		      $('.line_type_del').click(function () {
+				if (confirm('确定要操作么？')) {
+					var  id= $(this).attr('data-ID');
+				   $.post(U('Websit/Event/line_type_del'), {id: id}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+			  });
+
+	   })
+    </script>
+</div>
+</block>

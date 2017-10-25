@@ -1,0 +1,53 @@
+<extend name="Public/base" />
+<block name="body">
+<!--div class="main-title">
+   申请单查询：<a class="mbtn btn-info" href="#">待审核的申请</a> <a class="mbtn btn-info" href="#">已驳回的申请</a>
+</div-->
+<div class="cf">
+  <div class="data-table table-striped">
+    <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		<th>状态</th>
+		<th>申请日期</th>
+		  <th>商家名称</th>
+		  <th>所在城市</th>
+		  <th>网址</th>
+		  <th> </th>
+		  <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="relation_a_apply_list">
+        <volist name="relation_a_apply_list" id="vo">
+          <tr>
+			<td><if condition="$vo.examine_status eq 1">待审核<elseif condition="$vo.examine_status eq 2" />已通过<elseif condition="$vo.examine_status eq 0" />已驳回<elseif condition="$vo.examine_status eq 3" />已到期<elseif condition="$vo.examine_status eq -1" />已取消</if></td>
+			<td>{$vo.apply_time|date="Y-m-d",###}</td>
+			
+		    <td>{$vo.webname}</td>
+			<td>{$vo.province}{$vo.city}{$vo.district}{$vo.community}</td>
+			<td>{$vo.domain}</td>
+			<td><a  href="{:U('Distribute/relation_a_detail',array('id'=>$vo['id']))}">查看</a></td>
+            <td>
+			<if condition="$vo['examine_status'] eq 1">
+			待审核 
+			<elseif condition="$vo['examine_status'] eq 2"/>
+			<a class="mbtn btn-danger" href="{:U('Distribute/relation_a_update',array('id'=>$vo['id'],'action'=>'cancel'))}">取消合作</a>
+			<else/>
+			已取消
+			</if>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="15">{$page}</td>
+        <else/>
+			<td colspan="15" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+</block>
+

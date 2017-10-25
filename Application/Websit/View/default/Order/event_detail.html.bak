@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<!-- 头部 -->
+<include file="common/header"/>
+<!-- /头部 -->
+<!-- 主体 -->
+<block name="header">
+<div class="container" >
+
+    <div class="detail_box myevent_detail">
+      <include file="_status"/>
+      <div class="row data-table data-table-detail">
+      <div class="event_info">
+      <h4><strong>线路信息:</strong></h4>
+        <table>
+          <thead>
+            <tr>
+              <th>活动名称</th>
+              <th>出发/返程</th>
+              <th>集合地/目的地</th>
+              <th>交通/住宿</th>
+              <th>截止报名时间</th>
+              <th>活动单价</th>
+              <th>活动定金</th>
+              <th>支付方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="usercenter-pay-maxwidth"><img  class="usercenter-web-event" src="{$event_content.cover_id|getThumbImageById=40,40,1}" alt="">{$event_content.title} </td>
+              <td>{$content.starttime}<br />
+                {$content.overtime}</td>
+              <php> $begincity = get_citys($event_content['begincity']);
+                $finalcity = get_citys($event_content['finalcity']); </php>
+              <td>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}<br />
+                目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</td>
+              <td>交通：{:get_box($content['vehicle'],"checkbox",get_vehicle())}<br />
+                住宿：{:get_box($content['accommodation'],"checkbox",get_accommodation())}</td>
+              <td>{$content.endtime}<br /></td>
+              <td>¥{$event_attend.price}/人</td>
+              <td>¥{$event_attend.deposit}/人</td>
+              <td><span class="data-table-td-span">
+                <?php switch($event_attend['paytype']){case 0;echo '全款支付';break;case 1;echo '定金支付';break;case 2;echo '免费活动';break;}?>
+                </span></td>
+            </tr>
+          </tbody>
+        </table>
+          <h4>报名人信息:</h4>
+            <div>
+              <div class="row data-table event-contacts">
+                <table class="member_contacts_table">
+				<foreach name="member" item="vo">  
+                  <tr>
+					<if condition="$vo[user_info][nickname] neq ''">
+                    <td>姓名：{$vo[user_info].realname}({$vo[user_info].nickname})</td>
+					<else />
+					 <td>姓名：{$vo[user_info].realname}</td>
+					</if>
+                    <td>身份证：{$vo[user_info].card}</td>
+                    <td>手机：{$vo[user_info].telephone}</td>
+                    <td>邮箱：{$vo[user_info].email}</td>
+					<if condition="$vo[insurance_info] eq ''">
+                    <td>保险：无</td>                   
+					<else />
+					<td>保险：{$vo[insurance_info].name}({$vo[insurance_info].sum_insured}){$vo[insurance_info].price}元/人</td>
+					</if>
+                  </tr>
+				  </foreach>
+                </table>
+              </div>
+            </div>
+			
+            <h4>订单联系人信息:</h4>
+            <div class="row event-contacts">
+              <div class="form-group has-feedback">
+                <label for="contact_name" class="col-md-1 control-label">姓 名：</label>
+                <div class="col-md-3">
+                  {$event_attend.contact_name}
+                </div>
+                <label for="contact_telephone" class="col-md-1 control-label">手 机：</label>
+                <div class="col-md-3">
+                  {$event_attend.contact_telephone}
+                </div>
+                <label for="contact_email" class="col-md-1 control-label">邮 箱：</label>
+                <div class="col-md-3">
+                  {$event_attend.contact_email}                
+                </div>
+              </div>
+			 
+            </div>
+            <h4>订单备注:</h4>
+            <div class="sign_text ">
+			<if condition="$event_attend.remarks neq ''">
+              {$event_attend.remarks}
+			<else />
+			  暂无备注</textarea>
+			</if>
+            </div>
+			<h4>汇总信息:</h4>
+			<!-------------------------------------------------------------------------------------------------------->
+			<if condition="$event_attend[paytype] eq 1">	
+			<!---------------------余额支付------------------------->
+			<div id="totalprice" class="totalprice"></span>总计 <b><span style="color:red">¥{$event_attend.totalprice}</span><span style="color:red" class="total"></span></b> =	
+			定金支付 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="fropay"></span></b> + 
+			余额支付 <b><span style="color:red">¥{$event_attend.leftprice}</span><span style="color:red" class="leftpay"></span></b>
+				<if condition="$event_attend[cardid] neq ''">
+				<php>
+					$card_info = D('pointcard')->where(array('cardid'=>$event_attend['cardid'],'siteid'=>SITEID))->find();
+					$diff_price = ($event_attend['price'] - $event_attend['deposit']) * $total_num;
+					if($card_info['amount'] > $diff_price){
+						$card_amount = $diff_price;
+					}else{
+						$card_amount = $card_info['amount'];
+					}
+				</php>
+				<span class="card_o_total" style="color:green"> (代金券省 <b><span class="card_o_amount" style="color:red">¥<?php echo $card_amount?></span></b>)</span>	
+				<else />
+				</if>
+			</div>
+			<!------------------------------------------------------------>
+			<else />
+			<!------------------------全款支付---------------------------->
+			<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥{$event_attend.payprice}</span><span style="color:red" class="total"></span></b> =	
+			人数[<span style="color:red" class="contact_count">{$total_num}</span>] x <b><span style="color:red">¥{$event_attend.price}</span></b>
+				<if condition="$event_attend[cardid] neq ''">
+				<php>
+					$card_info = D('pointcard')->where(array('cardid'=>$event_attend['cardid'],'siteid'=>SITEID))->find();
+					$total_price = $event_attend['price'] * $total_num;
+					if($total_price > $card_info['amount']){
+						$card_amount = $card_info['amount'];
+					}else{		
+						$card_amount = $event_attend['totalprice'];
+					}
+				</php>
+				<span class="card_o_total"> - 优惠信息 <span style="color:green">(代金券省 <b><span class="card_o_amount" style="color:red">¥<?php echo $card_amount?></span></b>)</span></span>
+				<else />
+				</if>
+			</div>
+			<!------------------------------------------------------------>
+			</if>
+			<!--------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+  </div>
+</block>
+<include file="common/footer"/>
+<block name="script">
+<script>
+$('.updataSign').click(function () {
+	if (confirm('确定要操作么？')) {
+		var id = $(this).attr('data-eventID');
+		var status = $(this).attr('data-status');
+		$.post(U('Websit/Index/myevent_detail_upstatus'), {id: id,status:status}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+	}
+});
+</script>
+</block>
+</body>
+</html>

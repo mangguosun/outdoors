@@ -1,0 +1,141 @@
+<extend name="Public/base1"/>
+<block name="style">
+</block>
+<block name="body">
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+			<div class="widget-header  bordered-bottom bordered-sky">
+				<i class="widget-icon fa fa-tasks themeprimary"></i>
+				<span class="widget-caption">{$info['page_title']}</span>
+			</div>
+
+			<div class="widget-body">
+                <form id="defaultForm" action="{:U()}" class="form-horizontal form-bordered" method="post" >
+					<div class="form-title">
+						必填项
+					</div>
+					<div class="form-group">
+						<label class="col-lg-2 control-label">分类名称</label>
+						<div class="col-lg-10">
+							<div class="input-group">
+								 <input type="text" class="text input-large form-control" name="title" value="{$info.title}" />
+								 <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="用于添加商品选择分类"><i class="fa fa-question darkorange danger circular"></i></span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label">分类陈列图</label>
+						<div class="col-lg-10">
+								{:hook('UploadImagePc', array('find_name'=>'category_pic','value'=>$info['category_pic'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'1140','height'=>'400'))}
+						</div>
+					</div>
+					<div class="form-group">	
+						<label class="col-lg-2 control-label">上级分类</label>
+						<div class="col-lg-10">
+                        	<div class="input-group">
+							<select name="pid" class='category' style="width:100%;">
+								<volist name="category" id="item">
+									<option value="{$item.id}"    
+                                    <if condition="$info['id']">
+                                    	<if condition="$item['id'] eq $info['pid']"> selected="selected" </if>
+                                    	<if condition="($item['id'] eq $info['id']) or ($item['pid'] eq $info['id']) or ($info['pid'] eq 0 and $info['is_child'] eq '1')">disabled="disabled"</if>
+                                     </if>
+                                    >{$item.title_show}</option>
+								</volist>
+							</select>
+                            <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="最多支持二级分类"><i class="fa fa-question darkorange danger circular"></i></span>
+							<input type="hidden" name='level' value="0">
+                            </div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-2 control-label">排序</label>
+						<div class="col-lg-10">
+							<div class="input-group">
+								 <input type="text" class="text input-small form-control" name="sort" value="{$info.sort|default=0}" />
+								 <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="数字从大到小排序"><i class="fa fa-question darkorange danger circular"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<input type="hidden" name="id" value="{$info.id}">
+                            <input class="btn btn-palegreen" type="submit" value="确 定" />
+							<button class="btn btn-palegreen" onclick="javascript:history.back(-1);return false;">返 回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+	
+</block>
+
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<script type="text/javascript">
+
+$(".category").select2({language:"zh-CN"});
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+			title: {
+                validators: {
+                    notEmpty: {
+                        message: '分类名称是必需的，不能是空的'
+                    }
+                }
+            },
+			pid: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择上级分类'
+                    }
+                }
+            },
+			sort: {
+                validators: {
+					notEmpty: {
+                        message: '排序是必需的，不能是空的'
+                    },
+					digits: {
+                        message: '排序只能为数字，数字从大到小排序'
+                    },
+                }
+            },
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+	<?php 
+		foreach($category as $val){
+	?>
+	$('.category').change(function(){
+	   var vals = $(this).val();
+	   if(vals=={$val['id']}){
+		 
+		 $("input[name='level']").val({$val['level']});
+	   }
+	})
+	<?php }?>	
+	
+</script>
+</block>

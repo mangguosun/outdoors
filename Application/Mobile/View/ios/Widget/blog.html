@@ -1,0 +1,7 @@
+<if condition="!empty($blog_data)">
+    <ul>
+    <volist name="blog_data" id="vo">
+        <li><span><a href="{:U('Mobile/Blog/detail',array('id'=>$vo['id']))}">{$vo.title}</a></span></li>
+        </volist>
+    </ul>
+</if>

@@ -1,0 +1,104 @@
+<div id="center">
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>用户(UID)</th>
+          <th>会员昵称</th>
+		  <th>角色</th>
+		  <th>状态</th>
+		  <th>操作</th>
+        </tr>
+		<label class="common-color-red" >亲!最多推荐3个领队哦</label><br>
+		<p> <a href="{:U('Websit/Member/index',array('status'=>1))}">全部领队 |</a><a class="" href="{:U('Websit/Member/index',array('status'=>1,'recommendm'=>1))}"> 已推荐 </a> </p>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="team">
+        <volist name="team" id="vo">
+          <tr>
+		    <td>{$vo.uid}</td>
+			<td>{$vo.nickname}</td>
+			<td>{:get_upgrading($vo['is_use'])}</td>
+			<td><if condition="$vo.recommendm eq 0">未推荐<elseif condition="$vo.recommendm eq 1"/>已推荐</if></td>
+			<td>
+				<a href="javascript:" data-ID="{$vo.uid}" class="mbtn btn-danger adv_disable"  title="踢出领队">踢出领队</a>
+				<if condition="$vo.recommendm eq 0">
+				<a href="javascript:" data-ID="{$vo.uid}"  data-Status="1" class="mbtn btn-info recommendm_team"  title="领队推荐">领队推荐</a>
+				<elseif condition="$vo.recommendm eq 1"/>
+				<a href="javascript:" data-ID="{$vo.uid}"  data-Status="0" class="mbtn btn-danger cancel_recommendm_team"   title="取消推荐">取消推荐</a>
+				</if>
+			</td>
+		 </tr>
+        </volist>
+			<td colspan="5">{$page}</td>
+        <else/>
+			<td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {	
+          
+		  //--禁止--退出领队--
+			$('.adv_disable').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid= $(this).attr('data-ID');
+				
+				$.post(U('Websit/Member/manage_team_disable'), {uid: uid}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+		  
+		  //--推荐--领队---
+			$('.recommendm_team').click(function () {
+			if (confirm('确定要操作么？')) {
+				var  uid = $(this).attr('data-ID');
+				var recommendm =$(this).attr('data-Status');
+				$.post(U('Websit/Member/doRecommendm'), {uid: uid,recommendm:recommendm}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		  });
+		 //--取消推荐--
+		 $('.cancel_recommendm_team').click(function(){
+		    if (confirm('确定要操作么？')) {
+				var  uid = $(this).attr('data-ID');
+				var recommendm =$(this).attr('data-Status');
+				$.post(U('Websit/Member/cancelRecommendm'), {uid: uid,recommendm:recommendm}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		 
+		 })
+		})
+    </script>
+</div>

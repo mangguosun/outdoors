@@ -1,0 +1,78 @@
+<div id="center">
+  <div class="common_block_title ">
+    <a class="mbtn  btn-info  template_left_nav_edit common-color-white"  href="{:U('Template/template_tags_brand_add')}">添加品牌</a></div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>品牌名字</th>
+          <th>品牌logo</th>
+          <th>品牌链接</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+       <tbody>
+       <volist name="list" id="v">
+       <tr>
+          <td>{$v.brand_name}</td>
+           <td><img src="{$v.brand_logo|getThumbImageById=600,600}" width="60" height="60"></td>
+           <if condition="$v['address']">
+            <td><a href="{$v.address}" target="_blank">链接</a></td>
+            <else />  
+           <td><a href="{:U('Shop/Index/goods',array('shop_brand'=>$v['brand']))}" target="_blank">链接</a></td>
+          </if>
+          <td>
+          <a class="mbtn btn-info template_left_nav_edit common-color-white"  href="{:U('Template/template_tags_brand_add',array('id'=>$v['id']))}">编辑</a>
+          <a class="mbtn btn-info schedule_del common-color-white " barnd_id={$v['id']} >删除</a>
+          </td>
+       </tr>
+      </volist>
+        
+  <!--       <td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td> -->
+       
+     </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+  
+    $(function () {     
+      //更新
+      $('.template_left_nav_edit').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        //console.log(this.content);
+                    }
+                }
+            });
+    })
+    
+    //删除
+    $(".schedule_del").click(function(){ 
+        var id = $(this).attr('barnd_id');
+         schedule_del(id);
+      
+      })
+
+    function schedule_del(id){
+    if(confirm("您确定要删除吗？")){
+      $.get("{:U('Template/template_tags_brand_delete')}",{id:id},function(data){
+       
+        if(data['status']==1){
+         toast.success(data['m']);
+         location.reload();
+        }else{
+        
+          toast.error(data['m']);
+        }
+        
+      },'json');
+  }
+}
+    </script>
+</div>

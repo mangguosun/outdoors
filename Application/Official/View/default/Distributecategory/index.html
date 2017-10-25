@@ -1,0 +1,87 @@
+<extend name="Usercenter/base"/>
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+ <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li class="active">分销类别</li>
+    </ol>
+  </div>
+  
+<div class="row">
+    <div class="table-toolbar">
+     <a  href="{:U('Official/Distributecategory/shop_category_add',array('pid'=>$_GET['pid']))}" class="btn btn-info">
+        添加分类
+     </a>
+    </div>
+</div>
+ <div class="row">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-sky">
+            <i class="widget-icon fa fa-tasks themeprimary"></i>
+            <span class="widget-caption">分销类别列表</span> 
+        </div>
+        <div class="widget-body">
+            <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+                <thead>
+                    <tr>
+					  <th>ID</th>
+					  <th>排序</th>
+					  <th>名称</th>
+					  <th>子类数量</th>
+					  <th>创建时间</th>
+					  <th>更新时间</th>
+					  <th>状态</th>
+			          <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+				<volist name="shop_cates" id="vo">
+				  <tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.sort}</td>
+					<td>{$vo.title}</td>
+					<td>{$vo.childnum}</td>
+					<td><?php if($vo['create_time']):?>{$vo.create_time|date="Y-m-d",###}<?php else:?><?php endif;?></td>
+					<td><?php if($vo['update_time']):?>{$vo.update_time|date="Y-m-d",###}<?php else:?><?php endif;?></td>
+					<td><if condition="$vo['status'] eq 0">禁用<elseif condition="$vo['status'] eq 1"/>启用</if></td>
+				   	<td>    
+				       <div class="btn-group">
+                            <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                操作 <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <if condition="$vo['pid'] eq 0">
+                                     <li><a  href="{:U('Official/Distributecategory/index',array('status'=>1,'pid'=>$vo['id']))}">查看子类</a></li>
+                                </if>
+				                
+                                <li>
+                                    <if condition="$vo['status'] eq 1">
+										<a href="{:U('Official/Public/shop_cate_disable',array('status'=>0,'id'=>$vo['id']))}"  class="ajax-get">禁用</a>
+									<elseif condition="$vo['status'] eq 0"/>
+										<a href="{:U('Official/Public/shop_cate_disable',array('status'=>1,'id'=>$vo['id']))}"  class="ajax-get">启用</a>
+									</if>
+				                </li>    
+				                <li class="divider"></li>
+
+                                <li>
+                            		<a  href="{:U('Official/Distributecategory/shop_category_edit?id='.$vo['id'])}">编辑</a>
+                            	</li>
+				            </ul>
+				        </div>  
+					   </td>
+					 </tr>
+					</volist>
+     				</tbody>
+                </table>
+            </div>
+        </div>
+</div>
+</block>
+</block>
+
+
+
+

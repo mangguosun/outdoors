@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_usercenter.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<include file="common/header"/>
+<block name="body">
+  <div class="container" >
+  <div class=" usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <include file="_top_menu"/>
+
+            <div class="row uc_content">
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-12 uc_fans">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li><a href="{:U('Usercenter/Index/following',array('uid'=>$uid))}"
+                                    <eq name="tab" value="following"> class="uc_current"</eq>
+                                    >
+                                    <if condition="$uid eq is_login()">我<else/>Ta</if>的关注</a></li>
+                                <li><a href="{:U('Usercenter/Index/fans',array('uid'=>$uid))}"
+                                    <eq name="tab" value="fans"> class="uc_current"</eq>
+                                    >
+                                    <if condition="$uid eq is_login()">我<else/>Ta</if>的粉丝</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <if condition="count($following) eq 0"><p class="text-muted usercenter-text-follow">
+                        <br><br>
+                        暂无关注任何人哦，赶紧去看看吧～
+                        <br><br><br>
+                    </p></if>
+                    <div class="usercenr-fans-sm">
+                        <volist name="following" id="fan">
+                            <div class="row usercenter-fans">
+                                <div class="col-md-2">
+                                    <img ucard="{$fan.follow_who}" class="avatar-img"
+                                         src="{$fan.user.avatar128}"/>
+                                </div>
+                                <div class="col-md-10">
+                                    <div><a href="{$fan.user.space_url}"
+                                            ucard="{$fan.follow_who}">{$fan.user.nickname}</a><br/>
+                                        等级：{$fan.user.title}
+                                    </div>
+                                    <div class="row">
+                                        <!--<div class="col-md-4">
+                                            微博：
+                                            {$fan.user.weibocount}
+                                        </div>-->
+                                        <div class="col-md-4">
+                                            粉丝：
+                                            {$fan.user.fans}
+                                        </div>
+                                        <div class="col-md-4">
+                                            关注：
+                                            {$fan.user.following}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+                        <div class="pull-right">
+                            {:getPagination($totalCount)}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 uc_other_link">
+                    <include file="_right_link"/>
+                </div>
+            </div>
+        </div>
+    </div>
+     </div>
+</block>
+<include file="common/footer"/>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<div id="frm-post-popup" class="white-popup usercenter usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>添加常用参加者<span class="common-color-red">（带*号为必填）</span></h2>
+  <div class="aline usercenter-common-bm"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Usercenter/Config/doAdd')}" method="post">
+          <div class="form-group has-feedback">
+            <label for="realname" class="col-md-2 control-label">真实姓名 <span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="realname" name="realname" type="" class="form-control form_check" check-type="Text"  value="{$data.realname}" placeholder="请填写真实姓名"/>
+            </div>
+
+
+             <label for="telephone" class="col-md-2 control-label">联系电话 <span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="telephone" name="telephone" type="" class="form-control form_check" check-type="Phone"  value="{$data.telephone}" placeholder="请填写联系电话"/>
+            </div>
+
+            
+
+          </div>
+          <div class="form-group has-feedback">
+           	<label for="sex" class="col-md-2 control-label">性别 <span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <label class="radio-inline">
+                <input name="sex" type="radio" value="1" checked >
+                男 </label>
+              <label class="radio-inline">
+                <input name="sex" type="radio" value="2" >
+                女 </label>
+            </div>
+
+              <label for="card" class="col-md-2 control-label">身份证或者<br>护照号 <span class="common-color-red">*</span></label>
+            <div class="col-md-4">
+              <input id="card" name="card" type="" class="form-control form_check" check-type="Text"  value="{$data.card}" placeholder="请填写身份证或者护照号"/>
+            </div>
+
+
+        
+          </div>
+          <div class="form-group  has-feedback">
+
+            <label for="emergencycontact" class="col-md-2 control-label">紧急联系人 {$dataListdis[1]}</label>
+            <div class="col-md-4">
+              <input id="emergencycontact" name="emergencycontact" type="" class="form-control form_check" check-type="Text"  value="{$data.emergencycontact}" placeholder="请填写紧急联系人"/>
+            </div>
+            <label for="emergencyphone" class="col-md-2 control-label">紧急联系电话 {$dataListdis[2]}</label>
+            <div class="col-md-4">
+              <input id="emergencyphone" name="emergencyphone" type="" class="form-control form_check" check-type="Text"  value="{$data.emergencyphone}" placeholder="请填写紧急联系电话"/>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+			<label for="nickname" class="col-md-2 control-label">活动昵称 {$dataListdis[3]}</label>
+            <div class="col-md-4">            
+                <input name="nickname" type="" class="form-control form_check" maxlength="10"  placeholder=""/ >            
+            </div>
+            <label for="email" class="col-md-2 control-label">邮箱 {$dataListdis[4]}<span class="common-color-red"></span></label>
+            <div class="col-md-4">
+              <input id="email" name="email" type="" class="form-control form_check" check-type="Email"  value="{$data.email}" placeholder="请填写Email"/>
+            </div>
+          
+          </div>
+		   <div class="form-group has-feedback">
+			  <label for="qq" class="col-md-2 control-label">QQ {$dataListdis[5]}</label>
+            <div class="col-md-4">
+              <input id="qq" name="qq" type="" class="form-control form_check" check-type="Text"  value="{$data.qq}" placeholder=""/>
+            </div>
+			 <label for="bloodtype" class="col-md-2 control-label">血型 {$dataListdis[6]}</label>
+            <div class="col-md-4"> {:form_select(get_bloodtype(),$data['bloodtype'],'class="form-control form_check" check-type="Text" name="bloodtype" id="bloodtype"','请选择')} </div>
+		   </div>
+          <div class="form-group  has-feedback">
+            <label for="accpre" class="col-md-2 control-label">住宿偏好 {$dataListdis[7]}<span class="common-color-red"></span></label>
+            <div class="col-md-10 contacts-pad"> {:form_checkbox(get_accommodation(),$data['accpre'],'name="accpre[]" id="accpre"',0,'100')} </div>
+          </div>
+          <div class="form-group has-feedback">
+           
+            <label for="allergies" class="col-md-2 control-label">过敏史 {$dataListdis[8]}</label>
+            <div class="col-md-4">
+              <input id="allergies" name="allergies" type="" class="form-control"  value="{$data.allergies}"/>
+            </div>
+			<span style='position:relative;top:5px;color:red'>注意：如果您有过敏史，请务必填写</span>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="role" class="col-md-2 control-label">社会角色 {$dataListdis[9]}</label>
+            <div class="col-md-4">{:form_select(get_role(),$data['role'],'class="form-control" check-type="Text" name="role" id="role"','请选择')} </div>
+            <label for="role_description" class="col-md-2 control-label">角色说明 {$dataListdis[10]}</label>
+            <div class="col-md-4">
+              <input id="role_description" name="role_description" type="" class="form-control form_check" check-type="Text"  value="{$data.role_description}" placeholder=""/>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="age" class="col-md-2 control-label">年龄 {$dataListdis[11]}</label>
+            <div class="col-md-4">
+              <input id="age" name="age" type="" class="form-control form_check" check-type="Text"  value="{$data.age}" placeholder="请填写年龄"/>
+            </div>
+
+            <label for="hand" class="col-md-2 control-label">惯用手 {$dataListdis[12]}</label>
+            <div class="col-md-4">
+              <label class="radio-inline">
+                <input name="hand" type="radio" value="1"  >
+                左手 </label>
+              <label class="radio-inline">
+                <input name="hand" type="radio" value="2" >
+                右手 </label>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/contacts_add')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

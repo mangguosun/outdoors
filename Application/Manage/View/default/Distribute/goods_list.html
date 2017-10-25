@@ -1,0 +1,126 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>我的商品</h2><span class='common-color-red'></span>
+</div>
+<!--
+<div class="cf">
+     <div class="fl">
+	        <a class="w_btn add-btn w_btn" href="{:U('Distribute/site_distribute_apply')}">申请成为商城分销上游</a>
+			<a class="w_btn add-btn w_btn" href="{:U('Distribute/distribute_site')}">编辑商家信息</a>
+			<a class="w_btn add-btn w_btn" href="{:U('Distribute/apply_list')}">我的申请列表</a>
+			<a class="w_btn add-btn w_btn" href="{:U('Distribute/company_list')}">进入商家库</a>
+			<a class="w_btn add-btn w_btn" href="{:U('Distribute/goods')}">进入商品库</a>
+			<a class="w_btn add-btn w_btn" href="{:U('Distribute/myseller')}">谁在卖我的商品</a>
+            <a class="w_btn add-btn w_btn" href="{:U('Distribute/mysupplier')}">我在卖谁的商品</a>           <!-- <button class="w_btn ajax-post confirm" url="{:U('Websit/changeStatus',array('status'=>'-1','method'=>'deleteshop'))}"
+                    target-form="ids">删 除
+            </button>
+			 <button class="w_btn ajax-post" url="{:U('Shop/shop_recommend',array('is_recommend'=>1))}"
+                    target-form="ids">设为推荐
+            </button>
+            <button class="w_btn ajax-post" url="{:U('Shop/shop_recommend',array('is_recommend'=>0))}"
+                    target-form="ids">取消推荐
+            </button>
+     </div>
+
+        <div class="search-form pull-right">
+            <div class="sleft">
+                <input type="text" name="goods_name" class="search-input" value="{:I('goods_name')}"
+                       placeholder="请输入商品名称或者ID">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+ </div>
+ -->
+<form action="{:U('Distribute/batch_add_to_distribute')}" method="post" class="ajax-form">
+  <input type="submit" value="发布到分销集市" class="mbtn btn-primary" style="font-size:16px">
+  <div class="data-table table-striped">
+
+  <br>
+        <table class="">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th><input type="checkbox"  id="checkedAll">全选</th>
+		  <th>编号</th>
+		  <th>商品名称</th>
+		  <th>销售价</th>
+		  <th>开启分销</th>
+		  <th>分销模式</th>
+		  <th>佣金(%)</th>
+		  <th>商品库存</th>
+		  <!--<th>是否出售</th>-->
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="shop_list">
+        <volist name="shop_list" id="vo">
+          <tr>
+		    <td><input type="checkbox" name="ids[]" class="newlist"  value="{$vo.id}"></td>
+			<td>{$vo.id}</td>
+			<td><a href="{:U('Distribute/shop_detail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+		    <td>{$vo.market_price}元</td>
+			<th><if condition="$vo['is_distribute'] eq 1"><font color='green'>已发布</font><else/><font color='red'>未发布</font></if></th>
+			<td><if condition="$vo['distribute_type_b'] or $vo['distribute_type_a'] ">
+					<if condition="$vo['distribute_type_a'] ">全站</if>
+				<if condition="$vo['distribute_type_b']">单品</if>
+			
+				<else/><b style="color:red">未设置</b></if>
+			</td>
+			<td><if condition="$vo['seller_price']">{$vo.seller_price}<else/><b style="color:red">未设置</b></if></td>
+			<td>{$vo.goods_num}</td>
+			<!--<td><if condition="$vo.purchase_status eq 0"><font color="red">否</font><elseif condition="$vo.purchase_status eq 1"/><font color="green">是</font></if></td>-->
+            <td>
+				<a href="{:U('Manage/Distribute/goods_edit?id='.$vo['id'])}">编辑</a>&nbsp;&nbsp;&nbsp;
+			 <a href="{:U('Distribute/add_to_distribute',array('id'=>$vo['id']))}" class="confirm ajax-get"><if condition="$vo.is_distribute eq 0">发布到集市<elseif condition="$vo.is_distribute eq 1"/>从集市移除</if></a></td>
+          </tr>
+        </volist>
+		   <td colspan="14">{$page}</td>
+        <else/>
+			<td colspan="14" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+</form>
+   <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+       // highlight_subnav("{:U('User/index')}");
+	   $('#checkedAll').click(function(){
+		if(this.checked){
+		    $("[name='ids[]']:checkbox").prop('checked',true);
+		 }else{
+		    $("[name='ids[]']:checkbox").prop('checked',false);  
+		  }
+	
+    });
+    </script>
+  
+  
+  
+</block>
+

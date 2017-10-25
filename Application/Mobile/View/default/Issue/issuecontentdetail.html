@@ -1,0 +1,125 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="top_bar_mobile"> <span class="mobile_crumbs"><a onclick="window.history.go(-1)" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_text_btn">故事详情</div>
+    </div>
+    </span>
+    
+    </div>
+  <div class="h40"></div>
+  <!--导航-->
+<script type="text/javascript" src="__STATIC__/superslide/jquery.superslide.js"></script>
+<script type="text/javascript" src="__STATIC__/superslide/touchslide.1.1.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.lazyload.js"></script>  
+<div class="mobile_detail_cont">
+    <div class="mobile_detail_title"><div class="pull-right mbtn btn-primary d_detail">收藏</div><!--div class=' pull-right issue_like'>{:Hook('support',array('table'=>'issue_content','row'=>$content['id'],'app'=>'Issue','uid'=>$content['uid'],'jump'=>'no'))}</div-->{$content.title}</div>
+    <div class="mobile_detail_rule">
+      <php>$begincity = get_citys($content['begincity']);$finalcity = get_citys($content['finalcity']); </php>
+	<ul>
+		<li><i class="fa fa-send"></i> <span>目的地：</span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</li>
+		<li><i class="fa fa-tag"></i> <span>活动特色：</span><volist name="content.tags" id="tag">{$tag.name}&nbsp;&nbsp; </volist></li>
+	   <li><i class="fa fa-user"></i> <span>发布人：</span>&nbsp;&nbsp;{$content.user.nickname} </li>
+	</ul>
+    </div>
+   <div class="mobile_detail_conts" id="get_content" style="">
+    	<h3 class="detail_cont_title">详情</h3>
+		<div class="detail_cont_contnet"> 	
+	       {$content['content']}
+	    </div>  
+  </div>
+  
+  {:W('Mobile/HotEvent/lists',array('limit'=>10))}
+  <a id='goTopBtn'></a>
+<div style='height:200px;'></div>
+</div>
+</block>
+<block name="script">
+<script>
+var SUPPORT_URL="{:addons_url('Support://Support/doSupport')}";
+$(function () {	
+  $('.d_detail').click(function(){			
+		var event_id = "{$content['id']}";
+		if(MID=="0"){
+			//toast.error('请在登录后再收藏。');
+			location.href ="{:U('Mobile/User/login')}"  
+			return false;
+		}else{
+			$.post("{:U('Mobile/Issue/issue_collection')}", {id: event_id}, function (res) {
+			 if(res=='1'){
+			   toast.error('你已收藏过。');
+			 }else{
+			   toast.success('收藏成功。');
+			 }
+			}, 'json');
+		}
+	});
+	/********************************************/
+	function bindSupport() {
+    $('.support_btn').unbind('click');
+    $('.support_btn').click(function () {
+        // event.stopPropagation();
+        var me = $(this);
+        if (MID == 0) {
+            toast.error('请在登录后再点赞。即将跳转到登录页。', '温馨提示');
+            setTimeout(function () {
+                location.href = U('Mobile/User/Login');
+            }, 1500);
+            return;
+        } else {
+            var row = $(this).attr('row');
+            var table = $(this).attr('table');
+            var uid = $(this).attr('uid');
+            var jump = $(this).attr('jump');            
+            var	MODULE_NAME = 'Issue';         
+            $.post(SUPPORT_URL, {appname: MODULE_NAME, row: row, table: table, uid: uid, jump: jump}, function (msg) {
+                if (msg.status) {
+                    var num_tag = $('#support_' + MODULE_NAME + '_' + table + '_' + row);
+                    var pos = $('#support_' + MODULE_NAME + '_' + table + '_' + row + '_pos');
+                    if (pos.text() == '') {
+                        var html = '<span id="' + '#support_' + MODULE_NAME + '_' + table + '_' + row + '">1</span>';
+                        pos.html('&nbsp;( ' + html + '&nbsp;)');
+
+                    } else {
+                        var num = num_tag.text();
+                        num++;
+                        num_tag.text(num);
+                    }
+                    var ico = me.find('#ico_like');
+                    ico.removeClass();
+                    ico.addClass('support_like');
+                    toast.success(msg.info, '温馨提示');
+
+                } else {
+                    toast.error(msg.info, '温馨提示');
+                }
+
+            }, 'json');
+        }
+
+    });
+}
+	bindSupport();
+	/********************************************/
+})
+
+ $(function() {
+	$(".mobile_detail_conts img").lazyload();	
+	$('#get_content img').each(function() {								
+		 var maxWidth = $('#get_content').width(); // 图片最大宽度
+		 var ratio = 0;  // 缩放比例   
+		 var width = $(this).width();    // 图片实际宽度   
+		 var height = $(this).height();  // 图片实际高度   
+		 // 检查图片是否超宽   
+		 if(width > maxWidth){  
+			 ratio = maxWidth / width;   // 计算缩放比例   
+			 $(this).css("width", maxWidth); // 设定实际显示宽度   
+			 height = height * ratio;    // 计算等比例缩放后的高度    
+			 $(this).css("height", height);  // 设定等比例缩放后的高度   
+		 }  
+ 	});		   
+});  
+
+</script>
+</block>
+

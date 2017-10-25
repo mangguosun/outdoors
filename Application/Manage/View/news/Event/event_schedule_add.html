@@ -1,0 +1,361 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">增加排期</span>
+                </div>
+                <div class="widget-body">
+           
+               <form  id="defaultForm"  class="form-horizontal form-bordered" action="{:U('Manage/Event/event_schedule_add')}" method="post">
+                    <input type="hidden" name="eventid" id="eventid" value="{$event.id}"/>
+                    <input type="hidden" name="event_url" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+                   		<div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">队名</label>
+                          <div class="col-lg-10">
+                          	<div class="input-group">
+                            <input id="team_name" name="team_name" class="form-control"  value="{$content.team_name}" maxlength="3"  placeholder="队名" ><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="队名限三个字"><i class="fa fa-question darkorange danger circular"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                    
+                         <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">出发时间 </label>
+                            <div class="col-lg-10">
+                                <div class="input-group date form_datetime">
+                                   <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" id="starttime"  name="starttime" class="form-control" placeholder="请选择时间" value="{$content.starttime}" readonly />
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="出发时间"><i class="fa fa-question darkorange danger circular"></i></span>
+
+
+                                </div>
+                            </div>
+                        </div>
+                          
+                      
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">截止报名时间 </label>
+                            <div class="col-lg-10">
+                                <div class="input-group date form_datetime">
+                                   <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" id="endtime" name="endtime" class="form-control time_d" placeholder="请选择时间" value="{$content.endtime}"  readonly/>
+                                     <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="截止报名时间"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">活动天数 </label>
+                          <div class="col-lg-10">
+                          <div class="input-group">
+                            <input id="days" name="days" class="form-control judgeNan"  value="{$event['traveldays']}" placeholder="活动天数" required /><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="活动天数为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                          </div>
+                          </div>
+                        </div>  
+                        
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">活动价格 </label>
+                          <div class="col-lg-10">
+                          <div class="input-group">
+                            <input id="price" name="price" class="form-control" value="{$event['price']}" placeholder="" required /><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="活动价格为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                          </div>
+                          </div>
+                        </div>   
+                               
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">支付方式 </label>
+                          <div class="col-lg-10">
+                            {:form_select(get_event_pay_type(),$content['paytype'],'class=" form-control select_deposit" check-type="Text" name="paytype" id="paytype"','请选择')}
+                          </div>
+                        </div>
+
+                        <div class="form-group deposit_show" <?php if($content['paytype'] != 1){ echo "style='display:none' "; }  ?> >
+                            <label class="col-lg-2 control-label">定金价格</label>
+                            <div class="col-lg-10">
+                            <div class="input-group">
+                            <input id="deposit" name="deposit" class="form-control"  value="{$content['deposit']}" placeholder="" required /><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="定金价格为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                            </div>
+                            </div>
+                        </div>
+
+                      
+                        
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">队员上限 </label>
+                          <div class="col-lg-10">
+                          <div class="input-group">
+                          <input id="maxpeople" name="maxpeople" class="form-control " value="{$content.maxpeople}" placeholder="人员上限" ><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="队员上限为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                          </div>
+                          </div>
+                        </div>                          
+
+                        
+                        
+                        <div class="form-group" >
+                            <label class="col-lg-2 control-label">集合城市</label>
+                            <div class="col-lg-10">
+                            	<div class="form-inline">
+                                    {:hook('Citylinkage',array('find'=>'begincity','level'=>3,'linkageid'=>$content['begincity']))}
+                            	</div>
+                            </div>
+                    	  </div>
+ 
+    
+                        
+                    	<div class="form-title">
+                            选填项
+                        </div>   
+                                         
+						            <div class="form-group">
+                            <label class="col-lg-2 control-label">最低人数</label>
+                            <div class="col-lg-10">
+                            <div class="input-group">
+                               <input id="minpeople" name="minpeople" class="form-control " value="{$content.minpeople}" placeholder="最低人数" required /><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="最低人数为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                            </div>
+                            </div>
+                        </div>                   
+              
+                        <div class="form-group">
+                          <label  class="col-lg-2 control-label">剩余名额</label>
+                          <div class="col-lg-10">
+                          <div class="input-group">
+                            <input name="days_left" class="form-control " type="text" value="{$content.days_left}">
+                          <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="剩余名额为大于等于0的数字"><i class="fa fa-question darkorange danger circular"></i></span>
+                        </div>          
+                      </div>
+                      </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">能否使用优惠</label>
+                            <div class="col-lg-10">
+                                <div class="radio">
+                                    <label><input name="card_use" type="radio" value="1"   checked ><span class="text">能</span></label>
+                                    <label><input name="card_use" type="radio" value="0"   checked ><span class="text">不能</span></label>
+                                </div>
+                            </div>
+                        </div>  
+ 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">具体地址</label>
+                            <div class="col-lg-10">
+                            <input id="detailadd" name="detailadd" class="form-control"  value="{$content['detailadd']}" placeholder="具体地址"/>		  
+                            </div>
+                        </div>
+                      
+                        <div class="form-group">
+                        <label class="col-lg-2 control-label">{:get_upgrading(2)}</label>
+                        <div class="col-lg-10"> {:form_checkbox_manage($get_leader,$content['leader'],'name="leader[]" id="leader"',0,'200')} </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">交通工具 </label>
+                          <div class="col-lg-10"> {:form_checkbox_manage(get_vehicle(),$content['vehicle'],'name="vehicle[]" id="vehicle"',0,'100')} </div>
+                        </div>        
+                    
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">住宿条件 </label>
+                          <div class="col-lg-10"> {:form_checkbox_manage(get_accommodation(),$content['accommodation'],'name="accommodation[]" id="accommodation"',0,'100')} </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                               <button type="submit" class="btn btn-palegreen"  target-form="form-horizontal" target-ls="a" >确定</button>
+                               <button onclick="javascript:history.back(-1);return false;" class="btn btn-default">返回</button>
+                            </div>  
+                        </div>
+               </form>
+   
+               </div>
+        </div>
+    </div>
+</div>   
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+<!--Bootstrap Date Picker-->
+<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+/*minView
+0 or 'hour' for the hour view
+1 or 'day' for the day view
+2 or 'month' for month view (the default)
+3 or 'year' for the 12-month overview
+4 or 'decade' for the 10-year overview. Useful for date-of-birth datetimepickers.*/
+$(".form_datetime").datetimepicker({
+  format: "yyyy-mm-dd hh:ii",
+  language:"zh-CN",
+  showmeridian: false,
+  autoclose: true,
+  pickerPosition: "top-right",
+  minuteStep: 5,
+  todayBtn: true,
+  todayHighlight:true,
+  minView:0,
+});
+
+
+  $('.select_deposit').click(function(){ 
+  	var val = $(this).val();
+  	if(val == 1){ 
+  		$('.deposit_show').show();
+  	}else{ 
+  		$('.deposit_show').hide();
+  	}
+  	
+  })
+
+
+</script>
+<script type="text/javascript" src="__STATIC__/jquery.form.min.js"></script>
+<script>
+	Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份 
+			"d+": this.getDate(), //日 
+			"h+": this.getHours(), //小时 
+			"m+": this.getMinutes(), //分 
+			"s+": this.getSeconds(), //秒 
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S": this.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+
+	$('#starttime').change(function(){	
+		var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+		var time1 = time - 24*60*60;
+	//	var date1 = new Date(parseInt(time1) * 1000).toLocaleString().replace(/上午/g, "").replace(/\//g, "-");
+		
+		var date1 = new Date(parseInt(time1) * 1000).Format("yyyy-MM-dd")+' 23:59';  
+		$('#endtime').val(date1).attr('value',date1);	
+    $('#defaultForm').data('bootstrapValidator').revalidateField('starttime');
+    $('#defaultForm').data('bootstrapValidator').revalidateField('endtime');
+
+	})
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+
+            starttime: {
+                 validators: {
+                    notEmpty: {
+                        message: '出发时间不能为空'
+                    },
+                   // date: {
+                   //      format: 'YYYY-MM-DD h:m A'
+                   //  }
+                }
+            },
+            endtime: {
+                 validators: {
+                    notEmpty: {
+                        message: '截止报名时间不能为空'
+                    },
+                    //  date: {
+                    //     format: 'YYYY-MM-DD h:m A'
+                    // }
+                   
+                }
+            },
+            price: {
+                 validators: {
+                    notEmpty: {
+                        message: '活动价格不能为空'
+                    },
+                    regexp: {
+                     regexp: /^([0-9]{1,8})(\.\d{1,2})?$/,
+                     message: '活动价格为大于等于0的数字'
+                    }
+                }
+            },
+            deposit: {
+                 validators: {
+                   regexp: {
+                     regexp: /^([0-9]{1,8})(\.\d{1,2})?$/,
+                     message: '金额为大于等于0的数字'
+                    }
+                }
+            },
+            days_left: {
+                 validators: {
+                   regexp: {
+                     regexp: /^[0-9]+$/,
+                     message: '剩余名额为大于等于0的数字'
+                    }
+                }
+            },
+
+            minpeople: {
+                 validators: {
+                   regexp: {
+                     regexp: /^[0-9]+$/,
+                     message: '最低人数为大于等于0的数字'
+                    }
+                }
+            },
+            maxpeople: {
+                 validators: {
+                   regexp: {
+                     regexp: /^[0-9]+$/,
+                     message: '队员上限为大于等于0的数字'
+                    }
+                }
+            },
+
+            days: {
+                validators: {
+                    notEmpty: {
+                        message: '活动天数不能为空'
+                    },
+                    regexp: {
+                     regexp: /^[0-9]+$/,
+                     message: '活动天数为大于等于0的数字'
+                    }
+                }
+                 
+            },
+  
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+ 
+</block>  

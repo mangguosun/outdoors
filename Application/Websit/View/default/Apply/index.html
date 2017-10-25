@@ -1,0 +1,10 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title ">应用管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$group eq all"> class="hover" </if> ><a href="{:U('Websit/Apply/index')}">所有</a></li> 
+</ul>
+<ul id="tabs_box">
+  <if condition="$group eq all"><li class="" ><include file="apply_all"/></li></if>
+</ul>
+</block>

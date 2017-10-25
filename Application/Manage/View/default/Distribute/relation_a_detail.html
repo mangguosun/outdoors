@@ -1,0 +1,45 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="all">
+    <div class="all-top">
+        	<h3>全站分销申请表单</h3>            
+            <div class="all-box">
+            	<div class="shenqing-left">
+					<div><span>商家名称：</span>{$webinfo.webname}</div>
+                	<div><span>审批结果：</span><strong><if condition="$apply_detail.examine_status eq 1">待审核<elseif condition="$apply_detail.examine_status eq 2" />已通过<elseif condition="$apply_detail.examine_status eq 0" />已驳回<elseif condition="$apply_detail.examine_status eq 3" />已到期<elseif condition="$apply_detail.examine_status eq -1" />已取消</if></strong></div>
+					<div><span>审批日期：</span> <if condition="$apply_detail['examine_time']">{$apply_detail.examine_time|date="Y-m-d",###}</if></div>
+					
+                </div>
+          	    <div class="shenqing-right">
+					<div><span>申请单号：</span>{$apply_detail.relation_a_apply}</div> 
+                	<div><span>申请日期：</span>{$apply_detail.apply_time|date="Y-m-d",###}</div>				
+                </div>
+            </div>    
+     </div>        
+	<div class="h15"></div>
+	<div class="all-top-name"><span>商家信息</span></div>
+	<div class="h15"></div>
+	<div class="shenqing-business-mess">
+		<div class="shenqing-business-mess-top">
+			<div class="shenqing-business-mess-l">
+				<p></p>
+				<p><span>商家名称：</span>{$webinfo.webname}</p>
+				<p><span>所在城市：</span>{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</p>   
+				<p><span>网站管理员：</span>{$webinfo.club_name}</p>				
+			</div>
+			<div class="shenqing-business-mess-r">
+				<p></p>
+				<p><span>服务特色：</span>{$webinfo.slogan}</p>
+				<p><span>网   址：</span>{$webinfo.domain}</p>
+				<p><span>联系电话：</span>{$webinfo.club_mobile}</p>
+				
+			                      	              
+			</div>           
+		</div>
+		<div class="button1">
+			<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	   </div>
+
+	</div> 
+</div>
+</block>

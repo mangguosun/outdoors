@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="default/head"/>
+<link href="__CSS__/default_center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<!-- 头部 -->
+<include file="common/header"/>
+<!-- /头部 -->
+<!-- 主体 -->
+<block name="header">
+  <div id="main-container" class="container">
+
+      <div class="common_block_border clearfix">
+        <div class="col-md-2" style="margin-right:0px; padding-right:0">
+          <div class="common_left_block">
+            <dl>
+              <dt><a href="{$user_info.space_url}" title=""><img src="{$user.avatar128}" class="avatar-img top_img"/><br>{$user.username}</a></dt>
+			  <dd><a href="{:U('Usercenter/Eventorder/index')}">我的订单</a></dd>
+			  <dd><a href="{:U('Usercenter/Pointcard/index')}">我的优惠</a></dd>
+              <dd><a href="{:U('Usercenter/Pay/index')}">支付记录</a></dd>
+			  <dd><a href="{:U('Usercenter/Config/my_collection')}">我的收藏</a></dd>
+			   <dd><a href="{:U('Usercenter/Config/event_story')}">我的故事</a></dd>
+			  <dd><a href="{:U('Usercenter/Config/my_comment')}">我的吐槽</a></dd>
+              <dd><a href="{:U('Usercenter/Config/index')}">账号设置</a></dd>          
+			  <!--dd><a href="{:U('Usercenter/Pay/pay')}">在线充值</a></dd-->
+            </dl>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div id="usercenter-content-td">
+            <div class="">
+              <block name="body"></block>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <script type="text/javascript">
+        $(function () {
+            $(window).resize(function () {
+                $("#main-container").css("min-height", $(window).height() - 343);
+            }).resize();
+        })
+    </script>
+</block>
+<!-- /主体 -->
+<!-- 底部 -->
+<include file="common/footer"/>
+<!-- /底部 -->
+<script>
+    $(function () {
+        var $sidebar = $('#usercenter-sidebar-td');
+        var $sidebar_xs = $('#usercenter-sidebar-xs');
+        var $sidebar_sm = $('#usercenter-sidebar-sm');
+        var $content = $('#usercenter-content-td');
+
+        function trigger_resp() {
+            var width = $(window).width();
+            if (width < 768) {
+                on_xs();
+            } else {
+                on_sm();
+            }
+        }
+
+        function on_xs() {
+            $sidebar_xs.append($sidebar);
+            $content.css({'padding-left': 0, 'padding-right': 0});
+        }
+
+        function on_sm() {
+            $sidebar_sm.prepend($sidebar);
+        }
+
+        trigger_resp();
+
+        $(window).resize(function () {
+            trigger_resp();
+        })
+    })
+</script></body>
+</html>

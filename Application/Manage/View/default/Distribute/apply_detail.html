@@ -1,0 +1,87 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="all">
+    <div class="all-top">
+        	<h3>活动力分销集市入驻申请单</h3>            
+            <div class="all-box">
+            	<div class="shenqing-left">
+                	<!--div><span>类别：</span> 商品集市入住 </div-->
+					<div><span>申请单号：</span>{$apply_detail.distribute_apply_sn}</div> 
+                	<div><span>申请单状态：</span><strong> <if condition="$apply_detail.distribute_status eq 2">已入驻<elseif condition="$apply_detail.distribute_status eq 0"/>已驳回<else/>审核中</if></strong></div>
+					<div><span>审批日期：</span> <if condition="$apply_detail['examine_time']">{$apply_detail.examine_time|date="Y-m-d",###}</if></div>
+                </div>
+          	    <div class="shenqing-right">
+                	<div><span>申请日期：</span>{$apply_detail.apply_time|date="Y-m-d",###}</div> 
+                    
+					<if condition="$apply_detail.distribute_status eq 2">
+					<div><span>过期日期：</span>{$apply_detail.overtime|date="Y-m-d",###}</div> 
+					</if>					
+                </div>
+            </div>    
+     </div>        
+	<div class="h15"></div>
+	<div class="all-top-name"><span>商家信息</span></div>
+	<div class="h15"></div>
+	<div class="shenqing-business-mess">
+		<div class="shenqing-business-mess-top">
+			<div class="shenqing-business-mess-l">
+				<p></p>
+				<p><span>商家名称：</span>{$webinfo.webname}</p>
+				<p><span>所在城市：</span>{$shop_address['province']}{$shop_address['city']}{$shop_address['district']}{$shop_address['community']}</p>           
+			</div>
+			<div class="shenqing-business-mess-r">
+				<p></p>
+				<p><span>服务特色：</span>{$webinfo.slogan}</p>
+				<p><span>网   址：</span>{$webinfo.domain}</p>                          	              
+			</div>           
+		</div>
+		<div class="biaodan">
+			<div class="biaodan-input">
+				<div><h4>以下信息请填写真实有效的信息</h4></div>
+				<div><span>服务资质：</span><img src="{$apply_detail['license_photo']|getThumbImageById=400,400}" width="400" height="400"></div>
+				<div><span>开户行：</span>{$bank.open_bank}</div>
+				<div><span>开户名称：</span>{$bank.name}</div>
+				<div><span>银行账号：</span>{$bank.card}</div>               
+			</div>
+		</div>
+		<div class="biaodan2">
+			<div class="biaodan2-input">
+				<div><span class="title">联系人姓名：</span>{$apply_detail.name}</div>
+				<div><span class="title">许可证照</span><img src="{$apply_detail['idcard_photo']|getThumbImageById=400,400}" width="400" height="400"></div>
+				<div><span class="title">证件类型：</span>身份证</div>
+				<div><span class="title">证件号码：</span>{$apply_detail.idcardnumber}</div>
+				<div><span class="title">手机号码：</span>{$apply_detail.phone}</div>  
+				<div><span class="title">QQ  号码：</span>{$apply_detail.qq}</div>                
+			</div>
+			<div class="clear"></div>  
+		</div>                   
+	</div>
+	
+	<div class="h15"></div>   
+	<div class="shenqing-business-profile">
+		<div class="kuang">协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		协议内容</br>
+		</div>
+		<div class="shuomingzi"> 
+			同意协议
+		<span>备注：活动力网站抽取佣金比例为2%，协议有效期一年，自动续约</span></div>
+		 
+			
+		
+		<if condition="$apply_detail.examine_time">
+		<div class="shenhe">审核说明： {$apply_detail.reply}</div> 
+		</if>
+		<div class="button1">
+			<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	   </div>
+
+	</div> 
+</div>
+</block>

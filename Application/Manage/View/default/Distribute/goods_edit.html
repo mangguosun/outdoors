@@ -1,0 +1,61 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="all">
+<h3>分销信息设置</h3>
+ <form class="form-horizontal ajax-form" role="form" name="shop_data"  action="{:U('Manage/Distribute/goods_edit')}" method="post">
+		<input type='hidden' name='id' value="{$_GET['id']}">
+
+	
+	<div class="shenqing-business-mess" >
+		<div class="all-top-name"><span>商品信息</span></div>
+		<div class="h15"></div>
+		<div class="all-box">
+            	<div class="shenqing-left">
+                	 <div><span>商品名称：{$shop_list.goods_name}</span></div>     
+                	<div><span>销售价：</span><strong>￥{$shop_list.market_price}</strong></div>
+                </div>
+          	</div> 
+		<div class="shenqing-business-mess-top">
+			<div class="tb-sku">
+					<?php foreach($shop_detail as $key=>$val):?>
+				    <div class="col-md-12 shop_sku_del">
+				       <?php foreach($val['sku_title'] as $v):?>
+					   <div style="float:left">规格：</div>
+					   <div class='col-md-2' >{:get_shop_sku_types_attribute($v)}</div>
+					   <?php endforeach;?>
+					   <div style="float:left"> 价格：</div> 
+					   <div class='col-md-2' >￥{$val['price']}</div>
+					  <div style="float:left"> 库存：</div>
+					  <div class='col-md-2' >{$val['stock']}</div>
+					</div>
+					
+				  <?php endforeach;?>
+            </div>
+			
+			<div class="clear"></div>     
+		</div>
+		<div class="all-top-name"><span>分销方式选项</span></div>
+		<div class="biaodan">
+			<p><span>单品分销：</span><input type="checkbox" name="distribute_type_b" value="1" <if condition="$shop_distribute_item.distribute_type_b eq 1"> checked</if> ></p>
+			<p><span>全站分销：</span><input type="checkbox" name="distribute_type_a" value="1" <if condition="$shop_distribute_item.distribute_type_a eq 1"> checked</if> ></p>
+			<p><span>分销佣金(%)：</span><input type="text" name="seller_price" value="{$shop_distribute_item['seller_price']}" ></p>
+	
+			
+		     <p><span>请选择集市分类：</span>{:form_select(get_distribute_category(),$shop_distribute_item['distribute_category_id'],'class="select input-large shop_cates_select" check-type="Text" name="distribute_category_id" id="distribute_category_id"',"--请选择集市分类--")}</p>
+			
+			<div class="all-top-name all-top-explain"><span>分销说明</span></div>
+			{:Hook('Ueditor',array('name'=>'distribute_desc','value'=>$shop_distribute_item['distribute_desc']))}
+
+		<div class="button1">
+			<button type="submit" class="w_btn submit-btn" href="{:U('Manage/Distribute/goods_edit')}">确定</button>
+			<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	    </div>
+			    
+	</div>
+	 
+</form>	
+</div>
+
+
+</block>
+

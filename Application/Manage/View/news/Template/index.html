@@ -1,0 +1,81 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#template_color">
+                        色系设置
+                    </a>
+                </li>
+             <if condition="websit_trave()">
+                <li>
+                    <a data-toggle="tab" href="#template_left_nav">
+                        左侧导航设置
+                    </a>
+                </li>
+             </if>
+             <if condition="websit_trave()">
+                <li>
+                    <a data-toggle="tab" href="#template_tags_config">
+                        推荐主题设置
+                    </a>
+                </li>
+              </if>  
+              <if condition="websit_runners()">
+                <li>
+                    <a data-toggle="tab" href="#template_tags_classification">
+                        导航管理
+                    </a>
+                </li>
+              </if> 
+              <if condition="websit_runners()">
+                <li>
+                    <a data-toggle="tab" href="#template_tags_brand">
+                        品牌管理
+                    </a>
+                </li>
+              </if>
+            </ul>
+            <div class="tab-content">
+                <div id="template_color" class="tab-pane in active">
+                    <include file="Template/template_color"/>
+                </div>
+			<if condition="websit_trave()">
+                <div id="template_left_nav" class="tab-pane">
+                	<include file="Template/template_left_nav"/>
+                    
+                </div>
+			</if>
+            <if condition="websit_trave()">
+                <div id="template_tags_config" class="tab-pane">
+                    <include file="Template/template_tags_config"/>
+                </div>
+			</if>
+            <if condition="websit_runners()">
+                <div id="template_tags_classification" class="tab-pane">
+                    <include file="Template/template_tags_classification"/>
+                </div>
+			</if>    
+            <if condition="websit_runners()">
+                <div id="template_tags_brand" class="tab-pane">
+                    <include file="Template/template_tags_brand"/>
+                </div>
+			</if>     
+  
+            </div>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+
+
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+
+
+</block>

@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="tourism/head"/>
+</head>
+<body>
+<!-- 主体 -->
+
+
+<div class="home_login">
+	<div class="login_head">
+    	<php>$logo_pic = get_webinfo('cover_id')</php>
+    	<div class="pull-left">
+        	<a href="{:U('Home/Index/index')}" title="{:get_webinfo('webname')} {:get_webinfo('slogan')}" ><img src="{$logo_pic|getThumbImageById='auto',65}" alt="{:get_webinfo('webname')}" style="cursor:pointer;" ></a>
+        </div>
+        
+        <div class="pull-right">
+        	<a href="{:U('Home/Index/index')}" title="{:get_webinfo('webname')} {:get_webinfo('slogan')}" >欢迎登录 {:get_webinfo('webname')} </a>
+        </div>
+    </div>
+    
+    <if condition="$dataadv['advspic'] neq '' ">
+      <div class="background_pic" style="background:url({$dataadv['advspic']|getThumbImageById=1920,'auto'}) center center no-repeat; filter:'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')'; height:550px;"> 
+    <else/>
+      <div class="background_pic" style="background:url(__PUBLIC__/Core/images/bigbg.jpg) center center no-repeat; filter:'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')'; height:550px;">
+    </if>
+        <div class="login_content">
+            <div class="login_input_box">
+                <div class="login_type" >
+                    <span id="quicklogin">快速登录</span>
+                    <span id="login">账号登录</span>
+                </div> 
+   
+       
+              <!--正常登录-------------------------------------------------------------------->  
+                <div id="loginbox" style="display:none">
+                  <form action="__SELF__" method="post" class="lg_lf_form ajax-form" loadingmsg="login">
+                    <input type="hidden" name="login_type" value="1"/>
+                    <input type="hidden" name='referer_url' value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+                    <input type="hidden" name="login_url" value="{$login_url}">
+                    <div class="user_login_input_box">
+                      <div class="div_lable"><i class="glyphicon glyphicon-phone"></i></div>
+                      <div class="div_input">
+                        <input type="text" id="inputEmail" placeholder="手机/邮箱" errormsg="请填写手机/邮箱" nullmsg="请填写手机/邮箱" datatype="*4-16" value="" name="email">
+                      </div>
+                    </div>
+                    <div class="user_login_input_box">
+                      <div class="div_lable"><i class="glyphicon glyphicon-lock"></i></div>
+                      <div class="div_input">
+                        <input type="password" id="inputPassword" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+                      </div>
+                    </div>
+                    <if condition="C(VERIFY_OPEN) eq 1 OR C(VERIFY_OPEN) eq 3">
+                      <div class="user_verify">
+                        <div class="user_verify_input">
+                          <div class="user_login_input_box">
+                            <div class="div_lable"><i class="glyphicon glyphicon-check"></i></div>
+                            <div class="div_input-small">
+                              <input type="text" id="verifyCode" placeholder="验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="user_verify_img"> <img class="verifyimg reloadverify cursor-lo " alt="点击切换" src="{:U('verify')}" > </div>
+                      </div>
+                    </if>
+                    <div class="remember_box">
+                      <label><input type="checkbox" name="remember" class="cursor">记住登录</label>
+                      <a class="pull-right" href="{:U('User/mi')}">忘记密码？</a>
+                    </div>
+                    <button type="submit" class="btn btn-block login_btn">登 录</button>
+                    <p class="register pull-right">还没有账户&nbsp;?&nbsp;<a href="{:U('Home/User/register')}" title="立即注册">立即注册</a></p>
+                    <div class="lg-center-sync"> {:hook('syncLogin')} </div>
+                  </form>
+                </div>  
+              <!--正常登录 end--------------------------------------------------------------------->        
+                  
+              <!--快速登录-------------------------------------------------------------------->   
+               <div id="quickloginbox" >
+                   <form action="__SELF__" method="post" class="lg_lf_form ajax-form" loadingmsg="login">
+                    <input type="hidden" name="login_type" value="0"/>
+                    <input type="hidden" name='referer_url' value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+                    <input type="hidden" name="login_url" value="{$login_url}">
+                    <div class="user_login_input_box">
+                      <div class="div_lable"><i class="glyphicon glyphicon-phone"></i></div>
+                      <div class="div_input">
+                        <input type="text" id="inputMobile" placeholder="请填写手机" errormsg="请填写手机" nullmsg="请填写手机" datatype="*4-16" name="email">
+                      </div>
+                    </div>
+               <if condition="C(VERIFY_OPEN) eq 1 OR C(VERIFY_OPEN) eq 3">
+                      <div class="user_verify user_verify_think" >
+                        <div class="user_verify_input">
+                          <div class="user_login_input_box">
+                            <div class="div_lable"><i class="glyphicon glyphicon-check"></i></div>
+                            <div class="div_input-small">
+                              <input type="text" id="verifyCodebythink" placeholder="图片验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verifyCodebythink">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="user_verify_img"> <img class="verifyimg reloadverify cursor-lo " alt="点击切换" src="{:U('verify')}" > </div>
+                      </div>
+                    </if>
+                    <if condition="C(VERIFY_OPEN) eq 1 OR C(VERIFY_OPEN) eq 3">
+                      <div class="user_verify">
+                        <div class="user_verify_input">
+                          <div class="user_login_input_box">
+                            <div class="div_lable"><i class="glyphicon glyphicon-check"></i></div>
+                            <div class="div_input-small">
+                              <input type="text" id="verifyCode" placeholder="手机验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mi-validation-text">
+                            <button type="button" id="quicklog_pc_btn"  class="huoqu-btn">获取验证码</button>
+                        </div>
+                      </div>
+                    </if>
+                    <div class="remember_box">
+                      <label> <input type="checkbox" name="remember" class="cursor">记住登录</label> 
+                      <a class="pull-right" href="{:U('User/mi')}">忘记密码？</a>
+                    </div>
+                    <button type="submit" class="btn btn-block login_btn">登 录</button>
+                    <p class="register pull-right">还没有账户&nbsp;?&nbsp;<a href="{:U('Home/User/register')}" title="立即注册">立即注册</a></p>
+
+                    <div class="lg-center-sync"> {:hook('syncLogin')} </div>
+                  </form>  
+               </div>      
+              <!--快速登录 end-------------------------------------------------------------------->     
+         
+            </div>
+        </div>  
+	</div>
+    
+    
+<div class="home_login_copy">
+	<p>@2014 Huodongli.cn All Rights Reserved</p>  	
+</div>    
+ 
+    
+    
+</div>
+
+<include file="tourism/js"/>
+<!-- /主体 -->
+<!-- 底部 -->
+<!-- /底部 -->
+<script type="text/javascript">
+    $(function () {
+
+    	//自动除去两头空格
+    	$(':input').blur( function (){ 
+    		var varhtml = $(this).val();
+    		var kg = $.trim(varhtml);
+    		$(this).val(kg);	
+    	})
+
+
+
+        var verifyimg = $(".verifyimg").attr("src");
+        $(".reloadverify").click(function () {
+            if (verifyimg.indexOf('?') > 0) {
+                $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+            } else {
+                $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+            }
+        });
+        var checkusername=$('#inputMobile');
+		var verifyCodebythink=$('#verifyCodebythink');
+        function settime(countdown) {
+			if (countdown <= 0) {
+				$("#quicklog_pc_btn").text("重新获取验证码");
+				$("#quicklog_pc_btn").attr("disabled",false);
+			} else {
+				$("#quicklog_pc_btn").attr("disabled",true);
+				$("#quicklog_pc_btn").text(countdown+"秒后重新发送");
+				countdown--;
+				setTimeout(function() {settime(countdown)},1000);
+			}
+			
+		}
+		
+		$(".huoqu-btn").click(function(){
+
+			if(checkusername.val().match(/^1[3456789]\d{9}$/)){
+				$.post("{:U('Home/User/getmobile_login_verify')}",{mobile:checkusername.val(),verifyCodebythink:verifyCodebythink.val()},function(datas){
+
+					 if(datas['status']==1){ 
+						$("#quicklog_pc_btn").attr("disabled",true);
+						settime(60);
+						toast.success(datas['info']);
+					}else{
+						$(".reloadverify").trigger("click");
+						$("#quicklog_pc_btn").attr("disabled",false);
+						toast.error(datas['info']);
+						
+					 }
+				},'json')
+			}else{ 
+				 toast.error('请填写正确的手机号码', '温馨提示');
+			}
+											
+		})
+    });
+</script>
+<script> 
+	$(document).ready(function() {
+		$("#loginbox").css("display","none");
+		$("#login").css({"background":"#D2D2D2","color":"#fff"});
+	 	$("#quicklogin").css("color","#189FFE");
+    $("#login").click(function(){
+		$("#loginbox").show();
+		$("#quickloginbox").css("display","none");	
+		$("#login").css({"color":"#189FFE","background":"none"});
+		$("#quicklogin").css({"color":"#fff","background":"#D2D2D2"  });
+		});		
+	$("#quicklogin").click(function(){
+		$("#quickloginbox").show();
+		$("#loginbox").css("display","none");
+		$("#quicklogin").css({"color":"#189FFE", "background":"none"});
+		$("#login").css({"color":"#fff", "background":"#D2D2D2"});
+ 		});
+ 	});	
+</script>
+</body>
+</html>

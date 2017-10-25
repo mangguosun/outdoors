@@ -1,0 +1,226 @@
+<extend name="Public/base1" />
+<block name="style">
+
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.pag_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Websit/picture_edit')}" class="form-horizontal form-bordered" method="post" >
+                    	<input type="hidden" name="id" value="{$datainfo.id}" />
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">广告名称 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9 ">
+                                    <input type="text" class="form-control" placeholder="广告名称" name="title" value="{$datainfo.title}" /> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">广告位置</label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                                 <select id="position" style="width:100%;" name="position">
+                                     <option value="" data="">请选择位置</option>
+                                 	 <volist name="positions" key="k" id="vo">
+                                   	 <option value="{$vo['id']}" data="{$vo.type}" <if condition="$vo['id'] eq $datainfo['position']">selected</if> />{$vo.title}({$vo.width}*{$vo.height})
+                                     </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" id="type1" <if condition="($datainfo['type'] neq 1) && ($datainfo['type'] neq 2) && ($datainfo['type'] neq 5)">style="display:none"</if>>
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">广告图</label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                                 {:hook('UploadImagePc', array('find_name'=>'advspic','value'=>$datainfo['advspic'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'','height'=>''))}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="type3" <if condition="$datainfo['type'] neq 3">style="display:none"</if>>
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">广告文字 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                            	<textarea rows="3" cols="54" class="form-control" name="advstext">{$datainfo.advstext}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="type4" <if condition="$datainfo['type'] neq 4">style="display:none"</if>>
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">广告代码 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                            	<textarea rows="3" cols="54" class="form-control" name="advshtml">{$datainfo.advshtml}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">开始时间 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                                <div class="input-group date form_datetime">
+                                   <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" name="create_time" class="form-control" placeholder="请选择时间" value="{$datainfo.create_time}" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">结束时间 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                                <div class="input-group date form_datetime">
+                                   <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                     <input type="text" name="end_time" class="form-control" placeholder="请选择时间" value="{$datainfo.end_time}" readonly />
+                                     <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </span>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">链接地址 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                            	<div class="input-group">
+                                    <input type="text" class="form-control" placeholder="链接地址" name="link" value="{$datainfo.link}"  /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="请以http://开头"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                                     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-2 col-sm-3 control-label">优先级 </label>
+                            <div class="col-lg-5 col-md-10 col-sm-9">
+                            	<div class="input-group">
+                                    <input type="text" class="form-control" placeholder="优先级" name="level" value="{$datainfo.level}" /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="优先级由小到大排序"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10  col-sm-offset-3 col-sm-9 ">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+
+<!--Bootstrap Date Picker-->
+<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script type="text/javascript">
+/*minView
+0 or 'hour' for the hour view
+1 or 'day' for the day view
+2 or 'month' for month view (the default)
+3 or 'year' for the 12-month overview
+4 or 'decade' for the 10-year overview. Useful for date-of-birth datetimepickers.*/
+$(".form_datetime").datetimepicker({
+	format: "yyyy-mm-dd hh:ii",
+	language:"zh-CN",
+	showmeridian: false,
+	autoclose: true,
+	pickerPosition: "top-right",
+	minuteStep: 5,
+	todayBtn: true,
+	todayHighlight:true,
+	minView:0,
+});
+
+
+$("#position").select2({language:"zh-CN"});
+$("#position").change(function(){					   
+	$type = $('#position').find("option:selected").attr("data");
+	if($type == 1 || $type == 2 || $type == 5 || $type == 6 || $type == 7 || $type ==8 ||$type==9){
+		$('#type1').show();
+	}else if($type == 3){
+		$('#type3').show();
+	}else if($type == 4){
+		$('#type4').show();
+	}else{
+		$('#type1').hide();
+		$('#type3').hide();
+		$('#type4').hide();
+	}
+});
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+			title: {
+                validators: {
+                    notEmpty: {
+                        message: '广告名称是必需的，不能是空的'
+                    }
+                }
+            },
+			position: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择广告位置'
+                    }
+                }
+            },
+			create_time: {
+                validators: {
+                    notEmpty: {
+                        message: '开始时间是必需的，不能是空的'
+                    },
+					date: {
+                        format: 'YYYY-MM-DD hh:mm',
+                        message: '时间格式不对'
+                    }
+                }
+            },
+			end_time: {
+                validators: { 
+					date: {
+                        format: 'YYYY-MM-DD hh:mm',
+                        message: '时间格式不对'
+                    }
+                }
+            },
+			level: {
+                validators: {
+					digits: {
+                        message: '优先级只能为数字，数字越小越靠前'
+                    },
+                }
+            },
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

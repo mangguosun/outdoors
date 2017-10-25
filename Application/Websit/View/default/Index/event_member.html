@@ -1,0 +1,41 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>报名人信息</h2>
+  <div class="aline common-margin-bten"></div>
+  <div id="center">
+    <div class="row data-table" >
+      <table>
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>身份证</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>QQ</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="userinfo">
+          <volist name="userinfo" id="vo">
+            <tr>
+			<if condition="$vo['nickname'] neq ''">
+              <td>{$vo.realname}({$vo.nickname})</td>
+			<else />
+			  <td>{$vo.realname}</td>
+			</if>
+              <td>{$vo.card}</td>
+              <td>{$vo.telephone}</td>
+              <td>{$vo.email}</td>
+              <td>{$vo.qq}</td>
+            </tr>
+          </volist>
+          <else/>
+        <td colspan="9" class="text-center"> aOh! 您还没有报名任何信息哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>

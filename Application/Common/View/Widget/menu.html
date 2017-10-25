@@ -1,0 +1,18 @@
+<div class="app_head">
+  <div class="app_title"><i class="app_ico_i glyphicon glyphicon-th-large"></i>{$brand}</div>
+  <div>
+    <div class="aline"></div>
+  </div>
+  <div class="sub_nav">
+    <ul id="top_nav" class="nav_list clearfix">
+       <volist name="menu_list.left" id="menu">
+       <php>$class=($current==$menu['tab']?'cur':'');</php>
+          <li><a class="{$class}" href="{$menu.href}"> <neq name="menu.icon" value=""><i class="glyphicon glyphicon-{$menu.icon}"></i></neq>{$menu.title}</a></li>
+      </volist>
+      <li class="pull-right btn-submit">
+       
+      </li>
+    </ul>
+  </div>
+</div>
+

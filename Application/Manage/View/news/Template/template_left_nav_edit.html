@@ -1,0 +1,111 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">{$datainfo.pag_title}</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Template/template_left_nav_edit')}" class="form-horizontal form-bordered" method="post" >
+                    	<input type="hidden" name="id" value="{$datainfo.id}" />
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">标题 </label>
+                            <div class="col-lg-10">
+                                    <input type="text" class="form-control" placeholder="标题" name="title" value="{$datainfo.title}" /> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">描述 </label>
+                            <div class="col-lg-10">
+                                    <input type="text" class="form-control" placeholder="描述" name="description" value="{$datainfo.description}" /> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">链接地址 </label>
+                            <div class="col-lg-10">
+                            	<div class="input-group">
+                                    <input type="text" class="form-control" placeholder="链接地址" name="address" value="{$datainfo.address}"  /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="站外地址请使用Http://开头，站内地址如：活动首页Event/index/index"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                                     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '标题是必需的，不能是空的'
+                    },
+					stringLength: {
+						min: 1,
+						max: 10,
+						message: '标题必须是大于1的小于10的字符'
+					},
+                }
+            },
+			description: {
+                validators: {
+                    notEmpty: {
+                        message: '描述是必需的，不能是空的'
+                    },
+					stringLength: {
+						min: 1,
+						max: 10,
+						message: '描述必须是大于1的小于10的字符'
+					},
+                }
+            },
+			
+            address: {
+                validators: {
+                    notEmpty: {
+                        message: '链接地址是必需的，不能是空的'
+                    },
+					uri: {
+                        message: '链接地址必需以http://开头'
+                    }
+                }
+            }
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

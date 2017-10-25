@@ -1,0 +1,67 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>公众号管理</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+</div> 
+<div class="setting_step app_setting">
+	 <a class="step step_cur_1" href="{:U('Manage/Weixin/public_add',array('id'=>$id))}">1.增加基本信息</a>
+	 <a class="step " href="<empty name="id">###<else /> {:U('Manage/Weixin/step_1',array('id'=>$id))}</empty>">2.配置公众平台</a>
+	 <a class="step " href="<empty name="id">###<else /> {:U('Manage/Weixin/step_2',array('id'=>$id))}</empty>">3.保存接口配置</a>
+</div>
+
+<form action="{:U('Manage/Weixin/do_publicadd')}" method="post" class="form-horizontal"> 
+		<input name="id" type="hidden" value="{$public_info.id}" />
+    	<label class="item-label">公众号名称:<span class="check-tips">(必填)</span></label>
+		<div class="controls">
+          <input id="public_name" name="public_name" type="text" class="text input-large" check-type="Text"  value="{$public_info.public_name}" />
+        </div> 
+        <label class="item-label">原始ID :<span class="check-tips">(请正确填写，保存后不能再修改，且无法接收到微信的信息)</span></label>
+		<div class="controls">
+          <input id="public_id" name="public_id" type="text" class="text input-large" check-type="Text"  value="{$public_info.public_id}" />
+        </div> 
+         <label class="item-label">微信号 :<span class="check-tips">(必填)</span></label>
+		<div class="controls">
+          <input id="wechat" name="wechat" type="text" class="text input-large" check-type="Text"  value="{$public_info.wechat}" />
+        </div>
+    	<div class="form-item">
+			<label for="traveldays" class="item-label">公众号类型<a>&nbsp;(必填)</a></label>
+			<div class="controls">
+				<input type="radio" name="type" value="0" <if condition="$public_info.type eq 0 ">checked</if>>&nbsp;普通订阅号&nbsp;
+				<input type="radio" name="type" value="1" <if condition="$public_info.type eq 1 ">checked</if>>&nbsp;认证订阅号/普通服务号 &nbsp;
+				<input type="radio" name="type" value="2" <if condition="$public_info.type eq 2 ">checked</if>>&nbsp;认证服务号 &nbsp;
+				
+			</div>
+			<span style="color:red;">微信公众平台暂不支持普通订阅号的自定义菜单接口！</span>
+		</div>
+        
+		<br/>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" target-ls="a">下一步</button>
+            <a class="w_btn btn-return" href="{:U('Weixin/index')}">返回</a>
+        </div>
+	</volist>
+    </form>
+    <br>
+    <br>
+    <br>
+
+    <div class="main-title">
+	    <h2>帮助消息</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+	   
+	</div>
+	<h6>以上消息可以从公众平台里找到，如下图</h6>
+    <img src="__PUBLIC__/Manage/images/weixin/help01.png">
+
+
+<style type="text/css">
+	.setting_step{ height:46px; border:1px solid #eee; margin:30px 0px;width:1000px;background:white;}
+	.setting_step .step{ background:#ffffff url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right 0; float:left; text-align:center; line-height:44px; color:#666; width:160px; height:44px;}
+	.app_setting .step{ width:145px;}
+	.setting_step .step_cur_1{ background:#44b549 url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right -88px; float:left; color:#fff}
+	.setting_step .step_cur{ background:#fff url(__PUBLIC__/Manage/images/weixin/step.png) no-repeat right -44px; float:left;color:#666}
+
+
+
+
+</style>
+</block>

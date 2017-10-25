@@ -1,0 +1,44 @@
+<div class="row">
+	    <div class="col-md-12">
+	    <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Index/do_wefooter')}" method="post">
+		
+			<div class="form-group postion">
+				<label for="logo_footer" class="col-md-2 control-label">页脚LOGO</label>
+				<div class="col-md-6">
+					{:hook('UploadImage', array('find_name'=>'logo_footer','value'=>$footers['logo_footer'],'buttontext'=>'上传页脚LOGO','buttonwidth'=>200,'multi'=>false,'ds'=>'180*65'))}
+				</div>
+			</div>
+		   <div class="form-group postion">
+				<label for="icp" class="col-md-2 control-label">ICP备案号</label>
+				<div class="col-md-5">
+				  <input type="text" class="form-control" id="icp" placeholder="如：沪ICP备110xxxxxx号" name="icp"  value="{$footers.icp}" <notempty name="footers.icp">readonly</notempty>>
+				  <p>修改请发邮件到活动力客服：kefu@huodongli.cn</p>
+				</div>
+           </div>
+		   
+		   <div class="form-group postion">
+            <label for="micro" class="col-md-2 control-label">微信号</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="micro" placeholder="请输入正确的微信号" name="micro" value="{$footers.micro}">
+            </div>
+          </div>
+		  <div class="form-group postion">
+            <label for="qq" class="col-md-2 control-label">qq群</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="qq" placeholder="请输入正确的QQ群" name="qq" value="{$footers.qq}">
+            </div>
+          </div>
+		  <div class="form-group postion">
+            <label for="weibo" class="col-md-2 control-label">微博号</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="weibo" placeholder="请输入正确的微博号码" name="weibo" value="{$footers.weibo}">
+            </div>
+           </div>
+		  <div class="form-group postion">
+            <div class="col-md-offset-2 col-md-12">
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </form>
+		</div>
+	  </div>

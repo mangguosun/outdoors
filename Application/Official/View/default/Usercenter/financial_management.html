@@ -1,0 +1,139 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+	  <li class="active">网站提现管理</li>
+	</ol>
+</div>
+<php>$status_now=I('get.status');</php>
+<div class="row">
+    <ul id="mytab" class="nav nav-tabs">
+      <li <if condition="$status_now eq ''">class="active"</if>><a href="{:U('Official/Usercenter/financial_management')}">全部</a></li>
+      <li <if condition="$status_now eq 1">class="active"</if>><a href="{:U('Official/Usercenter/financial_management',array('status'=>1))}">申请提现</a></li>
+      <li  <if condition="$status_now eq '0' ">class="active"</if>><a href="{:U('Official/Usercenter/financial_management',array('status'=>0))}">拒绝打款</a></li>
+      <li <if condition="$status_now eq 2">class="active"</if>><a href="{:U('Official/Usercenter/financial_management',array('status'=>2))}">打款成功</a></li>
+    </ul>
+    
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:25px;">
+
+<div class="row">
+    <div class="widget">
+        <div class="widget-body">
+            <table class="table table-striped table-bordered table-hover" id="simpledatatable">
+            <thead>
+                <tr>
+                	<th>站点ID</th>
+					<th>网站名称/申请人/开户行/卡号</th>
+					<th>申请时间</th>
+					<th>提现金额</th>
+					<th>状态</th>
+					<th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+		        <volist name="cash_list" id="vo">
+		          <tr>
+		            <td>{$vo.siteid}</td>
+					<td>网站名称：{$vo.webname}<br />
+申请人：{$vo.name}<br />
+						开户行：{$vo.open_bank}<br />
+						卡号：{$vo.card}</td>
+					<td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+					<td>{$vo.cash}元</td>
+
+		            <td>
+						<if condition="$vo['status'] eq 2">
+		                  打款成功
+		                  <elseif condition="$vo['status'] eq 0"/>
+		                  拒绝打款
+		                  <elseif condition="$vo['status'] eq 1"/>
+		                  申请提现
+		                  </if>
+		            </td>
+		            <td>
+		            	
+		            	<div class="btn-group">
+                            <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                操作 <i class="fa fa-angle-down"></i>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                            	<if condition="$vo['status'] eq 1">
+                                    <li>
+                                        <a class="updatawebfinancial" data-id="{$vo.id}" data-siteid="{$vo.siteid}" data-cash="{$vo.cash}" data-status="2"  href="javascript:">确认打款</a>
+                                    </li>
+                                    <li>
+                                        <a class="updatawebban" data-id="{$vo.id}" data-siteid="{$vo.siteid}" data-cash="{$vo.cash}" data-status="0" href="javascript:">取消打款</a>
+                                    </li> 
+                                <else/>
+                                    <li>
+                                        <a class="" href="javascript:">无</a>
+                                    </li> 
+                                 </if>
+                            </ul>
+                            
+                        </div>
+                       
+					</td>
+		          </tr>
+                  </volist>
+            </tbody>
+        </table>
+        <div style="clear:both;overflow:hidden;padding:0 5px 0 0"><div style="float:right;margin-top:15px;">{$page}</div></div>
+        
+</div>
+
+  <script>
+        $(function () {
+			//审核--通过--
+			$('.updatawebfinancial').click(function () {
+				if (confirm('确定要操作么？')) {
+				    var id = $(this).attr('data-id');
+					var status = $(this).attr('data-status');
+				    var siteid = $(this).attr('data-siteid');
+					var cash   = $(this).attr('data-cash');
+					
+					$.post(U('Official/Usercenter/doFinancial'), {id: id,status: status,siteid:siteid,cash:cash}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+			});
+			//--审核失败--
+			$('.updatawebban').click(function () {
+				if (confirm('确定要操作么？')) {
+					var id = $(this).attr('data-id');
+					var siteid = $(this).attr('data-siteid');
+					var status = $(this).attr('data-status');
+					var cash   = $(this).attr('data-cash');
+					$.post(U('Official/Usercenter/financialban'), {id: id,siteid: siteid,cash: cash,status: status}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+			});
+			
+			
+        })
+    </script>
+</div>
+</div>
+</div>
+</div>
+
+</block>

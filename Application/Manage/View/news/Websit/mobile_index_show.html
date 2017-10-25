@@ -1,0 +1,94 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">手机显示设置</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Websit/mobile_index_show')}" class="form-horizontal form-bordered" method="post" >
+                    	<div class="widget radius-bordered">
+                            <div class="widget-header  bordered-bottom bordered-sky">
+                                <i class="widget-icon  glyphicon glyphicon-cog themeprimary"></i>
+                                <span class="widget-caption">快速导航栏设置</span>
+                            </div>
+                            <div class="widget-body">
+                                    <div class="form-title">
+                                        以下选中的内容才会在手机端首页显示
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <div class="" style="width:100%">
+                                            {:form_checkbox_manage(fast_nav_settings(),$fast_nav,'name="fast_nav[]" id="fast_nav"',0,'100')} 
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="widget radius-bordered">
+                            
+                            <div class="widget-header  bordered-bottom bordered-sky">
+                                <i class="widget-icon glyphicon glyphicon-cog themeprimary"></i>
+                                <span class="widget-caption">首页模块设置</span>
+                            </div>
+                            <div class="widget-body">
+                                    <div class="form-title">
+                                        以下选中的内容才会在手机端首页显示
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <div class="" style="width:100%">
+                                            {:form_checkbox_manage(mobile_module_display(),$mobile_module,'name="mobile_module[]" id="mobile_module"',0,'100')} 
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>    
+
+
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            
+           
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+            $('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+
+
+	});
+});
+</script>
+
+</block>

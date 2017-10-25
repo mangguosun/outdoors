@@ -1,0 +1,26 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add " >
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>编辑报名须知</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Index/do_edit_sign_notice')}" method="post">
+          <div class="form-group">
+            <label for="content" class="col-md-2 control-label">报名须知</label>
+            <div class="col-md-10">
+              <textarea name="sign_notice" cols="80" rows="8">{$sign_notice}</textarea>
+          </div>
+		  <div class="form-group">
+            <input type="hidden" name="id" value="{$list['id']}">
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/notice_doEdit')}">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

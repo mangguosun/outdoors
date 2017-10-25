@@ -1,0 +1,57 @@
+<extend name="sports/common"/>
+<block name="style"> </block>
+<block name="body">
+  <div class="container">
+    <div class="white-popup1 boxShadowBorder col-md-12">
+      <h2>发布故事</h2>
+      
+      <div class="aline" ></div>
+      <div>
+        <div class="row">
+          <form class="form-horizontal ajax-form" role="form" action="{:U('Issue/Index/doPostMobile')}" method="post">
+            <input type="hidden" name="id" value="{$content['id']}">
+            <input type="hidden" name="s_url" value="{$url}">
+            <div class="col-md-12">
+              <div class="form-group has-feedback">
+                <label for="title" class="col-md-2 extra control-label">标题<span class="issue_prompt" >*</span></label>
+                <div class="col-md-6">
+                  <input id="title" name="title" class="form-control form_check" check-type="Text" value="{$content.title}" placeholder="" required />
+                </div>
+              </div>
+              <div class="form-group has-feedback">
+                <label for="cover_id" class="col-md-2 extra control-label">封面图片<span class="issue_prompt">*</span></label>
+                <div class="col-md-6"> {:hook('UploadImage', array('find_name'=>'cover_id','value'=>$content['cover_id'],'buttontext'=>'上传故事封面图','buttonwidth'=>250,'multi'=>false,'ds'=>'400*300','width'=>400,'height'=>300))} </div>
+              </div>
+              <div class="form-group has-feedback">
+				<label for="cover_id" class="col-md-2 extra control-label">故事图集<span class="issue_prompt">*</span></label>
+				<div class="col-md-6">
+					{:hook('UploadImage', array('find_name'=>'imgids','value'=>$content['imgids'],'buttontext'=>'故事图集','buttonwidth'=>250,'multi'=>true,'ds'=>'400*300','width'=>400,'height'=>400))}
+				</div>
+			</div>
+              <div class="form-group ">
+                <label for="type_id" class="col-md-2 extra control-label">分类<span class="issue_prompt">*</span></label>
+                <div class="col-md-10">
+                  <volist name="tree" id="top">
+                    <input value="{$top.id}" name="issue" type="radio" <?php if($top['id'] == $content['issue_id']) echo 'checked'?>>
+                    &nbsp;{$top.title}&nbsp; </volist>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="travel_point" class="col-md-2 control-label">详情(30字到2000字)<span class="issue_prompt">*</span></label>
+                <textarea value="" name="content" rows="6" style="min-width:557px">{$content['content']}</textarea>
+              </div>
+              <div class="form-group">
+                <div class="col-md-offset-2 col-md-1">
+                  <button type="submit" class="btn btn-primary " href="{:U('Issue/Index/doPostMobile')}">保存</button>
+                </div>
+                <div class="col-md-8">
+                  <button onclick="history.go(-1);" class="btn btn-default">返回 </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>

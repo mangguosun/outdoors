@@ -1,0 +1,77 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>公众号管理</h2>
+</div> 
+	<div class="cf">
+     <div class="fl">
+     		<a class="w_btn add-btn " href="{:U('Weixin/public_add')}">新增</a>
+            
+            <button class="w_btn ajax-post" url="{:U('Weixin/changeStatus',array('method'=>'forbid'))}"
+                    target-form="ids">启 用
+            </button>
+            <button class="w_btn ajax-post" url="{:U('Weixin/changeStatus',array('method'=>'resume'))}"
+                    target-form="ids">禁 用
+            </button>
+
+        </div>
+        <div class=" pull-right">
+             当前公众号ID : <span style="color:red;">{$present.id}</span> | 名称 : <span style="color:red;margin-right:100px;">{$present.public_name}</span>
+            
+        </div>
+
+    </div>
+     <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">公众号ID</th>                
+                <th class="">公众号名称</th>
+                <th class="">类型</th>
+                <th class="">等级</th>
+                <th class="">Token</th>
+                <th class="">状态</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="weixin_info">
+                <volist name="weixin_info" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.public_name}</td>
+						<td>{$vo[type]}</td>
+						<td><if condition="$vo[level] eq 0 ">无<else/>{$vo.level}</if></td>
+						<td>{$vo.public_id}</td>
+						<td><if condition="$vo.status eq 1">启用  <else />禁用</if></td>
+						<td>
+							<a href="{:U('Weixin/public_add',array('id'=>$vo['id'],'edit'=>'edit'))}" class="mbtn btn-info">编辑</a>
+
+							<if condition="$vo.status eq 0">
+	                            <a href="{:U('Weixin/changeStatus?method=forbid&id='.$vo['id'])}"
+	                               class="ajax-get mbtn btn-info">启用</a>
+                            <else />
+	                            <a href="{:U('Weixin/changeStatus?method=resume&id='.$vo['id'])}"
+	                               class="ajax-get mbtn btn-danger">禁用</a>
+                       		 </if>
+
+
+							<a href="{:U('Weixin/changPublic',array('id'=>$vo['id']))}" class="mbtn btn-info ajax-get">切换为当前用户</a>
+							<a href="{:U('Weixin/help',array('id'=>$vo['id']))}"class="mbtn btn-info">接口配置</a>
+
+						</td>
+                      
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+</block>

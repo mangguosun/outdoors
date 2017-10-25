@@ -1,0 +1,112 @@
+<extend name="Public/common_user"/>
+<block name="body">
+  <section>
+    <div class="moblie_user_box"> <span class="mobile_crumbs "><a href="javascript:history.go(-1)" title="{:get_webinfo('webname')}"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_user">
+      <div class="text-right">
+        <div>
+          <div class="user_screening_btn">帐户登录</div>
+        </div>
+      </div>
+      </span></div>
+
+    <div class="mobile_login_box">
+      <form action="__SELF__" method="post" autocomplete="off">
+	    <input type="hidden" name='referer_url' value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+        <input type="hidden" name='verify_num' id="verify_num" value="{$verify_num}">
+        <input type="text" id="inputEmail" class="form-control" placeholder="手机号/邮箱"  errormsg="手机号/邮箱" nullmsg="手机号/邮箱" datatype="*1-16" value="" name="email">
+        <div class="h15"></div>
+        <input type="password" id="inputPassword" class="form-control" placeholder="登录密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+        <div class="h15"></div>
+        <if condition="C(VERIFY_OPEN) eq 1 OR C(VERIFY_OPEN) eq 3">
+        
+        <div class="verify_box" style="display:none">
+
+          <div class="clearfix">
+            <div class="col-xs-7" style="padding: 0px; margin:0">
+              <input type="text" id="verifyCode" class="form-control" placeholder="验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify" style="height:35px;">
+            </div>
+            <div class="col-xs-5" style="padding: 0px; margin:0"> <img class="verifyimg reloadverify" alt="点击切换" src="{:U('verify')}" style="padding:0; margin:0" /> </div>
+          </div>
+          <div class="h15"></div>
+         </div> 
+       
+        </if>
+        <div class="clearfix"><button type="submit" class="btn btn-primary col-xs-12" >登 录</button></div>
+        <div class="h15"></div>
+        <div class="clearfix">
+            <input name="remember" type="hidden" id="remember" value="on" /> <a class="btn-link" href="{:U('User/mi')}"  style="color: #848484; font-size:12px">找回密码</a> <a class="btn-link" href="{:U('Mobile/User/register')}" style="color: #848484; font-size:12px">注册账号</a></div>
+      </form>
+    </div>
+<div class="mobile_login_box">
+{:W('Mobile/Hot/lists',array('limit'=>1))}
+<div class="login_tailor"><a href="{:U('Mobile/Tailor/index')}"><img src="/Public/Core/images/event_tailor.jpg"></a></div>
+    </div>
+  </section>
+  <include file="Public/js"/>
+  <!-- /主体 -->
+  <!-- 底部 -->
+  <!-- /底部 -->
+  <script type="text/javascript">
+
+    $(document)
+            .ajaxStart(function () {
+                $("button:submit").addClass("log-in").attr("disabled", true);
+            })
+            .ajaxStop(function () {
+                $("button:submit").removeClass("log-in").attr("disabled", false);
+            });
+
+    function change_show(obj){
+        if($(obj).text().trim()=='show'){
+            var value=$('#inputPassword').val().trim();
+            var html='<input type="text" value="'+value+'" id="inputPassword" class="form-control" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">'+
+                    '<div class="input-group-addon"><a style="width: 100%;height: 100%" href="javascript:void(0);" onclick="change_show(this)">hide</a></div>';
+            $('#password_block').html(html);
+        }else{
+            var value=$('#inputPassword').val().trim();
+            var html='<input type="password" value="'+value+'" id="inputPassword" class="form-control" placeholder="请输入密码" errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">'+
+                    '<div class="input-group-addon"><a style="width: 100%;height: 100%" href="javascript:void(0);" onclick="change_show(this)">show</a></div>';
+            $('#password_block').html(html);
+        }
+    }
+
+    $(function () {
+        $("form").submit(function () {
+            var self = $(this);
+            $.post(self.attr("action"), self.serialize(), success, "json");
+            return false;
+            function success(data) {
+                if (data.status) {
+                    toast.success('欢迎回来，1.5秒后跳转到用户首页。');
+                    setTimeout(function () {
+                        window.location.href = data.url;
+                    }, 1500);
+                } else {
+                    toast.error(data.info, '温馨提示');
+					var verify_num =  $('#verify_num').val();
+					verify_num = verify_num*1 +1;
+					$('#verify_num').val(verify_num);
+					
+					if(verify_num>=3){
+						$('.verify_box').show();
+						//self.find(".Validform_checktip").text(data.info);
+						//刷新验证码
+						$(".reloadverify").click();
+					}
+                }
+            }
+        });
+
+
+        var verifyimg = $(".verifyimg").attr("src");
+        $(".reloadverify").click(function () {
+            if (verifyimg.indexOf('?') > 0) {
+                $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+            } else {
+                $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+            }
+        });
+		
+    });
+</script>
+</block>

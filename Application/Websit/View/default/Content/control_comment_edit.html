@@ -1,0 +1,30 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+</style>
+ <div id="center" class="" >
+	<div class="common_block_title ">
+	<div class="pull-right"><a class="mbtn  btn-info common-color-white" href="{$comment_rul}">返回上级</a></div>修改评论</div>
+    <div class="row " >
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Websit/Content/control_comment_doEdit')}" method="post">
+          
+          <div class="form-group">
+            <label for="content" class="col-md-2 control-label">评论内容</label>
+            <div class="col-md-10">
+              <php>$config='toolbar:[\'bold italic underline fontsize forecolor justifyleft | map image emotion link \']'; </php>
+              {:W('UeditorMini/editor',array('myeditor_content','content',$list['content'],'550px','250px',$config))} </div>
+          </div>
+		  <div class="form-group">
+		      <input type="hidden" name="comment_url" value="{$comment_rul}">
+              <input type="hidden" name="id" value="{$list.id}">
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Content/control_comment_doEdit')}">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</block>

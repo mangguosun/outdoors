@@ -1,0 +1,389 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改订单-<span style="font-size:14px;">修改优惠信息</span></h2>
+  <div class="aline usercenter-common-bm"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Config/edit_card')}" method="post">
+          <input type="hidden" id="price_edit" value="{$event_attend[price]}">        
+          <input type="hidden" id="paytype_edit" value="{$event_attend[paytype]}">        
+          <input type="hidden" id="total_edit" value="{$totalprice}"> <!--原来的总价格-->
+          <input type="hidden" id="total_edit_o" value="{$event_attend[totalprice]}"> 
+          <input type="hidden" id="payprice_edit" value="{$payprice}"> <!--原来的支付价格-->       
+          <input type="hidden" id="payprice_edit_o" value="{$event_attend[payprice]}">       
+          <input type="hidden" id="id" name="id" value="{$id}">
+          <input type="hidden" id="cardid_edit" name="cardid" value="{$event_attend[cardid]}">	  
+          <input type="hidden" id="card_amount" name="card_amount" value="{$card_amount}">	  
+          <input type="hidden" id="total_num" name="total_num" value="{$total_num}">	  
+			<div class="form-group ">
+				<div class="col-md-11">
+				<if condition="$event_attend['cardid'] != ''">			  
+				当前优惠信息：<span style="color:green">已成功使用<span style="color:red"><b>【{$card_info[name]}】</b></span>x1,其中:<span style="color:red"><b>【{$card_info[name]}】</span></b>卡号 <span style="color:red">{$card_info[cardid]}</span>，面值<span style="color:red"><b> ¥{$card_info[amount]}</b></span></span>				
+				<else />
+				您目前未使用任何优惠
+				</if>
+				</div>
+			</div>
+			<div class="aline usercenter-common-bm"></div>
+		  <div class="form-group ">
+				<div class="col-md-3 no_use_card">          
+					<input type="radio" class="no_use_edit" name="check_card_use" value="1"/>
+					<span>不使用任何优惠</span>
+				</div>
+				<div class="col-md-3">          
+					<input type="radio" class="use_coupon_edit" name="check_card_use" value="2"/>
+					<span>请选择代金券</span>
+				</div>
+				<div class="col-md-3">          
+					<input type="radio" class="use_hand_edit" name="check_card_use" value="3"/>
+					<span>输入券码</span>
+				</div>
+		</div>
+		<div class="form-group has-feedback coupon_text_edit">  
+			<label for="cardid" class="col-md-2 control-label">选择代金券：</label>
+			<div class="col-md-6">			
+				<select id="cardid" name="cardid" class="form-control col-md-6 form_check"></select>						
+			</div>
+			<div class="col-md-4">
+				<span style="color:green;" class="card_select_endtime_info"></span>
+			</div>
+		</div>
+		<div  class="form-group has-feedback coupon_hand_edit">  
+			<label for="cardid1" class="col-md-2 control-label">请输入券码:</label>
+			<div class="col-md-4">
+				  <input id="cardid1" name="cardid1" type="" class="form-control form_check" check-type="Text"  />
+			</div>
+			<div class="col-md-1">
+				 <a class="mbtn  btn-info click_use_edit">点击使用</a>
+			</div>
+			<div class="col-md-5">
+				<span style="margin-left:30px;color:green;font-size:13px;" class="card_endtime_info_edit"></span>
+			</div>
+		</div>
+		<!--------------------88888888888888888888----------------------------------------->
+		<if condition="$event_attend[paytype] eq 1">	
+		<!---------------------余额支付--------------------------------------->	
+		<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total_edit"></span></b> =	
+		定金支付 <b><span style="color:red">¥</span><span style="color:red" class="payprice_edit"></span></b> + 
+		余额支付 <b><span style="color:red">¥</span><span style="color:red" class="leftpay_edit"></span></b>
+		<span class="card_o_total_edit" style="color:green"> (代金券省 <b><span style="color:red">¥</span><span class="card_o_amount_edit" style="color:red"></span></b>)</span>	
+		</div>
+		<!----------------------余额支付-------------------------------------->
+		<else />
+		<!------------------------全款支付------------------------------------>
+		<div id="totalprice" class="totalprice">总计 <b><span style="color:red">¥</span><span style="color:red" class="total_edit"></span></b> =	
+		人数[<span style="color:red" class="contact_count_edit"></span>] x <b><span style="color:red">¥{$event_attend[price]}</span></b>
+		<span class="card_o_total_edit"> - 优惠信息 <span style="color:green">(代金券省 <b><span class="card_o_amount_edit" style="color:red"></span></b>)</span></span>
+		</div>
+		<!------------------------全款支付------------------------------------>		
+		</if>
+		<!----------------------88888888888888888888888--------------------------------------->
+		<div class="usercenter-common-bm"></div>
+          <div class="form-group submit_edit">
+            <div class="col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/do_emergency_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$(function(){	
+		$('.submit_edit').hide();
+		var total_o = $('#total_edit_o').val();//优惠之后的总价
+		var payprice_o = $('#payprice_edit_o').val();
+		var leftprice_o = total_o - payprice_o;
+		var total = $('#total_edit').val();//优惠前的总价
+		var payprice = $('#payprice_edit').val();
+		var leftprice = total - payprice;
+		var paytype = $('#paytype_edit').val();
+		var cardid_edit = $('#cardid_edit').val();
+		var card_amount = $('#card_amount').val();
+		var total_num = $('#total_num').val();
+		function get_price(){
+			if(paytype == 0){		
+				if(payprice_o == 0){
+					$('.total_edit').html(payprice_o)				
+				}else{
+					$('.total_edit').html(total_o)
+				}
+			}else{
+				$('.total_edit').html(total_o)
+				$('.payprice_edit').html(payprice_o)
+				$('.leftpay_edit').html(leftprice_o)
+			}		
+		}
+		get_price();
+		if(cardid_edit == ''){
+			$('.no_use_card').hide();
+		}else{
+			$('.no_use_card').show();
+		}
+		if(paytype == 0){
+			$('.contact_count_edit').html(total_num)
+		}
+		function zero_done(){
+			$('.total_edit').html(total_o)
+			$('.payprice_edit').html(payprice_o)
+			$('.leftpay_edit').html(leftprice_o)
+			$('#cardid1').val('');
+			$('#cardid').val('')
+			$('.card_select_endtime_info').html('')			
+			$('.card_endtime_info_edit').html('')	
+			$('.submit_edit').hide();		
+			get_price();
+			choose_hide();
+		}
+		function choose_hide(){
+			if(cardid_edit == ''){
+				$('.card_o_total_edit').hide();
+			}else{
+				$('.card_o_total_edit').show();
+				$('.card_o_amount_edit').html(card_amount)
+			}	
+		}
+		choose_hide();
+		$('.coupon_text_edit').hide();
+		$('.coupon_hand_edit').hide();
+		//选择我的代金券
+		$('.use_coupon_edit').click(function(){	
+			$('#cardid').empty();
+			$('.coupon_text_edit').show();
+			$('.coupon_hand_edit').hide();
+			$.post('Usercenter/Config/ajax_card_select',function(res){
+				
+				if(res['res'] != ''){
+					$('#cardid').append("<option value=''>请选择代金券</option>")
+					$.each(res['res'],function(i,vo){				
+						$('#cardid').append("<option value="+vo['cardid']+">"+vo['typename']+"("+vo['amount']+"元)【卡号："+vo['cardid']+"】</option>")
+					})
+				}else{
+					$('#cardid').append("<option value=''>您目前无任何可用代金券</option>")
+				}
+				
+			},'json')
+			zero_done();			
+		})
+
+		
+		//手动输入代金券
+		$('.use_hand_edit').click(function(){
+			$('.coupon_hand_edit').show();
+			$('.coupon_text_edit').hide();
+			zero_done();		
+		})
+		//不使用任何代金券
+		$('.no_use_edit').click(function(){			
+			$('.coupon_text_edit').hide();			
+			$('.coupon_hand_edit').hide();
+			$('.leftpay_edit').html(leftprice)
+			$('.total_edit').html(total);
+			$('.payprice_edit').html(payprice);
+			$('.card_o_total_edit').hide();
+			$('#cardid1').val('');
+			$('#cardid').val('');
+			if(cardid_edit != ''){
+				$('.submit_edit').show();
+			}
+			$('.card_select_endtime_info').html('')			
+			$('.card_endtime_info_edit').html('')			
+		})
+
+		function getleftpay(){
+			var leftpay = $('.total_edit').html() - $('.payprice_edit').html()
+			$('.leftpay_edit').html(leftpay);
+		}
+		$('#cardid').change(function(){
+			var paytype = $('#paytype_edit').val();
+			var total = $('#total_edit').val();//优惠前的总价
+			var payprice = $('#payprice_edit').val();//优惠前的支付价格
+			var leftpay = total - payprice;
+			var card_amount = $('#card_amount').val();
+			var _this = $(this).val();
+			$.post(U('Usercenter/Config/ajax_check_card'),{card:_this},function(res){
+			var str = '';
+			var name = res['name'];
+			var card = res['amount'];
+			var enditme_info = res['endtime'];
+			if(enditme_info != '' || enditme_info != 0){
+				card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>有效期至 <span style='color:red'><b>"+enditme_info+"</b></span>";
+			}else{
+				card_endtime_str = "该<span style='color:red'><b>【"+name+"】</b></span>长期有效";
+			}
+			if(paytype == 1){
+				if(card > leftpay){	
+					str = '当前【'+name+'】金额大于订单后续支付余额，【'+name+'】使用后余额将不退还，是否继续？';	
+					if(confirm(str)){											
+						$('.total_edit').html(payprice);
+						$('.payprice_edit').html(payprice);
+						$('.card_o_total_edit').show();
+						$('.card_o_amount_edit').html(leftpay)
+						$('.card_select_endtime_info').html(card_endtime_str)
+						$('.submit_edit').show();
+						getleftpay();
+					}else{																
+						$('.total_edit').html(total);
+						$(this).val('');
+						zero_done();
+						$('.submit_edit').hide();
+					}
+				}else{
+					if(card != '' && typeof(card) != 'undefined'){					
+						var left = total - card;
+						$('.total_edit').html(left)
+						$('.payprice_edit').html(payprice_o)
+						$('.leftpay_edit').html(leftprice_o)
+						$('.card_o_total_edit').show();
+						$('.card_o_amount_edit').html(card);
+						$('.card_select_endtime_info').html(card_endtime_str)
+						getleftpay();
+						$('.submit_edit').show();
+					}else{
+						$('.total_edit').html(total_o)
+						$('.payprice_edit').html(payprice_o)
+						$('.leftpay_edit').html(leftprice_o)
+						zero_done();
+						$('.card_select_endtime_info').html('')
+						$('.submit_edit').hide();
+					}
+				}
+			}else{
+				if(parseInt(card) > parseInt(total)){
+					str = '当前【'+name+'】金额大于订单总额，【'+name+'】使用后余额将不退还，是否继续？';
+					if(confirm(str)){
+						$('.total_edit').html('0');
+						$('.card_o_total_edit').show();
+						$('.card_o_amount_edit').html(total)
+						$('.card_select_endtime_info').html(card_endtime_str)
+						$('.submit_edit').show();
+					}else{
+						$('#cardid').val('')
+						zero_done();
+						$('.submit_edit').hide();
+					}
+				}else{
+					if(card != '' && typeof(card) != 'undefined'){
+						var left = total - card;
+						$('.total_edit').html(left);
+						$('.card_o_total_edit').show();
+						$('.card_o_amount_edit').html(card)
+						$('.card_select_endtime_info').html(card_endtime_str)
+						$('.submit_edit').show();
+					}else{
+						$('.total_edit').html(total_o)
+						$('.payprice_edit').html(payprice_o)
+						$('.leftpay_edit').html(leftprice_o)
+						zero_done();
+						$('.card_select_endtime_info').html('')
+						$('.submit_edit').hide();
+					}
+				}
+			}
+			},'json')
+
+		})
+		$('.click_use_edit').click(function(){
+			var total = $('#total_edit').val();
+			var total_o = $('#total_edit_o').val();
+			var paytype = $('#paytype_edit').val();	
+			var card = $('#cardid1').val();
+			var payprice = $('#payprice_edit').val();
+			var payprice_o = $('#payprice_edit_o').val();
+			var str = '';
+			if(card == ''){
+				$('.total_edit').html(total);
+				$('.payprice_edit').html(payprice);
+				getleftpay();
+				toast.error('亲，券码不能为空！')
+			}else{
+				$.post(U('Usercenter/Config/ajax_check_card'),{card:card},function(res){
+					if(!res['status']){
+						$('#cardid1').val('');	
+						toast.error(res['msg']);
+						$('.total_edit').html(total_o)
+						$('.payprice_edit').html(payprice_o)
+						$('.card_endtime_info_edit').html('')
+						$('.submit_edit').hide();	
+						getleftpay();	
+						zero_done();
+					}else{	
+						var name = res['name'];
+						var card = res['amount'];
+						var endtime = res['endtime'];
+						var info = "<span style='color:green'>该<b><span style='color:red'>【"+name+"】</span></b>面值 <span style='color:red'><b>¥"+card+"</b></span></span>";
+						if(paytype == 1){						
+							var diff_pay = total - payprice;
+							if(card > diff_pay){
+								str = '当前【'+name+'】金额大于订单后续支付余额，【'+name+'】使用后余额将不退还，是否继续？';	
+								if(confirm(str)){						
+									$('.total_edit').html(payprice);																	
+									$('.card_o_total_edit').show();
+									$('.card_o_amount_edit').html(diff_pay);
+									getleftpay();
+									$('.submit_edit').show();
+									if(endtime != 0){
+										$('.card_endtime_info_edit').html('该券面值 <b><span style="color:red">¥'+card+'</span></b><br>有效期至 <span style="color:red">'+endtime+'</span>')
+									}else{
+										$('.card_endtime_info_edit').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>, 长期有效')
+									}
+								}else{
+									$('.card_o_total').hide();
+									$('.card_o_amount').html('');
+									$('.submit_edit').hide();
+									zero_done();
+								}
+							}else{		
+								$('.card_o_total_edit').show();
+								$('.card_o_amount_edit').html(card);
+								$('.total_edit').html(total - card);
+								$('.submit_edit').show();
+								if(endtime != 0){
+									$('.card_endtime_info_edit').html('该券面值 <b><span style="color:red">¥'+card+'</span></b><br>有效期至 <span style="color:red">'+endtime+'</span>')
+								}else{
+									$('.card_endtime_info_edit').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>, 长期有效')
+								}
+								getleftpay();
+							}
+						}else{
+							if(parseInt(card) > parseInt(total)){
+								var info = '当前【'+name+'】金额大于订单总额，【'+name+'】使用后余额将不退还，是否继续？';	
+								if(confirm(info)){									
+									$('.total_edit').html('0');
+									$('.card_o_total_edit').show();
+									$('.card_o_amount_edit').html(total);
+									$('.submit_edit').show();
+									if(endtime != 0){
+										$('.card_endtime_info_edit').html('该券面值 <b><span style="color:red">¥'+card+'</span></b><br>有效期至 <span style="color:red">'+endtime+'</span>')
+									}else{
+										$('.card_endtime_info_edit').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>, 长期有效')
+									}
+								}else{
+									$('.total_edit').html(total);
+									$('.card_o_total_edit').hide();
+									$('.card_o_amount_edit').html('');
+									$('.submit_edit').hide();
+									zero_done();
+								}
+							}else{
+								var leftpay = total - card
+								$('.total_edit').html(leftpay);
+								$('.card_o_total_edit').show();
+								$('.card_o_amount_edit').html(card);
+								$('.submit_edit').show();
+								if(endtime != 0){
+									$('.card_endtime_info_edit').html('该券面值 <b><span style="color:red">¥'+card+'</span></b><br>有效期至 <span style="color:red">'+endtime+'</span>')
+								}else{
+									$('.card_endtime_info_edit').html('该<span style="color:red">【'+name+'】</span>面值 <b><span style="color:red">¥'+card+'</span></b>, 长期有效')
+								}
+							}
+						}
+						
+					}
+				},'json')
+			}
+		})
+	})
+</script>

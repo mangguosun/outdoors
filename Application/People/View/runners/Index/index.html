@@ -1,0 +1,58 @@
+<extend name="runners/common"/>
+<block name="body">
+<div class="container">
+<include file="Public/mod_header"/>
+<div class="app_head clearfix">
+  <div class="app_title col-md-12 "><a href="{:U('People/Index/find',array('is_use'=>2))}" class="pull-right">更多></a><i class="app_ico_i glyphicon glyphicon-th-large"> </i>{$m_level_name.2}</div>
+</div>
+<div class="row">
+  <notempty name="leaders">
+    <div class="col-md-12">
+      <div class="row">
+        <volist name="leaders" id="vo"> <include file="Public/item" /> </volist>
+      </div>
+    </div>
+    <else/>
+    <div class="people-item">本站暂无{$m_level_name.2}哦。O(∩_∩)O~</div>
+  </notempty>
+</div>
+<div class="app_head clearfix">
+  <div class="app_title col-md-12 "><a href="{:U('People/Index/find',array('is_use'=>4))}" class="pull-right">更多></a><i class="app_ico_i glyphicon glyphicon-th-large"></i>{$m_level_name.4}</div>
+</div>
+<div class="row">
+  <notempty name="master">
+    <div class="col-md-12 ">
+      <div class="row">
+        <volist name="master" id="vo"> <include file="Public/item" /> </volist>
+      </div>
+      </div>
+    <else/>
+    <div class="people-item">本站暂无{$m_level_name.4}哦。O(∩_∩)O~</div>
+  </notempty>
+</div>
+
+<div class="app_head clearfix">
+  <div class="app_title col-md-12 "><a href="{:U('People/Index/find',array('is_use'=>1))}" class="pull-right">更多></a><i class="app_ico_i glyphicon glyphicon-th-large"></i>{$m_level_name.1}</div>
+</div>
+<div class="row">
+  <notempty name="peoples">
+    <div class="col-md-12 ">
+      <div class="row">
+        <volist name="peoples" id="vo"> <include file="Public/item" /> </volist>
+      </div>
+     </div>
+    <else/>
+    <div class="people-item">本站暂无{$m_level_name.1}哦。O(∩_∩)O~</div>
+  </notempty>
+</div>
+<div class="pull-right"> {$lists.html} </div>
+<div></div>
+</div>
+</block>
+<block name="script">
+  <script>
+        $(function () {
+           hdl_lazyload("img.add_loading");
+        })
+    </script>
+</block>

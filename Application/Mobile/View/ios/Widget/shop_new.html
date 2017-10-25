@@ -1,0 +1,26 @@
+<if condition="!empty($shop_new_data)">
+<div class="hdl-nav-menu shop-index-space">
+    <a href="{:U('Mobile/Shop/goods',array('mod'=>'new'))}"><h3 class="hdl-nav-title">新品速递</h3><span class="hdl-nav-more">查看更多<i class="am-icon-angle-right"></i></span></a>
+</div>
+<div class="shop-index-newfoods"> 
+    <ul class="shop-index-ul">
+    <volist name="shop_new_data" id="vo">
+      <li>
+        <figure style="background-image:url({$vo.thumb_200_200})">
+          <a href="{$vo.mobile_url}"></a>
+        </figure>
+        <div class="shop-index-messagebox">
+            <div class="shop-lists-goodstitle">{$vo.goods_name|getShortSp=9|parse_comment_content} </div>
+            <div class="shop-lists-price">￥{$vo.market_price}</div>  
+        </div>     
+      </li>
+      
+     </volist>
+ 	</ul>
+ </div>
+<script>
+$(function () {
+	//hdl_lazyload('img.event-lists-thumb');
+})
+</script>
+</if>

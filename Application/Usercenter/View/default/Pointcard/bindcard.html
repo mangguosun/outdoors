@@ -1,0 +1,67 @@
+<div id="frm-post-popup" class="white-popup">
+<button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Usercenter/Pointcard/bindcard')}" method="post">	    
+        <div class="form-group">
+			<label for="cardid" class="col-md-3 control-label">请输入券码</label>
+			<div class="col-md-5">
+			 <input type="text" class="form-control" id="cardid" placeholder="请输入券码" name="cardid" value="{$balance.cash}">
+			</div>
+			<span class="cardidinfo"></span>
+		</div>
+		
+		<div class="form-group usercardkey" style="display:none;">
+			<label for="cash" class="col-md-3 control-label">密钥</label>
+			<div class="col-md-5">
+			 <input type="text" class="form-control" id="cardkey" placeholder="请输入密钥" name="cardkey" value="{$balance.cardkey}">
+			</div>
+			<span class="cardkeyinfo"></span>
+		</div>
+		<label for="" class="col-md-9 control-label"></label>
+		
+	   <div class="form-group">
+			<div class="col-md-offset-3 col-md-10">
+			<button type="submit" class="mbtn btn-primary">验证并领取</button>
+			</div>
+		</div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+	var cardid	=	$("#cardid");
+		cardid.blur(function(){
+			$.post(U('Usercenter/Pointcard/doCard'), {cardid:cardid.val()}, function (data) {
+				if (data.status==1) {
+				    if(data.cardtype==1){
+					  
+						$('.usercardkey').show();
+						var cardkey=$('#cardkey');
+							cardkey.blur(function(){
+							$.post(U('Usercenter/Pointcard/doCardkey'), {cardid:cardid.val(),cardkey:cardkey.val()}, function (data) {
+									if(data==1){
+										$(".cardkeyinfo").html('密码正确!');
+										$(".cardkeyinfo").css('color','green');
+									}else{
+									 
+									  	$(".cardkeyinfo").html('密码错误!');
+										$(".cardkeyinfo").css('color','red');
+									}
+							})
+						
+						});
+					
+					}
+					//toast.success(data.info);
+					$('.cardidinfo').html('卡号正确');
+					$('.cardidinfo').css('color','green');
+				}else {
+					toast.error(data.info);
+				}
+			}, 'json');
+		
+		})
+
+})
+
+
+</script>
+

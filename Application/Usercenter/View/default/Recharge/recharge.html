@@ -1,0 +1,118 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>充值中心</h4>
+            <hr class="oneuser-title-hr"/>
+        </div>
+    </div>
+    <include file="Recharge/_menu"/>
+    <div style="margin-bottom: 50px">
+        <h3 style="font-size: 16px;font-weight: bold">选择充值类型</h3>
+        <hr/>
+        <p>
+        <blockquote>
+            <volist name="fields" id="vo">
+                <br/>
+                <label><input onchange="set_field(this)"
+                    <eq name="i" value="1">checked</eq>
+                    type="radio" name="field" value="{$vo.0}|{$vo.1}"> 当前充值比例 1 RMB = {$vo.2} {$vo.3}  （账户余额：{$vo.have}）</label>
+            </volist>
+        </blockquote>
+        </p>
+    </div>
+    <div style="margin-bottom: 30px">
+        <h3 style="font-size: 16px;font-weight: bold">选择充值面额金额</h3>
+        <hr/>
+        <div>
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-2">
+                        充值金额
+                    </div>
+                    <div class="col-md-8">
+                        <div class="radio">
+                            <volist name="amount" id="vo">
+                                <if condition="floatval($vo) neq 0">
+
+                                    <div class="form-group">
+                                        <label><input onchange="set_amount(this)"
+                                            <eq name="i" value="1">checked</eq>
+                                            name="amount" type="radio" value="{$vo|floatval}"> {$vo|floatval}
+                                            元 </label>
+                                    </div>
+
+                                    <else/>
+
+                                </if>
+                            </volist>
+                        </div>
+                    </div>
+
+                    <script>
+                        function set_amount(obj) {
+                            $('#frm_amount').val($(obj).val());
+                        }
+                        function set_field(obj) {
+                            $('#frm_field').val($(obj).val());
+                        }
+                    </script>
+                </div>
+                <if condition="modC('CAN_INPUT',1,'recharge')">
+                    <div class="row">
+                        <div class="col-md-2">
+                            任意金额
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label><input id="other" name="amount" type="radio" value="{$vo|floatval}">&nbsp;&nbsp;
+                                    <input type="text" class="form-control "
+                                           onfocus="$('#other').prop('checked',true);$('#frm_amount').val(0)"
+                                           style="display: inline-block;width: 120px" name="amount" value=""
+                                           placeholder="输入金额"
+                                            onblur="$('#frm_amount').val(parseFloat($(this).val()))"
+                                            >&nbsp; 元
+                                    <if condition="modC('MIN_AMOUNT',0,'recharge') neq 0">
+                                        （最少充值 {:modC('MIN_AMOUNT',0,'recharge')} 元）
+                                    </if>
+
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                </if>
+
+            </form>
+
+        </div>
+
+    </div>
+    <div>
+        <h3 style="font-size: 16px;font-weight: bold">选择支付方式</h3>
+        <hr/>
+        <div style="padding: 20px">
+            <if condition="in_array('alipay',$method)">
+                <label><input type="radio" name="type" value="alipay" checked>
+                    <img src="<php>echo str_replace('//','/',getRootUrl().'/Addons/AliPlay/Play/images/alipay.gif');</php>"/>
+                </label>
+            </if>
+
+        </div>
+
+    </div>
+    <div style="margin-bottom: 30px">
+        <div class="clearfix">
+            <form action="{:U('recharge/order')}" method="post">
+                <input id="frm_amount" type="hidden" name="amount" value="{$amount.0|floatval}">
+                <input type="hidden" name="method" value="{$method.0}">
+                <input id="frm_field" type="hidden" name="field" value="{$fields.0.0}|{$fields.0.1}">
+                <button class="btn btn-primary pull-right" type="submit">立即充值</button>
+            </form>
+        </div>
+
+    </div>
+
+</block>

@@ -1,0 +1,100 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2>添加自定义菜单</h2><!--&nbsp;<span class='common-color-red'>(未使用状态下可以删除)</span>-->
+</div> 
+<img style="float:right;margin:50px 150px 0 0 " src="__PUBLIC__/Manage/images/weixin/tishi.png"/>
+<form action="{:U('Manage/Weimenu/add')}" method="post" class="form-horizontal"> 
+
+    	<label class="item-label">排序号:<span class="check-tips">(数值越小越靠前)</span></label>
+		<div class="controls">
+          <input id="sort" name="sort" type="text" class="text input-large" check-type="Text"  value="0" />
+        </div>         
+       	<label class="item-label">菜单名称:<span class="check-tips">(必填，顶级菜单不超过16个字节，二级菜单不超过40个字节)</span></label>
+		<div class="controls">
+          <input id="title" name="title" type="text" class="text input-large" check-type="Text" placeholder="中文为3个字节，英文符号为1个字节" value="" />
+        </div>
+        <label class="item-label">上级菜单:<span class="check-tips"></span></label>
+		<div class="controls">
+			<notempty name="first_menu">
+			<div class=""	id="first_menu" style="margin:0;pading:0;width:400px;">			
+				<select	id="first_menu_s" check-type='Text' name='first_menu' style="width:250px;">
+					<volist name="first_menu" id="vo" >
+
+					<option value="{$key}">{$vo}</option>
+					</volist>
+				</select>
+			
+			</div>
+		</notempty>
+		</div>
+		<label class="item-label">动作:<span class="check-tips">(默认为跳转URL)</span></label>
+		<div class="controls">
+			<notempty name="type_list">
+			<div class=""	id="type" style="margin:0;pading:0;width:400px;">			
+				<select	class='wei_button_type' check-type='Text' name='type' style="width:250px;">
+					
+					<volist name="type_list" id="v" >
+
+						<option  value="{$key}">{$v}</option>
+					
+					</volist>
+					<option class='none' value="0" style="display:block">无事件顶级菜单</option>
+				</select>
+			
+			</div>
+		</notempty>
+		</div>
+
+        
+		<div id="wei_key" style="display:none">
+		<label class="item-label">关键字:<span class="check-tips">(必填,不超过128字节)</span></label>
+		<div class="controls">
+          <input id="keyword" name="keyword" type="text" class="text input-large" check-type="Text" placeholder="中文为3个字节，英文符号为1个字节" value=""/>
+        </div>
+        </div>
+        <div id="wei_url" >       
+        <label class="item-label">关联URL:<span class="check-tips">(需为  <aa style="color:red">http://</aa>  开头，类型为跳转URL则必须，不超过256字节)</span></label>
+		<div class="controls">
+          	<input id="url" name="url" type="text" class="text input-large" check-type="Text" placeholder="中文为3个字节，英文符号为1个字节" value="" />
+        </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" target-ls="a">添加</button>
+            <a class="w_btn btn-return" href="{:U('Weimenu/index')}">返回</a>
+        </div>
+	
+    </form>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		$('#first_menu_s').change(function(){ 
+			var sss=$('#first_menu_s  option:selected').val();
+			if(sss!=0){ 
+				$('.none').hide();
+			}else{ 
+				$('.none').show();
+			}
+		});
+		$('.wei_button_type').change(function(){ 
+			var button_val=$('.wei_button_type  option:selected').val();
+			if(button_val==2){ 
+				$('#wei_url').show();
+				$('#wei_key').hide();
+			}else{ 
+				$('#wei_url').hide();
+				$('#wei_key').show();
+			}
+
+		})
+		
+	})
+
+
+</script>
+   
+</block>

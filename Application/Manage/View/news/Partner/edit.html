@@ -1,0 +1,202 @@
+<extend name="Public/base1" />
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">编辑活动</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Partner/set_partner')}" class="form-horizontal form-bordered" method="post" >
+                        <input type="hidden" name="id" id="id" value="{$partner.id}"/>
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动标题 </label>
+                            <div class="col-lg-10">
+                                <input type="text"  id="title"  maxlength="25" class="form-control" placeholder="标题限25字以内" name="title" value="{$partner['title']}" />
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-lg-2 control-label">活动类型 </label>
+                            <div class="col-lg-10">
+                                 <select id="e1" style="width:100%;" name="partner_type">
+                                    <option  value="1" <if condition="$partner['event_type'] eq 1">selected</if>>跑步</option>
+                                    <option  value="2" <if condition="$partner['event_type'] eq 2">selected</if>>徒步</option>
+                                    <option  value="3" <if condition="$partner['event_type'] eq 3">selected</if>>骑行</option>
+                                    <option  value="4" <if condition="$partner['event_type'] eq 4">selected</if>>游泳</option>
+                                </select>
+                            </div>
+                         </div>
+                        <div class="form-group">
+                              <label class="col-lg-2 col-md-2 col-sm-3 control-label"> 活动时间 </label>
+                              <div class="col-lg-5">
+                                  <div class="input-group date form_datetime">
+                                       <input type="text" id="starttime"  name="starttime" class="form-control" placeholder="活动开始时间" value="{$partner.start_time}" readonly />
+                                       <span class="input-group-addon">
+                                          <i class="fa fa-calendar"></i>
+                                       </span>
+                                  </div>
+                              </div>
+                              <div class="col-lg-5">
+                                  <div class="input-group date form_datetime">
+                                       <input type="text" id="endtime"  name="endtime" class="form-control" placeholder="活动结束时间(选填)" value="{$partner.end_time}" readonly />
+                                       <span class="input-group-addon">
+                                          <i class="fa fa-calendar"></i>
+                                       </span>
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label class="col-lg-2 col-md-2 col-sm-3 control-label">截止报名时间 </label>
+                              <div class="col-lg-5">
+                                  <div class="input-group date form_datetime">
+                                       <input type="text" id="stoptime"  name="stoptime" class="form-control" placeholder="截止报名时间" value="{$partner.deadline}" readonly />
+                                       <span class="input-group-addon">
+                                          <i class="fa fa-calendar"></i>
+                                       </span>
+                                  </div>
+                              </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动封面图</label>
+                            <div class="col-lg-10">
+                                {:hook('UploadImagePc', array('find_name'=>'pictures_id','value'=>$partner['picture_id'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'400','height'=>'300'))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">活动地址 </label>
+                            <div class="col-lg-10">
+                                <input type="text"  id="title"  maxlength="25" class="form-control" name="address" value="{$partner['address']}" />
+                            </div>
+                        </div>                       
+                          <div class="form-group">
+                            <label class="col-lg-2 control-label">活动描述</label>
+                            <div class="col-lg-10">
+                                  {:Hook('Ueditor',array('name'=>'content','value'=>$partner['details']))}  
+                            </div>
+                        </div>
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">人数上限 </label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                  <input id="maxpeople" name="maxpeople" class="form-control judgeNan" value="{$partner.human_number}" placeholder="人数上限" ><span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="默认为无上限"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                                <input onclick="javascript:history.back(-1);return false;" class="btn btn-default " type="button" value="返回">
+                            </div>
+                        </div>
+
+                   </form>
+                </div>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/select2.js"></script>
+<script src="/Public/static/bootstrap3.2/js/select2/i18n/zh-CN.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/Public/static/bootstrap3.2/js/tagsinput/bootstrap-tagsinput.js"></script>
+<!--Bootstrap Date Picker-->
+<link href="/Public/static/bootstrap3.2/css/bootstrap-datetimepicker_old.css" rel="stylesheet" type="text/css">
+<script src="/Public/static/bootstrap3.2/js/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+      format: "yyyy-mm-dd hh:ii",
+      language:"zh-CN",
+      showmeridian: false,
+      autoclose: true,
+      pickerPosition: "top-right",
+      minuteStep: 5,
+      todayBtn: true,
+      todayHighlight:true,
+      minView:0,
+    });
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '活动标题不能为空'
+                    }
+                }
+            },
+
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '活动类型不能为空'
+                    }
+                }
+            },
+
+            starttime: {
+                validators: {
+                    notEmpty: {
+                        message: '活动开始时间不能为空'
+                    }
+                }
+            },
+
+            stoptime: {
+                validators: {
+                    notEmpty: {
+                        message: '截止报名时间不能为空'
+                    }
+                }
+            },
+
+             address: {
+                validators: {
+                    notEmpty: {
+                        message: '活动地址不能为空'
+                    }
+                }
+            },
+           pictures_id: {
+                validators: {
+                    notEmpty: {
+                        message: '活动图片不能是空的'
+                    }
+                }
+            },
+
+            content: {
+                validators: {
+                    notEmpty: {
+                        message: '活动介绍不能是空的'
+                    }
+                }
+            },  
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>
+
+ 

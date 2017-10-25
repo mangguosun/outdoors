@@ -1,0 +1,28 @@
+<extend name="runners/common"/>
+ <block name="body"><div>
+<div class="serch_many">
+
+	<div class="search_left">
+        <div class="serch_nav1">
+        <ul id="searchtab">
+          <li <if condition="$status eq 0" >  class="serch_color" </if> ><a href="{$searurl.status_0}">商城<span id="num">（{$shop_num}）</span></a></li>
+          <li <if condition="$status eq 1"> class="serch_color" </if> ><a  href="{$searurl.status_1}">活动<span id="num">（{$event_num}）</span></a></li>
+          <li <if condition="$status eq 2">  class="serch_color" </if> ><a  href="{$searurl.status_2}">故事<span id="num">（{$story_num}）</span></a></li>
+          <li <if condition="$status eq 3"> class="serch_color"  </if> ><a href="{$searurl.status_3}">会员<span id="num">（{$vip_num}）</span></a></li>
+          <li <if condition="$status eq 4">  class="serch_color"</if> ><a href="{$searurl.status_4}">公告<span id="num">（{$link_num}）</span></a></li>
+          </ul>
+        </div>
+        <div id="tabs_box">
+          <if condition="$status eq 0"><div class="usercenter-set-pd" ><include file="Search/shop"/></div></if>
+          <if condition="$status eq 1"><div class="usercenter-set-pd" ><include file="Search/activity"/></div></if>
+          <if condition="$status eq 2"><div class="usercenter-set-pd" ><include file="Search/story"/></div></if>
+          <if condition="$status eq 3"><div class="usercenter-set-pd" ><include file="Search/vip"/></div></if>
+          <if condition="$status eq 4"><div class="usercenter-set-pd" ><include file="Search/link"/></div></if>
+        </div>
+	</div>
+	<include file="Search/search_right"/>
+
+
+</div>
+</div>
+</block>

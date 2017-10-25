@@ -1,0 +1,21 @@
+<if condition="$lists neq false"> 
+	<div class="index_hotuser">
+        <div class="s_title">
+        	明星会员
+        	<span class="more"><a href="{:U('People/Index/find',array('is_use'=>2))}">更多&nbsp;></a></span>
+        </div>
+        <div class="h10"></div>
+  		<div class="indexbox_content" >
+            <volist name="lists" id="vo">
+             <li>
+             	<div class="user_pic"><a target="_blank" herf="{$vo.user.space_url}"><img src="{$vo.user.avatar64}"  ucard="{$vo.uid}"></a></div>
+                <div class="user_content">
+                	<div>{$m_level_name}：{$vo.nickname}</div>
+                    <div class="user_desc">{$vo.user.signature}</div>
+                </div>
+             </li>
+            </volist>
+        </div>
+     </div>          
+	 <div class="h15"></div>
+</if>

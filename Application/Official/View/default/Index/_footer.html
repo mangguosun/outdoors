@@ -1,0 +1,30 @@
+<!-- 底部
+================================================== -->
+
+<div class="footer-jumbotron footer_bar">
+    <div class="container" style="text-align:center">
+	    <div class="row">
+            
+            <div class="col-md-12">
+                <div class="">
+				    <p class="han_p">
+					  <a href="{:U('About/Index/index')}"><span>关于我们</span></a> | <a href="{:U('About/Index/index')}"><span>公司介绍</span></a> | <a href="{:U('About/Index/index')}"><span>招贤纳士</span></a> | <a href="{:U('About/Index/enterprise')}"><span>新闻动态</span></a> | <a href="{:U('About/Index/contact_way')}"><span>联系方式</span></a>
+					</p>
+					<p class="han_p" style="font-size:12px">
+					  <span>Copyright By QuYeBa.Com All Rights Reserved. 上海艾游文化传媒有限公司 沪ICP备11048664号 上海市公安局静安分局备案编号：3101060307794530</span>
+					</p>
+                </div>
+            </div>
+    </div>
+</div>
+ 
+</div>
+<include file="Public/js"/>
+
+<block name="script">
+</block> <!-- 用于加载js代码 -->
+<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+{:hook('pageFooter', 'widget')}
+<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+    <block name="hidden"></block>
+</div>

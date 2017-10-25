@@ -1,0 +1,59 @@
+<extend name="Config/base"/>
+<block name="body">
+
+<div id="center">
+<div class="common-margin-bten"></div>
+<div class="pull-right">
+
+	<a class="mbtn btn-primary" href="{:U('Usercenter/Config/use_excel',array('id'=>I('id'),'eventid'=>I('eventid')))}">导出到excel文件</a>
+	<a href="javascript:history.go(-1)" class="mbtn btn-default">返回</a> 
+  </div>
+  <h2>查看所有活动参加者</h2>  
+  <div class="aline common-margin-bten"></div>
+  <div id="center">
+    <div class="row data-table usercenter-common-table">
+      <table>
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>身份证</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>QQ</th>
+            <th>社会角色</th>
+            <th>紧急人姓名</th>
+            <th>紧急人联系方式</th>
+            <th>订单状态</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="arr_info">
+          <volist name="arr_info" id="vo">			
+			<tr>
+			  <td>{$vo.realname}</td>
+			  <td>{$vo.card}</td>
+			  <td>{$vo.telephone}</td>
+			  <td>{$vo.email}</td>
+			  <td>{$vo.qq}</td>
+			  <if condition="$vo['role'] neq ''">
+			  <td>{:get_role($vo['role'])}</td>
+			  <else />
+			  <td>未填</td>
+			  </if>
+			  <td>{$vo.emergencycontact}</td>
+			  <td>{$vo.emergencyphone}</td>
+			  <td>{:get_event_order_status($val['info'])}</td>
+			</tr>
+          </volist>
+          <else/>
+        <td colspan="9" class="text-center"> aOh! 您还没有报名任何信息哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</block>

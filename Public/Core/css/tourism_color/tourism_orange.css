@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*导航两边*/
+.nav_bar_tong{background:#ffa800;}
+/*导航*/
+.nav_bar .navbar-collapse { clear:both;background:#ffa800;color: fff;}
+/*推荐线路*/
+#nav_bar_main .navbar-nav > li.all_product{  color:#FFF; background:#ff8a00;}
+ /*推荐线路 图片标题*/
+.index_tag_lists dl dd p.title a{ color:#333}
+/*推荐线路 小图片标题*/
+.index_tag_lists dl.bigpic dd p.title{ color:#333;}
+.index_tag_lists dl.bigpic dd p.title a{ color:#333;} 
+/*推荐线路鼠标划过颜色*/
+#nav_bar_main .navbar-nav > li.all_product a:hover,
+#nav_bar_main .navbar-nav > li.all_product a:focus{ background:#ff8a00; } 
+/*登录注册 字*/
+.top_bar .navbar-nav > li > a { color: #666  !important; }
+.top_bar .navbar-nav > li > a:hover {color: #ffffff !important;background: transparent !important;}
+/*登录注册 左 右两边竖线*/
+.top_bar .top_spliter { border-left:none;border-right:none;}
+ 
+ 
+/*导航鼠标划过样式*/
+.nav_bar .nav > li.active > a,
+.nav_bar .nav > li > a:hover,
+.nav_bar .nav > li > a:focus { color: #FFF; background:#ff9a24;}
+
+/*主题背景色*/
+.index_tag_titles .index_tag_title{background:#ff8a00;}
+.btn-grey{ color:#999; background:none;}
+.index_tag_titles .index_tag_nav a:hover{  color:#fff;  background:#ff8a00;}
+/*搜索框*/
+.nav_bar .nav_search .navbar-form input{ border:1px solid #ff8a00;}
+.btn-default{ background:#ff8a00; color:#FFF; border-color: #ff8a00;}
+.btn-default:hover{ background:#ffa800; color:#FFF; border-color:#ffa800;}
+
+/*发布线路 登录注册 按钮*/
+.btn-primary{ background:#ffa800; border-color:#ffa800;}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #fe5047;
+  border-color: #fe5047;
+}
+/*活动图片 钱数背景色*/
+.index_tag_lists dl dd .price{ color:#fff; background:#ff4e00;}
+/*活动图片 天数*/
+.event_state { color: #fff;background: #ffa800; }
+
+/*活动日期*/
+.index_tag_lists dl dt > div > span {
+    color: #FFF;    
+    padding-left: 15px;
+    text-align: left;
+}
+
+/*立即查看*/ 
+.chakan{ color:#fff; width:100px; height:40px; padding:8px 20px; margin-top:10px; background:#ff4e00;}
+.chakan a{ color:#FFF;}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: #ccc;
+}

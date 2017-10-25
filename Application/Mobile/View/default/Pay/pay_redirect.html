@@ -1,0 +1,83 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="container" >
+    <div class="col-md-12">
+      <div class="detail_box" style=" ">
+        <if condition="$factory_info['pay_id'] eq 3">
+        <div class="" style="padding-top:100px; margin:20px auto 20px ;text-align:center;">
+        <img src="__PUBLIC__/Core/images/loading.gif" align="正在跳转中，请稍等....." /><br />
+		<span style="color:#F00">页面正在跳转中，请稍等...</span>
+        <br />
+		 {$code}
+         </div>
+        <else/>
+        <div class="" style=" margin:20px auto 20px ;">
+        <h4 style="padding-left:20px">支付信息</h4>
+		<div class="col-sm-12">
+          <if condition="$factory_info['pay_id'] eq 2">
+            <notempty name="financial_bank">
+              <div class="row data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>收款人</th>
+                      <th>开户行</th>
+                      <th>卡号</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <volist name="financial_bank" id="vo">
+                      <tr style="font-size:14px;">
+                        <td>{$vo.payee}</td>
+                        <td>{$vo.open_bank}</td>
+                        <td>{$vo.card}</td>
+                      </tr>
+                    </volist>
+                  </tbody>
+                </table>
+              </div>
+              <else/>
+              aOh! 暂无银行汇款信息，请选择其它支付方式或联系领队、管理员! </notempty>
+          </if>
+        </div>
+         </div>
+        </if>
+      </div>
+    </div>
+  </div>
+<if condition="$factory_info['pay_id'] eq 3">
+
+<script type="text/javascript" src="/ap.js"></script>
+<script>
+$(function(){
+
+    var btn = document.querySelector(".btn.btn-primary");
+    btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        var queryParam = '';
+
+        Array.prototype.slice.call(document.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
+            if(ele.name === 'req_data') {
+                queryParam += ele.name + "=" + ele.value + '&';
+            } else {
+                queryParam += ele.name + "=" + encodeURIComponent(ele.value) + '&';
+            }
+        });
+        var gotoUrl = document.querySelector("#paysubmit").getAttribute('action') + '?' + queryParam;
+        _AP.pay(gotoUrl);
+
+        return false;
+    }, false);
+
+		   
+		   
+	setTimeout(function(){
+		$(".btn.btn-primary").trigger("click");
+	},2000); 
+});
+</script>
+</if>
+</block>

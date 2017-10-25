@@ -1,0 +1,248 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="container">
+    <div class="shop_box_fix">
+      <div class="shop_detail_bd">
+		<div class="shop-box">
+			<div class="title_content">
+				<a href="{:U('Distribute/index')}">首页</a>->
+				<a href="{:U('Distribute/goods')}">精选单品</a>->
+				{$shop_list.goods_name}
+			</div>
+		</div>
+        <div class="shop_summary">
+          <div class="shop_item_info">
+            <div class="shop-item-info-l">
+              <div class="shop-gallery">
+                <div id="vertical" class="bigImg"> <img src="{$shop_list.goods_ico|getThumbImageById=600,600}" width="400" height="400" alt="" id="midimg" />
+                  <div style="display:none;" id="winSelector"></div>
+                </div>
+                <!--bigImg end-->
+                <div class="smallImg">
+                  <div class="scrollbutton smallImgUp disabled"><i class="fa fa-caret-left"></i></div>
+                  <div id="imageMenu">
+                    <ul>
+							<li id="onlickImg"><img class="img-responsive" src="{$shop_list.goods_ico|getThumbImageById=400,400}"/></li>
+						<foreach name="pictures" item="images" key="k">
+							<li> <img class="img-responsive" src="{$images.id|getThumbImageById=400,400}"></li>
+						</foreach>
+                    </ul>
+                  </div>
+                  <div class="scrollbutton smallImgDown"><i class="fa fa-caret-right"></i></div>
+                </div>
+                <!--smallImg end-->
+                <div id="bigView" style="display:none;"><img width="800" height="800" alt="" src="" /></div>
+              </div>
+              <script type="text/javascript">
+$(document).ready(function(){
+	// 图片上下滚动
+	var count = $("#imageMenu li").length - 5; /* 显示 6 个 li标签内容 */
+	var interval = $("#imageMenu li:first").width();
+	var curIndex = 0;
+	
+	$('.scrollbutton').click(function(){
+		if( $(this).hasClass('disabled') ) return false;
+		
+		if ($(this).hasClass('smallImgUp')) --curIndex;
+		else ++curIndex;
+		
+		$('.scrollbutton').removeClass('disabled');
+		if (curIndex == 0) $('.smallImgUp').addClass('disabled');
+		if (curIndex == count-1) $('.smallImgDown').addClass('disabled');
+		
+		$("#imageMenu ul").stop(false, true).animate({"marginLeft" : -curIndex*interval + "px"}, 600);
+	});
+	
+	// 解决 ie6 select框 问题
+	$.fn.decorateIframe = function(options) {
+       /* if ($.browser.msie && $.browser.version < 7) {
+            var opts = $.extend({}, $.fn.decorateIframe.defaults, options);
+            $(this).each(function() {
+                var $myThis = $(this);
+                //创建一个IFRAME
+                var divIframe = $("<iframe />");
+                divIframe.attr("id", opts.iframeId);
+                divIframe.css("position", "absolute");
+                divIframe.css("display", "none");
+                divIframe.css("display", "block");
+                divIframe.css("z-index", opts.iframeZIndex);
+                divIframe.css("border");
+                divIframe.css("top", "0");
+                divIframe.css("left", "0");
+                if (opts.width == 0) {
+                    divIframe.css("width", $myThis.width() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                if (opts.height == 0) {
+                    divIframe.css("height", $myThis.height() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                divIframe.css("filter", "mask(color=#fff)");
+                $myThis.append(divIframe);
+            });
+       // }*/
+    }
+    $.fn.decorateIframe.defaults = {
+        iframeId: "decorateIframe1",
+        iframeZIndex: -1,
+        width: 0,
+        height: 0
+    }
+    //放大镜视窗
+
+   // $("#bigView").decorateIframe();
+
+    //点击到中图
+    var midChangeHandler = null;
+	
+    $("#imageMenu li img").bind("click", function(){
+		if ($(this).attr("id") != "onlickImg") {
+			midChange($(this).attr("src").replace("small", "mid"));
+			$("#imageMenu li").removeAttr("id");
+			$(this).parent().attr("id", "onlickImg");
+		}
+	}).bind("mouseover", function(){
+		$("#imageMenu li").removeAttr("id");
+		$(this).parent().attr("id", "onlickImg");
+			
+		if ($(this).attr("id") != "onlickImg") {
+			window.clearTimeout(midChangeHandler);
+			midChange($(this).attr("src").replace("small", "mid"));
+			//$(this).css({ "border": "2px solid #000" });
+		}
+	}).bind("mouseout", function(){
+		if($(this).attr("id") != "onlickImg"){
+			//$(this).removeAttr("style");
+			midChangeHandler = window.setTimeout(function(){
+				midChange($("#onlickImg img").attr("src").replace("small", "mid"));
+			}, 1000);
+		}
+	});
+
+    function midChange(src) {
+        $("#midimg").attr("src", src).load(function() {
+        });
+    }
+});
+</script>
+            </div>
+            <div class="shop-item-info-r">
+              <div class="shop-detail-hd">
+                <h1>{$shop_list.goods_name}</h1>
+              </div>
+			  <div class="shop-detail-hd">
+                <a href="#detail"><font color=red>{$shop_list.goods_introduct}</font></a>
+              </div>
+              <div class="shop-fcs-panel">
+                <dl class="tm-promo-panel tm-promo-cur">
+                  <dt class="tb-metatit">销售价</dt>
+                  <dd>
+                    <div class="tm-promo-price"> <em class="tm-yen">¥</em><span class="tm-price" id="get-tm-price">{$shop_list.market_price}</span><em class="tm-promo-type"></em>
+					<if condition="(!$shop_list['fr_id']) and ($shop_list['fr_freight'])">
+					此商品运费是：￥{$shop_list.fr_freight} 元
+					<else/>
+					此商品是：包邮
+					</if>
+					
+					</div>
+                  </dd>
+                </dl>
+				 <dl class="tm-promo-panel tm-promo-cur">
+                  <dt class="tb-metatit">佣金</dt>
+                  <dd>
+                    <div class="tm-promo-price"> <em class="tm-yen"></em><span class="tm-price" id="get-tm-price">{$distribute.seller_price}%</span><em class="tm-promo-type"></em>
+					</div>
+                  </dd>
+                </dl>
+                <dl class="tm-price-panel">
+                  <dt class="tb-metatit">市场价</dt>
+                  <dd><em class="tm-yen">¥</em><span class="tm-price">{$shop_list.tox_money_need}</span><em class="tm-promo-type"></em></dd>
+                </dl>
+              </div>
+              <div class="tb-key">
+                <div class="tb-skin">
+                <if condition="$shop_brand['name']">
+                    <div class="">
+                      <dl>
+                        <dt class="tb-metatit">品牌</dt>
+                        <dd> <span class="tb-amount-widget">{$shop_brand.name}<if condition="$shop_brand['englist_name']">({$shop_brand.englist_name})</if></span></dd></dt></dl>
+                    </div>
+                 </if>
+                <if condition="$tags">
+                    <div class="">
+                      <dl>
+                        <dt class="tb-metatit">标签</dt>
+                        <dd> <volist name="tags" id="tag"><span class="tb-amount-widget"><a title="{$tag.name}" href="{:U('Shop/Index/goods',array('tag'=>$tag['id']))}" class="">{$tag.name}</a>&nbsp;&nbsp;</span></volist></dd></dt></dl>
+                    </div>
+                 </if>
+                
+                  <div class="tb-sku">
+					<?php foreach($shop_detail as $key=>$val):?>
+				    <div class="col-md-12 shop_sku_del">
+				       <?php foreach($val['sku_title'] as $v):?>
+					   <div style="float:left">规格：</div>
+					   <div class='col-md-2' >{:get_shop_sku_types_attribute($v)}</div>
+					   <?php endforeach;?>
+					   <div style="float:left"> 价格：</div> 
+					   <div class='col-md-2' >￥{$val['price']}</div>
+					  <div style="float:left"> 库存：</div>
+					  <div class='col-md-2' >{$val['stock']}</div>
+					</div>
+					
+				  <?php endforeach;?>
+                  </div>
+
+				  <if condition="$content['purchase_status'] neq 1">
+                  <div>
+                    
+                  </div>
+				  <else/>
+				  <div class="tb-action">
+                    <div style="font-size: 16px; font-weight:900; padding:2em 0;color: red;"> 该商品暂不支持在线购买，请联系客服了解详情O(∩_∩)O~  </div>
+                  </div>
+				  </if>
+				 
+				  <div class="tb-action">
+				  <if condition="!$has_item_relation">
+				  <form action="{:U('Distribute/addtomine')}" method="post" class="form-horizontal ajax-form" role="form" >
+					<input type="hidden" name="goods_id" value="{$_GET['id']}">
+						<div class="tb-btn-basket tb-btn-sku">
+							<button type="submit" class="fastbuy" >分销此商品</button>
+							<div class="clear"></div>
+						</div>
+						<div class="msg_text"></div>
+				  </form>
+				  <else/>
+					<div class="tb-btn-basket tb-btn-sku">
+								<a href="{:U('Distribute/removefrommine',array('goods_id'=>$shop_list['id']))}"  class="fastbuy ajax-get" >取消分销</a>
+							<div class="clear"></div>
+						</div>
+					<div class="msg_text"></div>
+				  </if>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+		
+		<div class="shop_detailcontent" id="detail">
+          <h3>分销说明</h3>
+          <div class="details"> {$distribute['distribute_desc']}</div>
+        </div>
+        <div class="shop_detailcontent" id="detail">
+        </div>
+		<div class="shop_detailcontent" id="detail">
+          <h3>商品详情</h3>
+          <div class="details"> {$shop_list.goods_detail} </div>
+        </div>
+      </div>
+	  
+    </div>
+  </div>
+  
+</block>
+<block name="script">
+<script> 
+	$(function () {
+		hdl_lazyload("img.add_loading");
+	 })
+</script>
+</block>

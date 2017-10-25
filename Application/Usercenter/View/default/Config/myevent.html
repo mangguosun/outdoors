@@ -1,0 +1,19 @@
+<extend name="Config/base"/>
+<block name="body">
+<div class="common_block_title ">我的订单</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$tab eq 0"> class="hover" </if> ><a href="{:U('Usercenter/Eventorder/myevent',array('tab'=>0))}">活动订单</a></li>
+  <if condition="app_isopen('Shop')">
+  <li <if condition="$tab eq 1"> class="hover" </if> ><a href="{:U('Usercenter/Config/myevent',array('tab'=>1))}">商城订单</a></li>
+  </if>
+  <!--<li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Usercenter/Config/my_collection',array('status'=>2))}">商品收藏</a></li>
+  <li <if condition="$status eq 3"> class="hover" </if> ><a href="{:U('Usercenter/Config/my_collection',array('status'=>3))}">品牌收藏</a></li>
+-->
+ </ul>
+<ul id="tabs_box">
+  <if condition="$tab eq 0"><li class="usercenter-set-pd" ><include file="Eventorder/my_event_order"/></li></if>
+  <if condition="$tab eq 1"><li class="usercenter-set-pd"><include file="Config/shop_order"/></li></if>
+  <!--<if condition="$status eq 2"><li class="usercenter-set-pd"></li></if>
+  <if condition="$status eq 3"><li class="usercenter-set-pd"></li></if>-->
+</ul>
+</block>

@@ -1,0 +1,59 @@
+<extend name="runners/common"/>
+ 
+<block name="body">
+{:hook('Advs', 'home_ad')}
+
+<div class="runners-index">
+        {:W('RunnersHome/brand')}
+        {:W('RunnersHome/classification')}
+    <div class="runners_index_all">    
+        {:W('RunnersHome/limit_bargains',array('limit'=>10))} 
+        {:W('RunnersHome/hotDocument',array('limit'=>7))}
+    </div>
+	<div class="h10"></div>    
+	<div class="runners_tu">{:hook('Advs', 'shop_one')}</div>
+        {:W('RunnersHome/module',array('limit'=>5,'action'=>'new_products'))}
+        {:W('RunnersHome/module',array('limit'=>5,'action'=>'bargains'))}
+    <div class="runners_index_all">
+        {:W('RunnersHome/module',array('limit'=>8,'action'=>'recommend'))}          
+        {:W('RunnersHome/module',array('limit'=>5,'action'=>'fiery'))}
+	</div> 
+   		{:W('RunnersHome/navigation',array('limit'=>4,'data'=>5))}
+    <div class="runners_tu">{:hook('Advs', 'shop_two')}</div>
+    
+    <div  class="runners_index_all">
+        {:W('RunnersHome/newIssue',array('limit'=>4))}
+        <div class="runners_index_right">    
+        {:W('RunnersHome/newEvent',array('limit'=>3))}  
+        {:W('RunnersHome/video',array('limit'=>1))} 
+        </div>  
+    </div>        
+    
+    <div class="h10"></div>
+    <div class="runners_tu">{:hook('Advs', 'shop_three')}</div>
+ <div class="h10"></div> 
+ </div>           
+
+</block >
+
+<block name="script"> 
+<script>
+$(function(){
+	$(".runners-index-event ul li .eventtitle").hide();
+	$(".runners-index-event	 ul li").find(".eventtitle").stop().fadeTo(300,0.7)
+	$(".runners-index-event	 ul li").hover(function(){
+		$(this).find(".eventtitle").stop().fadeTo(300,0)
+	},function(){
+		$(this).find(".eventtitle").stop().fadeTo(300,0.7)
+	});
+});
+</script>
+
+<script>
+$(function () {
+	hdl_lazyload("img.add_loading");
+})
+</script>
+
+
+</block>

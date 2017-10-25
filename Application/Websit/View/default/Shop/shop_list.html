@@ -1,0 +1,106 @@
+<div id="center">
+  <div class="common_block_title ">
+   <div class="pull-right">
+    <a class="mbtn  btn-info pointcard_sign common-color-white"  href="{:U('shop_add')}">发布商品</a></div>商品列表</div>
+  <div class="row data-table">&nbsp;&nbsp;<span class='common-color-red'>(最多推荐10商品)</span>
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>ID</th>
+		  <th>商品名称</th>
+		  <th>商品分类</th>
+		  <th>商品价格</th>
+		  <th>销售价格</th>
+		  <th>商品余量</th>
+		  <th>已售出数</th>
+		  <th>是否为新品</th>
+		  <th>是否推荐</th>
+		  <th>商品状态</th>
+		  <th>是否出售</th>
+		  <th>更新时间</th>
+		  <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="shop_list">
+        <volist name="shop_list" id="vo">
+          <tr>
+		    <td width=35>{$vo.id}</td>
+			<td><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" target="_blank">{$vo.goods_name|op_t|getShortSp=10}</a></td>
+			<td>{:get_shop_categrory_names($vo['category_id'])}</td>
+			<td>{$vo.tox_money_need}元</td>
+		    <td>{$vo.market_price}元</td>
+			<td>{$vo.goods_num}</td>
+			<td>{$vo.sell_num}</td>
+			<td><if condition="$vo.is_new eq 1">是<elseif condition="$vo.is_new eq 0"/>否</if></td>
+			<td><if condition="$vo.is_recommend eq 1">是<elseif condition="$vo.is_recommend eq 0"/>否</if></td>
+			<td><if condition="$vo.status eq 0"><font color="red">禁用</font><elseif condition="$vo.status eq 1"/><font color="green">正常</font></if></td>
+			<td><if condition="$vo.purchase_status eq 0"><font color="red">否</font><elseif condition="$vo.purchase_status eq 1"/><font color="green">是</font></if></td>
+			<td>{$vo.changetime|date="Y-m-d",###}</td>
+			<td>{$vo.createtime|date="Y-m-d",###}</td>
+            <td width=180>
+			   <a class="mbtn btn-info common-color-white"  href="{:U('Websit/Shop/shop_edit?id='.$vo['id'])}">编辑</a>
+				<if condition="$vo.status neq 1"><a href="javascript:" data-ID="{$vo.id}" data-Status="1" class="mbtn btn-info shop_disable" title="启用">上架</a>
+				<elseif condition="$vo.status eq 1"/><a href="javascript:" data-ID="{$vo.id}" data-Status="0" class="mbtn btn-danger shop_disable" title="禁用">禁用</a></if>
+			    <if condition="$vo.is_recommend eq 0"><a href="javascript:" data-ID="{$vo.id}" data-Recommend="1" class="mbtn btn-info is_recommend" title="商品推荐">商品推荐</a>
+				<elseif condition="$vo.is_recommend eq 1"/><a href="javascript:" data-ID="{$vo.id}" data-Recommend="0" class="mbtn btn-danger is_recommend" title="取消推荐">取消推荐</a></if>
+			 </td>
+          </tr>
+        </volist>
+		   <td colspan="13">{$page}</td>
+        <else/>
+			<td colspan="13" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+  <div class=""></div>
+<script>
+$(function(){
+	//是否禁用
+  $('.shop_disable').click(function () {
+	if (confirm('确定要操作么？')) {
+		var  id= $(this).attr('data-ID');
+		var status=$(this).attr('data-Status');
+		$.post(U('Websit/Shop/shop_disable'), {id: id,status: status}, function (res) {
+			if (res.status) {
+				toast.success(res.info);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.info);
+			}
+		}, 'json');
+	}
+  });
+  
+  	//是否推荐
+  $('.is_recommend').click(function () {
+	if (confirm('确定要操作么？')) {
+		var  id= $(this).attr('data-ID');
+		var is_recommend=$(this).attr('data-Recommend');
+		$.post(U('Websit/Shop/shop_recommend'), {id: id,is_recommend: is_recommend}, function (res) {
+			if (res.status) {
+				toast.success(res.info);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.info);
+			}
+		}, 'json');
+	}
+  });
+
+
+})
+  
+</script>
+</div>
+

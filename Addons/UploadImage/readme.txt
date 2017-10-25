@@ -1,0 +1,1 @@
+{:hook('UploadImage', array('find_name'=>'logo_footer','value'=>$list['logo_footer'],'buttontext'=>'ÉÏ´«Ò³½ÅLOGO','buttonwidth'=>200,'multi'=>true,'ds'=>'250*65'))}

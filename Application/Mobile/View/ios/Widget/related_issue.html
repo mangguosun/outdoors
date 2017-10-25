@@ -1,0 +1,22 @@
+<if condition="!empty($issue_arr)">
+<section class="am-panel am-panel-default">
+  <header class="am-panel-hd">
+    <h3 class="am-panel-title">相关故事</h3>
+  </header>
+  <div class=" ">
+    <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-overlay">
+      <volist name="issue_arr" id="vo">
+      <li>
+       <div class="am-gallery-item">
+          <a href="{:U('Mobile/Issue/issueContentDetail',array('id'=>$vo['id']))}" class="">
+            <img class="lazy" src="__PUBLIC__/Core/images/grey.gif" data-original="{$vo.cover_id|getThumbImageById=140,105}"  alt=" {$vo.title}" />
+            <h3 class="am-gallery-title">{$vo.title}</h3>
+             <div class="am-gallery-desc">{$vo.create_time|friendlyDate}</div>
+          </a>
+        </div>
+      </li>
+      </volist>
+    </ul> 
+  </div>
+</section>
+</if>

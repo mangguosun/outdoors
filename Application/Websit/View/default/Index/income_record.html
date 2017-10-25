@@ -1,0 +1,46 @@
+<div id="center">
+<div class="common_block_title">
+             <a href="{:U('Websit/Index/my_income',array('stas'=>2))}">全部记录</a>
+             <a href="{:U('Websit/Index/my_income',array('stas'=>2,'status'=>0))}"> | 拒绝打款</a>
+             <a href="{:U('Websit/Index/my_income',array('stas'=>2,'status'=>1))}"> | 申请成功</a>
+             <a href="{:U('Websit/Index/my_income',array('stas'=>2,'status'=>2))}"> | 已打款</a>
+ 
+</div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <th>支付流水号</th>
+		  <th>开户名</th>
+		  <th>开户行</th>
+		  <th>银行卡号</th>
+          <th>提现时间</th>
+		  <th>提现金额</th>
+		  <th>状态</th>
+	    </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="datas">
+        <volist name="datas" id="vo">
+          <tr>
+		    <td>{$vo.flownumber}</td>
+			<td>{$vo.name}</td>
+			<td>{$vo.open_bank}</td>
+			<td>{$vo.card}</td>
+            <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+			<td>{$vo.cash} 元</td>
+			<td><if condition="$vo.status eq 0">拒绝打款<elseif condition="$vo.status eq 1"/>申请成功<elseif condition="$vo.status eq 2"/>已打款</if></td>
+          </tr>
+        </volist>
+		 <td colspan="7">{$page}</td>
+        <else/>
+      <td colspan="7" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+</div>
+   

@@ -1,0 +1,52 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>编辑旅行故事</h2>
+</div>
+
+<div id="auth_groups">
+    <form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Issue/story_edit')}" method="post">
+		<input type="hidden" name="id" id="id" value="{$content.id}"/>
+		<input type="hidden" name="url" id="id" value="<?php echo $_SERVER['HTTP_REFERER']?>"/>
+		<div class="form-item">
+			<label for="type_id" class="item-label">分类<a>(必填)</a></label>
+			<div class="controls">          
+			<volist name="tree" id="top">          
+				<input value="{$top.id}" name="issue" type="radio" <?php if($top['id'] == $content['issue_id']) echo 'checked'?>>&nbsp;{$top.title}&nbsp;
+			</volist>            
+			</div>
+		</div>
+	    <div class="form-item">
+			<label for="title"  class="item-label">标题<a>(必填)</a></label>
+			 <div class="controls">
+				<input id="title" name="title" class="text input-large"  value="{$content.title}" placeholder="" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="cover_id" class="item-label">封面图片<a>(必填)</a></label>
+			<div class="controls"> {:hook('UploadImage', array('find_name'=>'cover_id','value'=>$content['cover_id'],'buttontext'=>'封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'400*300','width'=>400,'height'=>300))} </div>
+		</div>
+		
+		<div class="form-item">
+				<label for="cover_id" class="item-label">故事图集<a>&nbsp;(选填)</a></label>
+				<div class="controls">
+					{:hook('UploadImage', array('find_name'=>'imgid','value'=>$content['imgids'],'buttontext'=>'故事图集','buttonwidth'=>200,'multi'=>true,'ds'=>'400*300','width'=>400,'height'=>400))}
+				</div>
+			</div>
+
+		<div class="form-item">
+			<label for="type_id" class="item-label">故事详情<a>(必填,30~2000字之间)</a></label>
+			<textarea class="form-control" rows="6" name="content" value="{$content['content']}">{$content['content']}</textarea>
+		</div>
+		<div class="form-item">
+			    <button type="submit" class="w_btn submit-btn ajax-post" target-ls="a" target-form="form-horizontal" href="{:U('Manage/Issue/story_edit')}">确定</button>
+				<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+
+
+</script>
+
+</block>

@@ -1,0 +1,11 @@
+<extend name="Config/base"/>
+<block name="body">
+
+<div class="usercenter-set-pd">&nbsp;</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$stas eq 'mycard'"> class="hover" </if> ><a href="{:U('Usercenter/Pointcard/index',array('stas'=>'mycard'))}">我的代金券</a></li> 
+  </ul>
+<ul id="tabs_box">
+  <if condition="$stas eq 'mycard'"><li class="usercenter-set-pd" ><include file="Pointcard/mycard"/></li></if> 
+</ul>
+</block>

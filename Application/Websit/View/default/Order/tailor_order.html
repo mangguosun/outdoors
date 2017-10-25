@@ -1,0 +1,131 @@
+	  <div class="tab-pane" id="event_tailor">
+		<div class="select_order clearfix">
+		<div class="pull-right" >
+            <form action="{:U('Websit/Order/index',array('status'=>2))}" method="post" class="navbar-form">
+              <!--<div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn text-left">
+                    <input type="text" name="tailor_trade_sn" class="form-control" placeholder="请输入订单号">
+					<input type="hidden" name="status" value="2">
+                    <button type="submit" value="" class="btn btn-default glyphicon glyphicon-search"></button>
+                  </div>
+                </div>
+              </div>-->
+            </form>
+          </div>
+		  <div class="clearbox-ol"></div>
+	      <div class="row data-table">
+          <table class="info">
+            <thead>
+              <tr>
+                <th>需求单号</th>
+                <th>提交时间</th>
+                <th>活动预算</th>
+                <th>参加人数</th>
+                <th>目的地</th>
+                <th>出发日期</th>
+                <th>行程<br>天数</th>
+                <th>特色<br>需求</th>
+                <th>其他<br>需求</th>
+                <th>联系<br>信息</th>
+                <th>参考<br>线路</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <volist name="tailor_arr" id="vo">
+            <tr>
+              <td>{$vo.trade_sn}</td>
+              <td>{$vo.createtime|date="Y-m-d H:i:s",###}</td>
+              <td>最低：{$vo.minprice}元<br>最高：{$vo.maxprice}元</td>
+			  <if condition="$vo[childnum] neq 0">
+              <td>约<span style="color:red">{$vo.totalnum}</span>人，<br>(小孩<span style="color:red">{$vo[childnum]}</span>人<br><span style="color:red">{$vo[minage]}</span>~<span style="color:red">{$vo[maxage]}</span>岁)</td>
+			  <else />
+			  <td>约<span style="color:red">{$vo.totalnum}</span>人</td>
+			  </if>
+              <td>{:get_desty($vo[desty_type],$vo[desty])}</td>
+			  <if condition="($vo[earlytime neq '']) or ($vo[latetime] neq '')">
+              <td>最早：<br>{$vo.earlytime|date="Y-m-d",###}<br>最晚：<br>{$vo.latetime|date="Y-m-d",###}</td>
+			  <else />
+			  <td><span style="color:red">尚未确定</span></td>
+			  </if>
+			  <if condition="$vo[traveldays] neq 0">
+              <td>{$vo.traveldays} 天</td>
+			  <else />
+			  <td><span style="color:red">未填</span></td>
+			  </if>
+              <td>{:get_event_tag($vo[tag])}</td>
+			  <if condition="$vo[other] neq ''">
+              <td><a style="color:green" class="show_need" href="{:U('Websit/Order/show_need',array('id'=>$vo[id]))}">点击<br>查看</a></td>
+			  <else />
+			  <td><span style="color:red">未填</span></td>
+			  </if>
+			  <td><a style="color:green" class="show_contact" href="{:U('Websit/Order/show_contact',array('id'=>$vo[id]))}">点击<br>查看</a></td>
+			  <if condition="$vo[reference] neq ''">
+			  <td><a style="color:green" class="show_refe" href="{:U('Websit/Order/show_refe',array('id'=>$vo[id]))}">点击<br>查看</a></td>
+			  <else />
+			  <td><span style="color:red">未填</span></td>
+			  </if>
+			  <td>
+				<a class="btn-primary mbtn add_tailor_note" href="{:U('Websit/Order/add_tailor_note',array('id'=>$vo[id]))}">添加备注</a>
+				<if condition="$vo[tailor_note] neq ''">
+				<a class="btn-primary mbtn" href="{:U('Websit/Order/show_note',array('id'=>$vo[id]))}">查看备注</a>
+				<else />
+				<span style="color:red">暂无备注</span>
+				</if>
+			  </td>
+            </tr>
+            </volist>
+            <tr><td colspan="12">{$page}</td></tr>
+       
+              </tbody>
+          </table>
+        </div>
+        
+        </div>
+	  </div>
+<script>
+$(function(){
+	$('.show_need').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+		$('.show_contact').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+		$('.add_tailor_note').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+		$('.show_refe').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});	
+})	
+</script>

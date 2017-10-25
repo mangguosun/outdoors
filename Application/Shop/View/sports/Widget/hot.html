@@ -1,0 +1,20 @@
+<if condition="$lists neq false">
+<div class="rightall-hot">
+  <div class="runners-hot-title">
+		<ul class="list-group">
+			<li class="list-group-item"> <span class="badge"><a href="{:U('Blog/Index/index')}"><i class="glyphicon glyphicon-plus"></i></a></span> 最新公告</li>
+		</ul>
+  </div>
+  <div class="rightall-hot-text">
+  	 <ul>
+        <volist name="lists" id="data">
+          <li><a title="{$data.title|op_t}" href="{:U('Blog/Article/detail?id='.$data['id'])}" title="{$data.title}">{$data.title|op_t|getShortSp=18}</a> </li>
+        </volist> 
+     </ul>
+  </div>
+</div>  
+</if>
+
+
+
+             

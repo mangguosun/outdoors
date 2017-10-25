@@ -1,0 +1,137 @@
+<extend name="Public/common_user"/>
+<block name="body">
+<header data-am-widget="header" class="am-header am-header-default">
+<div class="am-header-left am-header-nav">
+  <a href="{:U('Mobile/Index/Index')}" class="">
+  <i class="am-icon-chevron-left"></i>
+  </a> 找回密码
+  </div>
+ 
+</header>
+
+   <div class="mi-box">
+    <form class="am-form ajax-form" id="form_fast_login_v" action="{:U('Mobile/User/mi')}" method="post">
+	<!--<div class="mi-check">
+
+			<input type="radio" name="type" value="1" checked />&nbsp; 手机密码快速找回
+
+			<input type="radio" name="type" value="2" />&nbsp; 邮箱密码找回
+		</div> -->
+	<input type="hidden" name="type" value="1"/>
+ 	<div id="mobile_type">
+         <div class="form-group">
+		  <input type="text"  class="js-pattern-mobile" placeholder="请输入预留手机号码" ajaxurl="/member/checkUserEmailUnique.html" errormsg="请填写正确的手机号码" nullmsg=" " datatype="e" value="" name="mobile">
+         </div>
+         <div class="am-form-group login-alidation user_verify_think login_yzm">
+            <div class="alidationinput">
+                <input type="text" id="verifyCode_mi" placeholder="请输入图片验证码" errormsg="请填写验证码" nullmsg="请填写验证码" datatype="*5-5" name="verifyCode_mi"> 
+            </div>      
+            <div class="alidationbut">
+               <div class="form-control user_register_verify"> <img class="verifyimg reloadverify user_varified_img" alt="点击切换" src="{:U('Public/verify')}" > </div>
+          	</div>
+        </div>
+        <input type="hidden" name="check_times_mi" id="check_times_mi" value= 0 />
+        <if condition="C('VERIFY_OPEN') eq 1">
+          <div class="mi-validation">
+             <input type="text" id="inputPassword" class="form-control" placeholder="请输入验证码"  name="mobileverify">
+          </div>
+          
+		  <div class="mi-validation-text ">
+            <div href="" id="login_mobile_forget_btn" class="am-btn am-btn-block am-btn-warning">获取验证码</div>
+          </div>
+        </if> 
+           <div class="mi-clear"></div>
+    </div>     
+    <div id="email_type" style="display:none">    
+          <div class="form-group">
+		  	<input type="text"  class="form-control" placeholder="请输入电子邮件" ajaxurl="/member/checkUserEmailUnique.html" errormsg="请填写正确格式的邮箱" nullmsg="请填写邮箱" datatype="e" value="" name="email">
+          </div>
+          <if condition="C('VERIFY_OPEN') eq 1">
+              <div class="mi-validation">
+                  <input type="text" id="inputPassword" class="form-control" placeholder="请输入手机验证码" errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+              </div>
+              <div class="mi-validation-text" >
+                  <label for="verifyCode" class=" " style="display: none"></label>
+              <div class=" " style=" ">
+                  <img class="verifyimg reloadverify img-responsive" alt="点击切换" src="{:U('verify')}" style="cursor:pointer; height:40px; ">									 
+              </div>
+              <div class="controls Validform_checktip text-warning"></div>
+              </div>
+          </if>
+	 </div>
+     <div class="mi-clear"></div>
+ 	 <div class="form-group"><button type="submit" class="am-btn am-btn-block am-btn-primary "  >找 回</button></div>
+ </form>
+</div>
+
+<script type="text/javascript">
+	$(function(){ 
+		 $(":radio").click(function(){
+	    	var type=$("input:radio[name='type']:checked").val();
+	    	if(type==1){ 
+	    		$("#email_type").hide();
+	    		$("#mobile_type").show();	    		
+	    	}else{ 
+	    		$("#email_type").show();	    	
+	    		$("#mobile_type").hide();
+	    	}
+	    })
+
+
+
+		var verifyCode_mi=$('#verifyCode_mi');
+		var login_mobile=$('#login_mobile_forget_btn');
+		login_mobile.click(function(){ 
+			if($(this).hasClass('am-disabled')) return false;
+		//判读是否为手机号
+		var mobileusername = $(".js-pattern-mobile").val();
+		if(mobileusername.match(/^1[3456789]\d{9}$/)){
+			$(this).text('Loading...');
+			$(this).addClass('am-disabled');
+			//加POST发送验证码
+			$.post(U('Mobile/Public/getmobile_mi_verify'),{mobile:mobileusername,verifyCodebythink:verifyCode_mi.val()},function(msg){														 
+				var obj = $('#login_mobile_forget_btn');
+				if(msg.status==1){
+					toasts.success(msg['info']);
+					obj.addClass('am-disabled');
+					timingtool(60,obj);
+				}else{
+					$(".reloadverify").trigger("click");
+					obj.removeClass('am-disabled');
+					obj.text('重新获取');
+					toasts.error(msg['info']);
+				}
+	
+			},'json')
+		}else{	
+			toasts.error('请输入正确手机号');
+		}
+
+		})
+		function timingtool(countdown,obj) {
+		if (countdown <= 0) {
+			obj.text("重新获取");
+			obj.removeClass('am-disabled');
+		} else {
+			obj.text(countdown+"秒");
+			countdown--;
+			setTimeout(function() {timingtool(countdown,obj)},1000);
+		}
+	}
+
+ /*验证码*/
+
+           /*验证码*/
+            var verifyimg = $(".verifyimg").attr("src");
+			
+            $(".reloadverify").click(function () {
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+          
+	})
+</script>
+</block>

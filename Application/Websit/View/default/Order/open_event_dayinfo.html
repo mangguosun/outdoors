@@ -1,0 +1,102 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div id="center">
+  <div class="common_block_title usercenter-common-table">
+    <div class="pull-right"><a href="{:U('event_allmember',array('id'=>$content['id'],'eventid'=>$content['eventid']))}" class="mbtn btn-info">查看所有报名人</a> <a href="javascript:history.go(-1)" class="mbtn btn-default">返回</a></div>
+    {$event_content.title}({$content.starttime}期) —— 用户报名信息</div>
+  <div class="row data-table" >
+    <table class="info">
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>订单号</th>
+          <th>报名人</th>
+          <th>报名时间</th>
+          <th>应付金额</th>
+          <th>实付金额</th>
+          <th>报名人数</th>
+          <th>状态</th>
+          <th width="100">订单类型</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="event_attend">
+        <volist name="event_attend" id="vo">
+          <tr>
+            <td>{$vo.trade_sn}</td>
+            <td><a href="{:U('Usercenter/Index/index',array('uid'=>$vo['uid']))}" title="点击查看该用户信息" target="_blank">{$vo.nickname}</a></td>
+            <td>{:date('Y-m-d H:i:s',$vo[creat_time])}</td>
+            <td>￥{$vo.totalprice}</td>
+            <td>￥{$vo.payprice}</td>
+            <td><a class="mbtn btn-info event_user common-color-white"  title="点击查看具体信息" href="{:U('event_member',array('id'=>$vo['id'],'calendar_id'=>$vo['calendar_id']))}">共{:get_signnum($vo['id'])}人</a></td>
+            <td>
+                {:get_event_order_status($vo['status'])}
+            </td>
+            <td>
+            <?php if($vo['ordertype'] == 1):?>
+            <span class="usercenter-event-dayinfo">正常报名</span>
+            <?php elseif($vo['ordertype'] == 2):?>
+            <span class="common-color-red">报满预约</span>
+            <?php endif;?>
+            </td>
+            <td>
+				{:admin_get_event_detail_btn($vo,1)}
+				<div><a class="" href="{:U('Websit/Order/event_detail',array('trade_sn'=>$vo['trade_sn']))}">详情查看</a></div>
+            </td>
+          </tr>
+        </volist>
+        <else/>
+      <td colspan="9" class="text-center"> aOh! 您还没有报名任何信息哦!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+</div>
+<script>
+$(function () {	
+	$('.event_user').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				console.log(this.content);
+			}
+		}
+	});
+
+	$('.editpayprice').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+				console.log(this.content);
+			}
+		}
+	});
+	
+	
+	
+})
+$('.updataSign').click(function () {
+	if (confirm('确定要操作么？')) {
+		var id = $(this).attr('data-eventID');
+		var status = $(this).attr('data-status');
+		$.post(U('Websit/Order/myevent_detail_upstatus'), {id: id,status: status}, function (res) {
+			if (res.status == 1) {
+				toast.success(res.m);
+				setTimeout(function () {
+					location.reload();
+				}, 1500);
+			}
+			else {
+				toast.error(res.m);
+			}
+		}, 'json');
+	}
+});
+</script>
+</block>

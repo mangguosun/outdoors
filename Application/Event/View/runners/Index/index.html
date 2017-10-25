@@ -1,0 +1,269 @@
+<extend name="runners/common"/>
+<block name="style">
+<style>
+	.schedule_time{width:100%;height:auto;display:none}
+	.schedule_css{font-size:13px;}
+	.schedule-offset{margin-left:15px;color:red}
+	.select_schedule{position:relative}
+	.schedule-offset-pos{position:absolute;right:0px;}
+	.schedule-price{color: #ad0711;}
+</style>
+</block>
+<block name="body">
+<!--导航-->
+<include file="_nav"/>
+<div class="container">
+<div class="row">
+  <div class="col-md-8">
+    <div class="forum_module">
+      <div class="row">
+        <div class="col-md-12 commons-bottom">
+          <div class="event_header_title">
+            <div class="pull-left">
+                <i class="app_ico_i glyphicon glyphicon-th-large"> </i> <if condition="$_GET['type_id']"> {:get_enenttype($_GET['type_id'])} <else/>全部线路</if>
+            </div>
+            <div class="btn-group btn-group-sm pull-right commons-bottom-five"> <a href="{:U('index',array('norh'=>'new','type_id'=>$type_id))}" class="btn btn-default <if condition="$norh eq 'new'">active </if> ">最新</a> <a href="{:U('index',array('norh'=>'hot','type_id'=>$type_id))}" class="btn btn-default <if condition="$norh eq 'hot'">active </if> ">最热</a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="row commons-bottom">
+        <div class="col-md-12" id="PropSingle">
+      
+        	<?php $list = get_custom_eventtag(); $event_tag = $list['custom_event']['attribute'];
+
+        		if(empty($list)){ 
+        			$list['starttime'] = 1;
+        			$list['finalcity'] = 1;
+        			$list['holiday'] = 1;
+        			$list['tag'] = 1;
+        			$list['price'] = 1;
+        			$list['days'] = 1;
+        		}
+
+        	 ?>
+        	
+        	<if condition="$_GET['type_id'] eq ''">
+           	<php>
+                $select_enenttype_arr = filters('type_id',get_enenttype());
+            </php>
+            <dl class="event_screen">
+                <dt class="col-md-2 text-right">类别：</dt>
+                <dd class="col-md-10">
+                  <volist name="select_enenttype_arr" id="pr">
+                   {:$pr[menu]}
+                  </volist>
+                </dd>
+            </dl>
+            </if>
+ 		
+	        <if condition="$list['starttime'] eq 1 ">
+	            <php>
+	             $select_starttime_arr = filters('starttime',get_timetoweek());
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">活动月份：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_starttime_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl>
+            </if>
+
+            <if condition="$list['finalcity'] eq 1 ">
+	            <if condition="$_GET['type_id'] eq 2">
+	            <else/>
+				   <php>
+	                $linkage_data = filters('finalcity', get_province('','selected'))
+					</php>
+					<dl class="event_screen">
+						<dt class="col-md-2 text-right">目的地：</dt>
+						<dd class="col-md-10 AttrBox" rel='city'>
+						  <volist name="linkage_data" id="ld">
+							{:$ld[menu]}
+						  </volist>
+						</dd>
+					</dl> 
+	            </if>			
+            </if>
+
+             <if condition="$list['holiday'] eq 1 ">
+	            <php>
+	             $select_holiday_arr = filters('holiday',get_holiday());
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">假日出行：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_holiday_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl>  
+            </if>
+
+            <if condition="$list['tag'] eq 1 ">
+	            <php>
+	             $select_tag_arr = filters('tag',get_event_tag('','selected'));
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">活动特色：</dt>
+	                <dd class="col-md-10 AttrBox" rel='tags'>
+	                  <volist name="select_tag_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl> 
+             </if>
+
+            <if condition="$list['price'] eq 1 ">
+	          	 <php>
+	             $select_prices_arr = filters('price',get_price());
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">价格范围：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_prices_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl>
+            </if>
+
+  			<if condition="$list['days'] eq 1 ">
+	             <php>
+	             $select_days_arr = filters('days',get_days());
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">活动天数：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_days_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl> 
+            </if>
+ 
+
+ 			<if condition="$list['recent'] eq 1 ">
+	             <php>
+	             $select_recent_arr = filters('recent',get_recent());
+	             </php>
+	            <dl class="event_screen">
+	                <dt class="col-md-2 text-right">近期出行：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_recent_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl> 
+            </if>
+ 
+			<if condition="($list['custom_event']['name'] neq '') AND ($event_tag neq '') ">
+	            <php>	
+	             		
+						$select_days_arr = filters('custom',$event_tag);
+	 			</php>
+				<dl class="event_screen">
+	                <dt class="col-md-2 text-right"><?php echo $list['custom_event']['name']?>：</dt>
+	                <dd class="col-md-10">
+	                  <volist name="select_days_arr" id="pr">
+	                   {:$pr[menu]}
+	                  </volist>
+	                </dd>
+	            </dl> 
+			</if>
+
+        </div>        
+      </div>
+      <volist name="contents" id="vo">
+        <div class="clearfix event_list">
+          <div class="col-md-6" style="padding:0;">
+            <div class="event_state">{$vo.traveldays}天</div>
+            <a title="{$vo.title|strip_tags}" class="thumbnail" href="{:U('Event/Index/detail',array('id'=>$vo['id'],'type_id'=>$vo['type_id']))}"><img class="event-detail-img_det add_loading" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=346,260}"/></a>
+			</div>
+          <div class="col-md-6 calendar_div">
+            <div class="event_title_index"><a title="{$vo.title|strip_tags}" href="{:U('Event/Index/detail',array('id'=>$vo['id'],'type_id'=>$vo['type_id']))}" class="nav-justified">{$vo.title}</a></div>
+            <div class="event_tag">
+              <volist name="vo.tags" id="tag"><a title="{$tag.name}" href="{:U('Event/Index/index',array('tag'=>$tag['id']))}" class="btn btn-grey">{$tag.name}</a> </volist>
+              </div>
+              <php>
+              $begincity = get_citys($vo['begincity']);
+              $finalcity = get_citys($vo['finalcity']);
+              </php>
+            <div class="event_icon"><span class="glyphicon glyphicon-map-marker"></span>集合地：{:get_city($begincity['province'])}-{:get_city($begincity['city'])}</div>
+            <div class="event_icon"><span class="glyphicon glyphicon-map-marker"></span>目的地：{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</div>
+            <div class="event_icon calendar_text"><span class="glyphicon glyphicon-time"></span>活动天数：{$vo.traveldays}天<span class="pull-right price"><if condition="$vo.price_text neq ''"><span style="color:#FD9B00">{$vo.price_text}</span><else /><if condition="$vo.price eq 0"><font style="color:#FD9B00">免费活动</font><else />￥<font style="color:#FD9B00">{$vo.price}</font>元/人</if></if></span></span></div>
+            <div class="event_icon "><span class="glyphicon glyphicon-calendar"></span>出发日期：<if condition="$vo['lasted_time'] neq ''">{$vo.lasted_time} 更多<span title="点击查看更多出发日期" data-id={$vo.id} class="calendar_box glyphicon glyphicon-collapse-down"></span><else />敬请期待</if></div>
+			<!------------------------------------------------------------------------------>		
+			<div class="schedule_time" >
+			<?php foreach($vo['schedule_arr'] as $key => $val): ?>
+				<div class="select_schedule">
+					<hr style="height:1px;border:none;border-top:1px solid #ccc;">
+					    <span class='schedule_css'><?php echo $val['team_name'] ;?></span>
+						<span class='schedule_css'><?php echo $val['starttime'].'~'.$val['overtime']?></span><span class="schedule_css schedule-price schedule-offset"><?php echo $val['price']?></span><a <?php if($val['text'] == '马上报名'):?>style="background:#20AB34"<?php else:?>style="background:#428BCA"<?php endif;?> class="schedule_css mbtn btn-primary schedule-offset-pos" href="{:U('Event/Index/detail',array('id'=>$vo['id'],'type_id'=>I('type_id')))}"><?php echo $val['text']?></a>
+					<hr style="height:1px;border:none;border-top:1px solid #ccc;">
+				</div>
+			<?php endforeach;?>
+			</div>
+			<!------------------------------------------------------------------------------>
+			
+            <div class=" event_title_description">{$vo.description|op_t|getShortSp=60}</div>
+            <div class="event_fq_count calendar_div_box"></div>
+            <div class="event_icon "><span class="pull-right"><a title="点击查看详情" href="{:U('Event/Index/detail',array('id'=>$vo['id'],'type_id'=>$vo['type_id']))}" class="">查看详情>></a></span></div>
+          </div>
+        </div>
+      </volist>
+      <div class="row issue_list">
+        <if condition="count($contents) eq 0">
+          <div class="websit_prompt">此分类下暂无内容哦。O(∩_∩)O~</div>
+        </if>
+      </div>
+    </div>
+    <div>
+      <div class="pull-right"> {:getPagination($totalPageCount,10)} </div>
+    </div>
+  </div>
+  <div class="col-md-4"> <include file="_right"/> </div>
+</div>
+</div>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+			$('.calendar_box').click(function(){		
+				$(this).parent('div').siblings('.schedule_time').slideToggle();
+			})
+			hdl_lazyload("img.add_loading");
+			$("#PropSingle dd.AttrBox").each(function(){
+				var len = $(this).children().length;
+				if(len > 9){
+					
+					var x_type = $(this).attr("rel");
+					var x_num = 9;
+					if(x_type =='city'){
+						x_num = 8;
+					}else{
+						x_num = 11;
+					}
+					
+					$(this).removeClass("col-md-10");
+					$(this).addClass("col-md-9");
+					
+					$(this).after("<dd class='btn col-md-1 more glyphicon glyphicon-chevron-down'>全部展开</dd>");
+					var category = $(this).children('a:gt('+x_num+')'),moreBtn = $(this).siblings(".more");
+					category.hide();
+					moreBtn.click(function(){
+						if(category.is(":visible")){
+							category.hide();
+							moreBtn.removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down").text("全部展开");
+						}else{
+							category.show();
+							moreBtn.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up").text("精简显示");
+						}
+					})
+				}
+			});
+        })
+    </script>
+</block>

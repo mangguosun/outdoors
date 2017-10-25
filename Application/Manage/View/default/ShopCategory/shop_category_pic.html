@@ -1,0 +1,49 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+    <h2> <a href="#">商品管理</a> > 所有分类</h2>
+</div>
+<div class="cf">
+     <div class="fl">
+	    <a class="w_btn add-btn" href="{:U('shop_category',array('tab'=>1))}">分类管理</a>
+            
+     </div>
+    
+ </div>
+
+  <style type="text/css">
+*{margin:0;padding:0;list-style:none;}
+a,img{border:0; text-decoration:none}
+.section{margin:0 auto;overflow:hidden;}
+.section ul li{float:left;margin-right:14px;margin-bottom:13px;display:inline;width:158px;height:158px;overflow:hidden;position:relative;}
+.section ul li .photo{width:158px;height:158px;overflow:hidden;}
+.section .rsp{width:158px;height:158px;overflow:hidden;position: absolute;background:#000;top:0px;left:0px;color:#fff;}
+.section .rsp h3{width:158px;margin-top:100px;height:40px;line-height:40px;text-align:center;color:#000;font-family:"微软雅黑";font-size:18px;color:#fff;}
+</style>
+<br>
+<div class="section">
+	<ul class="clearfix">
+		<volist name="tree" id="item">
+        <li>
+			<div class="photo"><img src="{$item.category_pic|getThumbImageById=600,600}" width="158" height="158" /></div>
+			<div class="rsp"><if condition="!$item['up_title']">顶级分类<else />归属于：{$item['up_title']}</if><h3>{$item.title}</h3></div>
+			
+		</li>
+		</volist>
+	</ul>
+	<div class="clear"></div>
+</div>
+<script>
+$(function(){
+	$(".section ul li .rsp").hide();
+	$(".section	 ul li").find(".rsp").stop().fadeTo(300,0.3)
+	$(".section	 ul li").hover(function(){
+		$(this).find(".rsp").stop().fadeTo(300,0)
+	},function(){
+		$(this).find(".rsp").stop().fadeTo(300,0.3)
+	});
+});
+</script>
+
+</block>
+

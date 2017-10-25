@@ -1,0 +1,23 @@
+
+<div class="event-right-nav"></div>
+
+<php>if($customization == 1){</php>
+{:W('RunnersEvent/RunnersEventService')}
+<div class="event-right-nav"></div>
+<php>}</php>
+
+
+{:W('RunnersEvent/RunnersEventIssue',array('limit'=>10))}
+<div class="event-right-nav"></div>
+{:W('RunnersEvent/RunnersEventShop',array('limit'=>10))}
+<div class="event-right-nav"></div>
+{:W('RunnersEvent/RunnersEventRecommendEvent',array('limit'=>2))}
+<div class="event-right-nav"></div>
+{:W('RunnersEvent/RunnersEventRelatedIssue',array('event_id'=>$content['id']))}
+
+
+<div class="event-right-nav"></div>
+{:W('RunnersEvent/RunnersEventSexCompare',array('id'=>$content['id']))}
+<div class="event-right-nav"></div>
+
+{:W('RunnersEvent/RunnersEventTailorEvent')}

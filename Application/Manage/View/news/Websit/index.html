@@ -1,0 +1,217 @@
+<extend name="Public/base1" />
+<block name="style">
+</block>
+<block name="body">
+ <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+                <div class="widget-header  bordered-bottom bordered-sky">
+                	<i class="widget-icon fa fa-tasks themeprimary"></i>
+                    <span class="widget-caption">基本配置</span>
+                </div>
+                <div class="widget-body">
+                    <form id="defaultForm" action="{:U('Manage/Websit/index')}" class="form-horizontal form-bordered" method="post" >  
+                        <div class="form-title">
+                            必填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">网站名称</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="webname" value="{$list.webname}" placeholder="网站名称" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">网站口号</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="slogan" value="{$list.slogan}" placeholder="网站口号" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">域名前缀</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                <span class="input-group-addon">http://</span>
+                                    <input type="text" class="form-control" placeholder="域名前缀" name="url" value="{$list.url}" <notempty name="list.url">readonly</notempty> /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="修改请发邮件到活动力客服：kefu@huodongli.cn">.huodongli.cn <i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">导航LOGO</label>
+                            <div class="col-lg-10">
+
+                                    {:hook('UploadImagePc', array('find_name'=>'cover_id','value'=>$list['cover_id'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'1140','height'=>'400'))}
+
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">网站ICON</label>
+                            <div class="col-lg-10">
+
+                                	{:hook('UploadImagePc', array('find_name'=>'logo_icons','value'=>$list['logo_icons'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'','height'=>'','picture_type'=>'*.png'))}
+                                    
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">客服Email</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" name="email" type="email" value="{$list.email}" />       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">客服电话</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" name="telphone" type="text" value="{$list.telphone}" /> 
+                            </div>
+                        </div>
+                       
+                        <div class="form-title">
+                            选填项
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">独立域名</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                <span class="input-group-addon">http://</span>
+                                    <input type="text" class="form-control" placeholder="域名前缀" name="domain" value="{$list.domain}" <notempty name="list.domain">readonly</notempty> /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="修改请发邮件到活动力客服：kefu@huodongli.cn"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">ICP备案号</label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                
+                                    <input type="text" class="form-control" placeholder="ICP备案号" name="icp" value="{$list.icp}" <notempty name="list.icp">readonly</notempty> /> 
+                                    <span class="input-group-addon tooltip-warning" data-toggle="tooltip" data-placement="left" data-original-title="修改请发邮件到活动力客服：kefu@huodongli.cn"><i class="fa fa-question darkorange danger circular"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">微信号二唯码</label>
+                            <div class="col-lg-10">
+                                   {:hook('UploadImagePc', array('find_name'=>'micro','value'=>$list['micro'],'multi'=>false,'thumb_width'=>80,'thumb_height'=>80,'width'=>'','height'=>'','ds'=>'','picture_type'=>'*.png'))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">qq群</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" name="qq" type="text" value="{$list.qq}" /> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">微博号</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" name="weibo" type="text" value="{$list.weibo}" /> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">注册协议</label>
+                            <div class="col-lg-10">
+                                {:Hook('Ueditor',array('name'=>'user_agreement','value'=>$list['user_agreement']))}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input class="btn btn-palegreen" type="submit" value="确定保存" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+		//excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+		
+		/*submitHandler: function(validator, form, submitButton) {
+           $(form).ajaxSubmit( {
+                target: '#info',
+                success: function() {
+                    $('#defaultForm').slideUp('fast');
+					
+				validator.defaultSubmit();
+					
+				}
+			})
+       },*/
+
+
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            webname: {
+                validators: {
+                    notEmpty: {
+                        message: '网站名称是必需的，不能是空的'
+                    }
+                }
+            },
+            slogan: {
+                validators: {
+                    notEmpty: {
+                        message: '网站口号是必需的，不能是空的'
+                    }
+                }
+            },
+            url: {
+                validators: {
+                    notEmpty: {
+                        message: '域名前缀是必需的，不能是空的'
+                    }
+                }
+            },
+            cover_id: {
+                validators: {
+                    notEmpty: {
+                        message: '导航LOGO是必需的，不能是空的'
+                    }
+                }
+            },
+            logo_icons: {
+                validators: {
+                    notEmpty: {
+                        message: '网站ICON是必需的，不能是空的'
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: '客服Email是必需的，不能是空的'
+                    },
+                    emailAddress: {
+                        message: 'Email格式不正确'
+                    }
+                }
+            },
+            telphone: {
+                validators: {
+                    notEmpty: {
+                        message: '客服电话是必需的，不能是空的'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+			$(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+	});
+});
+</script>
+
+</block>

@@ -1,0 +1,55 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add " >
+    <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    <h2><?php echo $list?'编辑导航':'添加导航';?></h2>
+    <div class="aline common-margin-bten"></div>
+    <div>
+      <div class="row">
+        <div class="col-md-12">
+        
+          <form class="form-horizontal ajax-form" role="form" action="{:U('Template/template_tags_classification_add',array('id'=>$_GET['id']))}" method="post">
+            <div class="form-group has-feedback">
+              <label for="title" class="col-md-2 control-label">标题</label>
+              <div class="col-md-4">
+                <input id="title" name="title" type="text" class="form-control form_check" check-type="Text"  value="{$list.title}" placeholder="标题"/>
+              </div><span class="common-color-red">(*10个字以内)</span>
+            </div>
+            <div class="form-group position">
+              <label for="description" class="col-md-2 control-label">描述</label>
+              <div class="col-md-4"> 
+                <input id="description" type='text'  class="form-control form_check" name='description' value="{$list.description}" placeholder="描述"/>
+  			</div><span class="common-color-red">(*10个字以内)</span></div>
+          <!-- 选择导航 -->
+          <div class="form-group has-feedback">
+              <label for="title" class="col-md-2 control-label">选择标签</label>
+              <div class="col-md-4">
+                 <select name='tags' class="select_brand_name">
+                    <option value=''>请选择导航标签</option>
+                    <volist name="tags" id="tags">
+                      <option value='{$tags.id}' <if condition="$list['tags_id'] eq $tags['id']">selected</if>>{$tags.title}</option>
+                    </volist>
+                  </select>
+              </div><span class="common-color-red">(*必选)</span>
+         </div>
+  		  <div class="form-group position">
+              <label for="address" class="col-md-2 control-label">导航地址</label>
+              <div class="col-md-6"> 
+                <input type='text'  class="form-control form_check" name='address' value="{$list.address}" placeholder="导航地址"/>
+  			</div><span class="common-color-red">([选填]设置导航地址将跳转到相应网页链接)</span>
+            </div>
+        <!-- 图片上传 -->
+          <div class="form-group position">
+             <label for="address" class="col-md-2 control-label">上传图片</label>
+              <div class="controls" style=" width:auto; padding-left:15px;">
+            {:hook('UploadImage', array('find_name'=>'goods_ico','value'=>$list['images'],'buttontext'=>'导航封面图','buttonwidth'=>200,'multi'=>false,'ds'=>'370*204','width'=>600,'height'=>600))}
+          </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-2 col-md-10  col-input-images">
+                <button type="submit" class="btn btn-primary">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

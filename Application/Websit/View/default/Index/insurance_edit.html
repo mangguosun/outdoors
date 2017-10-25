@@ -1,0 +1,40 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add" >
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改保险</h2>
+  <div class="aline common-margin-bten"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/insurance_doEdit')}" method="post">
+          <input type="hidden" name="id" value="{$data.id}">
+		  <div class="form-group has-feedback">
+            <label for="name" class="col-md-2 control-label">保险名称</label>
+            <div class="col-md-4">
+              <input id="name" name="name" type="text" class="form-control form_check" check-type="Text"  value="{$data.name}" placeholder="请填写保险名称"/>
+            </div>
+          </div>
+          <div class="form-group position">
+            <label for="sum_insured" class="col-md-2 control-label">保额</label>
+            
+            <div class="col-md-4" > 
+              <input id="sum_insured" type='text'  class="form-control form_check" name='sum_insured'  value="{$data.sum_insured}" placeholder="请填写保额"/>
+			</div>
+          </div>
+		  <div class="form-group position">
+            <label for="price" class="col-md-2 control-label">保险价格</label>
+            
+            <div class="col-md-4"> 
+              <input id="price" type='text'  class="form-control form_check" name='price' value="{$data.price}" placeholder="请填写保险购买价格"/>
+			</div>
+          </div>
+		 
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Websit/Index/insurance_doEdit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

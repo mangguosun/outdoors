@@ -1,0 +1,36 @@
+<if condition="!empty($issue_arr)">
+<div class="common_block_border">
+	<div class="common_block_title_right">相关故事<span class="pull-right"><a target="_blank" href="{:U('Issue/Index/index')}" ><span class="a_font">更多故事>></span></a></span></div>
+	<div class="common_block_title_right_common">
+		<div class="issue_list">
+			<volist name="issue_arr" id="vo">
+			<div style="width:100%" class="item_inner" <if condition="$i % 4 eq 0">style="margin-right:0"</if> >
+				<div class="item_core">
+					<div class="item_type">{$vo.issue.title}</div>
+					<a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}"> <img style="width:100%" class="cover add_loading add_loading_relatedissue" src="__PUBLIC__/Core/images/blank.png" data-original="{$vo.cover_id|getThumbImageById=300,225}"/></a>
+					<div>
+						<h3><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$vo['id']))}" class="text-more hundred" >{$vo.title}</a></h3>
+					</div>
+					<div class="common-margin-bten"><a class="author" href="{$vo.user.space_url}"> <img src="{$vo.user.avatar128}" ucard="{$vo.user.id}" class="avatar-img" >{$vo.user.nickname} </a>
+						<div class="pull-right ctime">{$vo.create_time|friendlyDate}</div>
+					</div>
+					<!--<div class="spliter"></div>
+					<div>
+						<ul class="operation">
+							<li><i class="glyphicon glyphicon-eye-open"></i>{$vo.view_count}</li>
+							<li>{:Hook('support',array('table'=>'related_issue','row'=>$vo['id'],'app'=>'Issue','uid'=>$vo['uid'],'jump'=>'no'))}</li>
+							<li><i class="glyphicon glyphicon-comment"></i>{$vo.reply_count}</li>
+						</ul>
+					</div>-->
+				</div>
+			</div>
+			</volist>
+		</div>
+	</div>
+</div>
+<script>
+$(function () {
+hdl_lazyload("img.add_loading_relatedissue");
+})
+</script>
+</if>

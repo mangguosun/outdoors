@@ -1,0 +1,119 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2><?php echo $info?'修改广告':'添加广告';?></h2>
+</div>
+<div id="auth_groups">
+	<form class="form-horizontal center_info ajax-form" role="form" action="{:U('Manage/Websit/picture_edit')}" method="post">
+		<input type='hidden' name='id' value="{$info.id}">
+		<div class="form-item">
+			<label for="title"  class="item-label">广告名称</label>
+			<div class="controls">
+				<input type="text" class="text input-large" id="title" placeholder="请输入网站名称" name="title" value="{$info.title}">
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="slogan" class="item-label">广告位置</label>
+			<div class="controls controls-select">
+				<select name="position" id="mySelect" class="form-control">
+					<option value="" data="">请选择位置</option>
+					<volist name="positions" id="so">
+					<option value="{$so.id}" data="{$so.type}" <if condition="$so['id'] eq $info['position']">selected</if> >{$so.title}({$so.width}*{$so.height})</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+	
+		<div class="form-item" id="type1" <if condition="($info['type'] neq 1) && ($info['type'] neq 2) && ($info['type'] neq 5)"></if>>
+			<label class="item-labell">广告图片</label><span class="common-color-red">*必填</span>
+			<div class="controls">
+				{:hook('UploadImage', array('find_name'=>'advspic','value'=>$info[advspic],'buttontext'=>'上传广告图','buttonwidth'=>100,'multi'=>false,'ds'=>''))}
+			</div>
+		</div>	
+	
+		<div class="form-item" id="type3" <if condition="$info['type'] neq 3"></if>>
+			<label class="item-labell">广告文字<span class="check-tips">（请填写广告文字）</span></label>
+			<div class="controls">
+				<textarea rows="3" cols="54" name="advstext">{$info.advstext}</textarea>
+			</div>
+		</div>
+	 
+		<div class="form-item" id="type4" <if condition="$info['type'] neq 4"></if>>
+			<label class="item-label">广告代码<span class="check-tips">（请填写广告代码html、js）</span></label>
+			<div class="controls">
+				<label class="textarea">
+				<textarea name="advshtml">{$info.advshtml}</textarea>
+				</label>
+			</div>
+		</div>
+	
+		<div class="form-item">
+			<label for="link"  class="item-label">广告地址(电脑)</label><span class="check-tips">（请填写带http://的全路径）</span>
+			<div class="controls">
+				<input type="text" class="text input-large" name="link" value="{$info.link}">
+			</div>
+		</div>
+	
+		<div class="form-item">
+			<label for="link_mobile"  class="item-label">广告地址(手机)</label><span class="check-tips">（请填写带http://的全路径）</span>
+			<div class="controls">
+				<input type="text" class="text input-large" name="link_mobile" value="{$info.link_mobile}">
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="create_time" class="item-label">开始时间</label><span class="common-color-red">*必填</span>
+			<div class="controls">
+				<input type="text" name="create_time" class="text input-large time" value="{$info.create_time}" placeholder="请选择时间" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="end_time" class="item-label">结束时间</label>
+			<div class="controls">
+				<input type="text" name="end_time" class="text input-large time" value="{$info.end_time}" placeholder="请选择时间" />
+			</div>
+		</div>
+		<div class="form-item">
+			<label for="level" class="item-label">优先级</label>
+			<div class="controls">
+				<input type="text" name="level" class="text input-large" value="{$info.level}" />
+			</div>
+		</div><br><br>
+		<div class="form-item">
+		   <button type="submit" class="w_btn submit-btn" href="{:U('Manage/Websit/picture_edit')}">确定</button>
+		   <button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+		</div>
+	</form>
+</div>
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+$(function(){
+
+	$('#mySelect').change(function(){					   
+		$type = $('#mySelect').find("option:selected").attr("data");
+		if($type == 1 || $type == 2 || $type == 5 || $type == 6 || $type == 7 || $type ==8 ||$type==9){
+			$('#type1').css('display','block');
+		}else if($type == 3){
+			$('#type3').css('display','block');
+		}else if($type == 4){
+			$('#type4').css('display','block');
+		}else{
+			$('#type1').css('display','none');
+			$('#type3').css('display','none');
+			$('#type4').css('display','none');
+		}
+	});
+	
+	    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+
+});
+</script>
+</block>

@@ -1,0 +1,37 @@
+
+  <volist name="partner_list" id="v">
+      <div class="am-panel-default">
+       <div class="am-g mob-parcon">
+          <div class="am-u-sm-5  mob-parconleft">   
+            <a href="{:U('Mobile/Partner/parevent_sign',array('id'=>$v['id']))}">
+             <img class="lazy am-img-responsive" id="mypar-images" src="__PUBLIC__/Core/images/grey.gif" data-original="{$v.picture_id|getThumbImageById=400,300}"/>
+            </a>
+          </div>
+          <div class="am-u-sm-7 mob-parconright">
+            <a href="{:U('Mobile/Partner/parevent_sign',array('id'=>$v['id']))}">
+              <div class="mob-parcontitle">{$v.title}</div>
+            </a>
+            <div class="mob-parconbb">
+              <div class="mob-parconcc"><i class="am-icon-map-marker mob-parcon-tub"></i>
+               {$v.address}
+              </div> 
+              <div class="mob-parconcc"><i class="am-icon-clock-o mob-parcon-tub"></i>
+                {$v.week}{$v.start_time|date='m/d  H:i',###}
+              </div>
+              <div class="mob-parconcc"><i class="am-icon-user mob-parcon-tub"></i>
+                <if condition="$v['user_count']">
+                <label class="mob-parcon-label">{$v.user_count}人参加</label>
+                <else />
+                 <label class="mob-parcon-label">暂无参加者</label>
+                </if>
+              </div>
+            </div>
+          </div>
+  </div>
+</div>
+  </volist>
+<script>
+    $(function () {
+    hdl_lazyload('img.lazy'); 
+  })
+</script>

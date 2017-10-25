@@ -1,0 +1,209 @@
+<div id="center">
+<style> 
+.search-title{ 
+	margin-bottom: 50px;
+}
+.search-form span{ 
+	color: #666;
+    font:20px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.search-form .sl_start{ 
+	margin-left: 0px;
+}
+.search-form .sl_user{ 
+	margin-left: 20px;
+}
+.search-form .sl_check{ 
+	margin-right:3px; 
+}
+.search-form input{ 
+	border: 0 none;
+}
+.search-form .sl_input{ 
+	width:200px;
+	height:25px;
+}
+.search-form  .search-submit{ 
+	margin-left:14px;
+	width: 60px;
+	height: 30px;
+}
+</style>
+<form action="__SELF__" method="get">
+<div class="search-form search-title">
+	<span class="sl_start">注册时间 :</span>
+	<input id="starttime" name="starttime" type="text" class="text time" check-type="Text"  value="{:I('starttime')}" />
+	<span >-</span>
+	<input id="endtime" name="endtime" type="text" class=" time text " check-type="Text"  value="{$endtime}" />
+	<span class="sl_user">用户搜索 :</span>
+	<select class="sl_check" name="sl_check">
+	<?php $sl_check=I('sl_check');?>
+		<option  value="0" <?php if($sl_check==0) echo "selected" ?>>用户昵称</option>
+		<option  value="1" <?php if($sl_check==1) echo "selected" ?>>登陆邮箱</option>
+		<option  value="2"<?php if($sl_check==2) echo "selected" ?>>注册手机</option>
+	</select><input class="sl_input"type="text" name="user_list" value="{:I('user_list')}" />
+		
+	<span>状态:</span>
+	<select name="sl_status">
+	<?php $sl_status=I('sl_status');?>
+		<option value="0" <?php if($sl_status==0) echo "selected" ?>>全部</option>
+		<option value="1" <?php if($sl_status==1) echo "selected" ?>>启用</option>
+		<option value="2" <?php if($sl_status==2) echo "selected" ?>>禁用</option>
+	</select>
+   <input class="search-submit w_btn" id="search" type="submit" value="搜索" url="{:U('index')}">
+   <input class="search-submit w_btn" id="reset" type="reset" value="重置">           
+            
+</div>
+</form>
+
+<div class="cf">
+     <div class="fl">
+            
+            <button class="w_btn ajax-post" url="{:U('User/changeStatus',array('method'=>'forbiduser'))}"
+                    target-form="ids">启 用
+            </button>
+            <button class="w_btn ajax-post" url="{:U('User/changeStatus',array('status'=>0,'method'=>'resumeuser'))}"
+                    target-form="ids">禁 用
+            </button>
+           <!-- <button class="w_btn ajax-post confirm" url="{:U('User/changeStatus',array('status'=>'-1','method'=>'deleteuser'))}"
+                    target-form="ids">删 除
+            </button>-->
+
+            
+        </div>
+
+
+      <!-- 高级搜索 -->
+     
+    </div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">用户(ID)</th>
+                
+                <th class="">登录邮箱</th>
+                <th class="">手机</th>
+                <th class="">最后登录时间</th>
+                <th class="">状态</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="user_info">
+                <volist name="user_info" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.uid}"/></td>
+                        <td><a href="{:U('Usercenter/Index/index?uid='.$vo['uid'])}">[{$vo.uid}]{$vo.nickname}</a></td>
+						<td>{$vo.email}</td>
+                        <td>{$vo.mobile}</td>
+						<td>{:date('Y-m-d H:i:s',$vo[last_login_time])}</td>
+                        <td>
+                          
+                      <if condition="$vo.status eq 0">
+                                <a href="{:U('User/changeStatus?method=forbidUser&id='.$vo['uid'])}"
+                                   class="ajax-get">禁用</a>
+                                <else />
+                                <a href="{:U('User/changeStatus?method=resumeUser&id='.$vo['uid'])}"
+                                   class="ajax-get">启用</a>
+                            </if></td>
+							
+					
+						
+						
+						<if condition="$vo.is_use eq 3 AND $vo.check_admin eq 1">
+						<td><font color="#FF0000">不能更改(超级管理员)
+						 | 不能更改密码</font></td>
+						<elseif condition="$vo.is_use eq 3 AND $vo.check_admin eq Null AND $vo.checked neq 1 "/><td>不能更改| 不能更改密码</td>
+						<else />
+						<td><a href="{:U('User/user_edit?id='.$vo['uid'])}">更改角色</a> | <a href="{:U('User/password_edit?id='.$vo['uid'])}">更改密码</a></td>
+						</if>
+						<!--<td><a href="{:U('User/user_edit?id='.$vo['uid'])}">更改角色</a>-->
+						
+                    </tr>
+					
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+	 <div class="page">
+        {$page}
+    </div>
+
+
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+$(function(){
+	$('#reset').click(function(){ 
+		 window.location.href = "/Manage/User/index";
+	})   
+	
+});
+
+$(function(){
+        $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+			
+	
+});
+ Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份 
+			"d+": this.getDate(), //日 
+			"h+": this.getHours(), //小时 
+			"m+": this.getMinutes(), //分 
+			"s+": this.getSeconds(), //秒 
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S": this.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+
+    $('#starttime').change(function(){
+
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 00:00';  
+	   
+		setTimeout(function () {
+			 $('#starttime').val(date1);
+		}, 10);
+	})
+	
+	 $('#endtime').change(function(){	
+	    var d = new Date();
+		var btime = $(this).val();
+		var str = btime.replace(/-/g,'/');
+		var date = new Date(str); 		
+		var time = date.getTime()/1000;
+	
+		var date1 = new Date(parseInt(time) * 1000).Format("yyyy-MM-dd")+' 23:59';  
+	   
+		setTimeout(function () {
+			 $('#endtime').val(date1);
+		}, 10);
+	})
+</script>
+	
+</div>

@@ -1,0 +1,56 @@
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+<h2>申请提现</h2>
+</div>
+
+ <div id="auth_groups">
+  <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Manage/Revenue/cashout')}" method="post">
+		<div class="form-item">
+			<label for="cash" class="item-label">累积收入 <span><?php if(!empty($balance)):?>￥{$balance.total}元<?php else:?>￥0 元<?php endif;?></span></label>
+		</div>
+		<div class="form-item">
+			<label for="balance" class="item-label">可用余额 <span><?php if($balance['balance']!=''):?>￥{$balance.balance} 元<?php else:?>￥ 0 元<?php endif;?></span></label>
+		</div>
+		<div class="form-item">
+			<label for="balance" class="item-label">交易锁定余额 <span><?php if($balance['balance']!=''):?>￥{$balance.distribute_frozen} 元<?php else:?>￥ 0 元<?php endif;?></span></label>
+		</div>
+		<div class="form-item">
+		    <label for="frozen" class="item-label">冻结资金 <span><?php if($balance['frozen']!=''):?><span class="common-color-red" >￥{$balance.frozen}</span> 元<?php else:?> ￥0 元<?php endif;?></span></label>
+		</div>
+		
+		<div class="form-item">
+			<label for="frozen" class="item-label">提现金额</label>
+			<div class="controls">
+				<input type="text" class="text input-large" id="cash" placeholder="请输入金额" name="cash" value="{$balance.cash}">
+			</div>
+		</div>
+		
+		<div class="form-item">
+			<label for="card_id" class="item-label">选择银行</label>
+		
+			<div class="" >
+			    <notempty name="list">
+					<volist name="list" id="vo">
+						<tr>
+							<td><input type="radio" name="card_id" value="{$vo.id}" checked></td>
+							<td class="bank_list">{$vo.open_bank}</td>
+							<td>{$vo.card}</td>
+						</tr>
+					</volist>
+					<else/>
+					 <input type="hidden" name='card_id' value="-1">
+					   请去填写银行卡信息
+				</notempty>
+			</div>
+		</div>
+        <br><br><br>
+		<div class="form-item">
+		<button type="submit" class="w_btn submit-btn">确定</button>
+	
+		</div>
+  </form>
+ </div>
+<div class='cf'>
+</div>
+</block>

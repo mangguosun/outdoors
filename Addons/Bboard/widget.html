@@ -1,0 +1,18 @@
+<div>
+	<h3 class="tit">合作伙伴</h3>
+	<ul class="aList">
+	  <volist name="list.picture" id="po">
+	  <li><a href="{$po.link}"><img src="{$po.path}" width="182" height="92" /></a></li>
+	  </volist>
+	</ul>
+</div>
+<div>
+	<h3 class="tit">友情连接</h3>
+	<p class="pList">
+		<span>
+		  <volist name="list.writing" id="lo">
+			<a href="{$lo.link}">{$lo.title}</a>
+		  </volist>
+		</span>
+	</p>
+</div>

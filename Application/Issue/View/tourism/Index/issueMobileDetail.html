@@ -1,0 +1,119 @@
+<extend name="tourism/common"/>
+<block name="body">
+<div class="container">
+    <div class="row">
+      	<div class="col-md-8" style=" padding-right:0"> <include file="Public/nav" />
+        	<div class="issuecontent-detail">
+          		<div class="issuecontent_detail_title"><a href="javascript:" class="text-more hundred" >{$content.title}</a></div>
+         		<div class="col-md-8">发布人：<a href="{$content.user.space_url}"> {$content.user.nickname} </a>发布时间： {$content.create_time|date='Y-m-d H:i:s',###}	</div>
+         		<div class="col-md-4">
+					<div class="row">
+					<!--<if condition="($content['uid'] eq is_login()) OR is_administrator(is_login())">
+						<a class="btn btn-info i_detail col-md-5" style="margin-right:20px;"><i class="glyphicon glyphicon-heart"></i> 加入收藏</a>&nbsp;&nbsp;
+						<a class="btn btn-info btn-primary-margin col-md-5" style="margin:0" href="{:U('edit_story',array('id'=>$content['id']))}" ><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑
+					</a>	
+					<else/>-->
+						
+					<!--</if>-->
+					<a class="btn btn-info i_detail col-md-6" style="margin-left:110px;"><i class="glyphicon glyphicon-heart"></i> 加入收藏</a>
+					</div>
+				</div>
+				<div class="row">
+			    <div class="pull-left col-md-12">
+		    		<section id="contents">
+				        <h3>详情:</h3>
+						<div>{$content.content} </div>
+				   	</section>
+			      	
+			       	<div class="row issue_detail_favorites">
+			       		<div class="col-md-4 issue_detail_share">
+						</div>
+						<div class="col-md-4 issue_detail_share">
+							<div class="bdsharebuttonbox">{:hook('baidushare')}</div>
+						</div>
+				        <if condition="$qrcode_link">
+							<div class="col-md-4 issue_detail_share"><span class="two-dime"><img class="" src="__PUBLIC__/Core/images/weixing.png">&nbsp;&nbsp;<label>扫一扫二维码，分享给朋友</label></span></div>
+				        </if>
+					</div>
+				</div>
+				<div class="two-time-box"><a class="two-close pull-right">×</a>
+					<label>分享到微信朋友圈</label>
+					<img class="evnet-two-dime" src="{$qrcode_link}"><br>
+					<span>打开微信,点击底部发现,<br>&nbsp;使用'扫一扫'即可将网页分享至朋友圈</span>
+				</div>
+		  	</div>
+		  	<section id="contents">
+		  	<div class="issue-img-detail">
+				<foreach name="imgissue" item="images" key="k">
+				    <li>
+
+				      <img  src="{$content.imgid.$k}"data-rel="{$content.imgid.$k}">
+				      
+				    </li>
+				    <br/>
+		   		</foreach>
+		   		</div>
+		   	</section>
+        	</div>
+        	{:hook('localComment', array('path'=>"Issue/issueContent/$content[id]", 'uid'=>$content['uid']))} 
+        </div>
+      	<div class="pull-right col-md-4">
+      		<include file="_right"/>
+      	</div>
+    </div>
+</div>
+</block>
+<block name="script">
+  <script>
+  var SUPPORT_URL="{:addons_url('Support://Support/doSupport')}";
+	$(function () {
+		hdl_lazyload("img.add_loading");
+		$('.i_detail').click(function(){
+           var issue_id = "{$content['id']}";
+			if(MID=="0"){
+				toast.error('请在登录后再收藏。');
+				setTimeout(function () {
+				   location.href ="{:U('Home/User/login')}"  
+						}, 1500);
+				
+				return false;
+			}else{
+				$.post("{:U('Issue/Index/issue_collection')}", {id: issue_id}, function (res) {
+				 if(res=='1'){
+				   toast.error('你已收藏过。');
+				 }else{
+				   toast.success('收藏成功。');
+				 }
+				}, 'json');
+			}
+		});
+		bindSupport();
+		 /*-二维码-*/
+	   var twotimebox=$('.two-time-box');
+	   var twodime=$('.two-dime');
+	       twodime.click(function(){
+		      twotimebox.css('display','block')
+			})
+		/*关闭二维码*/
+	      $('.two-close').click(function(){
+		      twotimebox.css('display','none')
+		  })
+		
+		
+	})
+	$('.issue-img-detail img').each(function() {								
+		 var maxWidth = $('.issue-img-detail').width();// 图片最大宽度
+
+		 var ratio = 0;  // 缩放比例   
+		 var width = $(this).width();    // 图片实际宽度   
+		 var height = $(this).height();  // 图片实际高度   
+		 // 检查图片是否超宽   
+		 if(width > maxWidth){  
+			 ratio = maxWidth / width;   // 计算缩放比例   
+			 $(this).css("width", maxWidth); // 设定实际显示宽度   
+			 height = height * ratio;    // 计算等比例缩放后的高度    
+			 $(this).css("height", height);  // 设定等比例缩放后的高度   
+		 }
+ 	});
+</script>
+</block>

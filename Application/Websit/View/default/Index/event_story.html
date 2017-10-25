@@ -1,0 +1,94 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+
+  <div id="center">
+    <div class="common_block_title ">
+      <div class="pull-right"><a href="{:U('Websit/Index/event_schedule_add',array('eventid'=>$event_content['id']))}" class="btn btn-info schedule_add">增加排期</a> <a class="btn btn-default" href="{:U('Websit/Index/content',array('status'=>5))}">返回</a></div>
+      {$event_content.title} —— 排期管理</div>
+    <div class="row data-table usercenter-common-table" >
+      <table class="info">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>领队</th>
+            <th>出发时间</th>
+            <th>价格</th>
+            <th width="100">交通工具</th>
+            <th width="100">住宿条件</th>           
+			<th>报名人数</th>
+			<th>预约人数</th>
+			<th>状态</th>
+            <th>报名信息</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="contents">
+          <volist name="contents" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><if condition="$vo[leader] neq ''">{$vo.leader}<else />暂无</if></td>
+              <td>{$vo.starttime}</td>
+              <td>￥{$vo.price}</td>
+              <td>{$vo.vehicle}</td>
+              <td>{$vo.accommodation}</td>
+			  <td>{:get_signnum($vo['id'])}</td>
+			  <td>{:get_frontsign($vo['id'])}</td>
+              <td>{$vo.info}</td>			
+              <td><a href="{:U('Websit/Index/open_event_dayinfo',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" class="btn btn-default">查看</a></td>
+              <td>
+			  <?php if($vo[status] != -1):?>
+                <a href="{:U('Websit/Index/event_schedule_edit',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" class="btn btn-default schedule_edit">编辑</a> <a class="btn btn-default" onclick="return schedule_del({$vo['id']})" >删除</a>
+              <?php else:?>
+			  <?php endif;?>
+			   </td>
+            </tr>
+          </volist>
+          <else/>
+        <td colspan="9" class="text-center"> aOh! 您还没有发布任何活动哦!</td>
+          </notempty>
+          </tbody>
+      </table>
+    </div>
+  </div>
+<script>
+	$(function () {
+		$('.schedule_add').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});		
+				
+		$('.schedule_edit').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});
+		
+	})
+	function schedule_del(id){
+		if(confirm("您确定要删除吗？")){
+			$.post("{:U('Websit/Index/event_schedule_del')}",{id:id},function(msg){
+				if(msg==1){
+					location.reload();
+				}else{
+					toast.error(msg);
+				}
+				
+			});
+		}
+	}
+</script>
+</block>

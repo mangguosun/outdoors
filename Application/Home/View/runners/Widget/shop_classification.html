@@ -1,0 +1,28 @@
+<if condition="$shop_classification_info neq false">
+<!--图片导航-->
+<div class="runners-index-event">
+  <ul>
+    <volist name="shop_classification_info" id="v">
+      <li>
+        <if condition="$v['address']"> 
+          <a href="{$v.address}">
+            <div class="eventimg"> <img src="{$v.images|getThumbImageById=370,204}"/> </div>
+          <div class="eventtitle">
+            <h2>{$v.title}<br />
+              <span>{$v.description}</span> </h2>
+          </div>
+           </a> 
+        <else />
+           <a href="{:U('Shop/Index/goods',array('tag'=>$v['tags_id']))}">
+            <div class="eventimg"> <img src="{$v.images|getThumbImageById=370,204}"/> </div>
+          <div class="eventtitle">
+            <h2>{$v.title}<br />
+              <span>{$v.description}</span> </h2>
+          </div>
+           </a> 
+        </if>
+      </li>
+    </volist>
+  </ul>
+</div>
+</if>

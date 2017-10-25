@@ -1,0 +1,36 @@
+<if condition="!empty($rs_issue)">
+  <div class="index_list_block">
+    <h3>推荐品牌</h3>
+        <style>
+        /* 本例子css */
+		.slideBox_brandissue{ width:320px; height:240px; overflow:hidden; position:relative; margin:0 auto 11px}
+		.slideBox_brandissue .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1; }
+		.slideBox_brandissue .hd ul{ overflow:hidden; zoom:1; float:left;  }
+		.slideBox_brandissue .hd ul li{ float:left; margin-right:2px;  width:20px; height:20px; line-height:19px; text-align:center; background:#fff; cursor:pointer; font-size:12px}
+		.slideBox_brandissue .hd ul li.on{ background:#000; color:#fff; }
+		.slideBox_brandissue .bd{ position:relative; height:100%; z-index:0;   }
+		.slideBox_brandissue .bd li{ zoom:1; vertical-align:middle; }
+		.slideBox_brandissue .bd img{ width:320px; height:240px; display:block;  }
+
+		/* 下面是前/后按钮代码，如果不需要删除即可 */
+        </style>
+    <div id="slideBox_brandissue" class="slideBox_brandissue">
+      <div class="hd">
+        <ul>
+          <volist name="rs_issue" id="images" key="k">
+            <li>{$k}</li>
+          </volist>
+        </ul>
+      </div>
+      <div class="bd">
+        <ul>
+          <volist name="rs_issue" id="images" key="k">
+            <li><a href="{:U('Issue/Index/issueContentDetail',array('id'=>$images['id']))}" target="_blank"><img class="add_loading" src="__PUBLIC__/Core/images/blank.png" _src="{$images.cover_id|getThumbImageById=320,220}" alt="{$images.title}" /></a></li>
+          </volist>
+        </ul>
+      </div>
+      <!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+      <a class="prev" href="javascript:void(0)"></a> <a class="next" href="javascript:void(0)"></a> </div>
+    <script type="text/javascript">jQuery(".slideBox_brandissue").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,easing:"swing",switchLoad:"_src",interTime:5000});</script>
+  </div>
+</if>

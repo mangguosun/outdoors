@@ -1,0 +1,43 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title">查看 点卡/优惠券 相关日志<div class="pull-right"><a class="mbtn  btn-info common-color-white"  href="javascript:history.go(-1)">返回上一级</a></div></div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		  <!--th><input type="checkbox" class="checkall common-color-white"></th-->
+		  <th>编号</th>
+		  <th>卡号</th>
+		  <th>卡状态</th>
+		  <th>行为类型</th>
+		  <th>行为名称</th>
+		  <th>执行者</th>
+		  <th>执行者ID</th>
+		  <th>执行时间</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="cardlist">
+        <volist name="cardlist" id="vo">
+          <tr>
+			<!--td><input type="checkbox" name="ptypeid" value="{$vo.ptypeid}"></td-->
+			<td>{$vo.id}</td>
+			<td>{$vo.cardid}</td>
+			<td>{:get_pointcard($vo['cardid'])}</td>
+			<td>{$vo.action_type}</td>
+			<td>{$vo.action_name}</td>
+			<td>{$vo.userinfo.nickname}</td>
+			<td>{$vo.uid}</td>
+			<td>{$vo.createtime|date="Y-m-d H:i:s",###}</td>
+          </tr>
+        </volist>
+		   <td colspan="8">{$page}</td>
+        <else/>
+			<td colspan="8" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+</block>

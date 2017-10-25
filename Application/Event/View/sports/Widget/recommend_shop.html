@@ -1,0 +1,45 @@
+<if condition="!empty($rs_shop)">
+<style>.issue_title{ clear:both; overflow:hidden; clear:both; padding-top:10px;}</style>
+<div class="common_block_border">
+  <div class="common_block_title_right">推荐商品</div>
+  <div class="common_block_title_right_common">
+<style>
+        /* 本例子css */
+		.slideBox_shop{ width:338px; height:264px; overflow:hidden; position:relative;  }
+		.slideBox_shop .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1;  margin-bottom:10px; }
+		.slideBox_shop .hd ul{ overflow:hidden; zoom:1; float:left;  }
+		.slideBox_shop .hd ul li{ float:left; margin-right:2px;  width:20px; height:20px; line-height:19px; text-align:center; background:#fff; cursor:pointer; font-size:12px}
+		.slideBox_shop .hd ul li.on{ background:#000; color:#fff; }
+		.slideBox_shop .bd{ position:relative; height:100%; z-index:0;   }
+		.slideBox_shop .bd li{ zoom:1; vertical-align:middle; }
+		.slideBox_shop .bd img{ width:338px; height:254px; display:block;  }
+
+		/* 下面是前/后按钮代码，如果不需要删除即可 */		
+        </style>           
+         <div id="slideBox_shop" class="slideBox_shop">
+			<div class="hd">
+				<ul>
+                <foreach name="rs_shop" item="images" key="k">
+                <li>{$k+1}</li>
+                 </foreach>
+                </ul>
+			</div>
+			<div class="bd">
+				<ul>
+                <volist name="rs_shop"  key="k" id="vo">                
+					<li><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['id']))}" title="{$vo.title}"target="_blank"><img class="add_loading" src="__PUBLIC__/Core/images/blank.png" _src="{$vo.goods_ico|getThumbImageById=338,254}" alt="{$vo.goods_name}" /></a></li>                
+				 </volist>	
+				</ul>
+			</div>
+			<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+			<a class="prev" href="javascript:void(0)"></a>
+			<a class="next" href="javascript:void(0)"></a>
+		</div>
+		<script type="text/javascript">jQuery(".slideBox_shop").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,easing:"swing",switchLoad:"_src",interTime:3000});</script> 
+
+  </div>
+
+<!-- add more -->
+ 
+</div>
+</if>

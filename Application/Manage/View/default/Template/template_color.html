@@ -1,0 +1,39 @@
+<style>
+.hover{border:4px solid #f90;}
+</style>
+<div id="auth_groups">
+  <form class="form-horizontal center_info hdl-horizontal" role="form" action="{:U('Template/index',array('tabs'=>$tabs))}" method="post">
+    <?php if(is_array(get_template_color())):?>
+    <div class="form-item">
+      <div class="controls manage_template_color">
+        <notempty name="template_color">
+          <volist name="template_color" id="vo"> <img class="theme_img <?php if($theme=='' && $vo=='tourism_black'):?>hover<?php elseif($vo==$theme):?>hover<?php endif;?>" src="__PUBLIC__/Core/images/nav/{$vo}.jpg" data-sid="{$vo}" style="width:238px;height:300px;margin:5px 5px;"> </volist>
+        </notempty>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <input type="hidden" name="template_color" value="{$theme}">
+    <div class="form-item">
+      <button type="submit" class="btn submit-btn ajax-post" target-form="hdl-horizontal">确定</button>
+    </div>
+    <?php else:?>
+    该模板暂无色系
+    <?php endif;?>
+  </form>
+</div>
+<script>
+   $(function(){
+		var template_info = $('.manage_template_color .theme_img');
+			template_info.each(function(){
+				$(this).click(function(){
+					$('.manage_template_color .theme_img').removeClass('hover');
+					$(this).addClass('hover');
+					var res_id_val=$(this).attr('data-sid');
+					$('input[name="template_color"]').val(res_id_val);
+				})
+			})
+	
+	})
+</script>

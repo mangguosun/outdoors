@@ -1,0 +1,32 @@
+    <div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+   <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+   <h2>新增分类</h2>
+    <div class="aline common-margin-bten"></div>
+	<div>
+	    <div class="row">
+        <div class="col-md-12">
+		    <form class="form-horizontal ajax-form" role="form" action="{:U('notice_type_add')}" method="post">
+			      <div class="form-group has-feedback">
+						<label for="title" class="col-md-2 control-label">分类名称</label><span class="common-color-red" >*（不能为空）</span>
+						<div class="col-md-5">
+						 <input type="text" name="title" class="form-control form_check" value="{$info.title|default=''}">
+						</div>
+					 </div>
+					 <div class="form-group has-feedback">
+						<label for="name" class="col-md-2 control-label">排序</label><span class="common-color-red" >*（数字）</span>
+						<div class="col-md-5">
+						 <input type="text" name="sort" class="form-control form_check" value="{$info.sort|default=''}">
+						</div>
+					</div>
+				 <div class="form-item">
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-1">
+					  <button type="submit" class="btn btn-primary " href="{:U('Websit/Content/notice_type_add')}">确定</button>
+					</div>
+				</div>
+			</form>
+            </div>
+		</div>
+	</div>
+</div>

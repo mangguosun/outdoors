@@ -1,0 +1,39 @@
+<div id="frm-post-popup" class="white-popup edit-payprice">
+    <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    <h2>改价</h2>
+    <div class="aline common-margin-bten"></div>
+    <div id="center">
+        <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Config/doeditpayprice')}" method="post">
+          <input type="hidden" name="id" id="id" value="{$event_attend.id}"/>
+		<div class="form-group has-feedback">
+            <label for="title" class="col-md-2 control-label">活动名称</label>
+            <div class="col-md-10">
+            	<div class="form-control">{$event_content.title} [{$content.starttime}期]</div>
+            </div>
+          </div>
+			<div class="form-group has-feedback">
+            <label for="totalprice" class="col-md-2 control-label">总价</label>
+            <div class="col-md-3">
+            	<div class="form-control">{$event_attend.totalprice}</div>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="payprice" class="col-md-2 control-label">支付金额</label>
+            <div class="col-md-3">
+            	<input id="payprice" name="payprice" class="form-control form_check" check-type="Text" value="{$event_attend.payprice}" placeholder="改价"/>
+            </div>
+          </div>
+		<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                 <button type="submit" class="btn sub btn-primary " id="order_submit">确认改价</button>
+            </div>
+        </div>
+
+        </form>
+      </div>
+    </div>
+		
+	</div>
+</div>

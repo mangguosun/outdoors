@@ -1,0 +1,16 @@
+<if condition="$is_distribute_category neq false">
+<div class="runners-index-class">
+<volist name="is_distribute_category" id="is_distribute_category">         
+    <div class="runners-class-box">
+        <div class="runners-class-name"><a href="{:U('shop/index/goods',array('category_id'=>$is_distribute_category['id']))}">{$is_distribute_category.title}</a></div>
+        <div class="runners-class-ename">{$is_distribute_category.description}</div>
+        <ul>
+        <volist name="is_distribute_category['category_2nd']" id="category_2nd">
+            <li><a href="{:U('shop/index/goods',array('category_id'=>$category_2nd['id']))}">{$category_2nd.title}</a></li>
+        </volist>
+        </ul>
+    </div>           
+ </volist>
+ </div>
+<div class="h10"></div>
+</if>

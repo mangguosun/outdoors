@@ -1,0 +1,168 @@
+<extend name="Public/common"/>
+<block name="body">
+  <div class="top_bar_mobile"> <span class="mobile_crumbs"><a onclick="window.history.go(-1)" href="javascript:" title="回到上一页"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_detail_text">
+    <div class="text-right">
+      <div class="mobile_detail_sign">
+      <div class="btn btn-primary event_sign_btn">报名</div>
+      </div>
+    </div>
+    </span>
+    
+    </div>
+  <div class="h40"></div>
+  <!--导航-->
+<script type="text/javascript" src="__STATIC__/superslide/jquery.superslide.js"></script>
+<script type="text/javascript" src="__STATIC__/superslide/touchslide.1.1.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.lazyload.js"></script>  
+<div id="event_slideBox" class="event_slideBox">
+    <div class="bd">
+        <ul>
+        <php>if($pictures){</php>
+        <foreach name="pictures" item="images" key="k">
+                <li><img src="{$images.id|getThumbImageById=380,300,1}" /></li>
+        </foreach>         
+        <php>}else{</php>   
+             <li><img src="{$content.cover_id|getThumbImageById=380,300,1}" /></li>    
+       	<php>}</php>        
+        </ul>
+    </div>
+    <div class="hd">
+        <ul></ul>
+    </div>
+</div>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#event_slideBox",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"leftLoop", 
+        autoPage:true,//自动分页
+        autoPlay:true //自动播放
+    });
+</script>
+
+<div class="mobile_detail_cont">
+    <div class="mobile_detail_title"><div class="pull-right mbtn btn-primary d_detail">收藏</div>{$content.title}</div>
+    <div class="mobile_detail_rule">
+      <php>$begincity = get_citys($content['begincity']);$finalcity = get_citys($content['finalcity']); </php>
+      <ul>
+        <li><i class="fa fa-send"></i> <span>目的地：</span>{:get_city($finalcity['province'])}-{:get_city($finalcity['city'])}</li>
+        <li><i class="fa fa-warning"></i> <span>强度指数：</span><?php for($i=1;$i<=$content['strength_level'];$i++):?><i class="fa fa-star"></i><?php endfor;?> <span>趣味指数：</span><?php for($i=1;$i<=$content['fun_level'];$i++):?><i class="fa fa-star"></i><?php endfor;?>
+        </li>
+        <li><i class="fa fa-jpy"></i> <span>参考价格：</span><if condition="$content.price_text neq ''"><span style="color:#FD9B00">{$content.price_text}</span><else /><if condition="$content.price eq 0"><span style="color:#FD9B00">免费活动</span><else /><span style="color:#FD9B00">{$content.price}</span> 元/人</if></if></li>
+      </ul>
+      <div class="h15"></div>
+      <ul>
+        <li><i class="glyphicon glyphicon-time"></i> <span>活动时间：</span>
+        <div class="time_select_box">
+        {:form_select($detail_schedule,'','class="time_select" check-type="Text" name="bloodtype" id="bloodtype"','')}
+        </div>
+         </li>
+      </ul>
+      
+    </div>
+    <div class="mobile_detail_conts" id="get_content" style="">
+    	<h3 class="detail_cont_title">线路亮点</h3>
+        <div class="detail_cont_contnet">{$content.travel_point}</div>
+        
+
+        <h3 class="detail_cont_title">行程安排</h3>
+        <div class="detail_cont_contnet">{$content.explain}</div>
+        <h3 class="detail_cont_title">费用说明</h3>
+        <div class="detail_cont_contnet">{$content.pay_info}</div>
+        <h3 class="detail_cont_title">注意事项</h3> 
+        <div class="detail_cont_contnet">{$content.attention}</div>
+  </div>
+  
+          <!--h3 class="detail_cont_title">评论</h3>
+        <div class="commentary_contents">
+                  <div>{:hook('localComment', array('path'=>"Event/event/$content[id]", 'uid'=>$content['uid']))}</div>
+                </div>
+    </div-->
+
+{:W('Mobile/HotIssue/lists',array('limit'=>10))}
+
+
+  
+  
+  </div>
+<a id='goTopBtn'></a>
+<div style='height:200px;'></div>
+</block>
+<block name="script">
+<script>
+$(function () {	
+$('.event_sign_btn').click(function () {
+if(MID=="0"){								 
+	//toast.error('请登录后报名。');
+	location.href ="{:U('Mobile/User/login')}"  
+	return false;
+}else{
+	var bloodtype = $('#bloodtype').val();
+	if(bloodtype){	
+		order_arr=bloodtype.split("_");
+		event_id = {$content['id']};
+		var schedule_id = order_arr[0];
+		var ordertype = order_arr[1];
+		if(!event_id || !schedule_id || !schedule_id){
+			toast.error('参数错误，请联系管理员。');
+			return false;
+		}else{
+			var url = "{:U('Mobile/Config/sign/event_id/"+event_id+"/schedule_id/"+schedule_id+"')}";
+			location.href = url;
+			return false;
+		}
+	}else{
+		toast.error('请选择报名时间。');
+		return false;
+	}
+}	
+	
+	
+	
+	
+	
+});	
+	$('.d_detail').click(function(){			
+		var event_id = "{$content['id']}";
+		if(MID=="0"){
+			//toast.error('请在登录后再收藏。');
+			location.href ="{:U('Mobile/User/login')}"  
+			return false;
+		}else{
+			$.post("{:U('Mobile/Event/dodetail')}", {id: event_id}, function (res) {
+			 if(res=='1'){
+			   toast.error('你已收藏过。');
+			 }else{
+			   toast.success('收藏成功。');
+			 }
+			}, 'json');
+		}
+	});
+})
+
+
+
+ $(function() {
+			
+			
+	 $(".mobile_detail_conts img").lazyload();		
+			
+	$('#get_content img').each(function() {								
+		 var maxWidth = $('#get_content').width(); // 图片最大宽度
+		 var ratio = 0;  // 缩放比例   
+		 var width = $(this).width();    // 图片实际宽度   
+		 var height = $(this).height();  // 图片实际高度   
+		 // 检查图片是否超宽   
+		 if(width > maxWidth){  
+			 ratio = maxWidth / width;   // 计算缩放比例   
+			 $(this).css("width", maxWidth); // 设定实际显示宽度   
+			 height = height * ratio;    // 计算等比例缩放后的高度    
+			 $(this).css("height", height);  // 设定等比例缩放后的高度   
+		 }  
+ 	});				   
+});  
+
+</script>
+</block>
+

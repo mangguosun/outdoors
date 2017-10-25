@@ -1,0 +1,139 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>汇总数据</h2>
+</div>
+<div class="cf">
+	<div class="fl" >
+	    <a href="{:U('Data/picture_show')}" class="w_btn" style="margin-bottom:20px;">饼图展示</a>
+	            
+	</div>
+</div>
+<div style="clear:both;"></div>
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr> 	 			 	 	
+               <th>会员总数</th>
+               <th>线路总数</th>
+               <th>故事总数</th>
+               <th>排期总数</th>
+               <th>定制活动总数</th>
+               <th>活动订单总数</th>
+               <th>评论总数</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+               <td>{$allmember}</td>
+               <td>{$allevent}</td>
+               <td>{$allstory}</td>
+               <td>{$allschedule}</td>
+               <td>{$allcustom}</td>
+               <td>{$allorder}</td>
+               <td>{$allcomment}</td>
+              
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+     
+
+<div class="main-title">
+    <h2>今日新增</h2>
+</div>
+
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>	 			 	 	
+            <tr> 	 			 	 	
+               <th>新增会员数 </th>
+               <th>新增线路数</th>
+               <th>新增故事数</th>
+               <th>新增排期数</th>
+               <th>新增定制订单数</th>
+               <th>新增活动订单数</th>
+               <th>新增评论数</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+               <td>{$daymember}</td>
+               <td>{$dayevent}</td>
+               <td>{$daystory}</td>
+               <td>{$dayschedule}</td>
+               <td>{$daycustom}</td>
+               <td>{$dayorder}</td>
+               <td>{$daycomment}</td>
+              
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+<div class="main-title">
+    <h2>商品概述</h2>
+</div>
+
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>	 			 	 	
+           <tr>
+                <th>共计商品总数</th>
+                <th>上架商品总数</th>
+                <th>下架商品总数</th>
+                <th>禁用商品总数</th>
+        	</tr>
+            </thead>
+            <tbody>
+            <tr>
+              	<td>{$allgoods}</td>
+                <td>{$ongoods}</td>
+                <td>{$outgoods}</td>
+                <td>{$offgoods}</td>
+              
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+<div class="main-title">
+    <h2>今日商城统计概括</h2>
+</div>
+
+	<!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>	 			 	 	
+            <tr>
+                <th>共计商品</th>
+                <th>订单总额</th>
+                <th>订单总数</th>
+                <th>平均客单价</th>
+        	</tr>
+            </thead>
+            <tbody>
+             <tr>
+                <td>{$allgoods}</td>
+                <td>￥{$todayprice}</td>
+                <td>{$todayorder}</td>
+                <td>￥{$guest_unit_price}</td>			
+                <!--td></td-->
+    
+                <!--td></td-->
+          	</tr>
+           </tbody>
+        </table>
+    </div>
+    
+	 
+
+	
+</block>

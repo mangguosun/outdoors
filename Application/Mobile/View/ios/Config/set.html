@@ -1,0 +1,18 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="{:U('Mobile/Config/index')}" class=""> <i class="am-icon-chevron-left"></i></a>账户设置</div>
+    <div class="am-header-right am-header-nav">
+      <a href="{:U('Mobile/Index/index')}" class="" data-am-offcanvas="{target: '#home_all_bar'}">
+      <i class="am-header-icon am-icon-bars"></i>
+      </a>
+    </div>
+  </header>
+  <include file="Public/topnavbar"/>
+   <include file="Public/navbar"/>
+   <ul class="am-list am-list-border am-list-news-bd ">
+     <li class="set-text"><span class="am-list-date"> <i class="am-icon-angle-right set-icon"></i></span><a href="{:U('Mobile/Config/setup')}">基本设置</a></li>
+     <li class="set-text"><span class="am-list-date"> <i class="am-icon-angle-right set-icon"></i></span><a href="{:U('Mobile/Config/contacts')}">常用参加者</a></li>
+     <li class="set-text"><span class="am-list-date"> <i class="am-icon-angle-right set-icon"></i></span><a href="{:U('Mobile/Config/address')}">常用收货地址</a></li>          
+   </ul>
+</block>

@@ -1,0 +1,32 @@
+<div class="common_block_title ">
+	<div class="pull-right"></div>
+</div>
+<div class="col-md-8">
+    <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Index/doCashAccount')}" method="post">
+		<div class="form-group">
+			<label for="name" class="col-md-3 control-label">开 户 名</label>
+			<div class="col-md-5">
+			<input type="text" class="form-control" id="name" name="name" value="{$list.name|op_t}" placeholder="请输入名称">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="open_bank" class="col-md-3 control-label">开户银行</label>
+			<div class="col-md-5">
+			 <input type="text" class="form-control" id="nickname" name="open_bank" value="{$list.open_bank|op_t}" placeholder="请输入开户行">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="card" class="col-md-3 control-label">开户账号</label>
+			<div class="col-md-5">
+			<input type="text" class="form-control" id="card" name="card" value="{$list.card|op_t}" placeholder="请输入卡号">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-3 col-md-10">
+			<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+    

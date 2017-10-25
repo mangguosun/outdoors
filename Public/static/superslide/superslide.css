@@ -1,0 +1,23 @@
+
+.tv-slideBox{  height:310px; overflow:hidden; background:#333; position:relative;   } 
+.tv-slideBox .hd{ display:none;  } 
+.tv-slideBox li{ overflow:hidden;  } 
+.tv-slideBox li .pic{ width:450px; float:left;   } 
+.tv-slideBox li .pic img{ width:450px;  } 
+.tv-slideBox li .con{ position:relative;  background:#fff;  height:310px; width:360px; padding-left:20px;   float:left; background:#fff } 
+.tv-slideBox li .con .bg{ position:absolute; width:96px; height:96px; right:0px; top:0px;   } 
+.tv-slideBox li .con .title{  width:320px; padding-top:30px; height:90px;  } 
+.tv-slideBox li .con .title a{ color:#000;  font:normal 18px/30px "Microsoft YaHei"; _font-weight:bold; } 
+.tv-slideBox li .con .more_info{ color:#cbcbcb; width:320px;  padding-top:10px; margin-top:10px;   }
+.tv-slideBox li .con .more_info span{color:#848484; }
+.tv-slideBox li .con .intro{ color:#cbcbcb; width:320px;   padding-top:10px; margin-top:10px;   } 
+
+
+.tv-slideBox li .con .intro .more{ position:absolute; bottom:41px; left:20px; display:block; width:110px; height:38px; background:url("gtvsplit.png") -184px 0 no-repeat; overflow:hidden; line-height:990px;   } 
+.tv-slideBox li .con .intro .more:hover{ bottom:41px; } 
+.tv-slideBox .prev,
+.tv-slideBox .next{ position:absolute; z-index:1;width:39px; height:87px; overflow:hidden; cursor:pointer;  top:100px; background:url("gtvsplit.png") 0 0 no-repeat; } 
+
+.tv-slideBox .prev{left:0;}
+.tv-slideBox .next{ background-position:-41px 0; right:0; } 
+.tv-slideBox .prev:hover,.tv-slideBox .next:hover{ top:98px;  } 

@@ -1,0 +1,13 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title">优惠管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Websit/Pointcard/index',array('status'=>0))}">卡券清单</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Websit/Pointcard/index',array('status'=>2))}">卡券类型</a></li>
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li class="" ><include file="pointcard"/></li></if>
+  <if condition="$status eq 1"><li class="" ><include file="manage"/></li></if>
+  <if condition="$status eq 2"><li class="" ><include file="pointcard_type"/></li></if>
+ </ul>
+</block>

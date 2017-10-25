@@ -1,0 +1,292 @@
+<extend name="default/common"/>
+<block name="body">
+<div class="container clearfix">
+	<div class="shopcart">
+    
+    <notempty name="cart">
+	<div class="gwc" style="margin:auto;">
+
+ <form action="{:U('Shop/Order/getorderinfo')}"  role="form"  method="post">
+    	<div class="cart-box">
+<div class="cart-top">
+	<div class="cart-top-allgoods">全部商品 <span>{$totalNum}</span></div>
+</div>
+
+<div class="cart-listtitle">
+	<div class="cart-listtitle-box">
+	<div class="tb2_td1"></div>
+    	<div class="goods">商品信息</div>
+        <div class="oneprice">单价</div>
+        <div class="number">数量</div>
+        <div class="allprice">总价</div>
+        <div class="caozuo">操作</div>
+    </div>  
+</div>
+ <volist name="cart" id="vo">
+<div class="cart-list">
+	<div class="cart-list-box" >
+    	<li class="tb2_td1">
+		   <input type="checkbox" name="ids[]" class="newlist" id="newslist-{$vo.goods_id}-{$vo.sku_id}" checked value="{$vo.goods_id}|{$vo.sku_id}">
+		   <input type="hidden" name="price" class='prices' value="{$vo.price}">
+		
+		</li>
+        <li class="goods"><div class="goods-pic" ><img src="{$vo.goods_ico|getThumbImageById=55,55}" /></div>
+            <span><a href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['goods_id']))}">{$vo.goods_name} &nbsp;</a>{:get_shop_types_attribute_names($vo['sku_id'])}</span>
+        </li>
+        <li class="oneprice">￥{$vo.price}</li>
+        <li class="number">
+         <button class="changebtn decNum"  id="min-{$vo.goods_id}-{$vo.sku_id}" data-ID="{$vo.goods_id}"  data-skuid="{$vo.sku_id}"  type="button">-</button>
+                <input type="text" name="num" id="text_box-{$vo.goods_id}-{$vo.sku_id}" class="changetext" value="{$vo.num}" data-ID="{$vo.goods_id}" data-skuid="{$vo.sku_id}" style=" width:30px; text-align:center; border:1px solid #ccc;">
+                <button class="changebtn incrNum" id="add-{$vo.goods_id}-{$vo.sku_id}" data-ID="{$vo.goods_id}"  data-skuid="{$vo.sku_id}"  type="button">+</button>
+        </li>
+        <li class="allprice">￥<label id="total-{$vo.goods_id}-{$vo.sku_id}" class="tot" style="color:#ff5500;font-size:14px; font-weight:bold;"></label></li>
+		
+        <li class="caozuo"><a  class="cart_delItem btn btn-primary" href="javascript:" data-ID="{$vo.goods_id}" data-skuid="{$vo.sku_id}" >移除</a></li>
+    </div>
+       <div  style="display:none">
+	  
+       {$alltotalprice = $alltotalprice + $vo['price'] * $vo['num'] }
+       {$totalNum = $totalNum + $vo['num']}
+       </div>
+	   	<!---商品加减算总数---->
+		<script type="text/javascript">
+		$(function () {
+			setTotal()
+			//输入数量改变
+			$('#text_box-{$vo.goods_id}-{$vo.sku_id}').blur(function () {
+					var num = $(this).val();
+					var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					$.post(U('Shop/Shopcart/changeNum'), {'goods_id': goods_id,'sku_id':skuid,'goods_num':num}, function (res) {
+						if (res.status) {
+						 setTotal();
+						 get_total();
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+			});
+			//+添加+1
+			$('#add-{$vo.goods_id}-{$vo.sku_id}').click(function () {
+			        var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					var t = $(this).prev();
+					var  num = t.val();
+					$.post(U('Shop/Shopcart/changeNum'), {'goods_id': goods_id,'sku_id':skuid,'goods_num':++num}, function (res) {
+						if (res.status) {
+							t.val(num);
+							setTotal();
+						    get_total();
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+					
+					
+			});
+			//-1
+			$('#min-{$vo.goods_id}-{$vo.sku_id}').click(function () {
+					var  goods_id= $(this).attr('data-ID');
+					var  skuid= $(this).attr('data-skuid');
+					var t = $(this).next();
+					var  num = t.val();
+					
+					$.post(U('Shop/Shopcart/changeNum'),{'goods_id': goods_id,'sku_id':skuid,'goods_num':--num}, function (res) {
+						if (res.status) {
+							t.val(num);
+							setTotal();
+							get_total();
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+					
+			});
+			
+			function get_total(){
+					 $('#checkedAll').prop('checked',false);
+					var shop_check_price=0;
+					var shop_check_num=0;
+					$(":checkbox:checked").each(function(){
+					shop_check_price += parseFloat($(this).siblings().val()*$(this).parents().siblings('li').children('input').val());
+					shop_check_num +=parseInt($(this).parents().siblings('li').children('input').val())
+					})
+
+					$(".shop_total_nums").text(shop_check_num);  
+					$(".shop_total_price").text(shop_check_price.toFixed(2));  
+							
+			}
+			//计算价格
+			function setTotal() {
+				var nnn = $("#text_box-{$vo.goods_id}-{$vo.sku_id}");
+				$("#total-{$vo.goods_id}-{$vo.sku_id}").html((parseInt(nnn.val()) * {$vo.price}).toFixed(2));
+			}
+		})
+		</script>
+
+</div>
+</volist> 
+<input type="hidden" name="random_code" value="<?php echo md5($_SESSION['pay']);?>">
+<br>
+<input type="checkbox" checked id="checkedAll">全选/全不选
+<div class="cart-empty">
+
+<span><a class="btn btn-default delselectitem">删除选中项</a></span>
+<span><a href="{:U('Shop/Index/Index')}" class="btn btn-default">返回</a></span>
+<a class="btn btn-default clear_cart">清空购物车</a></div>
+<div class="cart-bottom">
+	<div class="cart-bottom-choose">已选商品<span class='shop_total_nums'> <label id="shuliang" class="common-color-red">{$totalNum}</label> </span>件</div>
+    <div class="cart-bottom-heji">合计（不含运费）：￥<span class="shop_total_price">{$alltotalprice}</span></div>
+    <div class="cart-bottom-jiesuan"><button type="submit" name="tocreateorder" class="btn btn-primary paybtn">去结算</button></div>
+</div>
+</form>
+
+
+    </div>
+    </div>
+    <else/>
+<div style="font-size: 16px;padding:2em 0;color: #ccc;text-align: center"> 购物车为空。O(∩_∩)O~ <br />
+<a href="{:U('Shop/Index/index')}">点击返回</a></div>
+</notempty>
+    </div>
+
+
+
+<script>
+	
+	//--全选/全不选
+	$('#checkedAll').click(function(){
+		if(this.checked){
+		    $("[name='ids[]']:checkbox").prop('checked',true);
+			   var shop_num=0;
+			   var total_price=0;
+			$("[name='ids[]']:checkbox").each(function(){
+			 	var cc= parseInt($(this).parents().siblings('li').children('input').val());
+			     shop_num+=cc;
+				//--单价--
+				var price= parseFloat($(this).siblings().val()*$(this).parents().siblings('li').children('input').val());
+				total_price+=price;
+			})
+			 $(".shop_total_nums").text(shop_num);  
+             $(".shop_total_price").text(total_price.toFixed(2));  
+			 
+		 }else{
+		    $("[name='ids[]']:checkbox").prop('checked',false);  
+			$(".shop_total_nums").text(0);  
+			$(".shop_total_price").text(0);  
+
+		  }
+	
+    });
+	
+
+		
+		$('.newlist').click(function(){
+			   $('#checkedAll').prop('checked',false);
+			   var shop_check_price=0;
+			   var shop_check_num=0;
+			if(this.checked){
+				$(":checkbox:checked").each(function(){
+					shop_check_price += parseFloat($(this).siblings().val()*$(this).parents().siblings('li').children('input').val());
+					shop_check_num +=parseInt($(this).parents().siblings('li').children('input').val())
+				})
+				$(".shop_total_nums").text(shop_check_num);  
+				$(".shop_total_price").text(shop_check_price.toFixed(2));  
+			
+			}else{
+			 
+					shop_check_price = parseFloat($(this).siblings().val()*$(this).parents().siblings('li').children('input').val());
+					shop_check_num =parseInt($(this).parents().siblings('li').children('input').val())
+					$(".shop_total_nums").text(parseInt($(".shop_total_nums").text()) - shop_check_num);
+					$(".shop_total_price").text( (parseFloat($(".shop_total_price").text()) - shop_check_price).toFixed(2));
+			
+			}
+		})
+		
+	
+	
+
+	
+	
+	//提交按钮
+	$("form").submit(function(){
+		$(".goods_id").each(function(){
+   			if($(this).attr("checked") == 'checked'){
+   				onOff = true;
+   			}
+   		});
+		if(onOff){
+			return true;
+		}else{
+			alert('请先选择');
+			return false;
+		}
+	});
+	 //删除选中
+
+	$(".delselectitem").click(function(){
+			var datas = $(":checkbox:checked").serialize();	
+		    if(!datas){
+			  toast.error("请选择要删除的商品!");
+			  return false;
+			}
+			
+			$.post(U('Shop/Shopcart/delselectitem'), datas, function (res) {
+	                     if(res.status==1){
+						    toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+                          
+						  }else{
+							  toast.error(res.info);
+						  }
+
+				}, 'json');
+	      
+	 
+	});
+	
+	
+	 //清空购物车
+    $(".clear_cart").click(function(){	
+   		$.post(U('Shop/Shopcart/clear'),'',function(res){
+		   if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1000);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+		
+    });
+	$(function () {	
+		//移除商品
+		$('.cart_delItem').click(function () {
+			if (confirm('你确定要移除该商品吗？')) {
+				var  goods_id= $(this).attr('data-ID');
+				var  skuid= $(this).attr('data-skuid');
+				$.post(U('Shop/Shopcart/delItem'), {'goods_id': goods_id,'sku_id':skuid}, function (res) {
+					if (res.status) {
+						toast.success(res.info);
+						setTimeout(function () {
+							location.reload();
+						}, 1500);
+					}
+					else {
+						toast.error(res.info);
+					}
+				}, 'json');
+			}
+		});
+		
+	})
+</script>
+</div>
+</block>

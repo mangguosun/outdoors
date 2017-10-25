@@ -1,0 +1,24 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title">优惠管理—<span style="font-size:14px;">发放卡券结果反馈</span>
+ <div class="pull-right"><a class="mbtn  btn-info common-color-white"  href="{:U('index',array('status'=>0))}">返回卡券清单</a></div>
+</div>
+<ul id="mytab" class="nav nav-tabs">
+ 本次添加结果：成功<span style="color:red"> {$succ} </span>条，失败<span style="color:red"> {$total - $succ} </span>条。还不够？您可以 <a class="mbtn  btn-info pointcard_sign common-color-white"  href="{:U('pointcard_add')}">继续添加</a><br>
+ <span style="color:green"><b>温馨提示：</b></span><span style="color:red;font-size:13px;">系统会自动排除号码重复数据，如最终结果与实际添加数量有偏差，请继续添加直到达到您的需求为止，如有不便敬请谅解。</span>
+</ul>
+<script>
+	$(function(){
+		$('.pointcard_sign').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+						//console.log(this.content);
+					}
+				}
+			});
+	})
+</script>
+</block>

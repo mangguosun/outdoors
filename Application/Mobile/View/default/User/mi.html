@@ -1,0 +1,71 @@
+<extend name="Public/common_user"/>
+<block name="body">
+      <div class="moblie_user_box"> <span class="mobile_crumbs "><a href="javascript:history.go(-1)" title="{:get_webinfo('webname')}"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_user">
+		<div class="text-right">
+		  <div>
+			<div class="user_screening_btn">找回密码</div>
+		  </div>
+		</div>
+		</span></div>
+  <section>
+   <div class="mobile_login">
+    <form class="login-form" id="J_findpwd_form" action="{:U('user/mi')}" method="post">
+         <div class="form-group">
+		  <input type="text" id="inputEmail" class="form-control" placeholder="请输入电子邮件" ajaxurl="/member/checkUserEmailUnique.html" errormsg="请填写正确格式的邮箱" nullmsg="请填写邮箱" datatype="e" value="" name="email">
+         </div>
+        <if condition="C('VERIFY_OPEN') eq 1">
+          <div class="form-group">
+             <input type="text" id="inputPassword" class="form-control" placeholder="请输入验证码" errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+           </div>
+          <div class="form-group" >
+		    <label for="verifyCode" class=".sr-only col-xs-12" style="display: none"></label>
+
+			
+		   <div class="col-xs-12 lg_lf_fm_verify" style="padding-left:15px;margin-top:5px;margin-bottom:5px;">
+								<img class="verifyimg reloadverify img-responsive" alt="点击切换" src="{:U('verify')}"
+									 style="cursor:pointer;height:35px;">
+		   </div>
+           <div class="controls Validform_checktip text-warning"></div>
+          </div>
+        </if>
+		<a class="btn btn-default col-xs-6" href="{:U('User/login')}">再去登录</a>
+		<button type="submit" class="col-xs-6 btn btn-primary pull-right" style="float: right">找 回</button>
+	 </form>
+	 </div>
+
+  </section>
+<script type="text/javascript">
+
+        $(document)
+                .ajaxStart(function () {
+                    $("button:submit").addClass("log-in").attr("disabled", true);
+                })
+                .ajaxStop(function () {
+                    $("button:submit").removeClass("log-in").attr("disabled", false);
+                });
+
+
+       
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+                function success(data) {
+                    handleAjax(data);
+                }
+            });
+
+           /*验证码*/
+            var verifyimg = $(".verifyimg").attr("src");
+			
+            $(".reloadverify").click(function () {
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+           
+    </script>
+</block>

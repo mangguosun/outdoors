@@ -1,0 +1,57 @@
+<div id="agree_col" class="col-md-8">
+  <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Revenue/doCashout')}" method="post">
+	    <div class="form-group">
+		    <label for="cash" class="col-md-3 control-label">累积资金</label>
+			<div class="col-md-3">
+			 <label for="total" class="control-label" ><?php if(!empty($balance)):?>￥{$balance.total}元<?php else:?>￥0 元<?php endif;?></label>
+			</div>
+		</div>
+		<div class="form-group">
+		    <label for="cash" class="col-md-3 control-label">可用余额</label>
+			<div class="col-md-3">
+			 <label for="balance" class="control-label" ><?php if($balance['balance']!=''):?>￥{$balance.balance} 元<?php else:?>￥ 0 元<?php endif;?></label>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <label for="cash" class="col-md-3 control-label">冻结资金</label>
+			<div class="col-md-3">
+			 <label for="frozen" class="control-label" ><?php if($balance['frozen']!=''):?><span class="common-color-red" >￥{$balance.frozen}</span> 元<?php else:?> ￥0 元<?php endif;?></label>
+		    </div>
+		</div>
+		
+        <div class="form-group">
+			<label for="cash" class="col-md-3 control-label">提现金额</label>
+			<div class="col-md-9">
+			  <label  for="frozen" class="col-md-3 control-label frozen"><input type="text" class="form-control" id="cash" placeholder="请输入金额" name="cash" value="{$balance.cash}"></label>
+			  <label for="cash" class="col-md-1 control-label"> 元 </label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="card" class="col-md-3 control-label">选择银行</label>
+		
+			<div class="col-md-9" >
+			    <notempty name="list">
+					<volist name="list" id="vo">
+						<tr>
+							<td><input type="radio" name="card" value="{$vo.card}" checked></td>
+							<td class="bank_list">{$vo.open_bank}</td>
+							<td>{$vo.card}</td>
+							<input type="hidden" name="open_bank" value="{$vo.open_bank}">
+							<input type="hidden" name="name"   value="{$vo.name}">
+						</tr>
+					</volist>
+					<else/>
+					   请去填写银行卡信息
+				</notempty>
+			</div>
+		</div>
+        <label for="" class="col-md-9 control-label"></label>
+		
+	   <div class="form-group">
+			<div class="col-md-offset-3 col-md-10">
+			<button type="submit" class="btn btn-primary">提交申请</button>
+			</div>
+		</div>
+  </form>
+</div>

@@ -1,0 +1,71 @@
+<div class="row">
+	    <div class="col-md-12">
+	    <form class="form-horizontal center_info ajax-form" role="form" action="{:U('Websit/Index/do_webconfig')}" method="post">
+		<div class="form-group postion">
+            <label for="webname" class="col-md-2 control-label">网站名称</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="webname" placeholder="请输入网站名称" name="webname" value="{$list.webname}">
+            </div>
+          </div>
+          <div class="form-group postion">
+            <label for="slogan" class="col-md-2 control-label">网站口号</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="slogan" placeholder="请输入网站口号" name="slogan" value="{$list.slogan}">
+            </div>
+          </div>
+          <div class="form-group postion">
+            <label for="url" class="col-md-2 control-label">域名前缀</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="url" placeholder="请输入正确的域名前缀" name="url"  value="{$list.url}" <notempty name="list.url">readonly</notempty>>
+            </div>
+            <div class="col-md-6">
+             <label for="url" class=" control-label">.huodongli.cn</label>
+            </div>
+          </div>
+          <div class="form-group postion">
+            <label for="domain" class="col-md-2 control-label">独立域名</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="domain" placeholder="如：www.abc.com" name="domain" value="{$list.domain}" <notempty name="list.domain">readonly</notempty>> 
+			     <p>修改请发邮件到活动力客服：kefu@huodongli.cn</p>
+            </div>
+          </div>
+         
+			<div class="form-group postion">
+				<label for="cover_id" class="col-md-2 control-label">导航LOGO</label>
+				<div class="col-md-6">
+					{:hook('UploadImage', array('find_name'=>'cover_id','value'=>$list['cover_id'],'buttontext'=>'上传导航LOGO','buttonwidth'=>200,'multi'=>false,'ds'=>'180*65'))}
+				</div>
+			</div>
+		    
+            <div class="form-group postion">
+				<label for="cover_id" class="col-md-2 control-label">网站ICON</label>
+				<div class="col-md-6">
+					{:hook('UploadImage', array('find_name'=>'logo_icons','value'=>$list['logo_icons'],'buttontext'=>'上传网站ICON','buttonwidth'=>200,'multi'=>false,'ds'=>'32*32'))}
+				</div>
+			</div>
+		   <div class="form-group postion">
+            <label for="email" class="col-md-2 control-label">Email</label>
+            <div class="col-md-6">
+              <input type="email" class="form-control" id="email" placeholder="请输入正确的email" name="email" value="{$list.email}">
+            </div>
+          </div>
+		  <div class="form-group postion">
+            <label for="telphone" class="col-md-2 control-label">客服电话</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="telphone" placeholder="请输入正确的400电话" name="telphone" value="{$list.telphone}">
+            </div>
+          </div>
+		  <div class="form-group postion">
+		    <label for="user_agreement" class="col-md-2 control-label">注册协议</label>
+            <div class="col-md-9">
+              {:Hook('Ueditor',array('name'=>'user_agreement','value'=>$list['user_agreement']))}
+            </div>
+		  </div>
+		  <div class="form-group postion">
+            <div class="col-md-offset-2 col-md-12">
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </form>
+		</div>
+	  </div>

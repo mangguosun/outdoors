@@ -1,0 +1,70 @@
+<extend name="Public/base" />
+<block name="body">
+	<div class="main-title">
+        <h2>角色名配置</h2>
+    </div>
+    <form action="{:U('Manage/User/channel_member')}" method="post" class="form-horizontal ajax-form" role="form" >
+    	 <div class="form-item">
+			<label for="traveldays" class="item-label">启用自定义角色名<span class="check-tips">(默认系统角色名)</span></label>
+			<div class="controls">
+				<input type="radio" name="status" value="1" <if condition="$newlist['status']==1">checked</if>>&nbsp;是&nbsp;
+				<input type="radio" name="status" value="0" <if condition="$newlist['status']==0">checked</if>>&nbsp;否&nbsp;
+				
+			</div>
+		</div>
+
+		<div id="channel_member_table" style="display:none">
+	        <label class="item-label">原（管理员）更改为：</label>
+	        <div class="controls">
+	             <input  name="admin" type="text" class="text input-large" check-type="Text" placeholder="不填默认为管理员" value="{$newlist.admin}" />   
+	        </div>
+	        <label class="item-label">原（官方领队）更改为：</label>
+	        <div class="controls">
+	             <input  name="leader" type="text" class="text input-large" check-type="Text" placeholder="不填默认为官方领队" value="{$newlist.leader}"/>   
+	        </div>
+	        <label class="item-label">原（认证达人）更改为：</label>
+	        <div class="controls">
+	             <input  name="master" type="text" class="text input-large" check-type="Text" placeholder="不填默认为认证达人" value="{$newlist.master}"/>   
+	        </div>
+	        <label class="item-label">原（普通会员）更改为：</label>
+	        <div class="controls">
+	             <input  name="member" type="text" class="text input-large" check-type="Text" placeholder="不填默认为普通会员" value="{$newlist.member}" />   
+	        </div>
+	       
+	        
+        </div>
+
+         <br/>
+        <div class="form-item">
+	            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" target-ls="a">保存</button>
+	            <a class="w_btn btn-return" href="{:U('User/index')}">返回</a>
+	     </div>
+       
+    </form>
+ <script type="text/javascript">
+ 	 $(document).ready(function(){ 
+    	var hah=$("input:radio[name='status']:checked").val();
+    	if(hah==1){ 
+    		$('#channel_member_table').show();
+    	}else{ 
+    		$('#channel_member_table').hide();
+    	}	
+    })
+
+	$(":radio").click(function(){
+    	var hah=$("input:radio[name='status']:checked").val();
+    	if(hah==1){ 
+    		$('#channel_member_table').show();
+    	}else{ 
+    		$('#channel_member_table').hide();
+    		
+    	}
+    })	
+ </script>
+
+  
+
+  
+
+	
+</block>

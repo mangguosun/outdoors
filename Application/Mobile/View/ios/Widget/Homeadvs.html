@@ -1,0 +1,16 @@
+<if condition="$lists neq false">
+<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+  <ul class="am-slides">   
+   <volist name="lists.res" id="vo">
+        <li>
+        	<php>if($vo['link']){</php>
+          <a href="{$vo.link}" target="_blank"><img class="lazy" src="{$vo.advspic|getThumbImageById=570,200}" data-original="{$vo.advspic|getThumbImageById=570,200}" alt=""> </a> 
+          <php>}else{</php>
+           <img class="lazy" src="{$vo.advspic|getThumbImageById=570,200}" data-original="{$vo.advspic|getThumbImageById=570,200}" alt="">
+           <php>}</php>
+         
+        </li>
+    </volist>
+  </ul>
+</div>
+</if>

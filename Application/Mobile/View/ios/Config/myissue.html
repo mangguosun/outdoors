@@ -1,0 +1,117 @@
+<extend name="Public/common_user"/>
+<block name="body">
+    <header data-am-widget="header" class="am-header am-header-default">
+        <div class="am-header-left am-header-nav"><a href="{:U('Mobile/Config/index')}" class=""><i
+                class="am-icon-chevron-left"></i></a>我的故事
+        </div>
+        <div class="am-header-right am-header-nav"><a href="{:U('Mobile/Issue/publishstory')}" title="发布故事" data-am-modal-confirm><i class="am-icon-edit set-icon"></i></a></div>
+    </header>
+    <include file="Public/topnavbar"/>
+    <notempty name="myissue_arr">
+
+        <div class="am-panel-default">
+
+            <div class="myissue-list-tpl">
+                <li>
+                    <div class="am-u-sm-5 myissue-list-box-img">
+                        <a href="" data-href>
+                            <img src="__PUBLIC__/Core/images/blank.png" data-original="" alt="" title=""
+                                 class=" myissue-lists-img" data-thumb/> </a>
+                    </div>
+                    <div class="am-u-sm-7 myissue-list-text-box">
+                        <a href="" data-href>
+                            <h3 class="myissue-lists-title text-more" data-title>标题</h3></a>
+
+                        <p class="myissue-lists-time" data-create-time>活动时间</p>
+
+                        <p class="myissue-lists-status" data-status>
+                            <i class="am-icon-eye"></i><span data-view-count>访问数量</span>
+                            <i class="am-icon-comment"></i><span data-comment-count>内容数量</span></p>
+                    </div>
+
+
+                </li>
+
+            </div>
+
+            <div class="myissue-list-box">
+                <ul></ul>
+                <div class="loading-more"><i class="am-icon-circle-o-notch am-icon-spin" loading-icon
+                                             style=" display:none"></i> <span loading-text>加载更多</span></div>
+            </div>
+
+
+            <script>
+                $(function () {
+                    var loading_i = 0;
+                    var get_url = {};
+                    var gget_url = {$get_url};
+                    if (!$.isEmptyObject(gget_url)) {
+                        get_url = gget_url;
+                    }
+                    function get_myissue(is_del) {
+                        if (is_del == true) {
+                            $(".collection-lists").remove();
+                        }
+                        var loading_more = $(".loading-more");
+                        var loading_text = loading_more.find('[loading-text]');
+                        var loading_icon = loading_more.find('[loading-icon]');
+                        loading_text.html('奋力加载中');
+                        loading_icon.show();
+
+                        get_url['page'] = loading_i;
+                        $.getJSON("{:U('Mobile/Config/get_myissue')}", get_url, function (json) {
+                            if (json) {
+                                $.each(json, function (index, array) {
+                                    var myissue_list_tpl = $('.myissue-list-tpl li');
+                                    var myissue_list_li = myissue_list_tpl.clone();
+                                    var myissue_list_href = myissue_list_li.find('[data-href]');//url
+                                    var myissue_list_thumb = myissue_list_li.find('[data-thumb]');//图片
+                                    var myissue_list_title = myissue_list_li.find('[data-title]');//标题
+                                    var myissue_list_create_time = myissue_list_li.find('[data-create-time]');//开始时间
+                                    var myissue_list_view_count = myissue_list_li.find('[data-view-count]');
+                                    var myissue_list_comment_count = myissue_list_li.find('[data-comment-count]');
+                                    myissue_list_href.attr("href", array['url']);
+                                    myissue_list_thumb.attr("alt", array['title']);
+                                    myissue_list_thumb.attr("title", array['title']);
+                                    myissue_list_thumb.attr("data-original", array['thumb']);
+                                    myissue_list_title.html(array['title']);
+                                    myissue_list_create_time.html(array['create_time']);
+                                    myissue_list_view_count.html(array['view_count']);
+                                    myissue_list_comment_count.html(array['comment_count']);
+                                    myissue_list_thumb.lazyload({effect: "fadeIn", threshold: 100});
+                                    $(".myissue-list-box ul").append(myissue_list_li);
+                                });
+                                $(".myissue-list-box").trigger("scroll");
+                                loading_text.html('加载更多');
+                                loading_icon.hide();
+                                loading_i++;
+                                $('.loading-more').scrollspy({});
+                            } else {
+                                $('.loading-more').unbind('inview.scrollspy.amui').unbind('outview.scrollspy.amui');
+
+                                loading_text.html('已经没有了');
+                                loading_icon.hide();
+                            }
+                        });
+
+                    }
+
+                    get_myissue();
+
+                    $('.loading-more').on('inview.scrollspy.amui', function () {
+                        timeout = setTimeout(function () {
+                            get_myissue();
+                        }, 1000);
+                    }).on('outview.scrollspy.amui', function () {
+                        clearTimeout(timeout)
+                    });
+                })
+            </script>
+            <else/>
+            <div class="am-panel-bd"> aOh! 暂时还没有内容!</div>
+        </div>
+    </notempty>
+
+
+</block>

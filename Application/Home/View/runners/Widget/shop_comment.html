@@ -1,0 +1,23 @@
+<div class="runners-index-comments-box">
+    <div class="runners_index_title">最新评论</div>
+       
+    <if condition="$shop_comment_info neq false">
+      <div class="runners-comments-list">
+        <volist name="shop_comment_info" id="vo">
+          <dl>
+            <if condition="$vo['nickname'] eq ''">
+              <dt class="col-md-3"><a target="_blank"><img src="{:getRootUrl()}Addons/Avatar/default_64_64.jpg"  class="avatar-img"></a></dt>
+              <dd class="col-md-9"><a target="_blank" title="{$vo.nickname}" href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['row_id']))}" class="comment-name">游客</a><span class="comment-time">{$vo.create_time|date='Y/m/d',###}</span><br>
+                <p>{$vo.content|op_t|getShortSp=10|parse_comment_content}</p>
+              </dd>
+              <else />
+              <dt class="col-md-3"><a target="_blank" href="{$vo.space_url}"><img src="{$vo.user_img}" class="avatar-img" ucard="{$vo.uid}"></a></dt>
+              <dd class="col-md-9"><a target="_blank" title="{$vo.nickname}" href="{:U('Shop/Index/goodsDetail',array('id'=>$vo['row_id']))}" class="comment-name">{$vo.nickname}</a><span class="comment-time">{$vo.create_time|date='Y/m/d',###}</span><br>
+                <p>{$vo.content|op_t|getShortSp=10|parse_comment_content}</p>
+              </dd>
+            </if>
+          </dl>
+        </volist>
+      </div>
+    </if>
+</div>

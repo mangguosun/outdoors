@@ -1,0 +1,52 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>科目管理</h2>
+</div>
+<div class="cf">
+     <div class="fr">
+            <a class="w_btn add-btn " href="{:U('Course/createsub')}">
+                创建科目
+            </a> 
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="">科目编号</th>                
+                <th class="">科目名称</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="data"  id="vo">
+                <tr>
+                    <td>{$vo.subsn}</td>
+                    <td>{$vo.name}</td>
+                    <td>
+                        <a href="{:U('Manage/Course/editsubject',array('id'=>$vo['id']))}" class="mbtn btn-default">编辑</a>
+                        <a class="mbtn btn-default" href="{:U('Manage/Course/deletesubject',array('id'=>$vo['id']))}">删除</a>
+                    </td>
+                </tr>
+					<volist name="vo['data_2nd']"  id="vo2">
+					<tr>
+						<td>{$vo2.subsn}</td>
+						<td>{$vo2.name}</td>
+						<td>
+							<a href="{:U('Manage/Course/editsubject',array('id'=>$vo2['id']))}" class="mbtn btn-default">编辑</a>
+							<a class="mbtn btn-default" href="{:U('Manage/Course/deletesubject',array('id'=>$vo2['id']))}">删除</a>
+						</td>
+					</tr>
+					</volist>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+     <div class="page">
+        {$page}
+    </div>
+   
+</block>

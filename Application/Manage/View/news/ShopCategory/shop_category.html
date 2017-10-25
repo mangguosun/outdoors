@@ -1,0 +1,188 @@
+<extend name="Public/base1" />
+<block name="style">
+<style>
+.typemeun_icon{ }
+.typemeun_icon i{ font-size:20px; vertical-align:middle }
+
+</style>
+ 
+</block>
+<block name="body">
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="table-toolbar">
+			<a class="btn btn-info" href="{:U('add',array('pid'=>I('get.pid',0)))}">新增分类</a>
+		</div>
+     </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky" >
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">商品分类管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>    
+			<div class="widget-body">
+				<table class="table table-bordered table-hover" id="simpledatatable">
+					<thead>
+						<tr>
+							<th width="220">分类名称</th>
+                            <th width="120">分类图片</th>
+							<th width="120">分类排序</th>
+						
+							<th width="120">状态</th>
+							
+							<th width="80">操作</th>
+						</tr>
+					</thead>                
+					<tbody class="">
+						<volist name="tree" id="item">
+                        	<tr >
+								<td align="left" style="cursor: pointer;width: 220px;">
+                                <if condition="$item['_']">
+                                    <span class="typemeun_icon" data-id="{$item.id}" data-pid="{$item.pid}"><i class="fa fa-plus-square"></i></span>
+                                </if>&nbsp;&nbsp;{$item.title}
+                                </td>
+                                <td><img src="{$item.category_pic|getThumbImageById=50,50}" width="50" height="50" /></td>
+								<td>{$item.sort}</td>
+								<td width="120">
+									<if condition="$item['status'] eq 1">
+                                        启用
+                                    <else/>
+                                        禁用
+                                    </if>
+                                
+                                </td>
+								<td width="80"> 
+									<div class="btn-group">        
+										<div class="btn-group">
+											<a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+											操作 <i class="fa fa-angle-down"></i>
+											</a>
+											<ul class="dropdown-menu">
+												<li>
+													<a title="编辑" href="{:U('ShopCategory/edit',array('id'=>$item['id']))}">编辑</a>
+												</li>
+                                                <li>
+                                                <if condition="$item['status'] eq 1">
+                                                    <a href="{:U('ShopCategory/ajax_status',array('id'=>$item['id'],'status'=>0))}" class='ajax-get' >禁用</a>
+                                                <else/>
+                                                    <a href="{:U('ShopCategory/ajax_status',array('id'=>$item['id'],'status'=>1))}" class='ajax-get' >启用</a>
+                                                </if>
+                                                </li>
+                                                <li class="divider"></li>
+												<li>
+													<if condition="$item['_']">
+                                                        <a href="javascript:" class=''>固定</a>
+													 <else/>
+                                                     	<a href="{:U('ShopCategory/ajax_del',array('id'=>$item['id']))}" class='ajax-get'>删除</a>
+                                                     </if>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</td>
+							</tr>
+                        	<if condition="$item['_']">
+
+                                <volist name="item['_']" id="item_c">
+               
+                                            <tr data-id="{$item_c.id}" data-pid="{$item_c.pid}" class="menu_type_c" style="display:none" >
+                                                <td align="left" style="cursor: pointer;width: 220px; padding-left:40px;">
+                                                {$item_c.title}
+                                                </td>
+                                                <td><img src="{$item_c.category_pic|getThumbImageById=50,50}" width="50" height="50" /></td>
+                                                <td>{$item_c.sort}</td>
+                                                <td width="120">
+                                                    <if condition="$item_c['status'] eq 1">
+                                                        启用
+                                                    <else/>
+                                                        禁用
+                                                    </if>
+                                                </td>
+                                                <td width="80"> 
+                                                    <div class="btn-group">        
+                                                        <div class="btn-group">
+                                                            <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            操作 <i class="fa fa-angle-down"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li>
+                                                                    <a title="编辑" href="{:U('ShopCategory/edit',array('id'=>$item_c['id']))}">编辑</a>
+                                                                </li>
+                                                                <li>
+                                                                <if condition="$item['status'] eq 1">
+                                                                    <a href="{:U('ShopCategory/ajax_status',array('id'=>$item_c['id'],'status'=>0))}" class='ajax-get' >禁用</a>
+                                                                <else/>
+                                                                    <a href="{:U('ShopCategory/ajax_status',array('id'=>$item_c['id'],'status'=>1))}" class='ajax-get' >启用</a>
+                                                                </if>
+                                                                </li>
+                                                                <li class="divider"></li>
+                                                                <li>
+                                                                    <if condition="$item['_']">
+                                                                        <a href="javascript:" class=''>固定</a>
+                                                                     <else/>
+                                                                        <a href="{:U('ShopCategory/ajax_del',array('id'=>$item_c['id']))}" class='ajax-get'>删除</a>
+                                                                     </if>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                         
+                                </volist>
+	
+                            </if>
+                            
+						</volist>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+
+</block>
+<block name="script">
+<!--Page Related Scripts-->
+
+<script type="text/javascript">
+$(function(){  
+	$(".typemeun_icon").click(function(){
+	$(".menu_type_c").hide();
+		var id = $(this).attr('data-id');
+		var pid = $(this).attr('data-pid');
+		if($(this).hasClass("open")){
+			$(this).removeClass("open");
+			$(this).find('i').removeClass("fa-minus-square");
+		}else{
+			
+			
+			$(".typemeun_icon").removeClass("open");
+			$(".typemeun_icon").find('i').removeClass("fa-minus-square");
+			
+			$(this).addClass("open");
+			$(this).find('i').addClass("fa-minus-square"); 
+			$(".menu_type_c").each(function(){
+				var c_pid = $(this).attr('data-pid');
+				if(c_pid == id){
+					$(this).show();
+				}	
+			});
+	  
+		}
+	});
+});
+</script>
+    
+
+</block>
+

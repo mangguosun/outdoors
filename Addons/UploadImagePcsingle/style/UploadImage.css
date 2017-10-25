@@ -1,0 +1,17 @@
+.pc_uploadfile_single{ display:block; position:relative;}
+.pc_uploadfile_single:before,
+.pc_uploadfile_single:after {content: " ";display: table;}
+.pc_uploadfile_single .uploadfile_input{ display:none}
+.pc_uploadfile_single .uploadify{ float:left;}
+.pc_uploadfile_single .uploadify-queue{ display:none}
+.pc_uploadfile_single .uploadify-button{ background:#FFF}
+.pc_uploadfile_single .upload-img-btn{border:3px #CCC dashed; padding:0; color:#CCC; cursor:pointer; text-align:center; font-size:28px}
+.pc_uploadfile_single .upload-img-btn:hover{ color:#999}
+.pc_uploadfile_single .upload-img-btn i{ font-size:40px}
+.pc_uploadfile_single .upload-img-box-home{ position:absolute;}
+.pc_uploadfile_single .upload-img-box-home .upload-pre-item-home{position: relative;width:100%;  text-align:center; border:1px #ccc solid; background:#ccc;}
+.pc_uploadfile_single .upload-pre-item-home img{ width:100%; height:100%;cursor:pointer}
+.pc_uploadfile_single .upload-pre-item-home .btn-edit{position: absolute;bottom: 0;right: 0; width:20px; height:20px; line-height:20px;cursor: pointer; background:#CCC; color:#FFF;}
+.pc_uploadfile_single .upload-pre-item-home .btn-edit:hover {text-decoration: none;border-bottom: 0 none;}
+.pc_uploadfile_single .uploadify{  position:absolute;}
+

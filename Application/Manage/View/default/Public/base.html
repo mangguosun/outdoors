@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head"/>
+</head>
+<body>
+<!-- 头部 -->
+<php> D('Home/Member')->need_login();</php>
+<a id="goTopBtn"></a>
+<div id="top_bar" class="top_bar">
+    <php>$logo_pic = get_webinfo('cover_id')</php>
+    <if condition="logo_pic">
+             <div class="small_logo_pic" style="background:#2DC3E8"><a  href="{:U('Home/Index/index')}" title="{:get_webinfo('webname')}"><img style="width:130px; height:40px;"src="{$logo_pic|getThumbImageById=180,65}" alt="{:get_webinfo('webname')}" ></a></div>
+    </if>
+    <div class="top_nav">
+    	<ul>
+        <volist name="__MENU__.main" id="menu">
+            <li class="{$menu.class|default=''}"><a href="{$menu.url|U}">{$menu.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    
+<div class="text-right pull-right"> 
+        <php> $unreadMessage=D('Common/Message')->getHaventReadMeassageAndToasted(is_login()); </php>
+        <ul class="nav navbar-nav navbar-right" style=" padding:0; margin:0">
+          <!--登录面板-->
+            <li class="dropdown op_nav_ico">
+              <a id="nav_info" class="dropdown-toggle text-left" data-toggle="dropdown"> <span class="glyphicon glyphicon-bell"></span> <span id="nav_bandage_count" 
+              <if condition="count($unreadMessage) eq 0"> style="display: none"</if>
+              class="badge pull-right">{:count($unreadMessage)}</span> &nbsp; </a>
+              <ul class="dropdown-menu extended notification">
+                <li style="padding-left: 15px;padding-right: 15px;">
+                  <div class="row nav_info_center">
+                    <div class="col-md-9 nav_align_left"><span id="nav_hint_count">{:count($unreadMessage)}</span> 条未读 </div>
+                    <div class="col-md-3"><i onClick="setAllReaded()" class="set_read glyphicon glyphicon-ok" title="全部标为已读"></i></div>
+                  </div>
+                </li>
+                <li>
+                  <div style="position: relative;width: auto;overflow: hidden;max-height: 250px ">
+                    <ul id="nav_message" class="dropdown-menu-list scroller "
+                                            style=" width: auto;">
+                      <if condition="count($unreadMessage) eq 0">
+                        <div style="font-size: 18px;color: #ccc;font-weight: normal;text-align: center;line-height: 150px"> 暂无任何消息! </div>
+                        <else/>
+                        <volist name="unreadMessage" id="message">
+                          <li> <a data-url="{$message.url}" onClick="readMessage(this,{$message.id})"> <i class="glyphicon glyphicon-bell"></i> {$message.title} <span class="time"> {$message.ctime} </span> </a> </li>
+                        </volist>
+                      </if>
+                    </ul>
+                  </div>
+                </li>
+                <li class="external"> <a href="{:U('Usercenter/Message/message')}"> 消息中心 <i class="glyphicon glyphicon-circle-arrow-right"></i> </a> </li>
+              </ul>
+            </li>
+            <php> $common_header_user = query_user(array('nickname','avatar32')); </php>
+            
+            <li> <a style="margin-left: 5px;" title="账号设置" href="{:U('Usercenter/Config/index')}" target="_blank"><i class=""><img src="{$common_header_user.avatar32}" style="width:20px; height:20px;"/></i></a> </li>
+            <li class="dropdown "><a role="button" class="dropdown-toggle dropdown-toggle-avatar" data-toggle="dropdown">{$common_header_user.nickname}&nbsp;<i style="font-size: 12px" class="glyphicon glyphicon-chevron-down"></i> </a>
+              <ul class="dropdown-menu text-left" role="menu">
+                <li><a href="{:U('Usercenter/Message/message')}" target="_blank"><span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;消息中心</a> </li>
+                <li><a href="{:U('Usercenter/Config/index')}" target="_blank"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;账号设置</a> </li>
+                  <li><a href="{:U('Home/Index/index')}" target="_blank"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;回到首页</a></li>
+                <li><a event-node="logout"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a> </li>
+              </ul>
+            </li>
+
+        </ul>
+      </div>
+</div>
+
+<!-- /头部 -->
+<!-- 主体 -->
+
+<!-- 边栏 -->
+<div class="sidebar">
+    <!-- 子导航 -->
+    <block name="sidebar">
+        <div id="subnav" class="subnav">
+            <volist name="__MENU__.child" id="sub_menu">
+                <!-- 子导航 -->
+                <notempty name="sub_menu">
+                    <notempty name="key"><h3><i class="icon icon-unfold"></i>{$key}</h3></notempty>
+                    <ul class="side-sub-menu" style='display:none;'>
+                        <volist name="sub_menu" id="menu">
+                            <li>
+                                <a class="item" href="{$menu.url|U}">{$menu.title}</a>
+                            </li>
+                        </volist>
+                    </ul>
+                </notempty>
+                <!-- /子导航 -->
+            </volist>
+        </div>
+    </block>
+    <!-- /子导航 -->
+</div>
+<!-- /边栏 -->
+
+
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">这是内容</div>
+    </div>
+    <div id="main" class="main">
+        <block name="nav">
+            <!-- nav -->
+            <notempty name="_show_nav">
+                <div class="breadcrumb">
+                    <span>您的位置:</span>
+                    <assign name="i" value="1"/>
+                    <foreach name="_nav" item="v" key="k">
+                        <if condition="$i eq count($_nav)">
+                            <span>{$v}</span>
+                            <else/>
+                            <span><a href="{$k}">{$v}</a>&gt;</span>
+                        </if>
+                        <assign name="i" value="$i+1"/>
+                    </foreach>
+                </div>
+            </notempty>
+            <!-- nav -->
+        </block>
+
+        <block name="body"></block>
+    </div>
+    <div class="cont-ft">
+        <div class="copyright">
+            <div >活动力客服热线：0512-68183028 QQ：347194537 | <i class="fa fa-desktop"></i> <a class="" href="{:U('Home/Index/index')}" target="_blank">访问电脑前台</a>&nbsp;&nbsp;<i class="fa fa-mobile fa-lg"></i> <a class="qrcode_mobile_a" href="javascript:">访问手机版前台<php>$get_qrcode = D('qrcode')->where(array('types'=>'website','siteid'=>SITEID))->find();</php></a><div class="qrcode_mobile"><img class="" src="{$get_qrcode.url}"></div></div>
+        </div>
+    </div>
+</div>
+<div class="ajax_loading_mask"></div>
+<div class="ajax_loading_msg">系统执行中，请稍等。。。</div>
+<script type="text/javascript" src="__STATIC__/think.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript" src="__JS__/common.js?v={:C('WEB_VERSION')}"></script>
+<script type="text/javascript">
+    +function () {
+        var $window = $(window), $subnav = $("#subnav"), url;
+        $window.resize(function () {
+            $("#main").css("min-height", $window.height() - 130);
+        }).resize();
+
+        /* 左边菜单高亮 */
+        url = window.location.pathname + window.location.search;
+        url = url.replace(/(\/(p)\/\d+)|(&p=\d+)|(\/(id)\/\d+)|(&id=\d+)|(\/(group)\/\d+)|(&group=\d+)/, "");
+        $subnav.find("a[href='" + url + "']").parent().addClass("current");
+		$subnav.find("a[href='" + url + "']").parent().parent().show();
+		$subnav.find("a[href='" + url + "']").parent().parent().prev("h3").find('i').addClass("icon-fold").end().end();
+		
+        /* 左边菜单显示收起 */
+        $("#subnav").on("click", "h3", function () {
+            var $this = $(this);
+            $this.find(".icon").toggleClass("icon-fold");
+            $this.next().slideToggle("fast").siblings(".side-sub-menu:visible").
+                    prev("h3").find("i").removeClass("icon-fold").end().end().hide();
+        });
+
+        $("#subnav h3 a").click(function (e) {
+            e.stopPropagation()
+        });
+
+        $(".qrcode_mobile_a").click(function (e) {
+                                              
+                if($(".qrcode_mobile").is(":hidden")){
+                    $(".qrcode_mobile").show();
+                }else{
+                    $(".qrcode_mobile").hide();
+                }
+        });
+        
+        $(".qrcode_mobile").click(function () {                     
+            $(this).hide();
+        });
+		
+		
+
+        /* 表单获取焦点变色 */
+        $("form").on("focus", "input",function () {
+            $(this).addClass('focus');
+        }).on("blur", "input", function () {
+                    $(this).removeClass('focus');
+                });
+        $("form").on("focus", "textarea",function () {
+            $(this).closest('label').addClass('focus');
+        }).on("blur", "textarea", function () {
+                    $(this).closest('label').removeClass('focus');
+                });
+		
+		 //$(".sidebar").height($(".sidebar").height()-40)
+		//var sidebarHeight = $(".sidebar").height()-79;
+		//$(".sidebar").height(sidebarHeight);
+		
+        // 导航栏超出窗口高度后的模拟滚动条
+        var sHeight = $(".sidebar").height()-80;
+        var subHeight = $(".subnav").height()-80;
+        var diff = subHeight - sHeight; //250
+        var sub = $(".subnav");
+        if (diff > 0) {
+            $(window).mousewheel(function (event, delta) {
+                if (delta > 0) {
+                    if (parseInt(sub.css('marginTop')) > -10) {
+                        sub.css('marginTop', '0px');
+                    } else {
+                        sub.css('marginTop', '+=' + 10);
+                    }
+                } else {
+                    if (parseInt(sub.css('marginTop')) < '-' + (diff - 10)) {
+                        sub.css('marginTop', '-' + (diff - 10));
+                    } else {
+                        sub.css('marginTop', '-=' + 10);
+                    }
+                }
+            });
+        }
+    }();
+ 
+</script>
+
+
+
+<block name="header">
+
+  
+</block>
+<!-- /主体 -->
+<!-- 底部 -->
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/placeholder/placeholder.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/atwho/atwho.js"></script>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/atwho//atwho.css"/>
+<block name="script"></block>
+{:hook('pageFooter', 'widget')}
+<div class="hidden">
+  <block name="hidden"></block>
+</div>
+<!-- /底部 -->
+</body>
+</html>

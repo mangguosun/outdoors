@@ -1,0 +1,30 @@
+<extend name="default/common"/>
+<block name="style">
+</block>
+<block name="body">
+<!--导航-->
+<include file="_nav"/>
+
+
+<div class="container">
+<div class="row common-margin-tfif">
+  <div class="col-md-8">
+   <div class="forum_module">
+   <div class="row">
+        <div class="col-md-12 common-margin-bfif">
+          <div class="">
+            
+            {:Hook('Ueditor',array('name'=>'content','value'=>$list['content'],'toolbars'=>'all'))}
+
+          </div>
+        </div>
+      </div>
+     
+      
+    </div>
+  </div>
+
+</div>
+</div>
+</block>
+

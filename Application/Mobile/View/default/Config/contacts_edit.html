@@ -1,0 +1,73 @@
+<extend name="Public/common_user"/>
+<block name="body">
+<div class="moblie_user_box"> <span class="mobile_crumbs "><a href="javascript:history.go(-1)" title="{:get_webinfo('webname')}"><i class="glyphicon glyphicon-chevron-left"></i></a></span> <span class="mobile_user">
+		<div class="text-right">
+		    <div><div class="user_screening_btn">修改常用参加者</div></div>
+		</div>
+	 </span></div>
+    <div class="mobile_login">
+		<form class="form-horizontal  ajax-form" role="form" action="{:U('Mobile/Config/doEdit')}" method="post">
+			<input type="hidden" name="id" value="{$data.id}">
+			<label for="realname" class="control-label">真实姓名</label><span style="font-size:14px;color:red;">*</span>
+			<input id="realname" name="realname" type="" class="col-xs-8 form-control form_check" check-type="Text"  value="{$data.realname}" placeholder="请填写真实姓名"/>
+			<div class="h15"></div>
+			
+			<label for="card" class="control-label">证件号码</label><span style="font-size:14px;color:red;">*</span>
+			<input id="card" name="card" type="" class="form-control form_check" check-type="Text"  value="{$data.card}" placeholder="请填写身份证或护照号"/>
+			<div class="h15"></div>
+
+			<label for="telephone" class="control-label">联系电话 <span style="font-size:14px;color:red;">*</span></label>
+			<input id="telephone" name="telephone" type="" class="form-control form_check" check-type="Phone"  value="{$data.telephone}" placeholder="请填写联系电话"/>
+			<div class="h15"></div>
+			
+			<label for="email" class="control-label">邮箱 <span style="font-size:14px;color:red;">*</span></label>
+			<input id="email" name="email" type="" class="form-control form_check" check-type="Email"  value="{$data.email}" placeholder="请填写Email"/>
+			<div class="h15"></div>
+			
+			<label for="emergencycontact" class="control-label">紧急联系人<span style="font-size:14px;color:red;">*</span></label>
+			<input id="emergencycontact" name="emergencycontact" type="" class="form-control form_check" check-type="Text"  value="{$data.emergencycontact}" placeholder=""/>
+			<div class="h15"></div>
+			
+			<label for="emergencyphone" class="control-label">紧急联系电话<span style="font-size:14px;color:red;">*</span></label>
+			<input id="emergencyphone" name="emergencyphone" type="" class="form-control form_check" check-type="Text"  value="{$data.emergencyphone}" placeholder=""/>
+			<div class="h15"></div>
+			
+			<label for="sex" class="control-label">性别 <span style="font-size:14px;color:red;">*</span></label>
+			<label class="radio-inline">
+			<input name="sex" type="radio" value="1" checked >
+			男 </label>
+			<label class="radio-inline">
+			<input name="sex" type="radio" value="2" >
+			女 </label>
+			<div class="h15"></div>
+
+			<label for="qq" class="control-label">QQ </label>
+			<input id="qq" name="qq" type="" class="form-control form_check" check-type="Text"  value="{$data.qq}" placeholder="请填写QQ"/>
+			<div class="h15"></div>
+			
+			<label for="accpre" class="control-label">住宿偏好 <span style="font-size:14px;color:red;">*</span></label>
+			<div class="col-xs-12" style="padding-top:5px"> {:form_checkbox(get_accommodation(),$data['accpre'],'name="accpre[]" id="accpre"',0,'100')} </div>
+			<div class="h15"></div>
+			
+			<label for="bloodtype" class="control-label">血型</label>
+			<div class=""> {:form_select(get_bloodtype(),$data['bloodtype'],'class="form-control form_check" check-type="Text" name="bloodtype" id="bloodtype"','请选择')} </div>
+			<div class="h15"></div>
+			
+			<label for="allergies" class="control-label">过敏史</label>
+			<input id="allergies" name="allergies" type="" class="form-control"  value="{$data.allergies}"/>
+			<div class="h15"></div>
+			
+			<label for="role" class="control-label">社会角色</label>
+			<div class="">{:form_select(get_role(),$data['role'],'class="form-control" check-type="Text" name="role" id="role"','请选择')} </div>
+			<div class="h15"></div>
+			  
+			<label for="role_description" class="control-label">角色说明</label>
+			<input id="role_description" name="role_description" type="" class="form-control form_check" check-type="Text"  value="{$data.role_description}" placeholder=""/>
+			<div class="h15"></div>
+			
+			<div class="form-mobile" style="margin-top:10px;">	
+			<button type="submit" class="col-xs-12 btn btn-primary" style="margin:0px auto;" href="{:U('Mobile/Config/contacts_add')}">提交</button>
+			</div>
+		</form>
+	</div>
+ </block>

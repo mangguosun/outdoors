@@ -1,0 +1,11 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<ul id="tabs_box">
+  <if condition="$status eq 6">
+    <li class=""><include file="event_all"/></li>
+  </if>
+  <if condition="$status eq 8">
+    <li class=""><include file="line_type"/></li>
+  </if>
+</ul>
+</block>

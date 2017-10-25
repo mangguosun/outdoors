@@ -1,0 +1,33 @@
+<extend name="Public/base" />
+<block name="body">
+
+<div class="main-title">
+    <h2>课时表管理</h2>
+</div>
+<div class="cf">
+     <div class="fr">
+            <a class="w_btn add-btn " href="{:U('Course/addschedule')}">
+                创建课时表
+            </a> 
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+            <tr>
+                <th class="">课程</th>                
+                <th class="">上课时间</th>
+                <th class="">地点</th>
+                <th class="">价格（元/人）</th>
+                <th class="">操作</th>
+            </tr>
+            </thead>
+            
+        </table>
+    </div>
+     <div class="page">
+        {$page}
+    </div>
+   
+</block>

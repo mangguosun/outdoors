@@ -1,0 +1,59 @@
+<extend name="Public/base" />
+<block name="body">
+<!-- 活动力设置申请 -->
+<div class="header">
+	<div class="header-text"><p>活动力设置申请</p></div>
+</div>
+<div id="auth_groups">
+<form class="form-horizontal ajax-form" role="form" action="{:U('Manage/Distribute/distribute_site')}" method="post">
+	<!--<input type="hidden" name="siteid" value="{:SITEID}" >-->
+<div class="content">
+	<div class="top-content">
+		<span>联系方式:<a>(必填)</a></span>
+	</div>
+	<!-- bottom-content -->
+	<div class="bottom-content">
+		<div class="contact">
+			<div class="QQ-contact">
+				<span>QQ:</span><input type='text' name="qq" value="{$edit_distribute_site.qq}" placeholder="请填写联系QQ">
+			</div>
+				<div class="QQ-contact tel-contact">
+				<span>电话:</span><input type='text' name="phone" value="{$edit_distribute_site.phone}" placeholder="请填写联系电话">
+			</div>
+		</div>
+		<!-- logo -->
+		<div class="form-item">
+			<div class="top-content">
+				<span>上传logo:<a>(必选)</a></span>
+			</div>
+			<div class="logo">
+			{:hook('UploadImage', array('find_name'=>'site_ico','value'=>$edit_distribute_site['site_ico'],'buttontext'=>'上传LOGO','buttonwidth'=>200,'multi'=>false,'ds'=>'600*600','width'=>600,'height'=>600))}
+			</div>
+		</div>
+		<!-- 商家关键字 同上面活动力设置申请-->
+		<div class="header">
+			<div class="header-text"><p>商家关键字(必选)</p></div>
+		</div>
+		<!-- 关键字填框 -->
+		<div class="keyword">
+			<textarea name="keyword" >{$edit_distribute_site.keyword}</textarea>
+		</div>
+	</div>
+			
+</div>
+
+	<div class="header">
+		<div class="header-text "><p>商家简介/备注(必选)</p></div>
+	</div>
+	<div class="controls">
+		{:Hook('Ueditor',array('name'=>'desc','value'=>$edit_distribute_site['desc']))}
+	</div>
+
+	<div class="form-item">
+		<button type="submit" class="w_btn submit-btn" href="{:U('Manage/Distribute/site_distribute_apply')}">提交</button>
+		<button onclick="javascript:history.back(-1);return false;" class="w_btn btn-return">返回</button>
+	</div>
+</form>
+</div>
+</block>
+

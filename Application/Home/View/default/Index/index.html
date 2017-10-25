@@ -1,0 +1,41 @@
+<extend name="default/common"/>
+<block name="style">
+<style>
+	.schedule_time{width:100%;height:auto;display:none}
+	.schedule_css{font-size:13px;}
+	.schedule-offset{margin-left:15px;color:red}
+	.select_schedule{position:relative}
+	.schedule-offset-pos{position:absolute;right:0px;}
+	.schedule-price{color: #ad0711;}
+</style>
+</block>
+<block name="body">
+<!--导航-->
+<include file="_nav"/>
+<div class="container">{:hook('Advs', 'home_ad')}</div>
+<div class="container">
+<div class="row common-margin-tfif">
+  <div class="col-md-8">
+  
+    <if condition="getWebsitConfig('index_event_recommend',2) eq '1' or getWebsitConfig('index_event_recommend',2) eq '' "> 
+    {:W('DefaultHome/recommendEvent',array('limit'=>10))} 
+    </if> 
+    <if condition="getWebsitConfig('index_event_new',2) eq '1' or getWebsitConfig('index_event_new',2) eq '' ">  
+    {:W('DefaultHome/newEvent',array('limit'=>10))} 
+    </if> 
+    
+  </div>
+  <div class="col-md-4"><include file="_right"/></div>
+</div>
+</div>
+</block>
+<block name="script">
+<script>
+	$(function () {
+		$('.calendar_box').click(function(){		
+			$(this).parent('div').siblings('.schedule_time').slideToggle();
+		})
+		hdl_lazyload("img.add_loading");
+	})
+</script>
+</block>

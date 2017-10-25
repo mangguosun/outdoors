@@ -1,0 +1,284 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+.register_container {
+	margin:0 auto;
+	padding:0 15px;
+	max-width:500px;
+}
+.register_container .verifyimg {
+	height:40px; width:140px
+}
+.register_container h2 {
+	font-size:20px;
+	margin-bottom:30px
+}
+
+.register_container .verifypic.input-group-addon {
+	padding:0
+}
+.register_container .mobile_verify_btn { width:140px; padding:10px 16px
+}
+.register_container_agreement{ padding:0 15px}
+.register_container_agreement h2{ font-size:20px; margin-bottom:30px}
+.register_container_agreement .register_container_agreement_body{ font-size:14px; line-height:24px;}
+
+
+</style>
+<div class="container">
+  <div class="row">
+    <div class="register_container">
+      <form id="defaultForm" action="__SELF__" class="form-horizontal" method="post" >
+        <div>
+          <h2>
+          欢迎注册 {:get_webinfo('webname')}
+          </h1>
+        </div>
+        <div class="form-group ">
+          <div class="col-md-12">
+            <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+              <input type="text" id="checkusername" class="form-control input-lg" name="email" placeholder="请填写手机或邮箱" value="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group ">
+          <div class="col-md-12">
+            <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+              <input type="text" id="nickname" name="nickname" class="form-control input-lg" placeholder="请填写2-16位昵称" errormsg="请填写2-16位昵称" value="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group ">
+          <div class="col-md-12">
+            <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+              <input type="password" name="password" class="form-control input-lg" id="inputPassword" placeholder="请填写6-30位密码" >
+            </div>
+          </div>
+        </div>
+        <div class="form-group check_email_verify">
+          <div class="col-md-12">
+            <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+              <input type="text" id="verifyCode" name="verify" class="form-control input-lg" placeholder="图片验证码" style="padding-right:15px" >
+              <span class="input-group-addon verifypic"><img class="verifyimg reloadverify " alt="点击切换" src="{:U('verify')}" ></span> </div>
+          </div>
+        </div>
+        <div class="form-group check_mobile_verify" style="display:none">
+          <div class="col-md-12">
+            <div class="input-group input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+              <input type="text" id="mobileverify" name="mobileverify" class="form-control input-lg" placeholder="手机验证码">
+              <span class="input-group-btn"><a  class="input-lg btn btn-info mobile_verify mobile_verify_btn">loading...</a></span> </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+            <label>
+              <input type="checkbox" id="user_agreement" name="user_agreement" value='1' checked></label>
+              &nbsp;&nbsp;<span data-toggle="modal" data-target="#myModal">用户协议</span>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
+            <button type="submit" class="btn btn-block btn-primary">提 交</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+            <span><a href="{:U('Official/User/login')}" class="">已有账户点击登录</a></span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">注册协议</h4>
+      </div>
+      <div class="modal-body register_container_agreement">
+            <h2 class="text-center">{:get_webinfo('webname')}服务协议</h2>           
+            <div class="register_container_agreement_body">{:get_webinfo('user_agreement')}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">同意</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</block>
+<block name="script">
+  <script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+  <script type="text/javascript">
+$(document).ready(function() {				   
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+			email: {
+                validators: {
+					callback: {
+                        message: 'Wrong answer',
+                        callback: function(value, validator) {
+						  var $this = $(this); 	
+                          var message = {valid: false,message: '请填正确的手机或邮箱'}
+						  if(value.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)){
+							  $('#defaultForm').bootstrapValidator('removeField', 'mobileverify');
+							   $this.parent().removeClass('disabled');
+								 $.ajax({
+									 type: "post",
+									 async :false,
+									 url: "{:U('Official/User/doemails')}",
+									 data: {email:value},
+									 dataType: "json",
+									 success: function(result){
+										if (result == '1') {
+											message =  {valid: false,message: '邮箱已经存在'} 
+											$('.check_mobile_verify').hide();
+											$(".reloadverify").click();
+										}else{
+											message =  {valid: true} 
+											$('.check_mobile_verify').hide();
+											$(".reloadverify").click();
+										 }	
+									 }
+								 });
+								return message;
+							}else if(value.match(/^1[3456789]\d{9}$/)){
+								$('#defaultForm').bootstrapValidator('addField', 'mobileverify', {
+									message: '手机验证码不能为空',
+									validators: {
+										notEmpty: {
+											message: '手机验证码不能为空'
+										}
+									}
+								});
+								 $.ajax({
+									 type: "post",
+									 async :false,
+									 url: "{:U('Official/User/domobile')}",
+									 data: {mobile:value},
+									 dataType: "json",
+						
+									 success: function(result){
+						
+										if (result == '1') {
+										
+											message =  {valid: false,message: '手机已被注册'} 
+											$('.check_mobile_verify').hide();
+										}else{
+											message =  {valid: true} 
+											$('.check_mobile_verify').show();
+											$(".mobile_verify").text('免费获取验证码');
+											$(".reloadverify").click();
+										}
+									 }
+						
+								 });
+								return message;
+							}else{
+								return message;
+							}
+                        }
+                    }
+                }
+            },
+			nickname: {
+                validators: {
+                    notEmpty: {
+                        message: '昵称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 16,
+                        message: '请填写2-16位的字符'
+                    },
+                    remote: {
+                        type: 'POST',
+                        url: "{:U('Official/User/doNicknames')}",
+                        message: '昵称已经存在',
+                        delay: 1000
+                    }	
+					
+                }
+            },
+			password: {
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '请填写6-30位的字符'
+                    },
+                }
+            },
+			verify: {
+                validators: {
+                    notEmpty: {
+                        message: '图形码不能为空'
+                    }
+                }
+            },
+        }
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+	
+
+                
+	$(".reloadverify").click(function () {
+		var verifyimg = $(".verifyimg").attr("src");
+		if (verifyimg.indexOf('?') > 0) {
+			$(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+		} else {
+			$(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+		}
+	});
+           
+	function settime(countdown) {
+		if (countdown <= 0) {
+			$(".mobile_verify").text("重新获取验证码");
+			$(".mobile_verify").attr("disabled",false);
+		} else {
+			$(".mobile_verify").attr("disabled",true);
+			$(".mobile_verify").text(countdown+"秒后重新发送");
+			countdown--;
+			setTimeout(function() {settime(countdown)},1000);
+		}
+		
+	}
+	$(".mobile_verify").click(function(){
+		$('#defaultForm').data('bootstrapValidator').revalidateField('verify');							   
+		if ($('#defaultForm').data('bootstrapValidator').isValidField('verify')) {
+              
+			 $.post("{:U('Official/User/getmobile_reg_verify')}",{mobile:$('#checkusername').val(),verifyCodebythink:$('#verifyCode').val()},function(datas){
+				 if(datas['status']==1){ 
+					$(".mobile_verify").attr("disabled",true);
+					settime(60);									
+					toast.success(datas['info']);
+				}else{
+					$(".reloadverify").trigger("click");
+					$(".mobile_verify").attr("disabled",false);
+					toast.error(datas['info']);
+				 }
+			},'json')
+		}									
+	})
+	
+	
+});
+</script>
+</block>

@@ -1,0 +1,22 @@
+
+<div class="event-right-nav"></div>
+
+<php> if($customization == 1){</php>
+{:W('SportsEvent/SportsEventService')}
+<div class="event-right-nav"></div>
+<php>}</php>
+
+{:W('SportsEvent/SportsEventIssue',array('limit'=>10))}
+<div class="event-right-nav"></div>
+
+{:W('SportsEvent/SportsEventShop',array('limit'=>10))}
+<div class="event-right-nav"></div>
+{:W('SportsEvent/SportsEventRecommendEvent',array('limit'=>2))}
+<div class="event-right-nav"></div>
+{:W('SportsEvent/SportsEventRelatedIssue',array('event_id'=>$content['id']))}
+
+<div class="event-right-nav"></div>
+{:W('SportsEvent/SportsEventSexCompare',array('id'=>$content['id']))}
+<div class="event-right-nav"></div>
+
+<a href="{:U('Tailor/Index/index')}"><img src="__PUBLIC__/Core/images/event_tailor.jpg"></a>

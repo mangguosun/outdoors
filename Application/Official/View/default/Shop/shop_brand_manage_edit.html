@@ -1,0 +1,84 @@
+<extend name="Usercenter/base"/>
+<block name="body">
+<div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{:U('Official/Usercenter/index')}">首页</a></li>
+      <li><a href="{:U('Official/Shop/index')}">商城管理</a></li>
+      <li class="active">修改品牌</li>
+    </ol>
+</div>
+
+<div class="row">
+      <div class="widget radius-bordered">
+        <div class="widget-header  bordered-bottom bordered-sky"> <i class="widget-icon fa fa-tasks themeprimary"></i> <span class="widget-caption">添加品牌</span> </div>
+        <div class="widget-body">
+          <form id="defaultForm" class="form-horizontal" role="form" action="{:U('Official/Shop/shop_brand_manage_doAdd')}" method="post">
+			<input type="hidden" name="id" value="{$brand_info.id}">
+			<div class="form-group has-feedback">
+				<label for="name" class="col-md-2 control-label">品牌名称</label>
+				<div class="col-md-5">
+					<input id="name" name="name" type="text" class="form-control form_check" check-type="Text"  value="{$brand_info.name}" placeholder="请输入品牌名称"/>
+				</div>
+			</div>
+			
+           <div class="form-group has-feedback">
+				<label for="englist_name" class="col-md-2 control-label">英文名</label>
+				<div class="col-md-5">
+					<input id="englist_name" name="englist_name" type="text" class="form-control form_check" check-type="Text"  value="{$brand_info.englist_name}" placeholder="请输入英文名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary " href="{:U('Official/Shop/shop_brand_manage_doAdd')}">编辑</button>
+				</div>
+			</div>
+        </form>
+        </div>
+      </div>
+
+  </div>
+</div>
+</block>
+<block name="script">
+<script src="/Public/static/bootstrap3.2/js/validation/bootstrapValidator.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        //excluded: ':disabled',
+        //live: 'enabled',
+        message: '这些信息不能为空',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: '商品名称不能为空'
+                    }
+                }
+            },
+			
+			englist_name: {
+		                validators: {
+		                    notEmpty: {
+		                        message: '英文名称不能为空'
+		                    },
+		                    regexp: {
+                        		regexp: /^[A-Za-z]+$/,
+                       			message: '请输入正确的英文名称!'
+                    		},
+		                }
+		            },
+				}
+    }).on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            $(this).addClass('ajax-form');
+			$('#defaultForm').data('bootstrapValidator').disableSubmitButtons(false);
+    });
+});
+</script>
+</block>

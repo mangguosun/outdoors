@@ -1,0 +1,27 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+
+<div class="common_block_title ">网站设置</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>0))}">基本配置</a></li>
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>1))}">轮播大图</a></li>
+  <li <if condition="$status eq 6"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>6))}">顶部导航</a></li>
+  <li <if condition="$status eq 4"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>4))}">页脚内容</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>2))}">Social</a></li>
+  <li <if condition="$status eq 5"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>5))}">页脚导航</a></li>
+  <li <if condition="$status eq 7"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>7))}">QQ客服</a></li>
+  <if condition="websit_trave()"><li <if condition="$status eq 8"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>8))}">左侧导航</a></li></if>
+  <if condition="websit_trave()"><li <if condition="$status eq 9"> class="hover" </if> ><a href="{:U('Websit/Index/index',array('status'=>9))}">推荐主题</a></li></if>
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li  class=""><include file="Index/webconfig"/></li></if>
+  <if condition="$status eq 1"><li  class=""><include file="Index/websit_picture"/></li></if>
+  <if condition="$status eq 2"><li  class=""><include file="Index/share"/></li></if>
+  <if condition="$status eq 4"><li  class=""><include file="Index/we_footer"/></li></if>
+  <if condition="$status eq 5"><li  class=""><include file="Index/information"/></li></if>
+  <if condition="$status eq 6"><li  class=""><include file="Index/websitnav"/></li></if>
+  <if condition="$status eq 7"><li  class=""><include file="Index/customer_service"/></li></if>
+  <if condition="websit_trave()"><if condition="$status eq 8"><li  class=""><include file="Index/product_config"/></li></if></if>
+  <if condition="websit_trave()"><if condition="$status eq 9"><li  class=""><include file="Index/tags_config"/></li></if></if>
+</ul>
+</block>

@@ -1,0 +1,85 @@
+<div class="tab-pane" id="event_tailor">
+	<div class="select_order clearfix">
+		<div class="pull-right" >
+			<div class="clearbox-ol"></div>
+			<a class="links_add mbtn btn-primary" href="{:U('links_add')}">添加友链</a>
+		</div>
+		<div class="row data-table">
+			<table class="info">
+				<thead>
+				<tr>
+					<th>ID</th>
+					<th>站点名</th>
+					<th>站点链接</th>
+					<th>优先级</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+					<volist name="links_arr" id="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.title}</td>
+						<td><a href="{$vo['link']}">{$vo.link}</a></td>
+						<td>{$vo.level}</td>
+						<if condition="$vo.status eq 1">
+						<td>已启用</td>
+						<else />
+						<td>已禁用</td>
+						</if>
+						<td><a class='btn-primary mbtn links_edit' href="{:U('links_edit',array('id'=>$vo['id']))}">编辑</a>
+							<if condition="$vo['status'] eq 1">
+								<a class='btn-danger mbtn links_update' data-status='0' data-ID ="{$vo['id']}" class="">禁用</a>
+							<else />
+								<a class='btn-info mbtn links_update' data-status='1' data-ID ="{$vo['id']}" class="">启用</a>
+							</if>
+						</td>
+					</tr>
+					</volist>
+					<tr><td colspan="6">{$page}</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('.links_add').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+			//console.log(this.content);
+			}
+		}
+	});	
+	$('.links_edit').magnificPopup({
+		type: 'ajax',
+		overflowY: 'scroll',
+		modal: true,
+		callbacks: {
+			ajaxContentAdded: function () {
+			//console.log(this.content);
+			}
+		}
+	});	
+	$('.links_update').click(function(){
+		var id = $(this).attr('data-ID');
+		var status = $(this).attr('data-status');
+		if(confirm('确定该操作吗？')){
+			$.post(U('Websit/Links/links_update'),{status:status,id:id},function(res){
+				if(res['status']){
+					toast.success(res['msg'])
+					setTimeout(function(){
+						window.location.reload();
+					},1000)
+				}else{
+					toast.error(res['msg'])
+				}
+			},'json')
+		}
+	})
+})	
+</script>

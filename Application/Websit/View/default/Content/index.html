@@ -1,0 +1,20 @@
+<extend name="Public/base_admin"/>
+<block name="body">
+<div class="common_block_title ">内容管理</div>
+<ul id="mytab" class="nav nav-tabs">
+  <li <if condition="$status eq 0"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>0))}">官方公告</a></li>
+  <li <if condition="$status eq 1"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>1))}">故事管理</a></li>
+  <li <if condition="$status eq 2"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>2))}">关于我们</a></li>
+  <li <if condition="$status eq 3"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>3))}">评论管理</a></li>
+  <li <if condition="$status eq 4"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>4))}">服务企业</a></li>
+  <li <if condition="$status eq 5"> class="hover" </if> ><a href="{:U('Websit/Content/index',array('status'=>5))}">视频管理</a></li>
+</ul>
+<ul id="tabs_box">
+  <if condition="$status eq 0"><li class="" ><include file="notice"/></li></if>
+  <if condition="$status eq 1"><li class="" ><include file="story_content"/></li></if>
+  <if condition="$status eq 2"><li class="" ><include file="about"/></li></if>
+  <if condition="$status eq 3"><li class="" ><include file="control_comment"/></li></if>
+  <if condition="$status eq 4"><li class="" ><include file="manage"/></li></if>
+  <if condition="$status eq 5"><li class="" ><include file="video"/></li></if> 
+</ul>
+</block>

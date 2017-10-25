@@ -1,0 +1,103 @@
+<script type="text/javascript" src="__PUBLIC__/Core/js/echarts-2.1.10/build/dist/echarts.js"></script>
+	<!-- 排行榜图 -->
+    <div class="index_ranking">
+        <div class="s_title">
+   			排行榜 												
+            <span class="more">
+                <div style="z-index:222;position:relative;">
+                    <a href="javascript:" class="mark-cha-time timeday" time="{$dailydistance}">&nbsp;&nbsp;日&nbsp;&nbsp;</a>
+                    <a href="javascript:" class="mark-cha-time timeweek mark-cha-color" time="{$weeklydistance}">&nbsp;&nbsp;周&nbsp;&nbsp;</a>
+                    <a href="javascript:" class="mark-cha-time timemonth" time="{$monthlydistance}">&nbsp;&nbsp;月&nbsp;&nbsp;</a>
+                </div>
+            </span>   
+        </div>
+        <div class="h10"></div>
+		<div class="indexbox_content" id="mark-cha-bar"></div>		
+	</div>
+    <div class="h15"></div>
+<block name="script">
+	<script>
+	 var myChart;
+     var options;
+	require.config({
+            paths: {
+                echarts: '__PUBLIC__/Core/js/echarts-2.1.10/build/dist/'
+            }
+        });
+		require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                myChart = ec.init(document.getElementById('mark-cha-bar')); 
+				options = {
+					grid: {
+				        borderWidth: 0,
+				    },
+
+				    xAxis : [
+				        {
+				            type : 'value',
+				            show : false
+				        }
+				    ],
+				    yAxis : [
+				        {
+				            axisLine: {show: false},
+				            splitLine: {show: false},
+							axisTick: {show: false},
+				            type : 'category',
+				            data : [{$weeklydistance_user}]
+				        }
+				    ],
+				    series : [
+				        {
+				            name:'2012年',
+				            type:'bar',
+				            barCategoryGap: '70%',
+				            itemStyle: {normal: {
+				            label : {show: true},
+				           color: function(params) {
+				                    // build a color map as your need.
+				                    var colorList = [
+				                      '#5657FF','#ED5065','#ED834F','#EDAC50','#37A4DD',
+				                       '#5DC7BD'
+				                    ];
+				                    return colorList[params.dataIndex]
+				                },
+				            }},
+				            data:[{$weeklydistance}]
+				        }
+				    ]
+				};
+				// 为echarts对象加载数据   
+                myChart.setOption(options);   
+            }  
+			
+        );
+		
+       $('.mark-cha-time').on('click',function(){
+            $('.mark-cha-time').removeClass('mark-cha-color');
+            $(this).addClass('mark-cha-color'); 
+        })
+        $('.timeday').on('click',function(){
+            options.series[0].data = [{$dailydistance}];
+            options.yAxis[0].data = [{$dailydistance_user}];
+            myChart.setOption(options);
+        });
+        $('.timeweek').on('click',function(){
+            options.series[0].data = [{$weeklydistance}];
+            options.yAxis[0].data = [{$weeklydistance_user}];
+            myChart.setOption(options);
+        });
+        $('.timemonth').on('click',function(){
+            options.series[0].data = [{$monthlydistance}];
+             options.yAxis[0].data = [{$monthlydistance_user}];
+            myChart.setOption(options);
+        });
+           
+	</script>
+
+</block>

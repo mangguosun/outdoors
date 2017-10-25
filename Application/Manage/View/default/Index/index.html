@@ -1,0 +1,108 @@
+<extend name="Public/base1" />
+<block name="style">
+
+
+</block>
+<block name="body">
+<div class="index-box-index">
+  <div class="release-box">
+    <div class="release-box-t">
+          <div class="release-event"><a href="{:U('Manage/Event/add')}">发布活动</a></div>
+          <div class="release-goods"><a href="{:U('Manage/Shop/shop_add')}">发布商品</a></div>
+        </div>
+        <div>
+          <div class="release-blog"><a href="{:U('Manage/Notices/noticesedit')}">发布公告</a></div>
+          <div class="release-card"><a href="{:U('Manage/Pointcard/pointcard_add')}">发布卡劵</a></div>
+        </div>
+  </div>
+  <div class="right-box-index">
+     <div class="data-box">
+      <div class="data-title">汇总数据</div>
+      <div class="data-list">
+        <table class="table">
+          <tr >
+            <td class="first" >7天新增活动单数<br />
+              <span>{$event_yesterday_order_add}</span></td>
+            <td class="first">活动交易额<br />
+              <span>{$event_amount}</span></td>
+            <td class="first">参与人次<br />
+              <span>{$event_amount_people}</span></td>
+            <td class="first"><a href="{:U('Manage/Event/index')}" target="_blank">活动总数<br />
+              <span>{$event_nums}</span></a></td>
+          </tr>
+          <tr>
+            <td>7天新增商品单数<br/>
+              <span>{$shop_yesterday_order_add}</span></td>
+            <td>商品交易额<br />
+              <span>{$shop_amount}</span></td>
+            <td><a href="{:U('Manage/Order/shop')}">商品订单数<br />
+              <span>{$shop_order_all}</span></a></td>
+            <td><a href="{:U('Manage/Shop/index')}" target="_blank">商品总数<br />
+              <span>{$shop_nums}</span></a></td>
+          </tr>
+          <tr>
+            <td><a href="{:U('Manage/User/index')}">7天新增会员数<br />
+              <span>{$member_yesterday_add}</span></a></td>
+            <td><a href="{:U('Manage/User/index')}">会员总数<br />
+              <span>{$member_all}</span></a></td>
+            <td><a href="{:U('Manage/User/team_member')}">{$m_level_name.2}数量<br />
+              <span>{$member_team}</span></a></td>
+            <td><a href="{:U('Manage/User/master')}">{$m_level_name.4}数量<br />
+              <span>{$member_master}</span></a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="todo-box">
+     <div class="todo-title">待办事项</div>
+        <div class="todo-list">
+          <li> 
+            <div class="activity">
+
+            活动订单：<a href="{:U('Manage/Order/index',array('status'=>1,'ord_status'=>'succ'))}">全额待处理&nbsp;<b>{$event_order_succ}</b></a></div>
+
+
+            <div class="activity-right"> <a href="{:U('Manage/Order/index')}">订单总数：<b>{$event_order_total}</b></a></div> 
+          </li>
+          <li>
+            <div class="activity">活动订单：<a href="{:U('Manage/Order/index',array('status'=>1,'ord_status'=>'halfpay'))}">订金待处理&nbsp;<b>{$event_order_halfpay}</b></a></div><div class="activity-right"><a href="{:U('Manage/Order/index')}">订单总数：<b>{$event_order_total}</b></a></div>
+          </li>
+          <li>
+            <div class="activity"> 商城订单：<a href="{:U('Manage/Order/shop',array('status'=>3,'order_status'=>21))}">待处理&nbsp;<b>{$shop_processed}</b></a></div><div class="activity-right"><a href="{:U('Manage/Order/shop')}">订单总数：<b>{$shop_order_all}</b></a></div> 
+          </li>
+          <li>
+            <div class="activity"> 定制订单：<a href="{:U('Manage/Order/custom')}">待处理&nbsp;<b>{$event_tailor_order}</b></a></div><div class="activity-right"> <a href="{:U('Manage/Order/custom')}">订单总数：<b>{$event_tailor_order_all}</b></a></div>
+          </li>
+          <li>
+            <div class="activity"> 收　　益：<a href="{:U('Manage/Revenue/cashout')}">可提现&nbsp;<b>{$cash_balance}</b></a></div><div class="activity-right"> <a href="{:U('Manage/Revenue/cashout')}">收益总数：<b>{$cash_total}</b></a></div>
+          </li>
+          <li>
+             <div class="activity">最新评论：<a href="{:U('Manage/Comment/event')}">待回复&nbsp;<b>{$comment_news}</b></a></div><div class="activity-right"> <a href="#"> 评论总数：<b>{$comment_all}</b></a></div>
+          </li>
+        </div>
+   
+  </div>
+  
+  <div class="left-box-bottom">
+     <div class="blog-box">
+        <div class="index-blog-title">公告<span class="lookall"></span></div>
+        <div class="index-blog-list">
+          <!--li>好消息！发游记赚代金劵，你还不来？ <span class="lookall"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;123</span></li-->
+        </div>
+      </div>
+  </div>
+ 
+</div>
+</block>
+<block name="script">
+  <script type="text/javascript">
+   
+    $(function(){
+         $('#main').attr({'id': 'indexMain','class': 'index-main'});
+        //$('.copyright').html('<div class="copyright"> Powered By <a href="http://www.huodongli.cn/" target="_blank">活动力</a> -<a href="mailto:kefu@huodongli.cn" target="_blank">免费申请</a></div>');
+        $('.sidebar').remove();
+    })
+</script>
+</block>

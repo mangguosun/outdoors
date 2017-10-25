@@ -1,0 +1,51 @@
+<div id="home_all_bar" class="am-offcanvas">
+  <div class="am-offcanvas-bar">
+      <ul class="hdl-nav">
+        <li class=""><a href="{:U('Mobile/Index/index')}"><i class="am-icon-home"></i> 首页</a></li>
+        <if condition="is_login()">
+        <li class=""><a href="javascript:" class="session_panel_btn"><i class="am-icon-volume-down am-icon-sm"></i> 消息 <span class="friend_has_new am-badge am-badge-secondary am-round" 
+        <php>
+            $map_mid=is_login();
+            $has_talk_push=D('talk_push')->where("(uid = ".$map_mid." and status = 1) or (uid = ".$map_mid." and status = 0)")->count();
+            $has_message_push=D('talk_message_push')->group('talk_id')->where("uid= ".$map_mid." and (status=1 or status=0)")->select();
+            //if($has_talk_push || $has_message_push){
+            if( $has_message_push){
+        </php>
+        style="display: inline-block"
+        <php>}</php>
+        >{:count($has_message_push)}</span></a></li>
+        </if>
+        <li class=""><a href="{:U('Mobile/Pointcard/index')}"><i class="am-icon-ticket"></i> 领取优惠</a></li>
+        <if condition="is_login()">
+        <php>$my_eventi = D('event_attend')->where(array('uid'=>is_login()))->count();</php>
+        <li class=""><a href="{:U('Mobile/Config/myevent')}"><i class="am-icon-file-text"></i> 订单 <if condition="$my_eventi neq 0"> <span class="am-badge am-badge-secondary am-round">{$my_eventi}</span></if></a></li>
+        </if>
+        <if condition="is_login()"><li class=""><a href="{:U('Mobile/Config/collection_issue')}"><i class="am-icon-heart"></i> 收藏</a></li></if>
+		<php>$tailor_modelinfo = get_appinfo('Tailor')</php>
+        <if condition="!empty($tailor_modelinfo)">
+        <li class=""><a href="{:U('Mobile/Tailor/index')}"><i class="am-icon-paint-brush"></i> 定制</a></li>
+        </if> 
+		<php>$blog_modelinfo = get_appinfo('Blog')</php>
+        <if condition="!empty($blog_modelinfo)">
+        <li class=""><a href="{:U('Mobile/Blog/index')}"><i class="am-icon-bookmark"></i> 公告</a></li>
+        </if>
+        <if condition="is_login()"><li class=""><a href="{:U('Mobile/Config/set')}"><i class="am-icon-cog"></i> 设置</a></li><else/><li class=""><a href="javascript:" onclick="user_login()"><i class="am-icon-cog"></i> 设置</a></li></if>
+        <if condition="is_login()"><li class=""><a href="{:U('Mobile/Config/index')}"><i class="am-icon-user"></i> 用户中心</a></li><else/><li class=""><a href="javascript:" onclick="user_login()"><i class="am-icon-user"></i> 用户中心</a></li></if>
+      </ul>
+   
+  </div>
+</div>
+<!-- 侧边栏内容 -->
+<div id="nab_all_bar" class="am-offcanvas">
+  <div class="am-offcanvas-bar nab_all_bar am-offcanvas-bar-flip">
+    <div class="am-offcanvas-content">
+      <p><a href="{:U('Mobile/Config/setup')}" class="">账号设置</a></p>
+      <p><a href="{:U('Mobile/Config/myevent')}" class="">我的活动</a></p>
+      <p><a href="{:U('Mobile/Config/collection_event')}" class="">活动收藏</a></p>
+      <p><a href="{:U('Mobile/Config/contacts')}" class="">常用参加者</a></p>
+    </div>
+  </div>
+</div>
+
+
+

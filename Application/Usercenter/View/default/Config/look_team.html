@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-md-12">
+	  <div id="expandinfo_list" class="row expandinfo-list">
+	    <if condition="!checked_admin(is_login())">
+		  <?php if(($master['is_use']==2 || $master['is_use']==3 || $master['is_use']==4) && $master['status']==0):?>
+			<div class="form-group">
+				<label for="realname" class="col-md-1 control-label"></label>
+				<div class="col-md-11">
+					您已申请: {:get_webinfo('webname')}<span class="common-color-red">{:get_upgrading($master['is_use'])}</span> 请耐心等待管理员审核
+				</div>
+			</div>
+			<br>
+		 <?php endif;?>
+	      <?php if(($member['is_use']==2 ||$member['is_use']==3 || $member['is_use']==4) && $member['status']==1):?>
+			<div class="form-group">
+				<label for="realname" class="col-md-1 control-label"></label>
+				<div class="col-md-11">
+					当前角色: {:get_webinfo('webname')}<span class="common-color-green">{:get_upgrading($member['is_use'])}</span>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="realname" class="col-md-1 control-label"></label>
+				<div class="col-md-11">
+					您还可继续申请
+				</div>
+			</div>
+			<br>
+		 <?php endif;?>
+		  <include file="Config/expandinfo"/>
+		</if>
+		 <if condition="checked_admin(is_login())">
+		      亲! 您是网站管理员
+		  </if>
+	   </div>
+	</div>
+</div>
+
+    

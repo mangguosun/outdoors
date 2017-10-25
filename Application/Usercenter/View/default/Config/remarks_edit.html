@@ -1,0 +1,30 @@
+<div id="frm-post-popup" class="white-popup usercenter-contacts-add">
+  <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+  <h2>修改订单备注</h2>
+  <div class="aline usercenter-common-bm"></div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal ajax-form" role="form" action="{:U('Usercenter/Config/do_remarks_edit')}" method="post">
+          <input type="hidden" name='id' value="{$id}">        
+          <div class="form-group has-feedback">
+            <label for="realname" class="col-md-3 control-label">输入订单备注：</label>
+            <div class="col-md-20">
+              <textarea rows="5" cols="40%" <if condition="$remarks eq ''">placeholder="暂无备注"</if> name="remarks"><if condition="$remarks neq ''">{$remarks}</if></textarea></div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+              <button type="submit" class="btn btn-primary " href="{:U('Usercenter/Config/do_remarks_edit')}">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$(function(){
+		
+	
+	})
+</script>

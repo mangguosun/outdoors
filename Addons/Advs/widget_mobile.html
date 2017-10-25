@@ -1,0 +1,116 @@
+<if condition="$list['type'] eq 2">
+    <if condition="count($list['res']) gt 1">
+        <script src="__PUBLIC__/Core/js/ext/slider/js/jquery.slides.min.js"></script>
+        <link href="__PUBLIC__/Core/js/ext/slider/css/slider.css" rel="stylesheet" type="text/css"/>
+        <div id="slide_{$list.ad.pos}">
+            <volist name="list.res" id="vo">
+                <img src="{$vo.advspic|get_cover='path'}" alt="{$vo.title}">
+            </volist>
+            <a href="#" class="slidesjs-previous slidesjs-navigation"><i class="glyphicon glyphicon-chevron-left"></i></a>
+            <a href="#" class="slidesjs-next slidesjs-navigation"><i class="glyphicon glyphicon-chevron-right"></i></a>
+        </div>
+        <script>
+            $(function () {
+                $("#slide_{$list.ad.pos}").slidesjs({
+                    width: 940,
+                    height: 528,
+                    navigation: false
+                });
+            })
+        </script>
+    </if>
+
+
+    <elseif condition="$list['type'] eq 3"/>
+    <div style="width:{$list['width']};height:{$list['height']};background: #cecece;">
+        <div style="margin:0px auto;width:150px;line-height: 30px;">{$list.advstext}</div>
+    </div>
+    <elseif condition="$list['type'] eq 1"/>
+    <if condition="$list['advspic'] neq 0">
+    <php>if($list['link_mobile']){</php>
+    <a href="{$list.link_mobile}" title="{$list.title}" target="_blank"><img src="{$list.advspic|get_cover='path'}" alt="{$list.title}"/></a>
+    <php>}else{</php>
+    <img src="{$list.advspic|get_cover='path'}" alt="{$list.title}" title="{$list.title}"/>
+    <php>}</php>
+    </if>
+
+    <elseif condition="$list['type'] eq 4"/>
+    {$list.advshtml}
+    <elseif condition="($list['type'] eq 5) OR ($list['type'] eq 6)"/>
+    <if condition="count($list['res']) egt 1">
+            
+        <link href="__STATIC__/royalslider/css/royalslider.css" rel="stylesheet">
+        <link href="__STATIC__/royalslider/css/skin-white.css" rel="stylesheet">
+        <script type="text/javascript" src="__STATIC__/royalslider/js/jquery.royalslider.min.js"></script>
+        <style>
+#full-width-slider {width: 100%;color: #000;}
+.coloredBlock {padding: 12px;background: rgba(255,0,0,0.6);color: #FFF;width: 200px;left: 20%;top: 5%;}
+.infoBlock {position: absolute;top: 30px;right: 30px;left: auto;max-width: 25%;padding-bottom: 0;background: #FFF;background: rgba(255, 255, 255, 0.8);overflow: hidden;padding: 20px;}
+.infoBlockLeftBlack {color: #FFF;background: #000;background: rgba(0,0,0,0.75);left: 30px;right: auto;}
+.infoBlock h4 {font-size: 20px;line-height: 1.2;margin: 0;padding-bottom: 3px;}
+.infoBlock p {font-size: 14px;margin: 4px 0 0;}
+.infoBlock a {color: #FFF;text-decoration: underline;}
+.fullWidth {max-width: 100%;margin: 0 auto 0;}
+.infoBlock {padding: 10px;height: auto;max-height: 100%;min-width: 40%;left: 5px;top: 5px;right: auto;font-size: 12px;}
+.infoBlock h3 {font-size: 14px;line-height: 17px;}
+
+</style>
+<div class="sliderContainer fullWidth clearfix"><div id="full-width-slider" class="royalSlider heroSlider rsMinW">
+    
+     <foreach name="list.res" item="images" key="k">
+    
+    	<div class="rsContent">
+            <php>if($images['link_mobile']){</php>
+            <a href="{$images['link_mobile']}" target="_blank"><img class="rsImg" src="{$images.advspic|get_cover='path'}" alt=""></a>
+            <php>}else{</php>
+            <img class="rsImg" src="{$images.advspic|get_cover='path'}" alt="">
+            <php>}</php>
+			
+		</div>
+		</foreach>
+		
+	</div>
+</div>
+
+<script>
+$(document).ready(function($){
+
+	$('#full-width-slider').royalSlider({
+		arrowsNav: true,
+		loop: true,
+		loopRewind: true,
+		sliderTouch: true,
+		keyboardNavEnabled: false,
+		imageAlignCenter:false,
+		controlsInside: true,
+		imageScaleMode: 'fill',
+		arrowsNavAutoHide: false,
+		arrowsNavHideOnTouch: true,
+		autoScaleSlider: true, 
+		controlNavigation: 'none',
+		thumbsFitInViewport: false,
+		navigateByClick: true,
+		startSlideId: 0,
+		autoPlay: true,
+		transitionType:'move',
+		transitionSpeed:600,
+		globalCaption: true,
+		deeplinking: {
+			enabled: true,
+			change: true
+		},
+		imgWidth: 1400,
+		imgHeight: 680
+	});
+	
+});
+</script>
+        
+
+    </if>
+    
+    
+    
+    
+</if>
+<!-- add more -->

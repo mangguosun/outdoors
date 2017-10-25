@@ -1,0 +1,76 @@
+<extend name="sports/common"/>
+<block name="header">
+  <div id="main-container" class="container">
+    {:W('Common/SubMenu/index',array($sub_menu,$current,$model_info,''))}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8  ">
+          <neq name="info.cover_id" value="0">
+            <div><img class="hundred"  src="{$info.cover_id|get_cover='path'}" alt="{$info.title|op_t}"/></div>
+          </neq>
+          <div class="common_block_border">
+            <div class="common_block_title clearfix">
+              <h2>{$info.title}</h2>
+              <p> <span class="pull-left">
+                <php>$user=query_user(array('avatar32','space_url'),$data['uid'])</php>
+                <span class="author"><a href="{$user.space_url}"
+                                            ucard="{$data.uid}">{$info.uid|get_nickname}</a></span> <span> 发表于 {$info.create_time|date='Y-m-d H:i',###}</span></span> 
+				<div class="col-md-5">
+					<div class="blog_detail_share">
+					<div class="blog_qrcode"><i class="glyphicon glyphicon-qrcode"></i> 扫一扫二维码，分享给朋友</div>
+					<div class="bdsharebuttonbox">{:hook('baidushare')}</div>
+					</div>
+					<div class="blog_qrcode_box"><a class="two-close pull-right">×</a>
+					<label>分享到微信朋友圈</label>
+					<img class="blog-two-dime" src="{$qrcode_link}"><br>
+					<span>打开微信,点击底部发现,<br>
+					&nbsp;使用'扫一扫'即可将网页分享至朋友圈</span></div></div>
+											<span class="pull-right">
+                <article:prev name="prev" info="info"> <a href="{:U('?id='.$prev['id'])}">上一篇</a> </article:prev>
+                <article:next name="next" info="info"> <a href="{:U('?id='.$next['id'])}">下一篇</a> </article:next>
+                </span> </p>
+            </div>
+            <hr/>
+            <section id="contents">
+              <div>{$info.content}</div>
+            </section>
+            <hr/>
+            <div class="commentary_contents">
+              <div>{:hook('localComment', array('path'=>"Blog/Article/$info[id]", 'uid'=>$info['uid']))}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="common_block_border">
+            <div class="common_block_title">作者</div>
+            <php>$author=query_user(array('nickname','space_url','avatar64','signature'),$info['uid'])</php>
+            <div class="col-md-4"> <img class="avatar-img" src="{$author.avatar64}"/> </div>
+            <div class="col-md-8"> <a href="{$author.space_url}">{$author.nickname}</a> <br/>
+              <p class="text-more">{$author.signature}</p>
+              <br/>
+              文章：
+              <php>echo D('Document')->where(array('uid'=>$info['uid'],'status'=>1))->count();</php>
+            </div>
+            <div class="clearfix blog-detail"></div>
+          </div>
+          {:W('Position/lists',array('position'=>2,'category'=>$category['id']))}
+          {:W('Hot/lists',array('category'=>$category['id']))} </div>
+      </div>
+    </div>
+  </div>
+</block>
+<block name="body">
+<script>
+   $(function(){
+   /*-二维码-*/
+		$('.blog_qrcode').click(function(){
+			$('.blog_qrcode_box').css('display','block')
+		})
+			/*关闭二维码*/
+		$('.two-close').click(function(){
+			$('.blog_qrcode_box').css('display','none')
+		})
+   
+   })
+</script>
+</block>

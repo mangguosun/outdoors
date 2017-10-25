@@ -1,0 +1,85 @@
+<extend name="Public/common"/>
+<block name="body">
+  <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav"> <a href="javascript:window.history.back();" class=""> <i class="am-icon-chevron-left"></i></a>{$model_info['name']}</div>
+    <!--div class="am-header-right am-header-nav"> <a href="javascript:" class=""> <i class="am-icon-chevron-down"></i></a></div-->
+  </header>
+ <div data-am-widget="list_news" class="am-list-news am-list-news-default">
+  <div class="am-list-news-bd">
+    <div class="people-info">
+        <div class="people-pic"><img src="{$user.avatar128}" /></div>
+        <div class="people-introduced">
+          <h3 class="people-nickname">{$user.nickname}</h3>
+          <div class="people-badge">
+         	 <eq name="user.sex" value="1"><span class="people-text-icon am-badge am-badge-secondary"><i class="am-icon-mars"></i> {:get_upgrading($user['is_use'])}</span></eq>
+             <eq name="user.sex" value="2"><span class="people-text-icon am-badge am-badge-danger"><i class="am-icon-venus"></i>&nbsp;&nbsp;{:get_upgrading($user['is_use'])}</span></eq>
+             <eq name="user.sex" value="0"><span class="people-text-icon am-badge am-badge-warning">{:get_upgrading($user['is_use'])}</span></eq>
+             <if condition="$user['constellation'] neq 0"> <span class=" am-badge am-badge-warning">{:get_constellation($user['constellation'])}</span></if>
+          </div>
+          <div class="people-signature"></div>         
+        </div>
+      </div>
+  </div>
+</div>
+
+ <div class="people-info-list">   
+    <ul class="am-list am-list-static am-list-border"> 
+        <if condition="$user['signature'] neq ''">
+        <li class="am-cf">个人签名<span>{$user.signature|htmlspecialchars}</span></li>
+         </if>
+        <li class="am-cf">所在地<span><eq name="user.address" value="0">还未设置
+            <else/>
+            {:get_city($city['province'])}
+            {:get_city($city['city'])}
+       </eq></span></li>
+       
+    </ul>  
+    <ul class="am-list am-list-static am-list-border">
+    	<li class="am-cf">自我介绍<span>{$user.self_introduction|htmlspecialchars}</span></li>
+        <li class="am-cf">关系<span>    
+            <if condition="is_login()">
+                <if condition="$user['uid'] == get_uid()">
+                自己
+                <else/>
+                    <php> if($user['is_following'] && $user['is_followed']){ </php>
+                    朋友
+                    <php>}elseif($user['is_following']){</php>
+                    我关注的人
+                    <php>}elseif($user['is_followed']){</php>
+                    我的粉丝
+                    <php>}else{</php>
+                    陌生人
+                    <php>}</php>
+                </if>
+            <else/>
+            陌生人
+            </if>
+        </span></li>
+        <li class="am-cf">注册时间<span>{:date('Y-m-d',$user[reg_time])}</span></li>
+    </ul>    
+ </div>
+ <div  data-am-widget="navbar" class="am-navbar am-cf " id="">
+  <ul class="am-navbar-nav am-cf am-avg-sm-3">
+    
+    <if condition="is_login() && $user['uid'] !== is_login()">
+        <li>
+          <a href="javascript:" onclick="mobiletalker.start_talk({$user['uid']})" class="am-btn-warning">
+            <span class="am-icon-comment"></span>
+            <span class="am-navbar-label">对话</span>
+          </a>
+        </li>
+     </if>
+    
+    
+     <if condition="is_login() && $user['uid'] != get_uid() && !$user['is_following']">
+         <li class="people_ufollow" data-uid="{$user['uid']}">
+          <a href="javascript:" class="am-btn-primary" >
+            <span class="am-icon-user-plus"></span>
+            <span class="am-navbar-label">关注</span>
+          </a>
+        </li>
+    </if>
+  </ul>
+</div>
+
+</block>  

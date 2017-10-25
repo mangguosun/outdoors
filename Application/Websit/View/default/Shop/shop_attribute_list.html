@@ -1,0 +1,109 @@
+<div id="center">
+
+  <div class="common_block_title ">
+    <div class="pull-right"><a class="mbtn  btn-info shop_attribute_sign common-color-white"  href="{:U('Websit/Shop/shop_attribute_add')}">添加属性</a></div>属性列表</div>
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+		
+		  <th>ID</th>
+		  <th>排序</th>
+		  <th>属性名称</th>
+		  <th>属性值</th>
+		  <th>创建时间</th>
+		  <th>更新时间</th>
+		  <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="cate_sub">
+        <volist name="cate_sub" id="vo">
+          <tr>
+			
+			<td>{$vo.id}</td>
+			<td>{$vo.sort}</td>
+			<td>{$vo.title} <a href="{:U('shop_sub_add?pid='.$vo['id'])}" class="cate_sign glyphicon glyphicon-plus-sign" title="添加子类"><a></td>
+			<td><?php if($vo['child']):?><a href="{:U('Websit/Shop/index',array('status'=>2,'pid'=>$vo['id']))}">查看</a><?php else:?>暂无子类<?php endif;?></td>
+			<td>{$vo.create_time|date="Y-m-d",###}</td>
+			<td><?php if($vo['update_time']):?>{$vo.update_time|date="Y-m-d",###}<?php else:?><?php endif;?></td>
+			<td><if condition="$vo['status'] eq 0">禁用<elseif condition="$vo['status'] eq 1"/>启用</if></td>
+		    <td><a class="mbtn btn-info pointcard_edit common-color-white"  href="{:U('Websit/Shop/shop_edit?id='.$vo['id'])}">编辑</a>
+				<if condition="$vo['status'] eq 1">
+				<a class="mbtn btn-danger shop_cate_disable common-color-white" data-ID="{$vo['id']}" data-Status="0"  href="javascript:">禁用</a>
+				<elseif condition="$vo['status'] eq 0"/>
+				<a class="mbtn btn-info shop_cate_disable common-color-white" data-ID="{$vo['id']}" data-Status="1"  href="javascript:">启用</a>
+				</if>
+			</td>
+          </tr>
+        </volist>
+		   <td colspan="8">{$page}</td>
+        <else/>
+			<td colspan="8" class="text-center"> aOh! 暂时还没有内容!</td>
+       </notempty>
+     </tbody>
+   </table>
+  </div>
+  <div class=""></div>
+</div>
+<script>
+$(function(){
+			 /*添加属性名称*/
+			$('.shop_attribute_sign').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+						//console.log(this.content);
+					}
+				}
+			});
+           
+			 /*添加子分类*/
+			$('.cate_sign').magnificPopup({
+				type: 'ajax',
+				overflowY: 'scroll',
+				modal: true,
+					callbacks: {
+						ajaxContentAdded: function () {
+						//console.log(this.content);
+					}
+				}
+			});
+			//更新
+			$('.pointcard_edit').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll',
+                modal: true,
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        //console.log(this.content);
+                    }
+                }
+            });
+			//是否禁用-
+			$('.shop_cate_disable').click(function () {
+				if (confirm('确定要操作么？')) {
+					var id = $(this).attr('data-ID');
+					var status = $(this).attr('data-Status');
+					$.post(U('Websit/Shop/shop_cate_disable'), {id: id,status: status}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+		   });	
+		 
+		
+        })
+</script>

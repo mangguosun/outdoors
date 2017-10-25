@@ -1,0 +1,69 @@
+<?php
+if(!defined('UEDITORS_INIT')){
+?>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditors/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditors/ueditor.all.min.js"></script>
+<?php
+define('UEDITORS_INIT', 1);
+}
+?>
+<script type="text/javascript">
+  $(function(){   
+        var ue = UE.getEditor('editor_id_{$addons_data.name}',{
+            serverUrl :'{:addons_url("Ueditor://Ueditor/ueditor")}',
+			<notempty name="addons_data.width">
+			initialFrameWidth:parseInt('{$addons_data.width}'),
+			<else/>
+			initialFrameWidth:'100%',
+			</notempty>
+			<notempty name="addons_data.height">
+			initialFrameHeight:parseInt('{$addons_data.height}'),
+			<else/>
+			initialFrameHeight:parseInt('{$addons_config.editor_height}'),
+			</notempty>
+			elementPathEnabled:false,
+			enableContextMenu:true,
+			autoHeightEnabled:false,
+			catchRemoteImageEnable:false,
+			scaleEnabled : <eq name="addons_config.editor_resize_type" value="1">true<else />false</eq>,
+			
+			
+			<eq name="addons_data.toolbars" value="all">
+			
+			toolbars: [[
+				'fullscreen', 'source', '|', 'undo', 'redo', '|',
+				'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+				'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+				'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+				'directionalityltr', 'directionalityrtl', 'indent', '|',
+				'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+				'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+				'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+				'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+				'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+				'print', 'preview', 'searchreplace', 'help', 'drafts'
+			]]
+			
+			<else />
+			toolbars: [[
+				'removeformat','autotypeset',  'selectall', 'cleardoc','|',
+				'bold', 'italic', 'underline',  'strikethrough', 'pasteplain', '|', 'forecolor', 'backcolor','source',  '|',
+				
+				'customstyle', 'fontfamily', 'fontsize', 
+				
+				'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+				'link', 'unlink', 
+				'simpleupload', 'insertimage', 'emotion', 'insertvideo', 'music', 'map', '|',
+				'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+				 'spechars', 
+				'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols','drafts',
+			]]
+			</eq>
+        });
+    })
+</script>
+
+
+<script name="{$addons_data.name}" id="editor_id_{$addons_data.name}" type="text/plain">
+{$addons_data.value}
+</script>

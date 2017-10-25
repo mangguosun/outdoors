@@ -1,0 +1,20 @@
+<div id="frm-post-popup" class="white-popup sms_notice">
+  <button title="Close (Esc)" type="button" class="mfp-close" >×</button>
+  <h2>短信通知<span style="font-size:13px;">(字数控制在<span style="color:red">193</span>个以内)</span></h2>{$event.title}
+  <br>[{$calendar.starttime}] - [{$calendar.overtime}]
+	<form class="form-horizontal  ajax-form" role="form" action="{:U('Websit/Index/do_send_sms')}" method="post">
+		<input type="hidden" name="id" value="{$Think.get.id}">
+		<input type="hidden" name="eventid" value="{$Think.get.eventid}">
+		<textarea cols="40" rows="5" id="sms_text" onkeyup="sms_content()" maxlength="193" name="notice" placeholder="在此处输入短信内容"></textarea>
+		您还可以输入<span style="color:red" id="content_left">193</span>个字
+		<br><input class="btn-primary mbtn" type="submit" value="提交">
+	</form>
+</div>
+<script>	
+	function sms_content(){
+		var sms_content = document.getElementById('sms_text').value;
+		var sms_length = sms_content.length;
+		var content_left = document.getElementById('content_left');
+		content_left.innerHTML = 193 - sms_length;
+	}
+</script>

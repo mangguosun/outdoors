@@ -1,0 +1,283 @@
+<extend name="Public/base1" />
+<block name="style">
+ <link href="/Public/static/bootstrap3.2/css/dataTables.bootstrap.css" rel="stylesheet" />
+</block>
+<block name="body">
+
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="table-toolbar">
+         <a  href="{:U('Manage/Event/event_schedule_add',array('eventid'=>$event_content['id']))}" class="btn btn-info">
+            增加排期
+        </a>
+       
+        <a href="javascript:void(0);" class="btn btn-default ajax-post" target-form="ids" url="{:U('Manage/Event/schedule_display',array('display'=>1,'event_id'=>$event_content['id']))}">
+                设为显示
+            </a>
+        <a href="javascript:void(0);" class="btn btn-default ajax-post" target-form="ids" url="{:U('Manage/Event/schedule_display',array('display'=>0,'event_id'=>$event_content['id']))}">
+                取消显示
+        </a>
+        <a href="javascript:history.go(-1)" class="btn btn-default">返回</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption">{$event_content.title} —— 排期管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body"> 
+ 
+      <table  class="table table-striped table-bordered table-hover" id="simpledatatable">
+        <!-- 表头 -->
+        <thead>
+          <tr>
+		        <th>    
+               <label>
+                   <input type="checkbox" class="check-all" data-set="#simpledatatable .ids">
+                   <span class="text">序号</span>
+               </label>
+            </th>
+            <th>排期队名</th>
+            <th>{:get_upgrading(2)}</th>
+            <th>出发时间</th>
+            <th>价格</th>
+            <th>交通</th>
+            <th>住宿</th>           
+			      <th>预约人数</th>
+            <th>有效报名人</th>
+      			<th>未付款</th>
+      			<th>定金已付</th>
+      			<th>全额已付</th>
+      			<th>显示</th>
+      			<th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <!-- 列表 -->
+        <tbody>
+          <notempty name="contents">
+          <volist name="contents" id="vo">
+            <tr>
+              <td>
+                <label>
+                    <input type="checkbox" name="id[]"  class="ids" value="{$vo.id}">
+                    <span class="text">{$vo.id}</span>
+                </label>              
+              </td>
+              <td><if condition="($vo[team_name] neq '') AND ($vo[team_name] neq '0') ">{$vo.team_name}<else />无</if></td>
+              <td><if condition="$vo[leader] neq ''">{$vo.leader}<else />暂无</if></td>
+              <td>{$vo.starttime}</td>
+              <td>￥{$vo.price}</td>
+              <td>{$vo.vehicle}</td>
+              <td>{$vo.accommodation}</td>
+			        <td>{$vo.disPre_num}</td>
+              <td>
+                <if condition="($vo[disEffective_num] gt 0) ">共{$vo.disEffective_num}人<else /> 暂无</if>
+              </td>
+      			  <td> 共{$vo.disUnpay_num}人</td>
+      			  <td> 共{$vo.disDeposit_num}人</td>
+      			  <td> 共{$vo.disFullpay_num}人</td>
+      			  <td>{$vo.dis_display}</td>
+              <td>{$vo.info}</td>
+              <td>
+                 <div class="btn-group">
+                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                        操作 <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:U('Manage/Order/event_allmember',array('eventid'=>$vo['eventid'],'id'=>$vo['id']))}"> 排期人数详情</a></li>
+                        <if condition="($vo[disEffective_num] gt 0) ">
+                          <li><a href="{:U('Manage/Event/event_schedule_reservation',array('event_id'=>$vo['eventid'],'calendar_id'=>$vo['id']))}">排期订单信息</a></li>
+
+                        </if>
+                    
+                        <?php if($vo[status] != -1):?>
+                        <li>
+                            <if condition="$vo[display] eq 0">
+                              <a href="{:U('Manage/Event/schedule_display',array('id'=>$vo['id'],'event_id'=>$vo['eventid'],'display'=>1))}" class='mbtn btn-primary confirm ajax-get'>显示</a>
+                            <else />
+                              <a href="{:U('Manage/Event/schedule_display',array('id'=>$vo['id'],'event_id'=>$vo['eventid'],'display'=>0))}" class='confirm ajax-get'>隐藏</a>
+                            </if>
+                        </li>    
+                       
+                        <li> 
+        					         <a href="{:U('Manage/Event/event_schedule_edit',array('id'=>$vo['id'],'eventid'=>$event_content['id']))}" class="schedule_edit">编辑</a>
+                        </li>
+                        <?php endif;?>
+                    </ul>
+                </div>              
+			  </td>
+			</tr> 
+          </volist>
+          </notempty>
+          </tbody>
+      </table>
+            </div>
+        </div>
+    </div>
+</div>
+</block>
+
+<block name="script">
+<!--Page Related Scripts-->
+    <script src="/Public/static/bootstrap3.2/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/ZeroClipboard.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="/Public/static/bootstrap3.2/js/datatable/datatables-init.js"></script>
+    <script>
+
+    var InitiateSimpleDataTable = function () {
+    return {
+        init: function () {
+            /* Formatting function for row details */
+            function fnFormatDetails(oTable, nTr) {
+                var aData = oTable.fnGetData(nTr);
+                var sOut = '<table>';
+
+                sOut += '<tr><td style="width:30px;"></td><td>{:get_upgrading(2)}:</td><td>' + aData[3] + '</td></tr>';
+                sOut += '<tr><td style="width:30px;"></td><td>交通:</td><td>' + aData[6] + '</td></tr>';
+                sOut += '<tr><td style="width:30px;"></td><td>住宿:</td><td>' + aData[7] + '</td></tr>';
+                sOut += '<tr><td style="width:30px;"></td><td>预约人数:</td><td>' + aData[8] + '</td></tr>';	
+				
+                sOut += '</table>';
+                return sOut;
+            }
+
+            /*
+             * Insert a 'details' column to the table
+             */
+            var nCloneTh = document.createElement('th');
+            var nCloneTd = document.createElement('td');
+            nCloneTd.innerHTML = '<i class="fa fa-plus-square-o row-details"></i>';
+
+            $('#simpledatatable thead tr').each(function () {
+                this.insertBefore(nCloneTh, this.childNodes[0]);
+            });
+
+            $('#simpledatatable tbody tr').each(function () {
+                this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+            });
+
+            /*
+             * Initialize DataTables, with no sorting on the 'details' column
+             */
+            var oTable = $('#simpledatatable').dataTable({
+                "sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": [0] },
+				    { "bVisible": false, "aTargets": [3] },	
+                    { "bVisible": false, "aTargets": [6] },
+                    { "bVisible": false, "aTargets": [7] },
+                    { "bVisible": false, "aTargets": [8] },
+                ],
+                "aaSorting": [],
+                "aLengthMenu": [
+                   [5, 15, 20, -1],
+                   [5, 15, 20, "All"]
+                ],
+                "iDisplayLength": 5,
+                "oTableTools": {
+                        "aButtons": [],
+                        "sSwfPath": "/Public/static/bootstrap3.2/swf/copy_csv_xls_pdf.swf"
+                    },
+                "language": {
+                    "search": "",
+                    "sLengthMenu": "_MENU_",
+                    "oPaginate": {
+                        "sPrevious": "Prev",
+                        "sNext": "Next"
+                    }
+                },"bFilter": false, //搜索栏
+                    "bPaginate": false, //翻页
+                    "bLengthChange": false, ////每页显示的记录数
+                    "bInfo": false, //显示表格信息
+                    "bAutoWidth": true, //自适应宽度
+                    "aoColumns": [
+                      { "bSortable": false },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },                     
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+					            { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },
+                      { "bSortable": true },					  
+                      { "bSortable": true },
+                      { "bSortable": false }
+                    ],
+            });
+
+
+            $('#simpledatatable').on('click', ' tbody td .row-details', function () {
+                var nTr = $(this).parents('tr')[0];
+                if (oTable.fnIsOpen(nTr)) {
+                    /* This row is already open - close it */
+                    $(this).addClass("fa-plus-square-o").removeClass("fa-minus-square-o");
+                    oTable.fnClose(nTr);
+                }
+                else {
+                    /* Open this row */
+                    $(this).addClass("fa-minus-square-o").removeClass("fa-plus-square-o");;
+                    oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+                }
+            });
+
+            $('#simpledatatable input[type="checkbox"]').change(function () {
+                var iCol = parseInt($(this).attr("data-column"));
+                var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+                oTable.fnSetColumnVis(iCol, (bVis ? false : true));
+            });
+
+            $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
+                e.stopPropagation();
+            })
+        }
+    };
+}();
+      
+	  
+	  InitiateSimpleDataTable.init();
+    </script>
+
+<script>
+	$(function () {
+		<?php 
+		$insure_info = D('insurance')->where(array('siteid'=>SITEID,'status'=>1))->count();
+		if($insure_info != 0){
+	?>
+		$('.schedule_add').magnificPopup({
+			type: 'ajax',
+			overflowY: 'scroll',
+			modal: true,
+			callbacks: {
+				ajaxContentAdded: function () {
+					//console.log(this.content);
+				}
+			}
+		});		
+		<?php }else{?>	
+		$('.schedule_add').click(function(){
+			toast.error('请先添加网站保险');
+			return false
+		})
+			
+		<?php }?>
+		
+	})
+ </script>   
+     
+</block>

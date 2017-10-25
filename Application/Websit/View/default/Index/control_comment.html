@@ -1,0 +1,73 @@
+<div id="center">
+  <div class="row data-table">
+    <table>
+      <!-- 表头 -->
+      <thead>
+        <tr>
+          <th>用户(UID)</th>
+          <th>评论内容</th>
+          <th>评论时间</th>
+		  <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <!-- 列表 -->
+      <tbody>
+        <notempty name="event_com">
+         <volist name="event_com" id="vo">
+          <tr>
+            <td><if condition="$vo.uid eq 0"> 游客
+                <else/>
+                {$vo.uid} </if></td>
+            <!--<td>{$vo.title}</td>-->
+			<td>{$vo.content}</td>
+			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+			<td><if condition="$vo.status eq 1">启用<elseif condition="$vo.status eq 0"/>禁用</if></td>
+            <td><a class="mbtn btn-info common-color-white" href="{:U('Websit/Index/control_comment_edit?id='.$vo['id'])}">编辑</a> 
+			 <if condition="$vo['status'] eq 1">
+				<a class="mbtn btn-danger control_disable common-color-white" data-ID="{$vo['id']}" data-Status="0"  href="javascript:">禁用</a>
+				<elseif condition="$vo['status'] eq 0"/>
+				 <a class="mbtn btn-info control_disable common-color-white" data-ID="{$vo['id']}" data-Status="1"  href="javascript:">启用</a>
+			 </if>
+			</td>
+          </tr>
+        </volist>
+		 <tr><td colspan="5">{$page}</td></tr>
+        <else/>
+      <td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td>
+        </notempty>
+        </tbody>
+    </table>
+  </div>
+  <div class=""></div>
+  <script>
+        $(function () {			
+				//是否禁用-
+			$('.control_disable').click(function () {
+				if (confirm('确定要操作么？')) {
+					var id = $(this).attr('data-ID');
+					var status = $(this).attr('data-Status');
+					$.post(U('Websit/Index/control_disable'), {id: id,status: status}, function (res) {
+						if (res.status) {
+							toast.success(res.info);
+							setTimeout(function () {
+								location.reload();
+							}, 1500);
+						}
+						else {
+							toast.error(res.info);
+						}
+					}, 'json');
+				}
+		   });	
+			
+	    })
+    </script>
+</div>
+<neq name="tab" value="">
+  <script>
+        $(function () {
+            center_toggle("{$tab}");
+        })
+    </script>
+</neq>

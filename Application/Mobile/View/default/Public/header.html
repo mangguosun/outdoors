@@ -1,0 +1,10 @@
+<php> D('Home/Member')->need_login();</php>
+<div class="mobile_nav_bar">  
+  <ul class="nav">
+	<li <if condition="($dest_url eq 'Index') or ($dest_url eq 'index')">class="active"<else /></if>><a href="{:U('Mobile/Index/index')}" target="_self"><div class="navicon glyphicon glyphicon-home"></div>首页</a></li>
+    <li <if condition="($dest_url eq 'Event') or ($dest_url eq 'event')">class="active"<else /></if>><a href="{:U('Mobile/Event/index')}" target="_self"><div class="navicon glyphicon glyphicon-send"></div>活动</a></li>
+	<li <if condition="($dest_url eq 'Issue') or ($dest_url eq 'issue')">class="active"<else /></if>><a href="{:U('Mobile/Issue/index')}" target="_self"><div class="navicon glyphicon glyphicon-facetime-video"></div>故事</a></li>
+    <li <if condition="($dest_url eq 'Config') or ($dest_url eq 'config')">class="active"<else /></if>><a href="{:U('Mobile/Config/index')}" target="_self"><div class="navicon glyphicon glyphicon-user"></div>会员</a></li>
+  </ul>
+  
+</div>
